@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{91F86F6C-DA65-44C8-A013-08E11F4CD10A}</ProjectGuid>
+    <RootNamespace>LCoreLib</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../TeamBOutput/</OutDir>
+    <IntDir>../../TeamBOutput/Debug/BCoreLibDemo/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../../fmod/inc/;../../LCoreLib/include/;../../LCoreLib/texinclude/;../../fbxsdk/include/</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../LCoreLib/lib/; ../../LCoreLib/texlib/; ../../fbxsdk/lib/debug/; ../../fmod/lib/x64/</AdditionalLibraryDirectories>
+    </Link>
+    <Lib>
+      <OutputFile>LCoreLib.lib</OutputFile>
+      <AdditionalLibraryDirectories>../../fmod/lib/x64/</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="DirectXTex.h" />
+    <ClInclude Include="LAnimation.h" />
+    <ClInclude Include="LCamera.h" />
+    <ClInclude Include="LCollision.h" />
+    <ClInclude Include="LCore.h" />
+    <ClInclude Include="LDebugCamera.h" />
+    <ClInclude Include="LFbxImport.h" />
+    <ClInclude Include="LFbxMgr.h" />
+    <ClInclude Include="LFbxObj.h" />
+    <ClInclude Include="LFiniteState.h" />
+    <ClInclude Include="LFSMMgr.h" />
+    <ClInclude Include="LGlobal.h" />
+    <ClInclude Include="LDevice.h" />
+    <ClInclude Include="LDXObject.h" />
+    <ClInclude Include="LHeightMap.h" />
+    <ClInclude Include="LInput.h" />
+    <ClInclude Include="LManager.h" />
+    <ClInclude Include="LManagerAgr.h" />
+    <ClInclude Include="LMap.h" />
+    <ClInclude Include="LMath.h" />
+    <ClInclude Include="LModel.h" />
+    <ClInclude Include="LNode.h" />
+    <ClInclude Include="LObject.h" />
+    <ClInclude Include="LPlaneObj.h" />
+    <ClInclude Include="LQurdTree.h" />
+    <ClInclude Include="LSoundMgr.h" />
+    <ClInclude Include="LSpriteUVObj.h" />
+    <ClInclude Include="LStd.h" />
+    <ClInclude Include="LTimer.h" />
+    <ClInclude Include="LUtils.h" />
+    <ClInclude Include="LWindow.h" />
+    <ClInclude Include="LWrite.h" />
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="TMath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DirectXTex.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="DirectXTex.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LAnimation.cpp" />
+    <ClCompile Include="LCamera.cpp" />
+    <ClCompile Include="LCollision.cpp" />
+    <ClCompile Include="LCore.cpp" />
+    <ClCompile Include="LDebugCamera.cpp" />
+    <ClCompile Include="LFbxAnimation.cpp" />
+    <ClCompile Include="LFbxGeometry.cpp" />
+    <ClCompile Include="LFbxImport.cpp" />
+    <ClCompile Include="LFbxMgr.cpp" />
+    <ClCompile Include="LFbxObj.cpp" />
+    <ClCompile Include="LFiniteState.cpp" />
+    <ClCompile Include="LFSMMgr.cpp" />
+    <ClCompile Include="LGrobal.cpp" />
+    <ClCompile Include="LDevice.cpp" />
+    <ClCompile Include="LDXObject.cpp" />
+    <ClCompile Include="LHeightMap.cpp" />
+    <ClCompile Include="LInput.cpp" />
+    <ClCompile Include="LManager.cpp" />
+    <ClCompile Include="LManagerAgr.cpp" />
+    <ClCompile Include="LMap.cpp" />
+    <ClCompile Include="LMath.cpp" />
+    <ClCompile Include="LModel.cpp" />
+    <ClCompile Include="LNode.cpp" />
+    <ClCompile Include="LObject.cpp" />
+    <ClCompile Include="LPlaneObj.cpp" />
+    <ClCompile Include="LQurdTree.cpp" />
+    <ClCompile Include="LSoundMgr.cpp" />
+    <ClCompile Include="LSpriteUVObj.cpp" />
+    <ClCompile Include="LTimer.cpp" />
+    <ClCompile Include="LUtils.cpp" />
+    <ClCompile Include="LWindow.cpp" />
+    <ClCompile Include="LWrite.cpp" />
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="TMath.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
