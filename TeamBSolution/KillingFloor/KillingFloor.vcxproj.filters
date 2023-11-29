@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="UIScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LMainScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="UIScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MapScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LMainScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{a0756ef2-d4c0-42f6-b70c-09eecb386abe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
