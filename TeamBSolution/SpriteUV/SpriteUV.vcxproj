@@ -143,11 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMath.cpp" />
     <ClCompile Include="LSpriteUVObj.cpp" />
+    <ClCompile Include="LUtils.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMath.h" />
     <ClInclude Include="LSpriteUVObj.h" />
+    <ClInclude Include="LUtils.h" />
     <ClInclude Include="Sample.h" />
   </ItemGroup>
   <ItemGroup>

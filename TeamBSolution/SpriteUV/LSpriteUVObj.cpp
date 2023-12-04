@@ -1,6 +1,22 @@
 #include "LSpriteUVObj.h"
 #include "LGlobal.h"
 
+void LSpriteUVObj::SetBox(TVector3& p, float fw, float fh, float fd)
+{
+    m_vPosition = p;
+    LVector pos;
+    memcpy(&pos, &p, sizeof(p));
+    m_Box.Set(pos, fw, fh, fd);
+}
+
+void LSpriteUVObj::SetBox(TVector3& p)
+{
+    m_vPosition = p;
+    LVector pos;
+    memcpy(&pos, &p, sizeof(p));
+    m_Box.Set(pos, m_Box.m_fWidth, m_Box.m_fHeight, m_Box.m_fDepth);
+}
+
 void LSpriteUVObj::SetTarget(TVector3& t)
 {
     m_Target = t;
@@ -64,7 +80,7 @@ bool LSpriteUVObj::Init()
 
 bool LSpriteUVObj::Frame()
 {
-    //SetBox(m_vPosition, m_vScale.x * 2, m_vScale.y * 2, 1.0f);
+    SetBox(m_vPosition, m_vScale.x * 2, m_vScale.y * 2, 1.0f);
 
     LPlaneObj::Frame();
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "LPlaneObj.h"
+#include "LUtils.h"
 
 struct RectUV
 {
@@ -10,6 +11,9 @@ struct RectUV
 class LSpriteUVObj : public LPlaneObj
 {
 public:
+	LBox m_Box;
+	virtual void SetBox(TVector3& p, float fw, float fh, float fd);
+	virtual void SetBox(TVector3& p);
 	TVector3 m_Target;
 	TVector3 m_fDirection;
 	bool m_IsDirectionCal = false;
