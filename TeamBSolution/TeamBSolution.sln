@@ -31,6 +31,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UI", "UI\UI.vcxproj", "{28E
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneChangeSample", "SceneChangeSample\SceneChangeSample.vcxproj", "{947EB240-02ED-4DE4-B5FA-F601A10F4634}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{65D28BED-44E5-459B-AD3A-34051A3CDB40}"
+	ProjectSection(SolutionItems) = preProject
+		..\res\hlsl\CustomizeMap.hlsl = ..\res\hlsl\CustomizeMap.hlsl
+		..\res\hlsl\HeightMap.hlsl = ..\res\hlsl\HeightMap.hlsl
+		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
