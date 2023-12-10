@@ -144,9 +144,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="TShaderMgr.cpp" />
+    <ClCompile Include="LSpriteObj.cpp" />
+    <ClCompile Include="TTextureMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="TShaderMgr.h" />
+    <ClInclude Include="LSpriteObj.h" />
+    <ClInclude Include="TTextureMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
