@@ -26,6 +26,21 @@ bool LInput::Frame()
     m_vOffset.x = m_MousePos.x - m_BeforeMousePos.x;
     m_vOffset.y = m_MousePos.y - m_BeforeMousePos.y;
 
+    // mouse left click
+    if (::GetAsyncKeyState(VK_LBUTTON) & 0x8001)
+    {
+        m_bIsMouseLeftPressed = true;
+        if (m_dwKeyState[VK_LBUTTON] != DWORD(KeyState::KEY_HOLD))
+        {
+            m_ClickPos.x = static_cast<float>(m_MousePos.x);
+            m_ClickPos.y = static_cast<float>(m_MousePos.y);
+        }
+    }
+    else
+    {
+        m_bIsMouseLeftPressed = false;
+    }
+
     for (int ikey = 0; ikey < 256; ikey++)
     {
         SHORT s = GetAsyncKeyState(ikey);
@@ -73,4 +88,10 @@ bool LInput::Render()
 bool LInput::Release()
 {
 	return true;
+}
+
+bool LInput::GetKey(int keyCode) const
+{
+    SHORT s = GetAsyncKeyState(keyCode);
+    return (s & 0x8001) != 0;
 }

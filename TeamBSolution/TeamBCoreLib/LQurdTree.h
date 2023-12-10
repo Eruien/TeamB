@@ -16,7 +16,7 @@ public:
 	std::vector<std::vector<DWORD>> m_LeafIndexList;
 public:
 	LNode* m_RootNode = nullptr;
-	int m_TreeDepth = 0;
+	int m_TreeDepth = 2;
 	std::queue<LNode*> m_Queue;
 public:
 	void SetDepth(int depth);
@@ -36,6 +36,13 @@ public:
 	bool Release() override;
 public:
 	virtual ~LQurdtree();
+
+
+	//for picking
+
+public:
+	void PerformMousePicking(LQurdtree* pQuadtree, LHeightMap* m_HeightMap);
+	void FindIntersectedNode(LRay& ray, LNode*& pSelectedNode);
 };
 
 

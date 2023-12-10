@@ -1,6 +1,8 @@
 #pragma once
 #include "LObject.h"
 #include "LMap.h"
+#include "LStd.h"
+#include "LHeightMap.h"
 
 class LNode : public LObject
 {
@@ -17,6 +19,12 @@ public:
 	bool m_IsLeaf = false;
 	LNode* m_pParent = nullptr;
 	std::vector<LNode*> m_pChild;
+
+	// for picking
+public:
+	bool IntersectRay(LRay& ray);
+	void UpdateIndexList(LHeightMap* map);
+
 public:
 	void SetParent(LNode* pParent);
 public:

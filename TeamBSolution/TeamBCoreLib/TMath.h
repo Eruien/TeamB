@@ -210,6 +210,8 @@ namespace TBASIS_EX
 	// 3D vector
 	struct TVector3 : DirectX::XMFLOAT3
 	{
+
+
 		TVector3() noexcept : DirectX::XMFLOAT3(0.f, 0.f, 0.f) {}
 		XM_CONSTEXPR explicit TVector3(float x) : DirectX::XMFLOAT3(x, x, x) {}
 		XM_CONSTEXPR TVector3(float _x, float _y, float _z) : DirectX::XMFLOAT3(_x, _y, _z) {}

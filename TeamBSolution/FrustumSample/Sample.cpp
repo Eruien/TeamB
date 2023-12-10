@@ -1,6 +1,17 @@
 #include "Sample.h"
 #include "LGlobal.h"
 
+bool Sample::ProcessPicking()
+{
+	if (LGlobal::g_pMainCamera == nullptr) return false;
+
+	m_Tree->PerformMousePicking(m_Tree, m_HeightMap);
+
+	// TODO: 여기에 특정 작업을 추가 (예: 쿼드 트리 노드 찾기, 높이 맵 조절 등)
+
+	return true;
+}
+
 bool Sample::Init()
 {
 	m_DebugCamera = std::make_shared<LDebugCamera>();
@@ -27,7 +38,9 @@ bool Sample::Init()
 	// 프러스텀 컬리용 트리 
 	m_Tree = new LQurdtree;
 	m_Tree->Set();
-	m_Tree->m_TreeDepth = 2;
+	m_Tree->m_TreeDepth = 4;
+	m_Tree->m_matProj = m_DebugCamera->m_matProj;
+	m_Tree->m_matView = m_DebugCamera->m_matView;
 	// 프러스텀 컬링할 맵이랑 맵의 크기를 입력
 	m_Tree->BuildQurdTree(m_HeightMap, 513, 513);
 
@@ -36,6 +49,10 @@ bool Sample::Init()
 
 bool Sample::Frame()
 {
+	if (m_Input.GetKey(VK_LBUTTON))
+	{
+		ProcessPicking();
+	}
 	m_Tree->Frame();
 
 	return true;

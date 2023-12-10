@@ -144,10 +144,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="LPick.cpp" />
+    <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LPick.h" />
+    <ClInclude Include="LSelect.h" />
     <ClInclude Include="Sample.h" />
   </ItemGroup>
   <ItemGroup>

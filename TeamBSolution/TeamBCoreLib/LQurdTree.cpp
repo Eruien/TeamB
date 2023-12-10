@@ -232,17 +232,59 @@ void LQurdtree::AddLeafNode(LNode* pNode)
 	}
 }
 
+//void LQurdtree::UpdateIndexBuffer()
+//{
+//	if (m_IndexList.empty()) return;
+//	D3D11_MAPPED_SUBRESOURCE mappedResource;
+//	HRESULT hr = m_pMap->m_pImmediateContext->Map(m_pIndexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+//	if (SUCCEEDED(hr))
+//	{
+//		memcpy(mappedResource.pData, &m_IndexList.at(0), sizeof(DWORD) * m_IndexList.size());
+//		m_pMap->m_pImmediateContext->Unmap(m_pIndexBuffer.Get(), 0);
+//	}
+//}
+
+
+ //mouse picking 이후 new 함수. 시진.
+
 void LQurdtree::UpdateIndexBuffer()
 {
-	if (m_IndexList.empty()) return;
+	if (m_IndexList.empty() || !m_pMap || !m_pMap->m_pDevice || !m_pMap->m_pImmediateContext) return;
+
+	// 새로운 인덱스 버퍼를 생성합니다.
+	ComPtr<ID3D11Buffer> tempIndexBuffer;
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
+
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.ByteWidth = sizeof(DWORD) * m_IndexList.size();
+	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA initData;
+	ZeroMemory(&initData, sizeof(initData));
+	initData.pSysMem = m_IndexList.data();
+
+	HRESULT hr = m_pMap->m_pDevice->CreateBuffer(&bufferDesc, &initData, tempIndexBuffer.GetAddressOf());
+
+	if (FAILED(hr))
+	{
+		// 실패 처리
+		return;
+	}
+
+	// 기존의 인덱스 버퍼를 교체합니다.
+	m_pIndexBuffer.Swap(tempIndexBuffer);
+
+	// 매핑 및 복사
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT hr = m_pMap->m_pImmediateContext->Map(m_pIndexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	hr = m_pMap->m_pImmediateContext->Map(m_pIndexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (SUCCEEDED(hr))
 	{
-		memcpy(mappedResource.pData, &m_IndexList.at(0), sizeof(DWORD) * m_IndexList.size());
+		memcpy(mappedResource.pData, m_IndexList.data(), sizeof(DWORD) * m_IndexList.size());
 		m_pMap->m_pImmediateContext->Unmap(m_pIndexBuffer.Get(), 0);
 	}
 }
+
 
 bool LQurdtree::Init()
 {
@@ -289,4 +331,79 @@ bool LQurdtree::Release()
 LQurdtree::~LQurdtree()
 {
 	delete m_RootNode;
+}
+
+
+
+void LQurdtree::PerformMousePicking(LQurdtree* pQuadtree, LHeightMap* m_HeightMap)
+{
+	// 현재 마우스 위치 가져오기
+	POINT ptCursor;
+	GetCursorPos(&ptCursor);
+	ScreenToClient(LGlobal::g_hWnd, &ptCursor);
+
+	TVector3 v;
+	v.x = (((2.0f * ptCursor.x) / LGlobal::g_WindowWidth) - 1) / m_matProj._11;
+	v.y = -(((2.0f * ptCursor.y) / LGlobal::g_WindowHeight) - 1) / m_matProj._22;
+	v.z = 1.0f;
+
+	TMatrix mWorldView = m_matView;
+	TMatrix m;
+	D3DXMatrixInverse(&m, NULL, &mWorldView);
+
+	LRay pickRay;
+	pickRay.m_Origin = TVector3(0.0f, 0.0f, 0.0f);
+	pickRay.m_Direction = TVector3(v.x, v.y, v.z);
+	D3DXVec3TransformCoord(&pickRay.m_Origin, &pickRay.m_Origin, &m);
+	D3DXVec3TransformNormal(&pickRay.m_Direction, &pickRay.m_Direction, &m);
+	D3DXVec3Normalize(&pickRay.m_Direction, &pickRay.m_Direction);
+
+	// Quadtree와 교차하는 노드 찾기
+	LNode* pSelectedNode = nullptr;
+	pQuadtree->FindIntersectedNode(pickRay, pSelectedNode);
+
+	// 선택된 노드가 있으면 해당 노드의 높이를 변경
+	if (pSelectedNode)
+	{
+
+		// 선택된 노드의 인덱스 리스트 업데이트
+		pSelectedNode->UpdateIndexList(m_HeightMap);
+
+	}
+	// 인덱스 버퍼 업데이트
+	pQuadtree->UpdateIndexBuffer();
+}
+
+
+void LQurdtree::FindIntersectedNode(LRay& ray, LNode*& pSelectedNode)
+{
+	m_Queue.push(m_RootNode);
+
+	while (!m_Queue.empty())
+	{
+		LNode* pNode = m_Queue.front();
+		m_Queue.pop();
+
+		if (pNode->IntersectRay(ray))
+		{
+			if (pNode->m_IsLeaf)
+			{
+				pSelectedNode = pNode;
+				return;
+			}
+			else
+			{
+				for (int i = 0; i < pNode->m_pChild.size(); i++)
+				{
+					if (pNode->m_pChild[i] != nullptr)
+					{
+						m_Queue.push(pNode->m_pChild[i]);
+					}
+				}
+			}
+		}
+	}
+
+	// 더 이상 리프 노드를 찾을 수 없을 때
+	pSelectedNode = nullptr;
 }

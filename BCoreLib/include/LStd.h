@@ -34,6 +34,31 @@ struct T_BOX
     float      fExtent[3];
 };
 
+class LRay
+{
+public:
+    TVector3 m_Origin;
+    TVector3 m_Direction;
+    TVector3 m_InvDir;
+    int sign[3];
+
+    LRay() : m_Origin(TVector3(0.0f, 0.0f, 0.0f)), m_Direction(TVector3(0.0f, 0.0f, 1.0f))
+    {
+        sign[0] = (m_Direction.x < 0.0f) ? 1 : 0;
+        sign[1] = (m_Direction.y < 0.0f) ? 1 : 0;
+        sign[2] = (m_Direction.z < 0.0f) ? 1 : 0;
+    }
+    LRay(const TVector3& origin, const TVector3& direction) : m_Origin(origin), m_Direction(direction)
+    {
+        sign[0] = (m_Direction.x < 0.0f) ? 1 : 0;
+        sign[1] = (m_Direction.y < 0.0f) ? 1 : 0;
+        sign[2] = (m_Direction.z < 0.0f) ? 1 : 0;
+        m_InvDir.x = 1.0f / direction.x;
+        m_InvDir.y = 1.0f / direction.y;
+        m_InvDir.z = 1.0f / direction.z;
+    }
+};
+
 static void L_DebugString(const WCHAR* msg)
 {
 #ifdef _DEBUG
