@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.34301.259
+VisualStudioVersion = 16.0.33801.447
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TeamBSample", "TeamBSample", "{EEE8872F-3041-4F99-8A24-4BA51554F68E}"
 EndProject
@@ -25,39 +25,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Character", "Character\Char
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Effect", "Effect\Effect.vcxproj", "{98E94158-E891-474D-BF6B-07E3A0EE6FFB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Map(STOP)", "Map\Map.vcxproj", "{6CFF6570-B658-4C64-BFE6-5D3A86D08600}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Map", "Map\Map.vcxproj", "{6CFF6570-B658-4C64-BFE6-5D3A86D08600}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UI", "UI\UI.vcxproj", "{28E4906E-8B34-4F89-850C-4F76F44B2999}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneChangeSample", "SceneChangeSample\SceneChangeSample.vcxproj", "{947EB240-02ED-4DE4-B5FA-F601A10F4634}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{5CC113CB-61D7-4A8F-915D-37FF9190112F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapTool0", "MapTool0\MapTool0.vcxproj", "{2D2A5300-36C5-4996-8AAB-EED1DF87D414}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7F1-FBA5-4A6A-AC3D-A642F5698AE8}"
-	ProjectSection(SolutionItems) = preProject
-		..\res\hlsl\Bullet.hlsl = ..\res\hlsl\Bullet.hlsl
-		..\res\hlsl\CharacterInstancing.hlsl = ..\res\hlsl\CharacterInstancing.hlsl
-		..\res\hlsl\CharacterShader.hlsl = ..\res\hlsl\CharacterShader.hlsl
-		..\res\hlsl\CharacterShaderInAnimationData.hlsl = ..\res\hlsl\CharacterShaderInAnimationData.hlsl
-		..\res\hlsl\CharacterShadow.hlsl = ..\res\hlsl\CharacterShadow.hlsl
-		..\res\hlsl\CustomizeMap.hlsl = ..\res\hlsl\CustomizeMap.hlsl
-		..\res\hlsl\DiffuseLight.hlsl = ..\res\hlsl\DiffuseLight.hlsl
-		..\res\hlsl\HeightMap.hlsl = ..\res\hlsl\HeightMap.hlsl
-		..\res\hlsl\HpBar.hlsl = ..\res\hlsl\HpBar.hlsl
-		..\res\hlsl\LightShadowMap.hlsl = ..\res\hlsl\LightShadowMap.hlsl
-		..\res\hlsl\ObjectInstancing.hlsl = ..\res\hlsl\ObjectInstancing.hlsl
-		..\res\hlsl\ProjShadow.hlsl = ..\res\hlsl\ProjShadow.hlsl
-		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl
-		..\res\hlsl\ShadowMap.hlsl = ..\res\hlsl\ShadowMap.hlsl
-		..\res\hlsl\SkyBox.hlsl = ..\res\hlsl\SkyBox.hlsl
-		..\res\hlsl\TransparentBox.hlsl = ..\res\hlsl\TransparentBox.hlsl
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UISample", "UISample\UISample.vcxproj", "{A02F8538-E7C4-47D5-A459-8A4AD86169D2}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheFinalKillingFloor", "TheFinalKillingFloor\TheFinalKillingFloor.vcxproj", "{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TBaseTool", "TBaseTool\TBaseTool.vcxproj", "{7B60C563-532F-4D3D-B7B1-B8842D32F422}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,30 +145,14 @@ Global
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634}.Release|x64.Build.0 = Release|x64
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634}.Release|x86.ActiveCfg = Release|Win32
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634}.Release|x86.Build.0 = Release|Win32
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Debug|x64.ActiveCfg = Debug|x64
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Debug|x64.Build.0 = Debug|x64
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Debug|x86.ActiveCfg = Debug|Win32
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Debug|x86.Build.0 = Debug|Win32
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Release|x64.ActiveCfg = Release|x64
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Release|x64.Build.0 = Release|x64
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Release|x86.ActiveCfg = Release|Win32
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414}.Release|x86.Build.0 = Release|Win32
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Debug|x64.ActiveCfg = Debug|x64
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Debug|x64.Build.0 = Debug|x64
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Debug|x86.ActiveCfg = Debug|Win32
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Debug|x86.Build.0 = Debug|Win32
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Release|x64.ActiveCfg = Release|x64
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Release|x64.Build.0 = Release|x64
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Release|x86.ActiveCfg = Release|Win32
-		{A02F8538-E7C4-47D5-A459-8A4AD86169D2}.Release|x86.Build.0 = Release|Win32
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Debug|x64.ActiveCfg = Debug|x64
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Debug|x64.Build.0 = Debug|x64
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Debug|x86.ActiveCfg = Debug|Win32
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Debug|x86.Build.0 = Debug|Win32
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Release|x64.ActiveCfg = Release|x64
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Release|x64.Build.0 = Release|x64
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Release|x86.ActiveCfg = Release|Win32
-		{57F428BD-E2F1-47AB-BD3F-D33EF360E0EE}.Release|x86.Build.0 = Release|Win32
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Debug|x64.ActiveCfg = Debug|x64
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Debug|x64.Build.0 = Debug|x64
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Debug|x86.ActiveCfg = Debug|Win32
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Debug|x86.Build.0 = Debug|Win32
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Release|x64.ActiveCfg = Release|x64
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Release|x64.Build.0 = Release|x64
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Release|x86.ActiveCfg = Release|Win32
+		{7B60C563-532F-4D3D-B7B1-B8842D32F422}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,8 +166,6 @@ Global
 		{B7046108-853C-4760-99CE-D99474E71681} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
 		{9F127383-FA9C-4DF5-A676-673C967B53D3} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
-		{5CC113CB-61D7-4A8F-915D-37FF9190112F} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
-		{2D2A5300-36C5-4996-8AAB-EED1DF87D414} = {5CC113CB-61D7-4A8F-915D-37FF9190112F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4D27C088-EC23-4F5F-A3AE-D76486C69CBB}

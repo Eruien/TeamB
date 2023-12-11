@@ -1,11 +1,11 @@
 #include "LManagerAgr.h"
-#include "LGlobal.h"
 
 //Texture
 void LTexture::Apply()
 {
 	LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, &m_pTexSRV);
 }
+
 
 bool LTexture::Load(std::wstring fileName)
 {

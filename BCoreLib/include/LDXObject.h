@@ -17,7 +17,7 @@ class LDXObject
 public:
 	ComPtr<ID3D11Device> m_pDevice;
 	ComPtr<ID3D11DeviceContext> m_pImmediateContext;
-	ComPtr<ID3D11Buffer> m_pVertexBuffer;
+	/*ComPtr<ID3D11Buffer>*/ID3D11Buffer* m_pVertexBuffer;//????
 	ComPtr<ID3D11Buffer> m_pIndexBuffer;
 	ComPtr<ID3D11Buffer> m_pConstantBuffer;
 	ComPtr<ID3D11InputLayout> m_pVertexLayout;
