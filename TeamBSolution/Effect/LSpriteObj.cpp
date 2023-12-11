@@ -1,53 +1,52 @@
-#include "TSpriteObj.h"
-bool  TSpriteObj::Load(
-	ID3D11Device* pDevice,
-	ID3D11DeviceContext* pContext,
-	TSpriteInfo info)
+#include "LSpriteObj.h"
+bool  LSpriteObj::Load(LSpriteInfo info)
 {
 	m_InitSpriteInfo = info;
 	m_fAnimTimer = info.fAnimTimer;
 	m_iNumSpriteX = info.iNumRow;
 	m_iNumSpriteY = info.iNumColumn;
-	Set(pDevice, pContext);
+	Set();
 	SetPos(info.p);
 	SetScale(info.s);
 	if (!info.texAlphaFile.empty())
 	{
-		this->m_pAlphaTex = I_Tex.Load(info.texAlphaFile);
+		
+		this->m_pAlphaTex = LManager<LTexture>::GetInstance().Load(info.texAlphaFile);
 	}
 	LoadTexArray(info.texList);
 	SetUVFrame(info.iNumRow, info.iNumColumn);
 	return Create(info.texFile, info.shaderFile);
 }
-bool TSpriteObj::Render()
+bool LSpriteObj::Render()
 {
 	PreRender();
 	if (m_pAlphaTex)
 	{
-		m_pAlphaTex->Apply(m_pImmediateContext, 1);
+		m_pAlphaTex->Apply();
 	}
 	PostRender();
 	return true;
 }
-bool   TSpriteTexture::LoadTexArray(T_STR_VECTOR& texList)
+bool   LSpriteTexture::LoadTexArray(std::vector<std::basic_string<TCHAR>>& texList)
 {
 	for (auto& texname : texList)
 	{
-		const TTexture* pTex = I_Tex.Load(texname);
+		/*const*/ LTexture* pTex = LManager<LTexture>::GetInstance().Load(texname);//???
 		m_pTexList.push_back(pTex);
 	}
 	m_fOffsetTime = m_fAnimTimer / m_pTexList.size();
 	return true;
 }
-bool TSpriteTexture::Init()
+bool LSpriteTexture::Init()
 {
-	TPlaneObj::Init();
+	LPlaneObj::Init();
 	return true;
 }
-bool TSpriteTexture::Frame()
+bool LSpriteTexture::Frame()
 {
-	TPlaneObj::Frame();
-	m_fElapsedTimer += g_fSecondPerFrame;
+	LPlaneObj::Frame();
+
+	m_fElapsedTimer += LGlobal::g_fSPF;
 	if (m_pTexList[m_iCurrentAnimIndex] != nullptr)
 	{
 		if (m_fElapsedTimer >= m_fOffsetTime)
@@ -62,31 +61,31 @@ bool TSpriteTexture::Frame()
 	}
 	return true;
 }
-bool TSpriteTexture::Render()
+bool LSpriteTexture::Render()
 {
 	PreRender();
-	m_pTexList[m_iCurrentAnimIndex]->Apply(m_pImmediateContext, 0);
+	m_pTexList[m_iCurrentAnimIndex]->Apply();
 	PostRender();
 	return true;
 }
-bool TSpriteTexture::Release()
+bool LSpriteTexture::Release()
 {
-	TPlaneObj::Release();
+	LPlaneObj::Release();
 	return true;
 }
 
-TSpriteTexture::TSpriteTexture()
+LSpriteTexture::LSpriteTexture()
 {
 	Init();
 }
-TSpriteTexture::~TSpriteTexture()
+LSpriteTexture::~LSpriteTexture()
 {
 	Release();
 }
 
-void TSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
+void LSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 {
-	TUVRect tRt;
+	LUVRect tRt;
 	TVector2 uv;
 
 	float fOffsetX = 1.0f / iNumColumn;
@@ -105,15 +104,15 @@ void TSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 	}
 	m_fOffsetTime = m_fAnimTimer / m_pUVList.size();
 }
-bool TSpriteUV::Init()
+bool LSpriteUV::Init()
 {
-	TPlaneObj::Init();
+	LPlaneObj::Init();
 	return true;
 }
-bool TSpriteUV::Frame()
+bool LSpriteUV::Frame()
 {
-	TPlaneObj::Frame();
-	m_fElapsedTimer += g_fSecondPerFrame;
+	LPlaneObj::Frame();
+	m_fElapsedTimer += LGlobal::g_fSPF;
 	if (m_fElapsedTimer >= m_fOffsetTime)
 	{
 		m_iCurrentAnimIndex++;
@@ -125,7 +124,7 @@ bool TSpriteUV::Frame()
 	}
 	return true;
 }
-void TSpriteUV::SetPixelVertex(TUVRect uv)
+void LSpriteUV::SetPixelVertex(LUVRect uv)
 {
 
 	m_VertexList[0].t = uv.m_Min;
@@ -140,27 +139,27 @@ void TSpriteUV::SetPixelVertex(TUVRect uv)
 	m_VertexList[5].t = uv.m_Max;
 
 	m_pImmediateContext->UpdateSubresource(
-		m_pVertexBuffer, 0, nullptr, &m_VertexList.at(0), 0, 0);
+		m_pVertexBuffer, 0, nullptr, &m_VertexList.at(0), 0, 0);//????
 
 }
-bool TSpriteUV::Render()
+bool LSpriteUV::Render()
 {
 	SetPixelVertex(m_pUVList[m_iCurrentAnimIndex]);
 	PreRender();
 	PostRender();
 	return true;
 }
-bool TSpriteUV::Release()
+bool LSpriteUV::Release()
 {
-	TPlaneObj::Release();
+	LPlaneObj::Release();
 	return true;
 }
 
-TSpriteUV::TSpriteUV()
+LSpriteUV::LSpriteUV()
 {
 	Init();
 }
-TSpriteUV::~TSpriteUV()
+LSpriteUV::~LSpriteUV()
 {
 	Release();
 }

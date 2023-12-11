@@ -1,6 +1,22 @@
 #pragma once
-#include "TPlaneObj.h"
-struct TSpriteInfo
+#include "LPlaneObj.h"
+struct LUVRect
+{
+	bool empty()
+	{
+		if (m_Max.x == 0 && m_Max.y == 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	TVector2 m_Min;
+	TVector2 m_Max;
+
+};
+
+struct LSpriteInfo
 {
 	int			iNumRow;
 	int			iNumColumn;
@@ -8,10 +24,10 @@ struct TSpriteInfo
 	TVector3	s;
 	float		fAnimTimer;
 	float		fElapsedTimer; // 에니메이션 가동 시간
-	W_STR		texFile;
-	W_STR		texAlphaFile;
-	W_STR		shaderFile;
-	T_STR_VECTOR texList;
+	std::basic_string<wchar_t>		texFile;
+	std::basic_string<wchar_t>		texAlphaFile;
+	std::basic_string<wchar_t>		shaderFile;
+	std::vector<std::basic_string<TCHAR>> texList;
 	void Reset()
 	{
 		iNumRow = 1;
@@ -25,58 +41,62 @@ struct TSpriteInfo
 		texAlphaFile = L"";
 		shaderFile = L"";
 	}
-	TSpriteInfo()
+	LSpriteInfo()
 	{
 		Reset();
 	}
 
 
 };
-class TSpriteObj : public TPlaneObj
+class LSpriteObj : public LPlaneObj
 {
 public:
-	const	TTexture* m_pAlphaTex = nullptr;
+	static LSpriteObj& GetInstance()
+	{
+		static LSpriteObj input;
+		return input;
+	}
+public:
+
+	/*const*/	LTexture* m_pAlphaTex = nullptr;
 	float	m_fAnimTimer = 1.0f;  // 전체 시간
 	float	m_fOffsetTime = 0.0f;	// 1프레임 교체시간
 	float	m_fElapsedTimer = 0.0f; // 누적시간
 	int		m_iCurrentAnimIndex = 0;
 	int		m_iNumSpriteX = 1;
 	int		m_iNumSpriteY = 1;
-	TSpriteInfo m_InitSpriteInfo;
+	LSpriteInfo m_InitSpriteInfo;
 public:
 	virtual bool   Render() override;
 	virtual int    GetMaxSize() { return 1; }
-	virtual bool  Load(
-		ID3D11Device* pDevice,
-		ID3D11DeviceContext* pImmediateContext,
-		TSpriteInfo);
-	virtual bool  LoadTexArray(T_STR_VECTOR& texList) { return true; };
+	virtual bool  Load(	LSpriteInfo);
+	virtual bool  LoadTexArray(std::vector<std::basic_string<TCHAR>>& texList) { return true; };
 	virtual void  SetUVFrame(int iNumRow, int iNumColumn) {}
 
 
 };
 
-class TSpriteTexture : public TSpriteObj
+class LSpriteTexture : public LSpriteObj
 {
 public:
-	std::vector<const TTexture*>  m_pTexList;
+	std::vector</*const*/ LTexture*>  m_pTexList;
 public:
 	virtual int    GetMaxSize() { return m_pTexList.size(); }
-	virtual bool   LoadTexArray(T_STR_VECTOR& texList) override;
+	virtual bool   LoadTexArray(std::vector<std::basic_string<TCHAR>>& texList) override;
 	bool Init() override;
 	bool Frame() override;
 	bool Render() override;
 	bool Release() override;
 public:
-	TSpriteTexture();
-	virtual ~TSpriteTexture();
+	LSpriteTexture();
+	virtual ~LSpriteTexture();
 };
-class TSpriteUV : public TSpriteObj
+class LSpriteUV : public LSpriteObj
 {
 public:
-	std::vector<TUVRect>  m_pUVList;
+	std::vector<LUVRect>  m_pUVList;
 	void  SetUVFrame(int iNumRow, int iNumColumn) override;
-	void	SetPixelVertex(TUVRect uv);
+	void	SetPixelVertex(LUVRect uv);
 	void  SetNumSprite(int x, int y)
 	{
 		m_iNumSpriteX = 1;
@@ -89,6 +109,6 @@ public:
 	bool Render() override;
 	bool Release() override;
 public:
-	TSpriteUV();
-	virtual ~TSpriteUV();
+	LSpriteUV();
+	virtual ~LSpriteUV();
 };

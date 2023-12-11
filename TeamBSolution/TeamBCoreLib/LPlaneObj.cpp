@@ -1,4 +1,5 @@
 #include "LPlaneObj.h"
+#include "LGlobal.h"
 
 bool LPlaneObj::CreateVertexBuffer()
 {
