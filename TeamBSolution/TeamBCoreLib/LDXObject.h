@@ -27,6 +27,8 @@ public:
 	ComPtr<ID3D11Buffer> m_pIndexBuffer;
 	ComPtr<ID3D11Buffer> m_pConstantBuffer;
 	ComPtr<ID3D11InputLayout> m_pVertexLayout;
+	//ID3D11InputLayout* m_pVertexLayout = nullptr;
+	
 	std::vector<SimpleVertex> m_VertexList;
 	std::vector<DWORD> m_IndexList;
 	LTexture* m_Tex = nullptr;

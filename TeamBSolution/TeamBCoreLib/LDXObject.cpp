@@ -104,17 +104,23 @@ bool LDXObject::CreateLayout()
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
-	HRESULT hr = m_pDevice->CreateInputLayout(
-		layout, sizeof(layout) / sizeof(layout[0]),
-		m_Shader->m_pVSBlob->GetBufferPointer(),
-		m_Shader->m_pVSBlob->GetBufferSize(),
-		m_pVertexLayout.GetAddressOf());
 
-	if (FAILED(hr))
+	if (m_Shader)
 	{
-		MessageBoxA(NULL, "Create Input Layout Error", "Error Box", MB_OK);
-		return false;
-	}
+		HRESULT hr = m_pDevice->CreateInputLayout(
+			layout, sizeof(layout) / sizeof(layout[0]),
+			m_Shader->m_pVSBlob->GetBufferPointer(),
+			m_Shader->m_pVSBlob->GetBufferSize(),
+			m_pVertexLayout.GetAddressOf());//????
+
+
+		if (FAILED(hr))
+		{
+			MessageBoxA(NULL, "Create Input Layout Error", "Error Box", MB_OK);
+			return false;
+		}
+	};
+
 
 	return true;
 }
@@ -131,7 +137,7 @@ bool LDXObject::Create(std::wstring shaderFileName, std::wstring texFileName)
 	CreateLayout();
 	// obj공용 // m_pTexSRV 생성
 	m_Tex = LManager<LTexture>::GetInstance().Load(texFileName);
-
+	//pdateMatrix();
 	return true;
 }
 

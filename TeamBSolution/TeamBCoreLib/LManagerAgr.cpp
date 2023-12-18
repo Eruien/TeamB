@@ -163,7 +163,6 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 
 	return true;
 }
-
 bool LShader::Release()
 {
 	if(m_pVSBlob) m_pVSBlob->Release();

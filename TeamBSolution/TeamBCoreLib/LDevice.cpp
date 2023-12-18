@@ -174,7 +174,7 @@ bool LDevice::Frame()
 
 bool LDevice::PreRender()
 {
-    float color[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+    float color[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
     m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
     // 스텐실 뷰 초기화 스탠실뷰를 1.0f로 초기화 하고 이후에 그려지는것들에게는 1.0f보다 작은값들을 준다
     m_pImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(),
