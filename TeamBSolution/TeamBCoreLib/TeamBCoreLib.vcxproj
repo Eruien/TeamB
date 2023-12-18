@@ -59,6 +59,7 @@
     <ClCompile Include="LQurdTree.cpp" />
     <ClCompile Include="LSkyBox.cpp" />
     <ClCompile Include="LSoundMgr.cpp" />
+    <ClCompile Include="LSpriteObj.cpp" />
     <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="LWindow.cpp" />
     <ClCompile Include="LWrite.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="LQurdTree.h" />
     <ClInclude Include="LSkyBox.h" />
     <ClInclude Include="LSoundMgr.h" />
+    <ClInclude Include="LSpriteObj.h" />
     <ClInclude Include="LStd.h" />
     <ClInclude Include="LTimer.h" />
     <ClInclude Include="LWindow.h" />

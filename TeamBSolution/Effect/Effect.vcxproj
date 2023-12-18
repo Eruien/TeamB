@@ -148,11 +148,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="LSpriteObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="LSpriteObj.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
