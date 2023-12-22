@@ -54,6 +54,8 @@ bool LInput::Frame()
         }
     }
 
+    
+
     m_BeforeMousePos = m_MousePos;
 	return true;
 }

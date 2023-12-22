@@ -42,7 +42,7 @@
     <ClCompile Include="LNode.cpp" />
     <ClCompile Include="LObject.cpp" />
     <ClCompile Include="LPlaneObj.cpp" />
-    <ClCompile Include="LQurdTree.cpp" />
+    <ClCompile Include="LQuadTree.cpp" />
     <ClCompile Include="LSoundMgr.cpp" />
     <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="LWindow.cpp" />
@@ -71,7 +71,7 @@
     <ClInclude Include="LNode.h" />
     <ClInclude Include="LObject.h" />
     <ClInclude Include="LPlaneObj.h" />
-    <ClInclude Include="LQurdTree.h" />
+    <ClInclude Include="LQuadTree.h" />
     <ClInclude Include="LSoundMgr.h" />
     <ClInclude Include="LStd.h" />
     <ClInclude Include="LTimer.h" />

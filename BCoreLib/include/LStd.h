@@ -23,6 +23,7 @@
 #pragma comment (lib, "DirectXTex.lib")
 
 using namespace Microsoft::WRL;
+using namespace std;
 
 struct T_BOX
 {

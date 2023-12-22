@@ -16,7 +16,7 @@ public:
 	int m_iDepth = 0;
 	bool m_IsLeaf = false;
 	LNode* m_pParent = nullptr;
-	std::vector<LNode*> m_pChild;
+	std::vector<LNode*> childNodeList;
 public:
 	void SetParent(LNode* pParent);
 public:

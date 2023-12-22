@@ -1,160 +1,123 @@
 #include "LPick.h"
-#include "LCamera.h"
-#include "LModel.h"
 
-LPick::LPick(HWND _hWnd, ComPtr<ID3D11Device> _pDevice) :
-	m_hWnd(_hWnd),
-	m_pDevice(_pDevice),
-	m_vPickRayDir(0.0f, 0.0f, 0.0f),
-	m_vPickRayOrig(0.f, 0.f, 0.f),
-	m_dwNumIntersections(0L)
+
+
+void LPick::CalcRay()
 {
+	LCamera* cam = LGlobal::g_pMainCamera;
+
+	POINT ptCursor;
+	GetCursorPos(&ptCursor);
+	ScreenToClient(LGlobal::g_hWnd, &ptCursor);
+
+	// 
+	_ray.origin = TVector3(0.0f, 0.f, 0.f);
+	_ray.direction.x = (((2.0f * ptCursor.x) / LGlobal::g_WindowWidth) - 1) / cam->m_matProj._11;
+	_ray.direction.y = -(((2.0f * ptCursor.y) / LGlobal::g_WindowHeight) - 1) / cam->m_matProj._22;
+	_ray.direction.z = 1.0f;
+
+	TMatrix WorldView = cam->m_matView;
+	TMatrix WorldViewInv;
+	D3DXMatrixInverse(&WorldViewInv, NULL, &WorldView);
+
+	D3DXVec3TransformCoord(&_ray.origin, &_ray.origin, &WorldViewInv);  // inverse와 행렬곱
+	D3DXVec3TransformNormal(&_ray.direction, &_ray.direction, &WorldViewInv);
+	D3DXVec3Normalize(&_ray.direction, &_ray.direction);
+}
+
+bool LPick::GetIntersection(float fRange, TVector3 vNormal, TVector3 v0, TVector3 v1, TVector3 v2)
+{
+	TVector3 dir = (_ray.direction * fRange) - _ray.origin;
+	float D = D3DXVec3Dot(&vNormal, &dir);
+
+	TVector3 alen = v0 - _ray.origin;
+	float a0 = D3DXVec3Dot(&vNormal, &alen);
+	float fT = a0 / D;
+
+	// if(fPercentage != nullptr) *fPercentage = fT;
+
+	if (fT < 0.0f || fT > 1.0f)
+		return false;
+
+	_vIntersection = _ray.origin + dir * fT;
+
+	return true;
+}
+
+bool LPick::MapIsIntersection(LHeightMap* map)
+{
+	TVector3 v0, v1, v2;
+	std::vector<SimpleVertex> list = map->m_VertexList;
+
+
+	for (int iFace = 0; iFace < map->m_IndexList.size() / 3; ++iFace)
+	{
+		v0 = list[map->m_IndexList[iFace * 3 + 0]].p;
+		v1 = list[map->m_IndexList[iFace * 3 + 1]].p;
+		v2 = list[map->m_IndexList[iFace * 3 + 2]].p;
+
+		TVector3 vNormal, vCross;
+		TVector3 e0 = v1 - v0;
+		TVector3 e1 = v2 - v0;
+		D3DXVec3Cross(&vCross, &e0, &e1);
+		D3DXVec3Normalize(&vNormal, &vCross);
+
+		if (GetIntersection(100.f, vNormal, v0, v1, v2))
+		{
+			if (PointInPolygon(_vIntersection, vNormal, v0, v1, v2))
+			{
+				std::wstring text = L"Click to Face";
+
+				LWrite::GetInstance().AddText(text, 0.0f, 100.0f, { 1.f, 1.f, 1.f, 1.f, });
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool LPick::PointInPolygon(TVector3 vertex, TVector3 faceNormal, TVector3 v0, TVector3 v1, TVector3 v2)
+{
+	TVector3 e0, e1, inter, normal;
+
+	e0 = v2 - v1;
+	e1 = v0 - v1;
+	inter = vertex - v1;
+
+	D3DXVec3Cross(&normal, &e0, &inter);
+	D3DXVec3Normalize(&normal, &normal);
+	float dot = D3DXVec3Dot(&faceNormal, &normal);
+	if (dot < 0.0f) return false;
+
+	D3DXVec3Cross(&normal, &inter, &e1);
+	D3DXVec3Normalize(&normal, &normal);
+	dot = D3DXVec3Dot(&faceNormal, &normal);
+	if (dot < 0.0f) return false;
+
+
+	e0 = v0 - v2;
+	v1 = v1 - v2;
+	inter = vertex - v2;
+
+	// 판정하는 코드는 윗 부분과 완전히 동일
+	D3DXVec3Cross(&normal, &e0, &inter);
+	D3DXVec3Normalize(&normal, &normal);
+	dot = D3DXVec3Dot(&faceNormal, &normal);
+	if (dot < 0.0f) return false;
+
+	D3DXVec3Cross(&normal, &inter, &e1);
+	D3DXVec3Normalize(&normal, &normal);
+	dot = D3DXVec3Dot(&faceNormal, &normal);
+	if (dot < 0.0f) return false;
+
+	return true;
+}
+
+LPick::LPick()
+{
+	_vIntersection = TVector3(0, 0, 0);
 }
 
 LPick::~LPick()
 {
-}
-
-LModel* LPick::Pick(
-	const LCamera& _camera,
-	LModel& _model)
-{
-	CalcPickRay(
-		_camera.m_matProj,
-		_camera.m_matView,
-		_model.m_matWorld);
-	return Process(_model);
-}
-
-void LPick::CalcPickRay(
-	const TMatrix& _matProj,
-	const TMatrix& _matView,
-	const TMatrix& _matWorld)
-{
-	POINT ptCursor;
-	GetCursorPos(&ptCursor);					// 커서 위치 획득
-	ScreenToClient(m_hWnd, &ptCursor);			// 스크린 좌표를 클라이언트 좌표로 변환
-	
-	RECT clientRect;
-	GetClientRect(m_hWnd, &clientRect);			// 클라이언트 크기 획득
-
-	// Compute the vector of the Pick Ray in screen space. 
-	TVector3 v;
-	v.x = (((2.f * ptCursor.x) / clientRect.right) - 1) / _matProj._11;
-	v.y = -(((2.f * ptCursor.y) / clientRect.bottom) - 1) / _matProj._22;
-	v.z = 1.f;
-
-	// Get the inverse view matrix
-	TMatrix mWorldView = _matWorld * _matView;
-	TMatrix m;
-	D3DXMatrixInverse(&m, NULL, &mWorldView);
-
-	// Transform the screen space Pick ray into 3D space
-	m_vPickRayDir.x = v.x * m._11 + v.y * m._21 + v.z * m._31;
-	m_vPickRayDir.y = v.x * m._12 + v.y * m._22 + v.z * m._32;
-	m_vPickRayDir.z = v.x * m._13 + v.y * m._23 + v.z * m._33;
-	m_vPickRayOrig.x = m._41;
-	m_vPickRayOrig.y = m._42;
-	m_vPickRayOrig.z = m._43;
-}
-
-LModel* LPick::Process(LModel& _model)
-{
-	// Not using D3DX
-	DWORD dwNumFaces = 1L;
-	FLOAT fBary1, fBary2;
-	FLOAT fDist;
-
-	bool g_bALLHits = true; // Whether to just get the first "hit" or all "hits"
-	INTERSECTION g_IntersectionArray[MAX_INTERSECTIONS];
-	m_dwNumIntersections = 0L;
-	
-	// *******우선 삼각형 하나에 대해서만 검사. 차후 면이 여러개인 메쉬의 경우 그에 맞춰 처리해야함.*******
-
-	for (DWORD i = 0; i < dwNumFaces; ++i)
-	{
-		for (DWORD j = 0; j < _model.m_VertexList.size(); j = j + 3)
-		{
-			TVector3 v0 = _model.m_VertexList[i].p;
-			TVector3 v1 = _model.m_VertexList[i + 1].p;
-			TVector3 v2 = _model.m_VertexList[i + 2].p;
-
-			if (IntersectTriangle(m_vPickRayOrig, m_vPickRayDir, v0, v1, v2,
-				&fDist, &fBary1, &fBary2))
-			{
-				if (g_bALLHits || m_dwNumIntersections == 0 || fDist < g_IntersectionArray[0].fDist)
-				{
-					if (!g_bALLHits)
-						m_dwNumIntersections = 0L;
-					// !삼각형 인덱스라면
-					g_IntersectionArray[m_dwNumIntersections].dwFace = 0L;
-					g_IntersectionArray[m_dwNumIntersections].fBary1 = fBary1;
-					g_IntersectionArray[m_dwNumIntersections].fBary2 = fBary2;
-					g_IntersectionArray[m_dwNumIntersections].fDist = fDist;
-					m_dwNumIntersections++;
-					// 배열이 가득 찼을 때
-					if (m_dwNumIntersections == MAX_INTERSECTIONS)
-						break;
-				}
-				return &_model;
-			}
-		}
-	}
-
-	return nullptr;
-}
-
-bool LPick::IntersectTriangle(
-	const TVector3 orig, const TVector3 dir,
-	TVector3& v0, TVector3& v1, TVector3& v2,
-	FLOAT* t, FLOAT* u, FLOAT* v)
-{
-	// Find vectors for two edges sharing vert0
-	TVector3 edge1 = v1 - v0;
-	TVector3 edge2 = v2 - v0;
-
-	// Begin calculating determinant - also used to calculate U parameter
-	TVector3 pvec;								
-	D3DXVec3Cross(&pvec, &dir, &edge2);
-
-	// If determinant is near zero, ray lies in plane of triangle. det가 거의 0이라면 직선과 평행.
-	FLOAT det = D3DXVec3Dot(&edge1, &pvec);
-	
-	TVector3 tvec;
-	if (det > 0)
-	{
-		tvec = orig - v0;
-	}
-	else
-	{
-		tvec = v0 - orig;
-		det = -det;
-	}
-
-	if (det < 0.0001f)
-		return FALSE;
-
-	// Calculate U parameter and test bounds
-	*u = D3DXVec3Dot(&tvec, &pvec);
-	if (*u < 0.0f || *u > det)					// 예외처리1. parameter U는 0에서 det사이여야함. 1이 아닌 이유는 1/det 계산 이전이기 때문.
-		return false;
-
-	// Prepare to test V parameter
-	TVector3 qvec;
-	D3DXVec3Cross( OUT &qvec, &tvec, &edge1);
-	
-	// Calculate V parameter and test bounds
-	*v = D3DXVec3Dot(&dir, &qvec);
-	if (*v < 0.0f || *u + *v > det)
-		return FALSE;
-
-	// Calculate t, scale parameters, ray intersects triangle
-	*t = D3DXVec3Dot(&edge2, &qvec);
-	FLOAT fInvDet = 1.0f / det;
-	*t *= fInvDet;
-	*u *= fInvDet;
-	*v *= fInvDet;
-
-
-	return TRUE;
 }

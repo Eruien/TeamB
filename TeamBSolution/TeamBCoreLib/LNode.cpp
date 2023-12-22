@@ -11,8 +11,8 @@ void LNode::SetParent(LNode* pParent)
 
 LNode::~LNode()
 {
-	for (int i = 0; i < m_pChild.size(); i++)
+	for (int i = 0; i < childNodeList.size(); i++)
 	{
-		delete m_pChild[i];
+		delete childNodeList[i];
 	}	
 }
