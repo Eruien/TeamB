@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{65D28B
 		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReBuilding", "ReBuilding\ReBuilding.vcxproj", "{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -150,6 +152,14 @@ Global
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634}.Release|x64.Build.0 = Release|x64
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634}.Release|x86.ActiveCfg = Release|Win32
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634}.Release|x86.Build.0 = Release|Win32
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Debug|x64.ActiveCfg = Debug|x64
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Debug|x64.Build.0 = Debug|x64
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Debug|x86.ActiveCfg = Debug|Win32
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Debug|x86.Build.0 = Debug|Win32
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Release|x64.ActiveCfg = Release|x64
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Release|x64.Build.0 = Release|x64
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Release|x86.ActiveCfg = Release|Win32
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +173,7 @@ Global
 		{B7046108-853C-4760-99CE-D99474E71681} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
 		{9F127383-FA9C-4DF5-A676-673C967B53D3} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
 		{947EB240-02ED-4DE4-B5FA-F601A10F4634} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
+		{02EF4E8D-6E2C-488D-AF0F-AAE771958D68} = {EEE8872F-3041-4F99-8A24-4BA51554F68E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4D27C088-EC23-4F5F-A3AE-D76486C69CBB}
