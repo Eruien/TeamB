@@ -1,6 +1,105 @@
 #include "LInput.h"
 #include "LGlobal.h"
 
+bool LInput::InitDirectInput()
+{
+    HRESULT hr = S_OK;
+    if (FAILED(hr = DirectInput8Create(LGlobal::g_hInstance,
+        DIRECTINPUT_VERSION,
+        CLSID_DirectInput8,
+        (void**)m_pDI,
+        NULL)))
+    {
+        return false;
+    }
+    if (FAILED(hr = m_pDI->CreateDevice(GUID_SysKeyboard,
+        &m_pKeyDevice,
+        NULL)))
+    {
+        return false;
+    }
+    // 장치별 반환데이터 설정
+    m_pKeyDevice->SetDataFormat(&c_dfDIKeyboard);
+    if (FAILED(hr = m_pKeyDevice->SetCooperativeLevel(
+        LGlobal::g_hWnd,
+        DISCL_NONEXCLUSIVE |
+        DISCL_FOREGROUND |
+        DISCL_NOWINKEY)))
+    {
+        return false;
+    }
+    while (m_pKeyDevice->Acquire() == DIERR_INPUTLOST);
+
+    if (FAILED(hr = m_pDI->CreateDevice(GUID_SysMouse,
+        &m_pMouseDevice, NULL)))
+    {
+        return false;
+    }
+    m_pMouseDevice->SetDataFormat(&c_dfDIMouse);
+
+    if (FAILED(hr = m_pMouseDevice->SetCooperativeLevel(
+        LGlobal::g_hWnd,
+        DISCL_NONEXCLUSIVE |
+        DISCL_FOREGROUND)))
+    {
+        return false;
+    }
+    while (m_pMouseDevice->Acquire() == DIERR_INPUTLOST);
+    return true;
+}
+
+bool LInput::ShutDownDirectInput()
+{
+    if (m_pKeyDevice)
+    {
+        m_pKeyDevice->Unacquire();
+        m_pKeyDevice->Release();
+        m_pKeyDevice = NULL;
+    }
+    if (m_pMouseDevice)
+    {
+        m_pMouseDevice->Unacquire();
+        m_pMouseDevice->Release();
+        m_pMouseDevice = NULL;
+    }
+    if (m_pDI)
+    {
+        m_pDI->Release();
+        m_pDI = NULL;
+    }
+    return true;
+}
+
+BYTE LInput::GetKey(BYTE dwKey)
+{
+    BYTE sKey;
+    sKey = m_KeyState[dwKey];
+    if (sKey & 0x80)
+    {
+        if (m_dwKeyState[dwKey] == DWORD(KeyState::KEY_FREE))
+        {
+            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_PUSH);
+        }
+        else
+        {
+            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_HOLD);
+        }
+    }
+    else
+    {
+        if (m_dwKeyState[dwKey] == DWORD(KeyState::KEY_PUSH)
+            || m_dwKeyState[dwKey] == DWORD(KeyState::KEY_HOLD))
+        {
+            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_UP);
+        }
+        else
+        {
+            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_FREE);
+        }
+    }
+    return m_dwKeyState[dwKey];
+}
+
 TVector3 LInput::GetWorldPos(float windowWidth, float windowHeight, float cameraPosX, float cameraPosY)
 {
     float HalfWindowX = windowWidth * 0.5f;
@@ -20,8 +119,83 @@ bool LInput::Init()
 
 bool LInput::Frame()
 {
+    // 화면 좌표
     ::GetCursorPos(&m_MousePos);
+    // 클라이언트 좌표
     ::ScreenToClient(LGlobal::g_hWnd, &m_MousePos);
+
+#pragma region 다이렉트 인풋 상태 읽어오기
+    HRESULT hr;
+    if (m_pMouseDevice == NULL || m_pKeyDevice == NULL) return false;
+    
+    if (FAILED(hr = m_pKeyDevice->GetDeviceState(256, m_KeyState)))
+    {
+        while (m_pKeyDevice->Acquire() == DIERR_INPUTLOST);
+    }
+    if (FAILED(hr = m_pMouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), &m_DIMouseState)))
+    {
+        while (m_pMouseDevice->Acquire() == DIERR_INPUTLOST);
+    }
+#pragma endregion
+
+#pragma region 마우스 상태
+    for (int iButton = 0; iButton < 3; iButton++)
+    {
+        m_BeforeMouseState[iButton] = m_DIMouseState.rgbButtons[iButton];
+    }
+    for (int iButton = 0; iButton < 3; iButton++)
+    {
+        if (m_BeforeMouseState[iButton] & 0x80)
+        {
+            if (m_MouseState[iButton] == DWORD(KeyState::KEY_FREE))
+                m_MouseState[iButton] = DWORD(KeyState::KEY_PUSH);
+            else
+                m_MouseState[iButton] = DWORD(KeyState::KEY_HOLD);
+        }
+        else
+        {
+            if (m_MouseState[iButton] == DWORD(KeyState::KEY_PUSH) ||
+                m_MouseState[iButton] == DWORD(KeyState::KEY_HOLD))
+                m_MouseState[iButton] = DWORD(KeyState::KEY_UP);
+            else
+                m_MouseState[iButton] = DWORD(KeyState::KEY_FREE);
+        }
+    }
+
+    ZeroMemory(&g_InputData, sizeof(INPUT_MAP));
+
+    if (m_MouseState[0] == DWORD(KeyState::KEY_PUSH)) g_InputData.bLeftClick = true;
+    if (m_MouseState[1] == DWORD(KeyState::KEY_PUSH)) g_InputData.bRightClick = true;
+    if (m_MouseState[2] == DWORD(KeyState::KEY_PUSH)) g_InputData.bMiddleClick = true;
+
+    if (m_MouseState[0] >= DWORD(KeyState::KEY_PUSH)) g_InputData.bLeftHold = true;
+    if (m_MouseState[1] >= DWORD(KeyState::KEY_PUSH)) g_InputData.bRightHold = true;
+    if (m_MouseState[2] >= DWORD(KeyState::KEY_PUSH)) g_InputData.bMiddleHold = true;
+
+    g_InputData.iMouseValue[0] = m_DIMouseState.lX;
+    g_InputData.iMouseValue[1] = m_DIMouseState.lY;
+    g_InputData.iMouseValue[2] = m_DIMouseState.lZ;
+#pragma endregion
+
+
+    g_InputData.bWKey = GetKey(DIK_W);
+    g_InputData.bAKey = GetKey(DIK_A);
+    g_InputData.bSKey = GetKey(DIK_S);
+    g_InputData.bDKey = GetKey(DIK_D);
+
+    g_InputData.bLShift = GetKey(DIK_LSHIFT);
+
+    g_InputData.bLeftKey = GetKey(DIK_LEFT);
+    g_InputData.bRightKey = GetKey(DIK_RIGHT);
+    g_InputData.bUpKey = GetKey(DIK_UP);
+    g_InputData.bDownKey = GetKey(DIK_DOWN);
+    g_InputData.bExit = GetKey(DIK_ESCAPE);
+    g_InputData.bSpace = GetKey(DIK_SPACE);
+    
+    if (GetKey(DIK_F5) == DWORD(KeyState::KEY_HOLD))
+        g_InputData.bChangeFillMode = true;
+
+    //return true; // 이 아래 부분은 12.23 이전 코드와의 호환을 위해 남겨놓음. 임시. [시진]
 
     m_vOffset.x = m_MousePos.x - m_BeforeMousePos.x;
     m_vOffset.y = m_MousePos.y - m_BeforeMousePos.y;
@@ -72,5 +246,6 @@ bool LInput::Render()
 
 bool LInput::Release()
 {
+    ShutDownDirectInput();
 	return true;
 }
