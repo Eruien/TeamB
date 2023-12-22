@@ -151,7 +151,7 @@ bool LCore::EngineRender()
     // 스탠실 스테이트 필요 1은 lessequal로 설정했기 때문에 1보다 같거나 작으면 그려지게 했다
     m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 1);
 
-    if (LInput::GetInstance().m_dwKeyState[VK_F1] == DWORD(KeyState::KEY_PUSH))
+    if (LInput::GetInstance().m_KeyState[VK_F1] == KEY_PUSH)
     {
         m_ISWireFrame = !m_ISWireFrame;
     }

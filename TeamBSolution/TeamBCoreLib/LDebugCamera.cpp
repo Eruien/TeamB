@@ -10,7 +10,53 @@ bool LDebugCamera::Init()
 
 bool LDebugCamera::Frame()
 {
-	if (LInput::GetInstance().m_dwKeyState[VK_SPACE] == DWORD(KeyState::KEY_HOLD))
+	if(g_InputData.bSpace)
+		m_fSpeed += LGlobal::g_fSPF * m_fSpeed;
+	m_fSpeed -= LGlobal::g_fSPF * m_fSpeed * 0.5f;
+	m_fSpeed = max(10.0f, m_fSpeed);
+	if (g_InputData.bWKey)
+	{
+		TVector3 vOffset = m_vLook * LGlobal::g_fSPF * m_fSpeed;
+		m_vCameraPos = m_vCameraPos + vOffset;
+	}
+	if (g_InputData.bSKey)
+	{
+		TVector3 vOffset = m_vLook * LGlobal::g_fSPF * m_fSpeed;
+		m_vCameraPos = m_vCameraPos - vOffset;
+	}
+	if (g_InputData.bAKey)
+	{
+		TVector3 vOffset = m_vRight * LGlobal::g_fSPF * m_fSpeed;
+		m_vCameraPos = m_vCameraPos - vOffset;
+	}
+	if (g_InputData.bDKey)
+	{
+		TVector3 vOffset = m_vRight * LGlobal::g_fSPF * m_fSpeed;
+		m_vCameraPos = m_vCameraPos + vOffset;
+	}
+
+	if (g_InputData.bQKey)
+	{
+		TVector3 vOffset = m_vUp * LGlobal::g_fSPF * m_fSpeed;
+		m_vCameraPos = m_vCameraPos + vOffset;
+	}
+
+	if (g_InputData.bEKey)
+	{
+		TVector3 vOffset = m_vUp * LGlobal::g_fSPF * m_fSpeed;
+		m_vCameraPos = m_vCameraPos - vOffset;
+	}
+
+	if (LInput::GetInstance().m_MouseState[0] == KEY_HOLD)
+	{
+		float x = LInput::GetInstance().m_vOffset.x;
+		float y = LInput::GetInstance().m_vOffset.y;
+		m_fCameraYaw += DirectX::XMConvertToRadians(x * 0.1f);
+		m_fCameraPitch += DirectX::XMConvertToRadians(y * 0.1f);
+	}
+
+	
+	/*if (LInput::GetInstance().m_dwKeyState[VK_SPACE] == DWORD(KeyState::KEY_HOLD))
 	{
 		m_fSpeed += LGlobal::g_fSPF * m_fSpeed;
 	}
@@ -60,7 +106,7 @@ bool LDebugCamera::Frame()
 		float y = LInput::GetInstance().m_vOffset.y;
 		m_fCameraYaw += DirectX::XMConvertToRadians(x * 0.1f);
 		m_fCameraPitch += DirectX::XMConvertToRadians(y * 0.1f);
-	}
+	}*/
 
 	DirectX::XMVECTOR gRotation;
 	DirectX::XMMATRIX matRotation;

@@ -1,5 +1,7 @@
 #pragma once
 #define L_PI (3.141592f)
+
+
 #include <windows.h>
 #include <iostream>
 #include <vector>
@@ -21,6 +23,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment (lib, "DirectXTex.lib")
+
 
 using namespace Microsoft::WRL;
 

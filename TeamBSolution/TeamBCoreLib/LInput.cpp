@@ -1,13 +1,15 @@
 #include "LInput.h"
 #include "LGlobal.h"
 
+INPUT_MAP g_InputData;
+
 bool LInput::InitDirectInput()
 {
     HRESULT hr = S_OK;
     if (FAILED(hr = DirectInput8Create(LGlobal::g_hInstance,
         DIRECTINPUT_VERSION,
-        CLSID_DirectInput8,
-        (void**)m_pDI,
+        IID_IDirectInput8,
+        (void**)&m_pDI,
         NULL)))
     {
         return false;
@@ -76,28 +78,28 @@ BYTE LInput::GetKey(BYTE dwKey)
     sKey = m_KeyState[dwKey];
     if (sKey & 0x80)
     {
-        if (m_dwKeyState[dwKey] == DWORD(KeyState::KEY_FREE))
+        if (m_KeyState[dwKey] == KEY_FREE)
         {
-            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_PUSH);
+            m_KeyState[dwKey] = KEY_PUSH;
         }
         else
         {
-            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_HOLD);
+            m_KeyState[dwKey] = KEY_HOLD;
         }
     }
     else
     {
-        if (m_dwKeyState[dwKey] == DWORD(KeyState::KEY_PUSH)
-            || m_dwKeyState[dwKey] == DWORD(KeyState::KEY_HOLD))
+        if (m_KeyState[dwKey] == KEY_PUSH
+            || m_KeyState[dwKey] == KEY_HOLD)
         {
-            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_UP);
+            m_KeyState[dwKey] = KEY_UP;
         }
         else
         {
-            m_dwKeyState[dwKey] = DWORD(KeyState::KEY_FREE);
+            m_KeyState[dwKey] = KEY_FREE;
         }
     }
-    return m_dwKeyState[dwKey];
+    return m_KeyState[dwKey];
 }
 
 TVector3 LInput::GetWorldPos(float windowWidth, float windowHeight, float cameraPosX, float cameraPosY)
@@ -114,6 +116,7 @@ TVector3 LInput::GetWorldPos(float windowWidth, float windowHeight, float camera
 
 bool LInput::Init()
 {
+    InitDirectInput();
 	return true;
 }
 
@@ -147,30 +150,31 @@ bool LInput::Frame()
     {
         if (m_BeforeMouseState[iButton] & 0x80)
         {
-            if (m_MouseState[iButton] == DWORD(KeyState::KEY_FREE))
-                m_MouseState[iButton] = DWORD(KeyState::KEY_PUSH);
+            if (m_MouseState[iButton] == KEY_FREE)
+                m_MouseState[iButton] = KEY_PUSH;
             else
-                m_MouseState[iButton] = DWORD(KeyState::KEY_HOLD);
+                m_MouseState[iButton] = KEY_HOLD;
         }
         else
         {
-            if (m_MouseState[iButton] == DWORD(KeyState::KEY_PUSH) ||
-                m_MouseState[iButton] == DWORD(KeyState::KEY_HOLD))
-                m_MouseState[iButton] = DWORD(KeyState::KEY_UP);
+            if (m_MouseState[iButton] == KEY_PUSH ||
+                m_MouseState[iButton] == KEY_HOLD)
+                m_MouseState[iButton] = KEY_UP;
             else
-                m_MouseState[iButton] = DWORD(KeyState::KEY_FREE);
+                m_MouseState[iButton] = KEY_FREE;
         }
     }
 
     ZeroMemory(&g_InputData, sizeof(INPUT_MAP));
 
-    if (m_MouseState[0] == DWORD(KeyState::KEY_PUSH)) g_InputData.bLeftClick = true;
-    if (m_MouseState[1] == DWORD(KeyState::KEY_PUSH)) g_InputData.bRightClick = true;
-    if (m_MouseState[2] == DWORD(KeyState::KEY_PUSH)) g_InputData.bMiddleClick = true;
+    if (m_MouseState[0] == KEY_PUSH)
+        g_InputData.bLeftClick = true;
+    if (m_MouseState[1] == KEY_PUSH) g_InputData.bRightClick = true;
+    if (m_MouseState[2] == KEY_PUSH) g_InputData.bMiddleClick = true;
 
-    if (m_MouseState[0] >= DWORD(KeyState::KEY_PUSH)) g_InputData.bLeftHold = true;
-    if (m_MouseState[1] >= DWORD(KeyState::KEY_PUSH)) g_InputData.bRightHold = true;
-    if (m_MouseState[2] >= DWORD(KeyState::KEY_PUSH)) g_InputData.bMiddleHold = true;
+    if (m_MouseState[0] >= KEY_PUSH) g_InputData.bLeftHold = true;
+    if (m_MouseState[1] >= KEY_PUSH) g_InputData.bRightHold = true;
+    if (m_MouseState[2] >= KEY_PUSH) g_InputData.bMiddleHold = true;
 
     g_InputData.iMouseValue[0] = m_DIMouseState.lX;
     g_InputData.iMouseValue[1] = m_DIMouseState.lY;
@@ -182,6 +186,8 @@ bool LInput::Frame()
     g_InputData.bAKey = GetKey(DIK_A);
     g_InputData.bSKey = GetKey(DIK_S);
     g_InputData.bDKey = GetKey(DIK_D);
+    g_InputData.bQKey = GetKey(DIK_Q);
+    g_InputData.bEKey = GetKey(DIK_E);
 
     g_InputData.bLShift = GetKey(DIK_LSHIFT);
 
@@ -192,7 +198,7 @@ bool LInput::Frame()
     g_InputData.bExit = GetKey(DIK_ESCAPE);
     g_InputData.bSpace = GetKey(DIK_SPACE);
     
-    if (GetKey(DIK_F5) == DWORD(KeyState::KEY_HOLD))
+    if (GetKey(DIK_F5) == KEY_HOLD)
         g_InputData.bChangeFillMode = true;
 
     //return true; // 이 아래 부분은 12.23 이전 코드와의 호환을 위해 남겨놓음. 임시. [시진]
@@ -200,33 +206,33 @@ bool LInput::Frame()
     m_vOffset.x = m_MousePos.x - m_BeforeMousePos.x;
     m_vOffset.y = m_MousePos.y - m_BeforeMousePos.y;
 
-    for (int ikey = 0; ikey < 256; ikey++)
-    {
-        SHORT s = GetAsyncKeyState(ikey);
-        if (s & 0x8000)
-        {
-            if (m_dwKeyState[ikey] == DWORD(KeyState::KEY_FREE))
-            {
-                m_dwKeyState[ikey] = DWORD(KeyState::KEY_PUSH);
-            }
-            else
-            {
-                m_dwKeyState[ikey] = DWORD(KeyState::KEY_HOLD);
-            }
-        }
-        else
-        {
-            if (m_dwKeyState[ikey] == DWORD(KeyState::KEY_HOLD)
-            ||  m_dwKeyState[ikey] == DWORD(KeyState::KEY_PUSH))
-            {
-                m_dwKeyState[ikey] = DWORD(KeyState::KEY_UP);
-            }
-            else
-            {
-                m_dwKeyState[ikey] = DWORD(KeyState::KEY_FREE);
-            }
-        }
-    }
+    //for (int ikey = 0; ikey < 256; ikey++)
+    //{
+    //    SHORT s = GetAsyncKeyState(ikey);
+    //    if (s & 0x8000)
+    //    {
+    //        if (m_dwKeyState[ikey] == DWORD(KeyState::KEY_FREE))
+    //        {
+    //            m_dwKeyState[ikey] = DWORD(KeyState::KEY_PUSH);
+    //        }
+    //        else
+    //        {
+    //            m_dwKeyState[ikey] = DWORD(KeyState::KEY_HOLD);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (m_dwKeyState[ikey] == DWORD(KeyState::KEY_HOLD)
+    //        ||  m_dwKeyState[ikey] == DWORD(KeyState::KEY_PUSH))
+    //        {
+    //            m_dwKeyState[ikey] = DWORD(KeyState::KEY_UP);
+    //        }
+    //        else
+    //        {
+    //            m_dwKeyState[ikey] = DWORD(KeyState::KEY_FREE);
+    //        }
+    //    }
+    //}
 
     m_BeforeMousePos = m_MousePos;
 	return true;

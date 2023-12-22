@@ -18,6 +18,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 bool LWindow::SetRegisterWindowClass(HINSTANCE hInstance)
 {
     m_hInstance = hInstance;
+    LGlobal::g_hInstance = hInstance;
     
     WNDCLASSEXW wcex = {0,};
 

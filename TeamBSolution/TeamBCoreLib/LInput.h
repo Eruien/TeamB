@@ -8,15 +8,18 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+#define KEY_FREE 0
+#define KEY_UP 1
+#define KEY_PUSH 2
+#define KEY_HOLD 3
 
-
-enum class KeyState
-{
-	KEY_FREE = 0,
-	KEY_UP = 1,
-	KEY_PUSH = 2,
-	KEY_HOLD = 3,
-};
+//enum class KeyState
+//{
+//	KEY_FREE = 0,
+//	KEY_UP = 1,
+//	KEY_PUSH = 2,
+//	KEY_HOLD = 3,
+//};
 
 struct INPUT_MAP
 {
@@ -32,6 +35,7 @@ struct INPUT_MAP
 	bool bQKey;
 	bool bZKey;
 	bool bCKey;
+	bool bEKey;
 	
 	bool bLeftClick;
 	bool bRightClick;
@@ -67,7 +71,7 @@ public:
 		return input;
 	}
 
-private: // for direct input , [시진]
+public: // for direct input , [시진]
 	IDirectInput8* m_pDI;
 	IDirectInputDevice8* m_pKeyDevice;  // 키보드
 	IDirectInputDevice8* m_pMouseDevice;// 마우스
@@ -82,7 +86,7 @@ public:
 	TVector3 m_vOffset = { 0,0,0 };
 	POINT m_MousePos;
 	POINT m_BeforeMousePos;
-	DWORD m_dwKeyState[256] = {0,};
+	//DWORD m_dwKeyState[256] = {0,};
 public:
 	TVector3 GetWorldPos(float windowWidth, float windowHeight, float cameraPosX, float cameraPosY);
 public:

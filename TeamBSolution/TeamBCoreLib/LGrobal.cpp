@@ -8,3 +8,4 @@ ComPtr<ID3D11DeviceContext> LGlobal::g_pImmediateContext;
 float LGlobal::g_fSPF = 0;
 float LGlobal::g_fGameTimer = 0;
 LCamera* LGlobal::g_pMainCamera = nullptr;
+HINSTANCE LGlobal::g_hInstance = nullptr;

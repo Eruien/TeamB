@@ -6,6 +6,7 @@ class LGlobal
 {
 public:
 	static HWND g_hWnd;
+	static HINSTANCE g_hInstance;
 	static int g_WindowWidth;
 	static int g_WindowHeight;
 	static ComPtr<ID3D11Device> g_pDevice;
