@@ -111,7 +111,8 @@ bool LDXObject::CreateLayout()
 			layout, sizeof(layout) / sizeof(layout[0]),
 			m_Shader->m_pVSBlob->GetBufferPointer(),
 			m_Shader->m_pVSBlob->GetBufferSize(),
-			m_pVertexLayout.GetAddressOf());//????
+			&m_pVertexLayout);//????
+	//	m_pVertexLayout.GetAddressOf());//????
 
 
 		if (FAILED(hr))
@@ -153,7 +154,8 @@ bool LDXObject::Frame()
 
 bool LDXObject::PreRender()
 {
-	m_pImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
+	//m_pImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
+	m_pImmediateContext->IASetInputLayout(m_pVertexLayout);
 	m_pImmediateContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
 	if (m_Shader)

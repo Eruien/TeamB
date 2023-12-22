@@ -21,14 +21,14 @@ bool LSpriteObj::Init()
 {
 	static LSpriteInfo ExampleInfo;
 
-	ExampleInfo.iNumRow = 1;
-	ExampleInfo.iNumColumn = 3;
-	ExampleInfo.fAnimTimer = 1.0f;
+	ExampleInfo.iNumRow = 8;
+	ExampleInfo.iNumColumn = 8;
+	ExampleInfo.fAnimTimer = 10.0f;
 	ExampleInfo.fElapsedTimer = 0.0f;
-	ExampleInfo.p = { 1.0f, 1.0f, 1.0f };
+	ExampleInfo.p = { 400.0f, 300.0f, 1.0f };
 	ExampleInfo.s = { 1.0f, 1.0f, 1.0f };
 	ExampleInfo.texList.clear();
-	ExampleInfo.texFile = L"../../res/effect/star3.png";
+	ExampleInfo.texFile = L"../../res/effect/critical.dds";
 	//ExampleInfo.texAlphaFile = L"";
 	//ExampleInfo.shaderFile = L"../../res/hlsl/PVShader.hlsl";
 	ExampleInfo.shaderFile = L"../../res/hlsl/HeightMap.hlsl";
@@ -61,16 +61,9 @@ bool   LSpriteTexture::LoadTexArray(std::vector<std::basic_string<TCHAR>>& texLi
 bool LSpriteTexture::Init()
 {
 	LPlaneObj::Init();
+	LSpriteObj::Init();
 
 
-	LTexture* m_pAlphaTex = nullptr;
-	float	m_fAnimTimer = 1.0f;  // 전체 시간
-	float	m_fOffsetTime = 0.0f;	// 1프레임 교체시간
-	float	m_fElapsedTimer = 0.0f; // 누적시간
-	int		m_iCurrentAnimIndex = 0;
-	int		m_iNumSpriteX = 1;
-	int		m_iNumSpriteY = 1;
-	
 	return true;
 }
 bool LSpriteTexture::Frame()
@@ -139,7 +132,7 @@ void LSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 bool LSpriteUV::Init()
 {
 	LPlaneObj::Init();
-
+	LSpriteObj::Init();
 	return true;
 }
 bool LSpriteUV::Frame()

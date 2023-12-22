@@ -124,7 +124,7 @@ bool LCore::EngineInit()
     m_pDefaultCamera->CreateLookAt({ 0.0f, 600.0f, -300.0f }, { 0.0f, 0.0f, 1.0f });
     m_pDefaultCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     LGlobal::g_pMainCamera = m_pDefaultCamera.get();
-    LSpriteObj::GetInstance().Init();
+    LSpriteUV::GetInstance().Init();
  
     LInput::GetInstance().Init();
     LWrite::GetInstance().Init();
@@ -141,7 +141,7 @@ bool LCore::EngineFrame()
     LInput::GetInstance().Frame();
     LWrite::GetInstance().Frame();
     LGlobal::g_pMainCamera->Frame();
-    LSpriteObj::GetInstance().Frame();
+    LSpriteUV::GetInstance().Frame();
 
 	Frame();
 	return true;
@@ -178,7 +178,7 @@ bool LCore::EngineRender()
     LWrite::GetInstance().Render();
     LInput::GetInstance().Render();
     LWrite::GetInstance().PostRender();
-    LSpriteObj::GetInstance().Render();
+    LSpriteUV::GetInstance().Render();
 
     LDevice::PostRender();
 

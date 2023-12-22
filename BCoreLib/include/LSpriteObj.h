@@ -81,6 +81,13 @@ public:
 class LSpriteTexture : public LSpriteObj
 {
 public:
+	static LSpriteTexture& GetInstance()
+	{
+		static LSpriteTexture input;
+		return input;
+	}
+
+public:
 	std::vector</*const*/ LTexture*>  m_pTexList;
 public:
 	virtual int    GetMaxSize() { return m_pTexList.size(); }
@@ -95,6 +102,13 @@ public:
 };
 class LSpriteUV : public LSpriteObj
 {
+public:
+	static LSpriteUV& GetInstance()
+	{
+		static LSpriteUV input;
+		return input;
+	}
+
 public:
 	std::vector<LUVRect>  m_pUVList;
 	void  SetUVFrame(int iNumRow, int iNumColumn) override;
