@@ -24,6 +24,14 @@
 
 using namespace Microsoft::WRL;
 
+enum class CollisionType
+{
+    NONE, // 아무것도 충돌이 없을때
+    MAP,
+    NPC,
+    PLAYER,
+};
+
 struct T_BOX
 {
     TVector3   vPos[8];
