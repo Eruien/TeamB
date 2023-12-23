@@ -56,6 +56,7 @@ struct INPUT_MAP
 	bool bChangeCullMode;
 	bool bChangeCameraType;
 	bool bDebugRender;
+	bool bF1Key;
 
 	bool bLShift;
 };
