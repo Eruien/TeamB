@@ -3,13 +3,7 @@
 #include "LManager.h"
 #include "LManagerAgr.h"
 
-struct SimpleVertex
-{
-	TVector3 p;
-	TVector3 n;
-	TVector4 c;
-	TVector2 t;
-};
+
 
 struct CB_Data
 {

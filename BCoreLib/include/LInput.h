@@ -88,6 +88,11 @@ public:
 	POINT m_MousePos;
 	POINT m_BeforeMousePos;
 	//DWORD m_dwKeyState[256] = {0,};
+
+	POINT GetMousePos() {
+		return m_MousePos;
+	}
+	
 public:
 	TVector3 GetWorldPos(float windowWidth, float windowHeight, float cameraPosX, float cameraPosY);
 public:

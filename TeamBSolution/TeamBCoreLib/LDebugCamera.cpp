@@ -54,7 +54,7 @@ bool LDebugCamera::Frame()
 		m_fCameraYaw += DirectX::XMConvertToRadians(x * 0.1f);
 		m_fCameraPitch += DirectX::XMConvertToRadians(y * 0.1f);
 	}
-
+	
 	
 	/*if (LInput::GetInstance().m_dwKeyState[VK_SPACE] == DWORD(KeyState::KEY_HOLD))
 	{
