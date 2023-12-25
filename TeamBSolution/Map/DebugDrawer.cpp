@@ -144,7 +144,7 @@ void DebugDrawer::DrawRect(std::vector<TVector3>& points, Color color)
 
 void DebugDrawer::Update()
 {
-	ImGui::InputInt("Pass", &pass);
+	//ImGui::InputInt("Pass", &pass);
 
 	if (pass < 0)
 		pass = 0;
