@@ -1,10 +1,10 @@
 #pragma once
 #include "MapNode.h"
-
-#include "Terrain.h"
-#include "RenderMgr.h"
+//#include "RenderMgr.h"
 #include "DebugDrawer.h"
+#include "LGlobal.h"
 
+class Terrain;
 
 class MapQuadTree
 {

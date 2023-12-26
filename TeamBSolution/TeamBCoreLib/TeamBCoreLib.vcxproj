@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="LCamera.cpp" />
     <ClCompile Include="LCore.cpp" />
     <ClCompile Include="LDebugCamera.cpp" />
@@ -32,7 +33,7 @@
     <ClCompile Include="LFiniteState.cpp" />
     <ClCompile Include="LFrustum.cpp" />
     <ClCompile Include="LFSMMgr.cpp" />
-    <ClCompile Include="LGrobal.cpp" />
+    <ClCompile Include="LGlobal.cpp" />
     <ClCompile Include="LHeightMap.cpp" />
     <ClCompile Include="LInput.cpp" />
     <ClCompile Include="LManager.cpp" />
@@ -47,9 +48,11 @@
     <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="LWindow.cpp" />
     <ClCompile Include="LWrite.cpp" />
+    <ClCompile Include="Structs.cpp" />
     <ClCompile Include="TMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="LCamera.h" />
     <ClInclude Include="LCore.h" />
     <ClInclude Include="LDebugCamera.h" />
@@ -77,6 +80,7 @@
     <ClInclude Include="LTimer.h" />
     <ClInclude Include="LWindow.h" />
     <ClInclude Include="LWrite.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="TMath.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,5 +1,15 @@
 #pragma once
 #include "LFrustum.h"
+#include "Structs.h"
+
+//struct Frustum
+//{
+//    Plane planes[6];
+//    TVector3 frustumCorners[8];
+//
+//    void Update(TMatrix& matView, TMatrix& matProj);
+//};
+
 
 class LCamera
 {
@@ -10,6 +20,9 @@ public:
     TVector3 m_vUp;
     TVector3 m_vRight;
     float m_fSpeed = 10.0f;
+
+
+    Ray ray;
 public:
     TMatrix m_matView;
     TMatrix m_matOrthoProjection;

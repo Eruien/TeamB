@@ -120,7 +120,7 @@ bool LDebugCamera::Frame()
 	std::memcpy(&m_matView, &xmMatView, sizeof(DirectX::XMMATRIX));
 
 	UpdateVector();
-
+	LCamera::Frame();
 	return true;
 }
 

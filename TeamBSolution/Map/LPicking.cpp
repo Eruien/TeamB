@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LPicking.h"
 
 void LPicking::FindVertex(TVector3 centerPosition, float range, int leafNodeNum, shared_ptr<MapNode>& pickNode, vector<SimpleVertex>& vertexList)
@@ -147,7 +148,9 @@ void LPicking::FindVertex(TVector3 centerPosition, float range, int leafNodeNum,
 	}
 }
 
-shared_ptr<MapNode>& LPicking::FindPickedFace(Ray& ray, vector<UINT>& leafNodeIdxList, map<int, shared_ptr<MapNode>>& leafNodeMap, OUT TVector3& pickPoint)
+shared_ptr<MapNode>& LPicking::FindPickedFace(Ray& ray, vector<UINT>& leafNodeIdxList, 
+												map<int, shared_ptr<MapNode>>& leafNodeMap,
+												OUT TVector3& pickPoint)
 {
 	// find leaf node collision with ray
 	vector<shared_ptr<MapNode>> sectionList;

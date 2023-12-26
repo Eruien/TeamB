@@ -119,6 +119,8 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../FX11/inc/</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,42 +145,79 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DebugDrawer.cpp" />
+    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GeometryHelper.cpp" />
+    <ClCompile Include="HeightMap.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="LPicking.cpp" />
     <ClCompile Include="MapNode.cpp" />
     <ClCompile Include="MapQuadTree.cpp" />
     <ClCompile Include="Pass.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Struct.cpp" />
     <ClCompile Include="Technique.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VertexData.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DebugDrawer.h" />
+    <ClInclude Include="EnumClass.h" />
+    <ClInclude Include="Geometry.hpp" />
+    <ClInclude Include="GeometryHelper.h" />
+    <ClInclude Include="HeightMap.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="LPicking.h" />
     <ClInclude Include="MapNode.h" />
     <ClInclude Include="MapQuadTree.h" />
     <ClInclude Include="Pass.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="PipeLineHeaders.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Technique.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexData.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
       <Project>{a380f0fb-6663-4804-b20b-1508692423ff}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\res\hlsl\Global.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\res\hlsl\MapToolShader.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

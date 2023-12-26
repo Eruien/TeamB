@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Utils.h"
 
 void Utils::ShowErrorMessage(HRESULT hr)

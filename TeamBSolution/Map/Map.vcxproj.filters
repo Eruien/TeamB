@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="DebugDrawer.cpp" />
+    <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="LPicking.cpp" />
+    <ClCompile Include="MapNode.cpp" />
+    <ClCompile Include="MapQuadTree.cpp" />
+    <ClCompile Include="Pass.cpp" />
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Struct.cpp" />
+    <ClCompile Include="Technique.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="GeometryHelper.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexData.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>temp</Filter>
+    </ClCompile>
+    <ClCompile Include="HeightMap.cpp" />
+    <ClCompile Include="ResourceBase.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>pch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DebugDrawer.h" />
+    <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="LPicking.h" />
+    <ClInclude Include="MapNode.h" />
+    <ClInclude Include="MapQuadTree.h" />
+    <ClInclude Include="Pass.h" />
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="Struct.h" />
+    <ClInclude Include="Technique.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="PipeLineHeaders.h" />
+    <ClInclude Include="GeometryHelper.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.hpp">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexData.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>temp</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumClass.h" />
+    <ClInclude Include="HeightMap.h" />
+    <ClInclude Include="ResourceBase.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="pch.h">
+      <Filter>pch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ImGUI">
+      <UniqueIdentifier>{6a936503-5350-4276-9a6d-782bd9010f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffer">
+      <UniqueIdentifier>{d55e9d6d-69d4-42c9-a710-92039ba9d727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineHeader">
+      <UniqueIdentifier>{507abf90-b31c-4ba9-b4f4-f7d0b7cc35fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="temp">
+      <UniqueIdentifier>{861070bb-1174-42d1-89df-3a685ed4fe8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{ef4ef905-0f82-4bb0-9033-d391d21c03ba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

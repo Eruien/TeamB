@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ShaderManager.h"
 
 ShaderDesc ShaderManager::GetEffect(std::wstring fileName)

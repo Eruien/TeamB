@@ -77,6 +77,8 @@ bool LCamera::Init()
 
 bool LCamera::Frame()
 {
+    ray.UpdateRay(m_matView, m_matProj);
+    
     return true;
 }
 
@@ -89,3 +91,36 @@ bool LCamera::Release()
 {
     return true;
 }
+
+//void Frustum::Update(TMatrix& matView, TMatrix& matProj)
+//{
+//    TMatrix viewProj = matView * matProj;
+//
+//    //1  2   5  6
+//    //0  3   4  7
+//    frustumCorners[0] = TVector3(-1.0f, -1.0f, 0.0f);
+//    frustumCorners[1] = TVector3(-1.0f, 1.0f, 0.0f);
+//    frustumCorners[2] = TVector3(1.0f, 1.0f, 0.0f);
+//    frustumCorners[3] = TVector3(1.0f, -1.0f, 0.0f);
+//
+//    frustumCorners[4] = TVector3(-1.0f, -1.0f, 1.0f);
+//    frustumCorners[5] = TVector3(-1.0f, 1.0f, 1.0f);
+//    frustumCorners[6] = TVector3(1.0f, 1.0f, 1.0f);
+//    frustumCorners[7] = TVector3(1.0f, -1.0f, 1.0f);
+//
+//    for (int i = 0; i < 8; i++)
+//    {
+//        TVector3 corner = TVector3::Transform(frustumCorners[i], viewProj.Invert());
+//        frustumCorners[i] = corner;
+//    }
+//
+//    //create planes
+//    planes[0] = Plane(frustumCorners[0], frustumCorners[1], frustumCorners[5]);
+//    planes[1] = Plane(frustumCorners[2], frustumCorners[3], frustumCorners[6]);
+//    planes[2] = Plane(frustumCorners[5], frustumCorners[2], frustumCorners[6]);
+//    planes[3] = Plane(frustumCorners[0], frustumCorners[7], frustumCorners[3]);
+//    planes[4] = Plane(frustumCorners[0], frustumCorners[2], frustumCorners[1]);
+//    planes[5] = Plane(frustumCorners[6], frustumCorners[4], frustumCorners[5]);
+//
+//
+//}

@@ -1,5 +1,6 @@
+#include "pch.h"
 #include "MapQuadTree.h"
-
+#include "Terrain.h"
 
 
 void MapQuadTree::UpdateVertex(std::vector<SHORT> updateNodeIdxList)
@@ -55,7 +56,7 @@ void MapQuadTree::Update()
     {
         // draw frustum
         {
-            auto& frustum = CameraManager::GetInstance().GetMainCamera()->GetFrustum();
+            auto& frustum = LGlobal::g_pMainCamera->m_Frustum;
 
             std::vector<TVector3> points1;
             std::vector<TVector3> points2;
@@ -63,35 +64,35 @@ void MapQuadTree::Update()
             std::vector<TVector3> points4;
             std::vector<TVector3> points5;
             std::vector<TVector3> points6;
-            points1.push_back(frustum.frustumCorners[1]);
-            points1.push_back(frustum.frustumCorners[2]);
-            points1.push_back(frustum.frustumCorners[0]);
-            points1.push_back(frustum.frustumCorners[3]);
+            points1.push_back(frustum.m_vFrustum[1]);
+            points1.push_back(frustum.m_vFrustum[2]);
+            points1.push_back(frustum.m_vFrustum[0]);
+            points1.push_back(frustum.m_vFrustum[3]);
 
-            points2.push_back(frustum.frustumCorners[5]);
-            points2.push_back(frustum.frustumCorners[6]);
-            points2.push_back(frustum.frustumCorners[4]);
-            points2.push_back(frustum.frustumCorners[7]);
+            points2.push_back(frustum.m_vFrustum[5]);
+            points2.push_back(frustum.m_vFrustum[6]);
+            points2.push_back(frustum.m_vFrustum[4]);
+            points2.push_back(frustum.m_vFrustum[7]);
 
-            points3.push_back(frustum.frustumCorners[5]);
-            points3.push_back(frustum.frustumCorners[1]);
-            points3.push_back(frustum.frustumCorners[4]);
-            points3.push_back(frustum.frustumCorners[0]);
+            points3.push_back(frustum.m_vFrustum[5]);
+            points3.push_back(frustum.m_vFrustum[1]);
+            points3.push_back(frustum.m_vFrustum[4]);
+            points3.push_back(frustum.m_vFrustum[0]);
 
-            points4.push_back(frustum.frustumCorners[2]);
-            points4.push_back(frustum.frustumCorners[6]);
-            points4.push_back(frustum.frustumCorners[3]);
-            points4.push_back(frustum.frustumCorners[7]);
+            points4.push_back(frustum.m_vFrustum[2]);
+            points4.push_back(frustum.m_vFrustum[6]);
+            points4.push_back(frustum.m_vFrustum[3]);
+            points4.push_back(frustum.m_vFrustum[7]);
 
-            points5.push_back(frustum.frustumCorners[5]);
-            points5.push_back(frustum.frustumCorners[6]);
-            points5.push_back(frustum.frustumCorners[1]);
-            points5.push_back(frustum.frustumCorners[2]);
+            points5.push_back(frustum.m_vFrustum[5]);
+            points5.push_back(frustum.m_vFrustum[6]);
+            points5.push_back(frustum.m_vFrustum[1]);
+            points5.push_back(frustum.m_vFrustum[2]);
 
-            points6.push_back(frustum.frustumCorners[0]);
-            points6.push_back(frustum.frustumCorners[3]);
-            points6.push_back(frustum.frustumCorners[4]);
-            points6.push_back(frustum.frustumCorners[7]);
+            points6.push_back(frustum.m_vFrustum[0]);
+            points6.push_back(frustum.m_vFrustum[3]);
+            points6.push_back(frustum.m_vFrustum[4]);
+            points6.push_back(frustum.m_vFrustum[7]);
 
             debugDraw->DrawRect(points1, TVector4(0, 1, 0, 0));
             debugDraw->DrawRect(points2, TVector4(0, 1, 0, 0));
@@ -131,7 +132,7 @@ void MapQuadTree::FindDrawNode()
     drawNodeIndexList.clear();
 
     bool isDraw = false;
-    auto& frustum = CameraManager::GetInstance().GetMainCamera()->GetFrustum();
+    auto& frustum = LGlobal::g_pMainCamera->m_Frustum;
 
     for (int i = 0; i < leafNodeMap.size(); ++i)
     {
@@ -139,7 +140,10 @@ void MapQuadTree::FindDrawNode()
 
         for (int j = 0; j < 6; ++j)
         {
-            if (!Collision::CubeToPlane(leafNodeMap[i]->boundingBox, frustum.planes[j]))
+            if (!Collision::CubeToPlane(leafNodeMap[i]->boundingBox, Plane(frustum.m_xPlane[j].fa,
+                                                                            frustum.m_xPlane[j].fb,
+                                                                            frustum.m_xPlane[j].fc,
+                                                                            frustum.m_xPlane[j].fd)))
             {
                 isDraw = false;
                 break;
