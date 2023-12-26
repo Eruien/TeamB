@@ -44,7 +44,7 @@ bool LPlaneObj::CreateVertexBuffer()
 	return true;
 }
 
-bool LPlaneObj::Init()
+bool LPlaneObj::Init()//UpdateMatrix
 {
 	LObject::Init();
 	TMatrix matScale, matRotation, matTranslation;
@@ -52,6 +52,7 @@ bool LPlaneObj::Init()
 	matRotation.CreateRotationZ(m_vRotation.z);
 	matTranslation.Translation(m_vPosition);
 	m_matWorld = matScale * matRotation * matTranslation;
+	/*UpdateMatrix();*/
 	return true;
 }
 

@@ -66,6 +66,7 @@ public:
 	int		m_iNumSpriteX = 1;
 	int		m_iNumSpriteY = 1;
 	LSpriteInfo m_InitSpriteInfo;
+	
 public:
 	virtual bool   Init() override;
 
@@ -73,7 +74,7 @@ public:
 	virtual int    GetMaxSize() { return 1; }
 	virtual bool  Load(	LSpriteInfo) ;
 	virtual bool  LoadTexArray(std::vector<std::basic_string<TCHAR>>& texList) { return true; };
-	virtual void  SetUVFrame(int iNumRow, int iNumColumn) {}
+	virtual void  SetUVFrame(int iNumRow, int iNumColumn) {};
 
 
 };
@@ -110,6 +111,7 @@ public:
 	}
 
 public:
+
 	std::vector<LUVRect>  m_pUVList;
 	void  SetUVFrame(int iNumRow, int iNumColumn) override;
 	void	SetPixelVertex(LUVRect uv);
@@ -118,6 +120,7 @@ public:
 		m_iNumSpriteX = 1;
 		m_iNumSpriteY = 1;
 	}
+	
 public:
 	virtual int    GetMaxSize() { return m_pUVList.size(); }
 	bool Init() override;

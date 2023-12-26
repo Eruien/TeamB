@@ -124,13 +124,15 @@ bool LCore::EngineInit()
     m_pDefaultCamera->CreateLookAt({ 0.0f, 600.0f, -300.0f }, { 0.0f, 0.0f, 1.0f });
     m_pDefaultCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     LGlobal::g_pMainCamera = m_pDefaultCamera.get();
-    LSpriteUV::GetInstance().Init();
  
     LInput::GetInstance().Init();
     LWrite::GetInstance().Init();
     LWrite::GetInstance().Create(m_pSwapChain.Get(), m_hWnd);
+    //LSpriteUV::GetInstance().Init();
 
 	Init();
+
+
 	return true;
 }
 
@@ -141,7 +143,7 @@ bool LCore::EngineFrame()
     LInput::GetInstance().Frame();
     LWrite::GetInstance().Frame();
     LGlobal::g_pMainCamera->Frame();
-    LSpriteUV::GetInstance().Frame();
+    //LSpriteUV::GetInstance().Frame();
 
 	Frame();
 	return true;
@@ -175,10 +177,11 @@ bool LCore::EngineRender()
     Render();
     LGlobal::g_pMainCamera->Render();
     m_Gametimer->Render();
-    LWrite::GetInstance().Render();
     LInput::GetInstance().Render();
+    LWrite::GetInstance().Render();
+   
     LWrite::GetInstance().PostRender();
-    LSpriteUV::GetInstance().Render();
+   // LSpriteUV::GetInstance().Render();
 
     LDevice::PostRender();
 

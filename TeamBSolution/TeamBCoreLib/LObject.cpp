@@ -22,7 +22,15 @@ void  LObject::SetMatrix(TMatrix* matWorld, TMatrix* matView, TMatrix* matProj)
 	m_cbData.matProj = m_matProj.Transpose();
 	m_pImmediateContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, nullptr, &m_cbData, 0, 0);
 }
-
+//void LObject::UpdateMatrix()
+//{
+//	TMatrix matScale, matRotation, matTranslation;
+//	matScale.CreateScale(m_vScale);
+//	matRotation.CreateRotationZ(m_vRotation.z);
+//	matTranslation.Translation(m_vPosition);
+//	m_matWorld = matScale * matRotation * matTranslation;
+//
+//}
 void LObject::SetScale(TVector3 s)
 {
 	m_vScale = s;
