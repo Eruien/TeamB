@@ -1,4 +1,5 @@
 #include "LSpriteObj.h"
+
 bool  LSpriteObj::Load(LSpriteInfo info)
 {
 	m_InitSpriteInfo = info;
@@ -14,27 +15,16 @@ bool  LSpriteObj::Load(LSpriteInfo info)
 		this->m_pAlphaTex = LManager<LTexture>::GetInstance().Load(info.texAlphaFile);
 	}
 	LoadTexArray(info.texList);
+
 	SetUVFrame(info.iNumRow, info.iNumColumn);
+
+	
 	return Create(info.shaderFile, info.texFile);
 }
+
 bool LSpriteObj::Init()
 {
-	static LSpriteInfo ExampleInfo;
 
-	ExampleInfo.iNumRow = 8;
-	ExampleInfo.iNumColumn = 8;
-	ExampleInfo.fAnimTimer = 10.0f;
-	ExampleInfo.fElapsedTimer = 0.0f;
-	ExampleInfo.p = { 400.0f, 300.0f, 1.0f };
-	ExampleInfo.s = { 1.0f, 1.0f, 1.0f };
-	ExampleInfo.texList.clear();
-	ExampleInfo.texFile = L"../../res/effect/critical.dds";
-	//ExampleInfo.texAlphaFile = L"";
-	//ExampleInfo.shaderFile = L"../../res/hlsl/PVShader.hlsl";
-	ExampleInfo.shaderFile = L"../../res/hlsl/HeightMap.hlsl";
-	//ExampleInfo.shaderFile = L"../../res/hlsl/CustomizeMap.hlsl";
-
-	Load(ExampleInfo);
 	return true;
 
 }
@@ -108,6 +98,7 @@ LSpriteTexture::~LSpriteTexture()
 	Release();
 }
 
+
 void LSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 {
 	LUVRect tRt;
@@ -129,10 +120,12 @@ void LSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 	}
 	m_fOffsetTime = m_fAnimTimer / m_pUVList.size();
 }
+
 bool LSpriteUV::Init()
 {
 	LPlaneObj::Init();
 	LSpriteObj::Init();
+
 	return true;
 }
 bool LSpriteUV::Frame()
@@ -175,6 +168,7 @@ bool LSpriteUV::Render()
 	PostRender();
 	return true;
 }
+
 bool LSpriteUV::Release()
 {
 	LPlaneObj::Release();

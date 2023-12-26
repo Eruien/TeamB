@@ -23,7 +23,7 @@ bool LTexture::Load(std::wstring fileName)
 
 	if (FAILED(hr))
 	{
-		MessageBoxA(NULL, "Create ShaderResourceView WIC Error", "Error Box", MB_OK);
+		//MessageBoxA(NULL, "Create ShaderResourceView WIC Error", "Error Box", MB_OK);
 	}
 
 	hr = DirectX::GetMetadataFromDDSFile(fileName.c_str(), DirectX::DDS_FLAGS_NONE, mdata);
@@ -37,7 +37,7 @@ bool LTexture::Load(std::wstring fileName)
 
 	if (FAILED(hr))
 	{
-		MessageBoxA(NULL, "Create ShaderResourceView DDS Error", "Error Box", MB_OK);
+		//MessageBoxA(NULL, "Create ShaderResourceView DDS Error", "Error Box", MB_OK);
 	}
 
 	hr = DirectX::GetMetadataFromTGAFile(fileName.c_str(), DirectX::TGA_FLAGS_NONE, mdata);
@@ -51,7 +51,7 @@ bool LTexture::Load(std::wstring fileName)
 
 	if (FAILED(hr))
 	{
-		MessageBoxA(NULL, "Create ShaderResourceView TGA Error", "Error Box", MB_OK);
+		//MessageBoxA(NULL, "Create ShaderResourceView TGA Error", "Error Box", MB_OK);
 	}
 	
 	return true;

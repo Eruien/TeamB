@@ -1,5 +1,6 @@
 #pragma once
 #include "LStd.h"
+#include "LWrite.h"
 
 enum class KeyState
 {
