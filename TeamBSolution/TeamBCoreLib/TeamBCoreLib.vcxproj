@@ -32,7 +32,7 @@
     <ClCompile Include="LFiniteState.cpp" />
     <ClCompile Include="LFrustum.cpp" />
     <ClCompile Include="LFSMMgr.cpp" />
-    <ClCompile Include="LGrobal.cpp" />
+    <ClCompile Include="LGlobal.cpp" />
     <ClCompile Include="LHeightMap.cpp" />
     <ClCompile Include="LInput.cpp" />
     <ClCompile Include="LManager.cpp" />
