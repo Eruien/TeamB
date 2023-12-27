@@ -19,7 +19,7 @@
 #include <dxgi.h>
 #include <d3dcompiler.h>
 #include "DirectXTex.h"
-#include <d3dx11effect.h>
+//#include <d3dx11effect.h>
 
 
 #pragma comment(lib, "d3d11.lib")
@@ -28,7 +28,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment (lib, "DirectXTex.lib")
 
-#pragma comment(lib, "Effects11d.lib")
+//#pragma comment(lib, "Effects11d.lib")
 
 
 using namespace Microsoft::WRL;
@@ -87,3 +87,42 @@ struct SimpleVertex
     SimpleVertex() = default;
     SimpleVertex(const TVector3 & pos, const TVector2 & uv, const TVector4 & color, const TVector3 & normal) : p(pos), t(uv), n(normal), c(color) {}
 };
+
+
+
+
+
+//////////////////////////////////////////////
+// 객체 및 배열 할당과 삭제 및 소멸 매크로
+//////////////////////////////////////////////
+#ifndef SAFE_ZERO
+#define SAFE_ZERO(A)				{ A = 0; }
+#endif
+
+#ifndef SAFE_NEW
+#define SAFE_NEW(A, B)				{ if (!A) A = new B; }
+#endif 
+
+#ifndef SAFE_DEL
+#define SAFE_DEL(A)					{ if (A) delete A; (A)=NULL; }
+#endif 
+
+#ifndef SAFE_NEW_ARRAY
+#define SAFE_NEW_ARRAY(A, B, C)		{ if (!A && C) A = new B[C]; }
+#endif 
+
+#ifndef SAFE_DELETE_ARRAY
+#define SAFE_DELETE_ARRAY(A)		{ if (A) delete [] A; (A)=NULL; }
+#endif 
+
+#ifndef SAFE_RELEASE
+#define SAFE_RELEASE(A)				{ if(A) { (A)->Release(); (A)=NULL; } }
+#endif 
+
+#ifndef SAFE_NEW_CLEAR
+#define SAFE_NEW_CLEAR( A, B )			{ if (!A) A = new B; if(A) memset( A, 0, sizeof(B) ); };
+#endif 
+
+#ifndef SAFE_NEW_ARRAY_CLEAR
+#define SAFE_NEW_ARRAY_CLEAR( A, B, C )	{ if (!A && C) A = new B[C]; if(A) memset( A, 0, sizeof(B)*C ); };
+#endif

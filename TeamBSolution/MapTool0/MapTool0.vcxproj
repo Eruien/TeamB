@@ -143,10 +143,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMapLOD.cpp" />
+    <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="SNode.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMapLOD.h" />
+    <ClInclude Include="LSelect.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="SNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
