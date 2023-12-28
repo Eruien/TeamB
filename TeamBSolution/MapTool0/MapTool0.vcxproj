@@ -153,6 +153,11 @@
       <Project>{a380f0fb-6663-4804-b20b-1508692423ff}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="DiffuseLight.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
