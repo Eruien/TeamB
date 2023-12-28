@@ -9,10 +9,8 @@ bool Sample::Init()
     m_pMapObj->Set();
     m_pMapObj->SetPos({ 0.0f,0.0f ,0.0f });
     m_pMapObj->SetScale(TVector3(800.0f, 600.0f, 1.0f));
-    //m_pMapObj->Create(L"../../res/hlsl/CustomizeMap.hlsl",
-    //    L"../../res/ui1/0.png");
-    m_pMapObj->Create(L"../../res/hlsl/PVShader.hlsl",
-        L"../../res/ui1/0.png");
+    //m_pMapObj->Create(L"../../res/hlsl/CustomizeMap.hlsl",    L"../../res/ui1/0.png");
+    m_pMapObj->Create(L"../../res/hlsl/PVShader.hlsl", L"../../res/ui1/0.png");
 
 	m_DebugCamera = std::make_shared<LDebugCamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
@@ -106,6 +104,12 @@ bool Sample::Frame()
 
 bool Sample::Render()
 {
+
+    m_pImmediateContext->OMSetBlendState(m_AlphaBlend, 0, -1);//임시
+
+    LGlobal::g_pMainCamera->m_vCameraPos = { -400.0f,0.0f ,0.0f };//임시
+
+
     m_pMapObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matOrthoProjection);
     m_pMapObj->Render();
 
