@@ -157,7 +157,6 @@ bool LDXObject::Frame()
 
 bool LDXObject::PreRender()
 {
-	//m_pImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
 	m_pImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
 	m_pImmediateContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
@@ -190,15 +189,15 @@ bool LDXObject::Render()
 
 bool LDXObject::PostRender()
 {
-	if (m_pIndexBuffer == nullptr)
-	{
+	//if (m_pIndexBuffer == nullptr)
+	//{
 		m_pImmediateContext->Draw(m_VertexList.size(), 0);
-	}
-	else
-	{
-		m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
-	}
+	//}
+	//else
+	//{
+	//	m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);юс╫ц
+	//	m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
+	//}
 	
 	return true;
 }

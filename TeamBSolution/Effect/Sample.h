@@ -35,7 +35,7 @@ class Sample : public LCore
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 	std::unique_ptr<LPlaneObj> m_pMapObj = nullptr;
-	
+	ID3D11BlendState* m_AlphaBlend = nullptr;//юс╫ц
 	std::unique_ptr<LSpriteTexture> m_pSpriteTexObj = nullptr;
 	std::unique_ptr<LSpriteUV> m_pSpriteUVObj = nullptr;
 	std::unique_ptr<LSpriteObj> m_pSpriteAirObj = nullptr;

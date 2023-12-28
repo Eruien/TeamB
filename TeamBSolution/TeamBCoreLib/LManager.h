@@ -18,7 +18,11 @@ public:
 	T* Load(std::wstring filePath);
 	T* GetPtr(std::wstring key);
 	bool Get(std::wstring key, T& managerType);
-	void Set(ID3D11Device* pDevice, ID3D11DeviceContext* pImmediateContext);
+	void Set(ID3D11Device* pDevice, ID3D11DeviceContext* pImmediateContext)
+	{
+		
+	};
+
 	bool Release();
 private:
 	LManager() {}

@@ -44,17 +44,17 @@ bool LPlaneObj::CreateVertexBuffer()
 	return true;
 }
 
-bool LPlaneObj::Init()//UpdateMatrix
-{
-	LObject::Init();
-	TMatrix matScale, matRotation, matTranslation;
-	matScale.CreateScale(m_vScale);
-	matRotation.CreateRotationZ(m_vRotation.z);
-	matTranslation.Translation(m_vPosition);
-	m_matWorld = matScale * matRotation * matTranslation;
-	/*UpdateMatrix();*/
-	return true;
-}
+//bool LPlaneObj::Init()//UpdateMatrix
+//{
+//	LObject::Init();
+//	TMatrix matScale, matRotation, matTranslation;
+//	matScale.CreateScale(m_vScale);
+//	matRotation.CreateRotationZ(m_vRotation.z);
+//	matTranslation.Translation(m_vPosition);
+//	m_matWorld = matScale * matRotation * matTranslation;
+//	/*UpdateMatrix();*/
+//	return true;
+//}
 
 bool LPlaneObj::Frame()
 {

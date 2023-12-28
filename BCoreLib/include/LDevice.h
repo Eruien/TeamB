@@ -27,6 +27,8 @@ public:
 public:
 	bool Init();
 	bool Frame();
+	bool Render();//юс╫ц
+
 	bool PreRender();
 	bool PostRender();
 	bool Release();

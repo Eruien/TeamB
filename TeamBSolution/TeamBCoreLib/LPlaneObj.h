@@ -6,7 +6,7 @@ class LPlaneObj : public LObject
 public:
 	bool CreateVertexBuffer() override;
 public:
-	bool Init() override;
+	//bool Init() override;
 	bool Frame() override;
 public:
 	virtual ~LPlaneObj() {}

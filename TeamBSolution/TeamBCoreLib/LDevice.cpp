@@ -149,6 +149,9 @@ bool LDevice::SetViewPort()
     m_ViewPort.MinDepth = 0.0f;
     m_ViewPort.MaxDepth = 1.0f;
  
+    m_pImmediateContext->RSSetViewports(1, &m_ViewPort);//???
+
+
     return true;
 }
 
@@ -161,7 +164,7 @@ bool LDevice::Init()
     // 깊이 텍스쳐 생성
     SetDepthTexture();
     // 깊이 텍스쳐 기반 스텐실 뷰 생성
-    SetDepthStencilView();
+   // SetDepthStencilView();
     SetRenderTargetView();
     SetViewPort();
     return true;
@@ -173,11 +176,11 @@ bool LDevice::Frame()
 }
 
 bool LDevice::PreRender()
-{
-    float color[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+{//????
+  float color[4] = { 0.343f,0.34522f,0.64333f,1 };
     m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
     // 스텐실 뷰 초기화 스탠실뷰를 1.0f로 초기화 하고 이후에 그려지는것들에게는 1.0f보다 작은값들을 준다
-    m_pImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(),
+   m_pImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(),
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     // 1 설정할 RenderTargetView갯수 2 RenderTargetView배열 3 스탠실뷰
@@ -185,8 +188,14 @@ bool LDevice::PreRender()
     // 마지막 단계에서 백 버퍼에 그려질 픽셀값을 결정함 픽셀의 깊이도 여기서 조절하는 이유인듯
     m_pImmediateContext->OMSetRenderTargets(1, m_pRenderTargetView.GetAddressOf(), m_pDepthStencilView.Get());
     // 1 뷰포트의 갯수, 2뷰포트 배열
-    m_pImmediateContext->RSSetViewports(1, &m_ViewPort);
+    m_pImmediateContext->RSSetViewports(1, &m_ViewPort);//임시???
     
+    return true;
+}
+bool  LDevice::Render()//임시
+{
+    PreRender();
+    PostRender();
     return true;
 }
 
