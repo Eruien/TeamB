@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="LMapLOD.cpp" />
     <ClCompile Include="LSelect.cpp" />
+    <ClCompile Include="SActor.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SNode.cpp" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="LMapLOD.h" />
     <ClInclude Include="LSelect.h" />
+    <ClInclude Include="SActor.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="SNode.h" />
@@ -160,11 +162,6 @@
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
       <Project>{a380f0fb-6663-4804-b20b-1508692423ff}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DiffuseLight.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

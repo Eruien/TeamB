@@ -32,13 +32,18 @@ public:
 	LQurdtree* m_Tree = nullptr;
 
 	//light
-	
+	TVector3 m_vLightVector;
+	LIGHT_CONSTANT_BUFFER m_cbLight;
+	ComPtr<ID3D11Buffer> m_pConstantBufferLight;
 
 public:
 	bool Init();
 	bool Frame();
 	bool Render();
 	bool Release();
+
+	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex,
+					UINT iSize, bool bDynamic = false);
 public:
 	virtual ~Sample();
 };
