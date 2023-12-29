@@ -143,10 +143,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="KSpriteObj.cpp" />
+    <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="KSpriteObj.h" />
+    <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">

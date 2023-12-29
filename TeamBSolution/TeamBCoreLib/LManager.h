@@ -16,8 +16,11 @@ public:
 	LList m_map;
 public: 
 	T* Load(std::wstring filePath);
+	void Add(const wstring& key, T* object);
 	T* GetPtr(std::wstring key);
+	//
 	bool Get(std::wstring key, T& managerType);
+	//
 	void Set(ID3D11Device* pDevice, ID3D11DeviceContext* pImmediateContext);
 	bool Release();
 private:
@@ -51,6 +54,14 @@ T* LManager<T>::Load(std::wstring filePath)
 	delete managerType;
 	return nullptr;
 }
+//////
+template<class T>
+void LManager<T>::Add(const wstring& key, T* object)
+{
+	m_map.insert(std::make_pair(key, object));
+}
+
+//////
 
 template<class T>
 T* LManager<T>::GetPtr(std::wstring key)

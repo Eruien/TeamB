@@ -21,6 +21,7 @@ public:
 public:
     TMatrix   CreateLookAt(TVector3 vPosition, TVector3 vTarget, TVector3 vUp = { 0,1,0 });
     TMatrix   CreatePerspectiveFov(float fFov, float fAspect, float fNear, float fFar);
+    TMatrix   CreateOrthographic(const int viewWide, const int viewHeight, float nearZ, float FarZ);
     void UpdateVector();
 public:
     virtual bool Init();
