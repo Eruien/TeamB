@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="MoveObject.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="KSpriteObj.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoBehaviour.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceBase.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="UICamera.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="MoveObject.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="KSpriteObj.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceBase.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="UICamera.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Script">
+      <UniqueIdentifier>{a4107a89-fd29-4dfb-a81c-a5103994e41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{4e7333d7-8178-43ef-9e3f-4d476bdd2056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{b376936a-1ee8-42a4-810c-01468be614ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

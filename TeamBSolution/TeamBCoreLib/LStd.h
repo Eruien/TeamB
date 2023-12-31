@@ -17,6 +17,8 @@
 #define ID_TBASIS_EV 13  // EnvMap
 #define SimpleVertex PNCT_VERTEX
 
+#define LWRITE  LWrite::GetInstance()
+#define LINPUT	LInput::GetInstance()
 
 #include <windows.h>
 #include <iostream>

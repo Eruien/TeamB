@@ -27,7 +27,7 @@ bool LWindow::SetRegisterWindowClass(HINSTANCE hInstance)
     wcex.lpfnWndProc = WndProc;
     wcex.hInstance = hInstance;
     wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(128, 128, 128));
-    wcex.hCursor = LoadCursor(nullptr, IDC_CROSS);
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.lpszClassName = L"LWindow";
 
     WORD ret = RegisterClassExW(&wcex);
@@ -44,6 +44,9 @@ bool LWindow::SetCreateWindow(LPCWSTR lpWindowName, int WindowWidth, int WindowH
 {
     LGlobal::g_WindowWidth = m_WindowWidth = WindowWidth;
     LGlobal::g_WindowHeight = m_WindowHeight = WindowHeight;
+
+    RECT windowRect = { 0, 0, m_WindowWidth, m_WindowHeight };
+    AdjustWindowRect(&windowRect, m_dwStyle, FALSE);
 
     m_hWnd = CreateWindowExW(
         m_dwExStyle,

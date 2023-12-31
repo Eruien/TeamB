@@ -41,11 +41,11 @@ TMatrix LCamera::CreatePerspectiveFov(float fovy, float Aspect, float fNearPlane
 
     return m_matProj;
 }
-TMatrix LCamera::CreateOrthographic(const int viewWide, const int viewHeight, float nearZ, float FarZ)
+void LCamera::CreateOrthographic(const int viewWide, const int viewHeight, float nearZ, float FarZ)
 {
     
 
-    return ::XMMatrixOrthographicLH(viewWide, viewHeight, nearZ, FarZ);
+    m_matProj = ::XMMatrixOrthographicLH(viewWide, viewHeight, nearZ, FarZ);
 }
 
 void LCamera::UpdateVector()

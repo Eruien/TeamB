@@ -61,6 +61,8 @@ namespace TBASIS_EX
 	// Static functions
 	//------------------------------------------------------------------------------
 
+	
+
 	TRectangle TRectangle::Intersect(const TRectangle& ra, const TRectangle& rb)
 	{
 		long righta = ra.x + ra.width;
@@ -121,6 +123,19 @@ namespace TBASIS_EX
 		}
 
 		return result;
+	}
+
+	bool TRectangle::RectToPoint(const TRectangle rect, const POINT point)
+	{
+		if (
+			rect.x - rect.width / 2 <= point.x && rect.x + rect.width / 2 >= point.x
+			&&
+			rect.y - rect.height / 2 <= point.y && rect.y + rect.height / 2 >= point.y)
+			return true;
+		else
+		{
+			return false;
+		}
 	}
 
 	TRectangle TRectangle::Union(const TRectangle& ra, const TRectangle& rb)

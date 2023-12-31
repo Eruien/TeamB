@@ -1,10 +1,12 @@
 #include "KSpriteObj.h"
 #include "LGlobal.h"
 
-
 bool KSpriteObj::Init()
 {
-	
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Init();
+	}
 		Set();
 		LObject::Init();
 		TMatrix matScale, matRotation, matTranslation;
@@ -17,6 +19,13 @@ bool KSpriteObj::Init()
 
 bool KSpriteObj::Frame()
 {
+	SetRect(m_vPosition, m_vScale);
+
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Frame();
+	}
+
 	Animation* animation = GetCurrentAnimation();
 
 
@@ -46,7 +55,7 @@ bool KSpriteObj::Frame()
 
 	TMatrix matScale, matRotation, matTranslation;
 	matScale = matScale.CreateScale(m_vScale);
-	matRotation= matRotation.CreateRotationX(m_vRotation.x);
+	matRotation = matRotation.CreateRotationX(m_vRotation.x);
 	matRotation = matRotation.CreateRotationY(m_vRotation.y);
 	matRotation = matRotation.CreateRotationZ(m_vRotation.z);
 	matTranslation.Translation(m_vPosition);
@@ -93,17 +102,24 @@ Animation* KSpriteObj::GetCurrentAnimation()
 {
 	return _currentAnimation;
 }
+void KSpriteObj::SetRect(TVector3 pos, TVector3 scale)
+{
+	_rect = TRectangle(pos.x, pos.y, scale.x, scale.y);
+
+
+}
+
 bool KSpriteObj::CreateVertexBuffer()
 {
 	m_VertexList.resize(6);
 
-	m_VertexList[0].p.x = -1.0f; m_VertexList[0].p.y = 1.0f;  m_VertexList[0].p.z = 0.0f;
-	m_VertexList[1].p.x = 1.0f;  m_VertexList[1].p.y = 1.0f;  m_VertexList[1].p.z = 0.0f;
-	m_VertexList[2].p.x = -1.0f; m_VertexList[2].p.y = -1.0f; m_VertexList[2].p.z = 0.0f;
+	m_VertexList[0].p.x = -0.5f; m_VertexList[0].p.y = 0.5f;  m_VertexList[0].p.z = 0.0f;
+	m_VertexList[1].p.x = 0.5f;  m_VertexList[1].p.y = 0.5f;  m_VertexList[1].p.z = 0.0f;
+	m_VertexList[2].p.x = -0.5f; m_VertexList[2].p.y = -0.5f; m_VertexList[2].p.z = 0.0f;
 
-	m_VertexList[3].p.x = -1.0f; m_VertexList[3].p.y = -1.0f; m_VertexList[3].p.z = 0.0f;
-	m_VertexList[4].p.x = 1.0f;  m_VertexList[4].p.y = 1.0f;  m_VertexList[4].p.z = 0.0f;
-	m_VertexList[5].p.x = 1.0f;  m_VertexList[5].p.y = -1.0f; m_VertexList[5].p.z = 0.0f;
+	m_VertexList[3].p.x = -0.5f; m_VertexList[3].p.y = -0.5f; m_VertexList[3].p.z = 0.0f;
+	m_VertexList[4].p.x = 0.5f;  m_VertexList[4].p.y = 0.5f;  m_VertexList[4].p.z = 0.0f;
+	m_VertexList[5].p.x = 0.5f;  m_VertexList[5].p.y = -0.5f; m_VertexList[5].p.z = 0.0f;
 
 	m_VertexList[0].t.x = 0.0f;   m_VertexList[0].t.y = 0.0f;
 	m_VertexList[1].t.x = 1.0f;  m_VertexList[1].t.y = 0.0f;
@@ -134,4 +150,14 @@ bool KSpriteObj::CreateVertexBuffer()
 	}
 
 	return true;
+}
+
+shared_ptr<MonoBehaviour> KSpriteObj::GetScript(wstring name)
+{
+	for (const auto script : _scripts)
+	{
+		if (script->_name == name)
+			return script;
+	}
+	return nullptr;
 }

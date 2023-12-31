@@ -1,5 +1,5 @@
 #include "LDevice.h"
-
+#include "LGlobal.h"
 bool LDevice::SetDevice()
 {
     UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -46,8 +46,8 @@ bool LDevice::SetSwapChain()
 {
     DXGI_SWAP_CHAIN_DESC SwapChainDesc = {0,};
     
-    SwapChainDesc.BufferDesc.Width = 800;
-    SwapChainDesc.BufferDesc.Height = 600;
+    SwapChainDesc.BufferDesc.Width = LGlobal::g_WindowWidth;
+    SwapChainDesc.BufferDesc.Height = LGlobal::g_WindowHeight;
     SwapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
     SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
     SwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -144,8 +144,8 @@ bool LDevice::SetViewPort()
   
     m_ViewPort.TopLeftX = 0.0f;
     m_ViewPort.TopLeftY = 0.0f;
-    m_ViewPort.Width = 800.0f;
-    m_ViewPort.Height = 600.0f;
+    m_ViewPort.Width = LGlobal::g_WindowWidth;
+    m_ViewPort.Height = LGlobal::g_WindowHeight;
     m_ViewPort.MinDepth = 0.0f;
     m_ViewPort.MaxDepth = 1.0f;
  
