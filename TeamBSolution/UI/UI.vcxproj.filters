@@ -20,7 +20,13 @@
     <ClCompile Include="UICamera.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="PickingUI.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Resize2D.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="DragUI.cpp">
       <Filter>Script</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +50,13 @@
     <ClInclude Include="UICamera.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="PickingUI.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Resize2D.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="DragUI.h">
       <Filter>Script</Filter>
     </ClInclude>
   </ItemGroup>

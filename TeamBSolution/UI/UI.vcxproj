@@ -144,20 +144,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="PickingUI.cpp" />
     <ClCompile Include="KSpriteObj.cpp" />
     <ClCompile Include="MonoBehaviour.cpp" />
     <ClCompile Include="MoveObject.cpp" />
+    <ClCompile Include="DragUI.cpp" />
+    <ClCompile Include="Resize2D.cpp" />
     <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="Button.h" />
+    <ClInclude Include="PickingUI.h" />
     <ClInclude Include="KSpriteObj.h" />
     <ClInclude Include="MonoBehaviour.h" />
     <ClInclude Include="MoveObject.h" />
+    <ClInclude Include="DragUI.h" />
+    <ClInclude Include="Resize2D.h" />
     <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="UICamera.h" />

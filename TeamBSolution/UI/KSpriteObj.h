@@ -40,7 +40,7 @@ protected:
 	INT32 _currentKeyframeIndex = 0;
 	Animation* _currentAnimation;
 //Rect
-protected:
+public:
 	TRectangle _rect;
 
 

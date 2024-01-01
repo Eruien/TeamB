@@ -3,7 +3,9 @@
 #include "LPlaneObj.h"
 #include "KSpriteObj.h"
 #include "MoveObject.h"
-#include "Button.h"
+#include "PickingUI.h"
+#include "DragUI.h"
+#include "Resize2D.h"
 bool Sample::Init()
 {
 	m_DebugCamera = std::make_shared<UICamera>();
@@ -21,6 +23,11 @@ bool Sample::Init()
 
 
 	sObj = make_shared<KSpriteObj>();
+	//scripts
+	sObj->AddScripts(make_shared<PickingUI>());
+	sObj->AddScripts(make_shared<Resize2D>());
+	sObj->AddScripts(make_shared<DragUI>());
+
 	sObj->SetPos({ 0,0,0 });
 	sObj->SetScale({ 200,200,1 });
 	sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
@@ -28,8 +35,8 @@ bool Sample::Init()
 	sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
 	sObj->CreateAnimation(info);
 	//sObj->AddScripts(make_shared<MoveObject>());
-	sObj->AddScripts(make_shared<Button>());
-	static_pointer_cast<Button>(sObj->GetScript(L"Button"));
+	
+	
 
 
 
