@@ -89,7 +89,7 @@ namespace TBASIS_EX
 		// Static functions
 		static TRectangle Intersect(const TRectangle& ra, const TRectangle& rb);
 		static RECT Intersect(const RECT& rcta, const RECT& rctb);
-
+		static bool RectToPoint(const TRectangle rect, const POINT point);
 		static TRectangle Union(const TRectangle& ra, const TRectangle& rb);
 		static RECT Union(const RECT& rcta, const RECT& rctb);
 	};
@@ -1940,4 +1940,5 @@ namespace std
 
 
 };
+
 using namespace TBASIS_EX;

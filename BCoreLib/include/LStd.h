@@ -17,6 +17,11 @@
 #define ID_TBASIS_EV 13  // EnvMap
 #define SimpleVertex PNCT_VERTEX
 
+#define LWRITE  LWrite::GetInstance()
+#define LINPUT	LInput::GetInstance()
+//마우스 월드좌표
+#define MOUSEX  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).x
+#define MOUSEY  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).y
 
 #include <windows.h>
 #include <iostream>

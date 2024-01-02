@@ -1,8 +1,8 @@
 #include "LGlobal.h"
 
 HWND LGlobal::g_hWnd = nullptr;
-int LGlobal::g_WindowWidth = 0;
-int LGlobal::g_WindowHeight = 0;
+int LGlobal::g_WindowWidth = 1280;
+int LGlobal::g_WindowHeight = 720;
 ComPtr<ID3D11Device> LGlobal::g_pDevice;
 ComPtr<ID3D11DeviceContext> LGlobal::g_pImmediateContext;
 float LGlobal::g_fSPF = 0;

@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{28E4906E-8B34-4F89-850C-4F76F44B2999}</ProjectGuid>
+    <ProjectGuid>{A02F8538-E7C4-47D5-A459-8A4AD86169D2}</ProjectGuid>
     <RootNamespace>LibTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../TeamBOutput/</OutDir>
-    <IntDir>../../TeamBOutput/Debug/KillingFloor/</IntDir>
+    <IntDir>../../TeamBOutput/Debug/UISample/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -143,28 +143,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="PickingUI.cpp" />
-    <ClCompile Include="KSpriteObj.cpp" />
-    <ClCompile Include="MonoBehaviour.cpp" />
-    <ClCompile Include="MoveObject.cpp" />
-    <ClCompile Include="DragUI.cpp" />
-    <ClCompile Include="Resize2D.cpp" />
-    <ClCompile Include="ResourceBase.cpp" />
+    <ClCompile Include="LAnimation.cpp" />
+    <ClCompile Include="LMath.cpp" />
+    <ClCompile Include="LSpriteUVObj.cpp" />
+    <ClCompile Include="LUtils.cpp" />
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="PickingUI.h" />
-    <ClInclude Include="KSpriteObj.h" />
-    <ClInclude Include="MonoBehaviour.h" />
-    <ClInclude Include="MoveObject.h" />
-    <ClInclude Include="DragUI.h" />
-    <ClInclude Include="Resize2D.h" />
-    <ClInclude Include="ResourceBase.h" />
+    <ClInclude Include="LAnimation.h" />
+    <ClInclude Include="LMath.h" />
+    <ClInclude Include="LSpriteUVObj.h" />
+    <ClInclude Include="LUtils.h" />
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
