@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="imgui_test.cpp" />
     <ClCompile Include="PickingUI.cpp" />
     <ClCompile Include="KSpriteObj.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="imgui_test.h" />
     <ClInclude Include="PickingUI.h" />
     <ClInclude Include="KSpriteObj.h" />
