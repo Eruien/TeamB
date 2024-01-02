@@ -3,6 +3,19 @@
 
 bool Sample::Init()
 {
+	// light
+	m_cbLight.g_cAmbientMaterial = TVector4(0.3f, 0.3f, 0.3f, 1);
+	m_cbLight.g_cDiffuseMaterial = TVector4(1, 1, 1, 1);
+	m_cbLight.g_cAmbientLightColor = TVector4(1, 1, 1, 1);
+	m_cbLight.g_cDiffuseLightColor = TVector4(1, 1, 1, 1);
+
+	// create constantbuffer
+
+	m_pConstantBufferLight.Attach(CreateConstantBuffer(
+		m_pDevice.Get(), &m_cbLight, 1, sizeof(LIGHT_CONSTANT_BUFFER)));
+
+
+
 	m_DebugCamera = std::make_shared<LDebugCamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 700.0f, -500.0f }, { 0.0f, 0.0f, 1.0f });
 	m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f); // SetProjMatrix
@@ -24,23 +37,13 @@ bool Sample::Init()
 	MapDesc.TextureFilePath = L"../../res/map/basecolor.jpg";
 	m_HeightMap->Load(MapDesc);
 
-	// 프러스텀 컬리용 트리 
+	// 프러스텀 컬링용 트리 
 	m_Tree = new LQurdtree;
 	m_Tree->Set();
 	m_Tree->m_TreeDepth = 2;
 	// 프러스텀 컬링할 맵이랑 맵의 크기를 입력
 	m_Tree->BuildQurdTree(m_HeightMap, 513, 513);
 
-	// light
-	m_cbLight.g_cAmbientMaterial = TVector4(0.3f, 0.3f, 0.3f, 1);
-	m_cbLight.g_cDiffuseMaterial = TVector4(1, 1, 1, 1);
-	m_cbLight.g_cAmbientLightColor = TVector4(1, 1, 1, 1);
-	m_cbLight.g_cDiffuseLightColor = TVector4(1, 1, 1, 1);
-
-	// create constantbuffer
-
-	m_pConstantBufferLight.Attach(CreateConstantBuffer(
-							m_pDevice.Get(), &m_cbLight, 1, sizeof(LIGHT_CONSTANT_BUFFER) ));
 
 
 
@@ -49,6 +52,16 @@ bool Sample::Init()
 
 bool Sample::Frame()
 {
+	//m_pDefaultCamera->Frame();
+	m_vLightVector.x = 100.f;
+	m_vLightVector.y = 100.f;
+	m_vLightVector.z = 0.f;
+	
+	D3DXVec3Normalize(&m_vLightVector, &m_vLightVector);
+	m_vLightVector *= -1.f;
+
+
+
 	m_Tree->Frame();
 
 	return true;
@@ -56,6 +69,39 @@ bool Sample::Frame()
 
 bool Sample::Render()
 {
+	m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 0);
+	//m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0);
+
+	TMatrix matWorld, matScale;
+	D3DXMatrixScaling(&matScale, 100, 100, 100);
+	D3DXMatrixRotationY(&matWorld, LGlobal::g_fGameTimer);
+	D3DXMatrixMultiply(&matWorld, &matScale, &matWorld);
+	matWorld._42 = 200.0f;
+
+	m_cbLight.g_vLightDir.x = m_vLightVector.x;
+	m_cbLight.g_vLightDir.y = m_vLightVector.y;
+	m_cbLight.g_vLightDir.z = m_vLightVector.z;
+	m_cbLight.g_vLightDir.w = 1;
+	TMatrix matInvWorld;
+	D3DXMatrixInverse(&matInvWorld, NULL, &matWorld);
+	D3DXMatrixTranspose(&matInvWorld, &matInvWorld);
+	D3DXMatrixTranspose(&m_cbLight.g_matInvWorld, &matInvWorld);
+
+
+	
+	m_pImmediateContext->UpdateSubresource(m_pConstantBufferLight.Get(), 0, NULL, &m_cbLight, 0, 0);
+	m_pImmediateContext->VSSetConstantBuffers(1, 1, m_pConstantBufferLight.GetAddressOf());
+	m_pImmediateContext->PSSetConstantBuffers(1, 1, m_pConstantBufferLight.GetAddressOf());
+	//
+	// sphere render needed
+	//	
+
+	D3DXMatrixIdentity(&m_cbLight.g_matInvWorld);
+	m_pImmediateContext->UpdateSubresource(m_pConstantBufferLight.Get(), 0, NULL, &m_cbLight, 0, 0);
+	//m_HeightMap->SetMatrix(&m_DebugCamera->m_matWorld, &m_DebugCamera->m_matView, &m_DebugCamera->m_matProj);
+	//m_HeightMap->Render();
+
+
 	m_Tree->Render();
 
 	return true;

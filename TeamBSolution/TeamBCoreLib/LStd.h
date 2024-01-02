@@ -351,6 +351,44 @@ enum class CollisionType
     NPC,
     PLAYER,
 };
+struct T_PLANE
+{
+	float	fA, fB, fC, fD;
+	bool	CreatePlane(TVector3 v0, TVector3 v1, TVector3 v2)
+	{
+		TVector3 vEdge0 = v1 - v0;
+		TVector3 vEdge1 = v2 - v0;
+		TVector3 vNormal;
+		D3DXVec3Cross(&vNormal, &vEdge0, &vEdge1);
+		D3DXVec3Normalize(&vNormal, &vNormal);
+
+		fA = vNormal.x;	fB = vNormal.y;	fC = vNormal.z;
+		fD = -(fA * v0.x + fB * v0.y + fC * v0.z);
+		return true;
+	}
+	bool	CreatePlane(TVector3 vNormal, TVector3 v0)
+	{
+		D3DXVec3Normalize(&vNormal, &vNormal);
+
+		fA = vNormal.x;	fB = vNormal.y;	fC = vNormal.z;
+		fD = -(fA * v0.x + fB * v0.y + fC * v0.z);
+		return true;
+	}
+	void	Normalize()
+	{
+		float fMag = sqrt(fA * fA + fB * fB + fC * fC);
+		fA = fA / fMag;
+		fB = fB / fMag;
+		fC = fC / fMag;
+		fD = fD / fMag;
+	}
+
+};
+struct T_SPHERE
+{
+	TVector3		vCenter;
+	float			fRadius;
+};
 
 struct T_BOX
 {
