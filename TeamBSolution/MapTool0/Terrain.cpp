@@ -1,7 +1,7 @@
-#include "Sample.h"
+#include "Terrain.h"
 #include "LGlobal.h"
 
-bool Sample::Init()
+bool Terrain::Init()
 {
 	// light
 	m_cbLight.g_cAmbientMaterial = TVector4(0.3f, 0.3f, 0.3f, 1);
@@ -33,6 +33,7 @@ bool Sample::Init()
 	MapDesc.iNumRows = m_HeightMap->m_iNumRows;
 	MapDesc.fCellDistance = 1.0f;
 	MapDesc.fScaleHeight = 1.0f;
+	
 	MapDesc.ShaderFilePath = L"../../res/hlsl/DiffuseLight.hlsl";
 	MapDesc.TextureFilePath = L"../../res/map/basecolor.jpg";
 	m_HeightMap->Load(MapDesc);
@@ -50,7 +51,7 @@ bool Sample::Init()
 	return true;
 }
 
-bool Sample::Frame()
+bool Terrain::Frame()
 {
 	//m_pDefaultCamera->Frame();
 	m_vLightVector.x = 100.f;
@@ -67,10 +68,10 @@ bool Sample::Frame()
 	return true;
 }
 
-bool Sample::Render()
+bool Terrain::Render()
 {
 	m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 0);
-	//m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0);
+	m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0, 0xffffffff);
 
 	TMatrix matWorld, matScale;
 	D3DXMatrixScaling(&matScale, 100, 100, 100);
@@ -107,12 +108,12 @@ bool Sample::Render()
 	return true;
 }
 
-bool Sample::Release()
+bool Terrain::Release()
 {
 	return true;
 }
 
-ID3D11Buffer* Sample::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic)
+ID3D11Buffer* Terrain::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic)
 {
 	HRESULT hr = S_OK;
 	ID3D11Buffer* pBuffer = nullptr;
@@ -152,11 +153,11 @@ ID3D11Buffer* Sample::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data,
 	return pBuffer;
 }
 
-Sample::~Sample() {}
+Terrain::~Terrain() {}
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR IpCmdLine, int nCmdShow)
 {
-	Sample win;
+	Terrain win;
 	win.SetRegisterWindowClass(hInstance);
 	win.SetCreateWindow(L"TeamBProject", 800, 600);
 	win.Run();

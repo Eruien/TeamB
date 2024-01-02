@@ -18,6 +18,8 @@ bool LTexture::Load(std::wstring fileName)
 
 	if (SUCCEEDED(hr))
 	{
+		size.x = mdata.width;
+		size.y = mdata.height;
 		return true;
 	}
 
@@ -32,6 +34,8 @@ bool LTexture::Load(std::wstring fileName)
 
 	if (SUCCEEDED(hr))
 	{
+		size.x = mdata.width;
+		size.y = mdata.height;
 		return true;
 	}
 
@@ -46,6 +50,8 @@ bool LTexture::Load(std::wstring fileName)
 
 	if (SUCCEEDED(hr))
 	{
+		size.x = mdata.width;
+		size.y = mdata.height;
 		return true;
 	}
 
@@ -57,10 +63,85 @@ bool LTexture::Load(std::wstring fileName)
 	return true;
 }
 
-bool LTexture::Release()
+const shared_ptr<::ScratchImage> LTexture::GetInfo()
 {
+	ComPtr<ID3D11Texture2D> texture;
+	m_pTexSRV->GetResource((ID3D11Resource**)texture.ReleaseAndGetAddressOf());
+
+	std::shared_ptr<DirectX::ScratchImage> image = std::make_shared<DirectX::ScratchImage>();
+	HRESULT hr = DirectX::CaptureTexture(LGlobal::g_pDevice.Get(), LGlobal::g_pImmediateContext.Get(), texture.Get(), *image.get());
+
+	if (FAILED(hr))
+		MessageBoxA(NULL, "LTexture::GetInfo(), CaptureTexture Error", "Error Box", MB_OK);
+
+	return image;
+}
+
+void LTexture::Save(wstring path)
+{
+	std::shared_ptr<DirectX::ScratchImage> srcimage = GetInfo();
+
+	DirectX::SaveToWICFile(srcimage->GetImages(), srcimage->GetImageCount(),
+		DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WIC_CODEC_PNG),
+		path.c_str());
+}
+
+void LTexture::CreateTexture(int width, int height)
+{
+	D3D11_TEXTURE2D_DESC desc;
+	D3D11_SUBRESOURCE_DATA data;
+	ZeroMemory(&desc, sizeof(desc));
+	ZeroMemory(&data, sizeof(data));
+
+	BYTE* buf = new BYTE[width * height * 4];
+
+	for (int i = 0; i < width * height * 4; i)
+	{
+		buf[i + 0] = 0;
+		buf[i + 1] = 0;
+		buf[i + 2] = 0;
+		buf[i + 3] = 0;
+
+		i += 4;
+	}
+
+	data.pSysMem = (void*)buf;
+	data.SysMemPitch = width * 4;
+	data.SysMemSlicePitch = 0;
+
+	desc.Width = width;
+	desc.Height = height;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.MiscFlags = 0;
+
+	size.x = width;
+	size.y = height;
+
+	ComPtr<ID3D11Texture2D> texture;
+	HRESULT hr = LGlobal::g_pDevice->CreateTexture2D(&desc, &data, texture.ReleaseAndGetAddressOf());
+
+	if (FAILED(hr))
+		//Utils::ShowErrorMessage(hr);
+
+	hr = LGlobal::g_pDevice->CreateShaderResourceView(texture.Get(), nullptr, m_pTexSRV.ReleaseAndGetAddressOf());
+
+	if (FAILED(hr))
+		//Utils::ShowErrorMessage(hr);
+
+	delete[] buf;
+}
+
+bool LTexture::Release()
+{/*
 	if (m_pTexSRV) m_pTexSRV->Release();
-	m_pTexSRV = nullptr;
+	m_pTexSRV = nullptr;*/
 	return true;
 }
 

@@ -24,7 +24,7 @@ struct LIGHT_CONSTANT_BUFFER
 
 };
 
-class Sample : public LCore
+class Terrain : public LCore
 {
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
@@ -45,6 +45,6 @@ public:
 	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex,
 					UINT iSize, bool bDynamic = false);
 public:
-	virtual ~Sample();
+	virtual ~Terrain();
 };
 
