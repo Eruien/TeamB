@@ -3,6 +3,7 @@
 #include "KSpriteObj.h"
 #include "UICamera.h"
 
+class imgui_test;
 class LPlaneObj;
 class Sample : public LCore
 {
@@ -15,6 +16,7 @@ public:
 	bool Release();
 	shared_ptr<LPlaneObj> obj;
 	shared_ptr< KSpriteObj> sObj;
+	shared_ptr<imgui_test> _imgui;
 public:
 	virtual ~Sample();
 };

@@ -53,6 +53,7 @@ void Resize2D::Frame()
 		if (LINPUT.m_MouseState[0] == KEY_HOLD)
 		{
 			GetGameObject()->m_vScale.y = (MOUSEY- GetGameObject()->m_vPosition.y)*2;
+			//GetGameObject()->m_vPosition.y = GetGameObject()->m_vScale.y / 2 + GetGameObject()->m_vPosition.y;
 			
 		}
 	}

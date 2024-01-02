@@ -6,6 +6,7 @@
 #include "PickingUI.h"
 #include "DragUI.h"
 #include "Resize2D.h"
+#include "imgui_test.h"
 bool Sample::Init()
 {
 	m_DebugCamera = std::make_shared<UICamera>();
@@ -21,7 +22,8 @@ bool Sample::Init()
 	//info.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.05f });
 	info.keyFrames.push_back({ L"../../res/effect/star3.png",0.05f });
 
-
+	_imgui = make_shared< imgui_test>();
+	_imgui->Init();
 	sObj = make_shared<KSpriteObj>();
 	//scripts
 	sObj->AddScripts(make_shared<PickingUI>());
@@ -52,7 +54,7 @@ bool Sample::Init()
 
 bool Sample::Frame()
 {
-	
+	_imgui->Frame();
 	sObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 	sObj->Frame();
 	obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
@@ -62,7 +64,7 @@ bool Sample::Frame()
 
 bool Sample::Render()
 {
-	
+	_imgui->Render();
 	sObj->Render();
 	obj->Render();
 	return true;
