@@ -70,7 +70,7 @@ bool Sample::Frame()
 bool Sample::Render()
 {
 	m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 0);
-	//m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0);
+	m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0, 0xffffffff);
 
 	TMatrix matWorld, matScale;
 	D3DXMatrixScaling(&matScale, 100, 100, 100);
