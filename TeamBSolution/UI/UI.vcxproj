@@ -118,12 +118,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/; ../../fmod/inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../imgui/include/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../BCoreLib/lib/; ../../BCoreLib/texlib/; ../../fbxsdk/lib/debug/; ../../fmod/lib/x64/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../BCoreLib/lib/;../../BCoreLib/texlib/;../../fbxsdk/lib/debug/;../../fmod/lib/x64/;../../imgui/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,6 +144,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
+    <ClCompile Include="imgui_test.cpp" />
+    <ClCompile Include="KGlobal.cpp" />
     <ClCompile Include="PickingUI.cpp" />
     <ClCompile Include="KSpriteObj.cpp" />
     <ClCompile Include="MonoBehaviour.cpp" />
@@ -156,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="imgui_test.h" />
+    <ClInclude Include="KGlobal.h" />
     <ClInclude Include="PickingUI.h" />
     <ClInclude Include="KSpriteObj.h" />
     <ClInclude Include="MonoBehaviour.h" />

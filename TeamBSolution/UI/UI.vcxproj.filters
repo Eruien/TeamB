@@ -29,6 +29,13 @@
     <ClCompile Include="DragUI.cpp">
       <Filter>Script</Filter>
     </ClCompile>
+    <ClCompile Include="imgui_test.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiManager.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="KGlobal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -59,6 +66,13 @@
     <ClInclude Include="DragUI.h">
       <Filter>Script</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_test.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="KGlobal.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Script">
@@ -69,6 +83,9 @@
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{b376936a-1ee8-42a4-810c-01468be614ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{30758b24-d9f4-4ff5-b3a8-aa17ae51b472}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -33,6 +33,7 @@
 #include <codecvt>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <string>
 //#include "LUtils.h"
 #include "TMath.h"
 
@@ -51,6 +52,12 @@
 
 //#pragma comment(lib, "Effects11d.lib")
 
+//ImGUI
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+#include "imgui_internal.h"
+#include "ImGuiFileDialog.h"
 
 using namespace Microsoft::WRL;
 using namespace DirectX;
