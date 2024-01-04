@@ -3,20 +3,13 @@
   <ItemGroup>
     <ClCompile Include="LMapLOD.cpp" />
     <ClCompile Include="LSelect.cpp" />
-    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SNode.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMapLOD.h" />
     <ClInclude Include="LSelect.h" />
-    <ClInclude Include="Shape.h" />
     <ClInclude Include="SNode.h" />
     <ClInclude Include="Terrain.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="shader">
-      <UniqueIdentifier>{b44c6516-f669-4893-8401-342d43bba330}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

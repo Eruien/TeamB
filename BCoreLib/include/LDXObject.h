@@ -35,6 +35,8 @@ public:
 	virtual bool CreateConstantBuffer();
 	virtual bool CreateLayout();
 	virtual bool Create(std::wstring shaderFileName, std::wstring texFileName);
+
+	virtual void UpdateVertexBuffer();
 public:
 	virtual bool Init();
 	virtual bool Frame();

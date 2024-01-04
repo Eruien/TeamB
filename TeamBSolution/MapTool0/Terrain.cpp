@@ -47,7 +47,7 @@ bool Terrain::Init()
 
 
 
-
+	m_Select = std::make_shared<LSelect>();
 	return true;
 }
 
@@ -61,10 +61,98 @@ bool Terrain::Frame()
 	D3DXVec3Normalize(&m_vLightVector, &m_vLightVector);
 	m_vLightVector *= -1.f;
 
+	m_Select->SetMatrix(nullptr,
+		&m_DebugCamera->m_matView, &m_DebugCamera->m_matProj);
 
 
 	m_Tree->Frame();
 
+	if (g_InputData.bLeftClick)
+	{
+		if (GetIntersection())
+		{
+			vector<LNode*> nodelist;
+			T_BOX box;
+			TVector3 vMin, vMax;
+			TVector3 vRange(10, 10, 10);
+			vMax = m_Select->m_vIntersection + vRange;
+			vMin = m_Select->m_vIntersection - vRange;
+			box.Set(vMax, vMin);
+			if (m_Tree->SelectVertexList(box, nodelist) > 0)
+			{
+				float fWorkRadius = randstep(3.0f, 20.0f); // 무작위값
+				for (auto node : nodelist)
+				{
+					for (UINT iVertex = 0; iVertex < m_Tree->m_pMap->m_VertexList.size(); iVertex++)
+					{
+						TVector3 v0 = m_Tree->m_pMap->m_VertexList[iVertex].p;
+						TVector3 v = v0 - m_Select->m_vIntersection;
+						float fDistance = D3DXVec3Length(&v);
+						if (fDistance <= (fWorkRadius + 3.f))
+						{
+							if (fDistance < fWorkRadius)
+							{
+								float fValue = (fDistance / fWorkRadius) * 90.f;
+								float fDot = cosf(DegreeToRadian(fValue));
+								if (m_bUpPicking)
+									m_Tree->m_pMap->m_VertexList[iVertex].p.y += fDot * LGlobal::g_fSPF;
+								if (m_bDownPicking)
+									m_Tree->m_pMap->m_VertexList[iVertex].p.y -= fDot * LGlobal::g_fSPF;
+
+								if (node->m_tBox.vMin.y > m_Tree->m_pMap->m_VertexList[iVertex].p.y)
+								{
+									node->m_tBox.vMin.y = m_Tree->m_pMap->m_VertexList[iVertex].p.y;
+								}
+								if (node->m_tBox.vMax.y > m_Tree->m_pMap->m_VertexList[iVertex].p.y)
+								{
+									node->m_tBox.vMax.y = m_Tree->m_pMap->m_VertexList[iVertex].p.y;
+								}
+							}
+							m_Tree->m_pMap->CalcPerVertexNormalsFastLookup();
+						}
+					}
+					node->m_tBox.vCenter = (node->m_tBox.vMax + node->m_tBox.vMin) * 0.5f;
+					node->m_tBox.vAxis[0] = { 1,0,0 };
+					node->m_tBox.vAxis[1] = { 0,1,0 };
+					node->m_tBox.vAxis[2] = { 0,0,1 };
+					node->m_tBox.fExtent[0] = node->m_tBox.vMax.x - node->m_tBox.vCenter.x;
+					node->m_tBox.fExtent[1] = node->m_tBox.vMax.y - node->m_tBox.vCenter.y;
+					node->m_tBox.fExtent[2] = node->m_tBox.vMax.z - node->m_tBox.vCenter.z;
+				}
+				m_Tree->m_pMap->UpdateVertexBuffer();
+			}
+			// 오브젝트 position update
+			/*for (auto npc : m_WorldObjectList)
+			{
+				TVector3 vPos = npc->m_vPos;
+				vPos.y = npc->m_matWorld._42 =
+					m_Quadtree.m_pMap->GetHeight(vPos.x, vPos.z);
+				npc->SetPos(vPos);
+			}*/
+		}
+	}
+
+	if (m_bObjectPicking)
+	{
+		if (GetIntersection())
+		{
+			/*if (m_pTitle && m_pTitle->m_pMap)
+			{
+				LoadFbx(m_szSelectFbxFile, m_Select.m_vIntersection);
+			};*/
+		}
+	}
+
+	static float fStep = 0.f;
+	fStep += LGlobal::g_fSPF;
+	if (m_bSplatting && fStep > 0.1f)
+	{
+		if (GetIntersection())
+		{
+			fStep = 0.f;
+			m_Tree->Splatting(m_Select->m_vIntersection, m_iSplattingTexIndex);
+		}
+	}
 	return true;
 }
 
@@ -110,6 +198,7 @@ bool Terrain::Render()
 
 bool Terrain::Release()
 {
+	
 	return true;
 }
 
@@ -151,6 +240,31 @@ ID3D11Buffer* Terrain::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data
 		}
 	}
 	return pBuffer;
+}
+
+bool Terrain::GetIntersection()
+{
+	if (g_InputData.bLeftClick)
+	{
+		for (auto node : m_Tree->m_LeafNodeList)
+		{
+			UINT index = 0;
+			UINT iNumFace = node->m_IndexList.size() / 3;
+			for (UINT face = 0; face < iNumFace; face++)
+			{
+				UINT i0 = node->m_IndexList[index + 0];
+				UINT i1 = node->m_IndexList[index + 1];
+				UINT i2 = node->m_IndexList[index + 2];
+				TVector3 v0 = m_Tree->m_pMap->m_VertexList[i0].p;
+				TVector3 v1 = m_Tree->m_pMap->m_VertexList[i1].p;
+				TVector3 v2 = m_Tree->m_pMap->m_VertexList[i2].p;
+				if (m_Select->ChkPick(v0, v1, v2))
+					return true;
+				index += 3;
+			}
+		}
+	}
+	return false;
 }
 
 Terrain::~Terrain() {}

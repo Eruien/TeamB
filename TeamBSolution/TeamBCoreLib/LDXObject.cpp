@@ -135,6 +135,13 @@ bool LDXObject::Create(std::wstring shaderFileName, std::wstring texFileName)
 	return true;
 }
 
+void LDXObject::UpdateVertexBuffer()
+{
+	m_pImmediateContext->UpdateSubresource(
+		m_pVertexBuffer.Get(), 0, nullptr,
+		&m_VertexList.at(0), 0, 0);
+}
+
 bool LDXObject::Init()
 {
 	return true;

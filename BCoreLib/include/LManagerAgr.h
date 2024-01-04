@@ -1,5 +1,6 @@
 #pragma once
 #include "LStd.h"
+#include "LGlobal.h"
 
 class LTexture
 {
@@ -10,10 +11,17 @@ public:
 		return input;
 	}
 public:
-	ID3D11ShaderResourceView* m_pTexSRV = nullptr;
+	ComPtr<ID3D11ShaderResourceView> m_pTexSRV = nullptr;
+	TVector2 size;
 public:
 	void Apply();
 	bool Load(std::wstring fileName);
+
+	// 시진추가. 저장기능
+	const shared_ptr<::ScratchImage> GetInfo();
+	TVector2 GetSize() { return size; }
+	void Save(wstring path);
+	void CreateTexture(int width, int height);
 public:
 	bool Release();
 public:

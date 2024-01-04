@@ -110,6 +110,7 @@ void LQurdtree::BuildQurdTree(LMap* pMap, DWORD row, DWORD col)
 	m_Col = col;
 	m_RowCellSize = m_Row - 1;
 	m_ColCellSize = m_Col - 1;
+	m_pCamera = LGlobal::g_pMainCamera;
 	
 	DWORD topLeft = 0;
 	DWORD topRight = m_ColCellSize;
@@ -128,6 +129,7 @@ void LQurdtree::BuildQurdTree(LMap* pMap, DWORD row, DWORD col)
 	}
 
 	LDXObject::CreateIndexBuffer();
+	//CreateAlphaTexture(LGlobal::g_pDevice.Get(), 1024, 1024);
 }
 
 TVector2 LQurdtree::GetHeightFormNode(LNode* pNode)
@@ -237,6 +239,117 @@ void LQurdtree::UpdateIndexBuffer()
 	if (m_IndexList.empty()) return;
 }
 
+UINT LQurdtree::SelectVertexList(T_BOX tBox, vector<LNode*>& selectNodeList)
+{
+	for (auto node : m_LeafNodeList)
+	{
+		if (node != nullptr)
+		{
+			TCollisionType ret = TCollision::BoxToBox(node->m_tBox, tBox);
+			if (ret > 0)
+			{
+				selectNodeList.push_back(node);
+			}
+		}
+	}
+	return selectNodeList.size();
+}
+
+HRESULT LQurdtree::CreateAlphaTexture(ID3D11Device* pDevice, DWORD dwWidth, DWORD dwHeight)
+{
+	HRESULT hr;
+	D3D11_TEXTURE2D_DESC td;
+	ZeroMemory(&td, sizeof(td));
+	td.Width = dwWidth;
+	td.Height = dwHeight;
+	td.MipLevels = 1;
+	td.ArraySize = 1;
+	td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	td.SampleDesc.Count = 1;
+	td.SampleDesc.Quality = 0;
+	td.Usage = D3D11_USAGE_DEFAULT;
+	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	td.CPUAccessFlags = 0;
+	td.MiscFlags = 0;
+
+	m_fAlphaData = new BYTE[dwWidth * dwHeight * 4];
+	for (UINT y = 0; y < dwHeight; y++)
+	{
+		for (UINT x = 0; x < dwWidth; x++)
+		{
+			BYTE* pixel = &m_fAlphaData[dwWidth * y * 4 + x * 4];
+			pixel[0] = 0;//r
+			pixel[1] = 0;//g
+			pixel[2] = 0;//b
+			pixel[3] = 0;//a
+		}
+	}
+	D3D11_SUBRESOURCE_DATA initData;
+	initData.pSysMem = m_fAlphaData;
+	initData.SysMemPitch = sizeof(BYTE) * 4 * dwWidth;
+	initData.SysMemSlicePitch = 0;
+	if (FAILED(hr = pDevice->CreateTexture2D(&td, &initData, m_pMaskAlphaTex.GetAddressOf())))
+	{
+		return hr;
+	}
+	if (FAILED(hr = pDevice->CreateShaderResourceView(m_pMaskAlphaTex.Get(), NULL, m_pMaskAlphaTexSRV.GetAddressOf())))
+	{
+		return hr;
+	}
+
+	return hr;
+}
+
+void LQurdtree::Splatting(TVector3 vIntersection, UINT iSplattingTexIndex, float fSplattingRadius)
+{
+	UINT _iSplattingIndex = iSplattingTexIndex;
+	UINT const DataSize = sizeof(BYTE) * 4;
+	UINT const RowPitch = DataSize * 1024;
+	UINT const DepthPitch = 0;
+	
+	// pick data -> texture data
+	// 0 ~ 64 -> 0 ~ 1
+	// -32 ~ +32 -> 0 ~ 1024 -> 0 ~ 1
+	TVector2 vTexIndex;
+	TVector2 vUV;
+	TVector2 vMaxSize = { +32, +32 };
+	UINT iTexSize = 1024;
+	TVector3 vTexPos;
+	TVector3 vPickPos = vIntersection;
+	
+	for (UINT y = 0; y < iTexSize; y++)
+	{
+		vTexIndex.y = y;
+		for (UINT x = 0; x < iTexSize; x++)
+		{
+			vTexIndex.x = x;
+			// -1 ~ +1
+			vUV = TVector2((vTexIndex.x / (float)iTexSize) * 2.f - 1.f,
+							-(vTexIndex.y / (float)iTexSize * 2.f - 1.f));
+			// -32 ~ +32
+			vTexPos = TVector3(vUV.x * vMaxSize.x, 0.f, vUV.y * vMaxSize.y);
+			BYTE* pixel = &m_fAlphaData[iTexSize * y * 4 + x * 4];
+			TVector3 t = vPickPos - vTexPos;
+			float fRadius = D3DXVec3Length(&t);
+
+			if (fRadius <= fSplattingRadius)
+			{
+				float fDot = 1.f - (fRadius / fSplattingRadius);
+				float fAlpha = fDot * 255.f;
+				if (_iSplattingIndex == 0)
+					pixel[0] = min(255.f, pixel[0] + fAlpha);
+				if (_iSplattingIndex == 1)
+					pixel[1] = min(255.f, pixel[1] + fAlpha);
+				if (_iSplattingIndex == 2)
+					pixel[2] = min(255.f, pixel[2] + fAlpha);
+				if (_iSplattingIndex == 3)
+					pixel[3] = min(255.f, pixel[3] + fAlpha);
+			}
+		}
+	}
+	m_pMap->m_pImmediateContext->UpdateSubresource(m_pMaskAlphaTex.Get(), 0, nullptr, m_fAlphaData, RowPitch, DepthPitch);
+}
+
 bool LQurdtree::Init()
 {
 	return true;
@@ -247,6 +360,7 @@ bool LQurdtree::Frame()
 	m_NodeList.clear();
 	m_LeafNodeList.clear();
 	m_IndexList.clear();
+	
 
 	FindNode(m_RootNode);
 
@@ -269,6 +383,19 @@ bool LQurdtree::Render()
 {
 	m_pMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 	m_pMap->PreRender();
+
+	/*ID3D11ShaderResourceView* pSRV = nullptr;
+	m_pImmediateContext->PSSetShaderResources(1, 1, m_pMaskAlphaTexSRV.GetAddressOf());
+	m_pImmediateContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+	if (m_TexArray[0] != nullptr)
+	{
+		m_pImmediateContext->PSSetShaderResources(2, 1, &m_TexArray[1]->m_pTexSRV);
+		m_pImmediateContext->PSSetShaderResources(3, 1, &m_TexArray[2]->m_pTexSRV);
+		m_pImmediateContext->PSSetShaderResources(4, 1, &m_TexArray[3]->m_pTexSRV);
+		m_pImmediateContext->PSSetShaderResources(5, 1, &m_TexArray[4]->m_pTexSRV);
+	}
+	m_pImmediateContext->IASetIndexBuffer();*/
+
 	m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
 	return true;

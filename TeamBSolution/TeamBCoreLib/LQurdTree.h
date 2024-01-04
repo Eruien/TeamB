@@ -2,11 +2,15 @@
 #include "LNode.h"
 #include "LObject.h"
 
+
 class LQurdtree : public LObject
 {
 public:
 	// map의 행렬을 node마다 계산하기 위한 요소들
 	LMap* m_pMap = nullptr;
+	LCamera* m_pCamera = nullptr;
+	LTexture* m_TexArray[5];
+
 	DWORD m_Row = 0;
 	DWORD m_Col = 0;
 	DWORD m_RowCellSize = 0;
@@ -18,6 +22,14 @@ public:
 	LNode* m_RootNode = nullptr;
 	int m_TreeDepth = 0;
 	std::queue<LNode*> m_Queue;
+
+	// for splatting
+	BYTE* m_fAlphaData;
+	ComPtr<ID3D11Texture2D> m_pMaskAlphaTex;
+	ComPtr<ID3D11ShaderResourceView> m_pMaskAlphaTexSRV;
+	HRESULT CreateAlphaTexture(ID3D11Device* pDevice, DWORD dwWidth, DWORD dwHeight);
+	void Splatting(TVector3 vIntersection, UINT iSplattingTexIndex, float fSplattingRadius = 5.f);
+	
 public:
 	void SetDepth(int depth);
 public:
@@ -29,6 +41,10 @@ public:
 	void FindNode(LNode* pNode);
 	void AddLeafNode(LNode* pNode);
 	void UpdateIndexBuffer();
+
+public: // 시진추가 for picking
+	UINT SelectVertexList(T_BOX tBox, vector<LNode*>& selectNodeList);
+	// for splatting
 public:
 	bool Init() override;
 	bool Frame() override;
