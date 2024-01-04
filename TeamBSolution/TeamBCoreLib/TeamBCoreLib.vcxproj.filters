@@ -30,25 +30,28 @@
     <ClCompile Include="LWindow.cpp" />
     <ClCompile Include="LWrite.cpp" />
     <ClCompile Include="TMath.cpp" />
-    <ClCompile Include="imgui_impl_win32.cpp">
+    <ClCompile Include="..\..\imgui\Include\imgui_tables.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
+    <ClCompile Include="..\..\imgui\Include\imgui_widgets.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
+    <ClCompile Include="..\..\imgui\Include\ImGuiFileDialog.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="imgui.cpp">
+    <ClCompile Include="..\..\imgui\Include\imgui.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
+    <ClCompile Include="..\..\imgui\Include\imgui_demo.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
+    <ClCompile Include="..\..\imgui\Include\imgui_draw.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_impl_dx11.cpp">
+    <ClCompile Include="..\..\imgui\Include\imgui_impl_dx11.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\Include\imgui_impl_win32.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,28 +84,52 @@
     <ClInclude Include="LWindow.h" />
     <ClInclude Include="LWrite.h" />
     <ClInclude Include="TMath.h" />
-    <ClInclude Include="imgui_impl_dx11.h">
+    <ClInclude Include="..\..\imgui\Include\imgui_internal.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_impl_win32.h">
+    <ClInclude Include="..\..\imgui\Include\ImGuiFileDialog.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_internal.h">
+    <ClInclude Include="..\..\imgui\Include\ImGuiFileDialogConfig.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imstb_rectpack.h">
+    <ClInclude Include="..\..\imgui\Include\ImGuizmo.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imstb_textedit.h">
+    <ClInclude Include="..\..\imgui\Include\ImSequencer.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imstb_truetype.h">
+    <ClInclude Include="..\..\imgui\Include\imstb_rectpack.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imconfig.h">
+    <ClInclude Include="..\..\imgui\Include\imstb_textedit.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
-    <ClInclude Include="imgui.h">
+    <ClInclude Include="..\..\imgui\Include\imstb_truetype.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\ImZoomSlider.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\GraphEditor.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\imconfig.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\ImCurveEdit.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\ImGradient.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\imgui.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\imgui_impl_dx11.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\Include\imgui_impl_win32.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
   </ItemGroup>

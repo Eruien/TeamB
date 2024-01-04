@@ -21,6 +21,9 @@ public:
 	virtual bool Frame() override;
 	virtual bool Render() override;
 	virtual bool Release() override;
+
+	void SetName(string name) { _name = name; };
+	string GetName() {	return _name;};
 	//애니메이션
 	void CreateAnimation(animInfo info);
 	Animation* GetCurrentAnimation();
@@ -45,6 +48,7 @@ public:
 
 
 protected:
+	string _name;
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 };
 

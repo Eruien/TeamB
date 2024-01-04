@@ -4,6 +4,7 @@
 #include "LStd.h"
 #include "LInput.h"
 #include "LWrite.h"
+#include "PickingUI.h"
 Resize2D::Resize2D() : MonoBehaviour(L"Resize2D")
 {
 }
@@ -45,44 +46,47 @@ void Resize2D::Frame()
 	_barSize,
 	GetGameObject()->GetRect().height };
 	barPicking = false;
-
-	if (TBASIS_EX::TRectangle::RectToPoint(rTop, {(long)MOUSEX,(long)MOUSEY}))
-	{
-		SetCursor(LoadCursor(NULL, IDC_SIZENS));
-		barPicking = true;
-		if (LINPUT.m_MouseState[0] == KEY_HOLD)
-		{
-			GetGameObject()->m_vScale.y = (MOUSEY- GetGameObject()->m_vPosition.y)*2;
-			//GetGameObject()->m_vPosition.y = GetGameObject()->m_vScale.y / 2 + GetGameObject()->m_vPosition.y;
-			
-		}
-	}
-	else if (TBASIS_EX::TRectangle::RectToPoint(rBottom, { (long)MOUSEX,(long)MOUSEY }))
-	{
-		SetCursor(LoadCursor(NULL, IDC_SIZENS));
-		barPicking = true;
-		if (LINPUT.m_MouseState[0] == KEY_HOLD)
-		{
-			GetGameObject()->m_vScale.y = (MOUSEY - GetGameObject()->m_vPosition.y) * 2;
-		}
-	}
-	else if (TBASIS_EX::TRectangle::RectToPoint(rLeft, { (long)MOUSEX,(long)MOUSEY }))
-	{
-		SetCursor(LoadCursor(NULL, IDC_SIZEWE));
-		barPicking = true;
-		if (LINPUT.m_MouseState[0] == KEY_HOLD)
-		{
-			GetGameObject()->m_vScale.x = (MOUSEX - GetGameObject()->m_vPosition.x) * 2;
-		}
-	}
-	else if (TBASIS_EX::TRectangle::RectToPoint(rRight, { (long)MOUSEX,(long)MOUSEY }))
-	{
-		SetCursor(LoadCursor(NULL, IDC_SIZEWE));
-		barPicking = true;
-		if (LINPUT.m_MouseState[0] == KEY_HOLD)
-		{
-			GetGameObject()->m_vScale.x = (MOUSEX - GetGameObject()->m_vPosition.x) * 2;
-		}
-	}
 	
+	if (static_pointer_cast<PickingUI>(GetGameObject()->GetScript(L"PickingUI"))->GetIsSelected())
+	{
+
+		if (TBASIS_EX::TRectangle::RectToPoint(rTop, { (long)MOUSEX,(long)MOUSEY }))
+		{
+			SetCursor(LoadCursor(NULL, IDC_SIZENS));
+			barPicking = true;
+			if (LINPUT.m_MouseState[0] == KEY_HOLD)
+			{
+				GetGameObject()->m_vScale.y = (MOUSEY - GetGameObject()->m_vPosition.y) * 2;
+				//GetGameObject()->m_vPosition.y = GetGameObject()->m_vScale.y / 2 + GetGameObject()->m_vPosition.y;
+
+			}
+		}
+		else if (TBASIS_EX::TRectangle::RectToPoint(rBottom, { (long)MOUSEX,(long)MOUSEY }))
+		{
+			SetCursor(LoadCursor(NULL, IDC_SIZENS));
+			barPicking = true;
+			if (LINPUT.m_MouseState[0] == KEY_HOLD)
+			{
+				GetGameObject()->m_vScale.y = (MOUSEY - GetGameObject()->m_vPosition.y) * 2;
+			}
+		}
+		else if (TBASIS_EX::TRectangle::RectToPoint(rLeft, { (long)MOUSEX,(long)MOUSEY }))
+		{
+			SetCursor(LoadCursor(NULL, IDC_SIZEWE));
+			barPicking = true;
+			if (LINPUT.m_MouseState[0] == KEY_HOLD)
+			{
+				GetGameObject()->m_vScale.x = (MOUSEX - GetGameObject()->m_vPosition.x) * 2;
+			}
+		}
+		else if (TBASIS_EX::TRectangle::RectToPoint(rRight, { (long)MOUSEX,(long)MOUSEY }))
+		{
+			SetCursor(LoadCursor(NULL, IDC_SIZEWE));
+			barPicking = true;
+			if (LINPUT.m_MouseState[0] == KEY_HOLD)
+			{
+				GetGameObject()->m_vScale.x = (MOUSEX - GetGameObject()->m_vPosition.x) * 2;
+			}
+		}
+	}
 	};

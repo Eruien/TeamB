@@ -24,6 +24,9 @@ void DragUI::Init()
 
 void DragUI::Frame()
 {
-	if (static_pointer_cast<PickingUI>(GetGameObject()->GetScript(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && !_resize2D->GetisBarPicking() )
-		GetGameObject()->SetPos({ (float)MOUSEX,(float)MOUSEY, 1 });
+	if (static_pointer_cast<PickingUI>(GetGameObject()->GetScript(L"PickingUI"))->GetIsSelected())
+	{
+		if (static_pointer_cast<PickingUI>(GetGameObject()->GetScript(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && !_resize2D->GetisBarPicking())
+			GetGameObject()->SetPos({ (float)MOUSEX,(float)MOUSEY, 1 });
+	}
 }
