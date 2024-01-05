@@ -16,8 +16,9 @@ bool Terrain::Init()
 
 
 
-	m_DebugCamera = std::make_shared<LDebugCamera>();
-	m_DebugCamera->CreateLookAt({ 0.0f, 700.0f, -500.0f }, { 0.0f, 0.0f, 1.0f });
+	m_DebugCamera = std::make_shared<CamForTool>();
+	m_DebugCamera->m_fCameraPitch = 89.6f;
+	m_DebugCamera->CreateLookAt({ 0.0f, 1000.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0, 0, 1 });
 	m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f); // SetProjMatrix
 	LGlobal::g_pMainCamera = m_DebugCamera.get();
 
@@ -74,13 +75,13 @@ bool Terrain::Frame()
 			vector<LNode*> nodelist;
 			T_BOX box;
 			TVector3 vMin, vMax;
-			TVector3 vRange(10, 10, 10);
+			TVector3 vRange(100, 100, 100);
 			vMax = m_Select->m_vIntersection + vRange;
 			vMin = m_Select->m_vIntersection - vRange;
 			box.Set(vMax, vMin);
 			if (m_Tree->SelectVertexList(box, nodelist) > 0)
 			{
-				float fWorkRadius = randstep(3.0f, 20.0f); // 무작위값
+				float fWorkRadius = 20.f; // randstep(3.0f, 20.0f); // 무작위값
 				for (auto node : nodelist)
 				{
 					for (UINT iVertex = 0; iVertex < m_Tree->m_pMap->m_VertexList.size(); iVertex++)
@@ -95,9 +96,9 @@ bool Terrain::Frame()
 								float fValue = (fDistance / fWorkRadius) * 90.f;
 								float fDot = cosf(DegreeToRadian(fValue));
 								if (m_bUpPicking)
-									m_Tree->m_pMap->m_VertexList[iVertex].p.y += fDot * LGlobal::g_fSPF;
+									m_Tree->m_pMap->m_VertexList[iVertex].p.y += fDot * 100; // += fDot *LGlobal::g_fSPF;
 								if (m_bDownPicking)
-									m_Tree->m_pMap->m_VertexList[iVertex].p.y -= fDot * LGlobal::g_fSPF;
+									m_Tree->m_pMap->m_VertexList[iVertex].p.y -= fDot * 100;    // -= fDot *LGlobal::g_fSPF;
 
 								if (node->m_tBox.vMin.y > m_Tree->m_pMap->m_VertexList[iVertex].p.y)
 								{
@@ -108,7 +109,7 @@ bool Terrain::Frame()
 									node->m_tBox.vMax.y = m_Tree->m_pMap->m_VertexList[iVertex].p.y;
 								}
 							}
-							m_Tree->m_pMap->CalcPerVertexNormalsFastLookup();
+							//
 						}
 					}
 					node->m_tBox.vCenter = (node->m_tBox.vMax + node->m_tBox.vMin) * 0.5f;
@@ -120,7 +121,9 @@ bool Terrain::Frame()
 					node->m_tBox.fExtent[2] = node->m_tBox.vMax.z - node->m_tBox.vCenter.z;
 				}
 				m_Tree->m_pMap->UpdateVertexBuffer();
+				
 			}
+			
 			// 오브젝트 position update
 			/*for (auto npc : m_WorldObjectList)
 			{
@@ -130,6 +133,7 @@ bool Terrain::Frame()
 				npc->SetPos(vPos);
 			}*/
 		}
+		//m_Tree->m_pMap->CalcPerVertexNormalsFastLookup();
 	}
 
 	if (m_bObjectPicking)
@@ -244,7 +248,8 @@ ID3D11Buffer* Terrain::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data
 
 bool Terrain::GetIntersection()
 {
-	if (g_InputData.bLeftClick)
+	
+	if (LInput::GetInstance().m_MouseState[0] == KEY_PUSH || LInput::GetInstance().m_MouseState[0] == KEY_HOLD)
 	{
 		for (auto node : m_Tree->m_LeafNodeList)
 		{

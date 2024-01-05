@@ -143,12 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CamForTool.cpp" />
     <ClCompile Include="LMapLOD.cpp" />
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="SNode.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CamForTool.h" />
     <ClInclude Include="LMapLOD.h" />
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="SNode.h" />

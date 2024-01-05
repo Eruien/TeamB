@@ -11,7 +11,7 @@ bool LDebugCamera::Init()
 bool LDebugCamera::Frame()
 {
 	if(g_InputData.bSpace)
-		m_fSpeed += LGlobal::g_fSPF * m_fSpeed;
+		m_fSpeed += LGlobal::g_fSPF * m_fSpeed * 2;
 	m_fSpeed -= LGlobal::g_fSPF * m_fSpeed * 0.5f;
 	m_fSpeed = max(10.0f, m_fSpeed);
 	if (g_InputData.bWKey)

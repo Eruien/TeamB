@@ -5,11 +5,13 @@
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="SNode.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="CamForTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMapLOD.h" />
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="SNode.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="CamForTool.h" />
   </ItemGroup>
 </Project>
