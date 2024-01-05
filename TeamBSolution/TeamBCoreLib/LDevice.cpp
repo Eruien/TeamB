@@ -3,6 +3,11 @@
 bool LDevice::SetDevice()
 {
     UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+
+#ifdef _DEBUG
+    flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
     D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE;
     D3D_FEATURE_LEVEL featureLevels = D3D_FEATURE_LEVEL_11_0;
     

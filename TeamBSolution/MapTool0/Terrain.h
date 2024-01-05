@@ -28,7 +28,7 @@ struct LIGHT_CONSTANT_BUFFER
 class Terrain : public LCore
 {
 public:
-	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
+	shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 	LHeightMap* m_HeightMap = nullptr;
 	LQurdtree* m_Tree = nullptr;
 	shared_ptr<LSelect> m_Select = nullptr;
@@ -43,7 +43,7 @@ public:
 public:
 
 	bool m_bObjectPicking = false;
-	bool m_bUpPicking = true;
+	bool m_bUpPicking = false;
 	bool m_bDownPicking = false;
 	bool m_bPlatPicking = false;
 	bool m_bSplatting = false;

@@ -396,6 +396,8 @@ bool LQurdtree::Render()
 	}
 	m_pImmediateContext->IASetIndexBuffer();*/
 
+	m_pImmediateContext->PSSetShaderResources(0, 1, m_pMap->m_Tex->m_pTexSRV.GetAddressOf());
+
 	m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
 	return true;

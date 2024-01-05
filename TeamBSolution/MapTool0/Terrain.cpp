@@ -54,9 +54,9 @@ bool Terrain::Init()
 bool Terrain::Frame()
 {
 	//m_pDefaultCamera->Frame();
-	m_vLightVector.x = 100.f;
-	m_vLightVector.y = 100.f;
-	m_vLightVector.z = 0.f;
+	m_vLightVector.x = 1.f;
+	m_vLightVector.y = 1.f;
+	m_vLightVector.z = 1.f;
 	
 	D3DXVec3Normalize(&m_vLightVector, &m_vLightVector);
 	m_vLightVector *= -1.f;
@@ -67,7 +67,7 @@ bool Terrain::Frame()
 
 	m_Tree->Frame();
 
-	if (g_InputData.bLeftClick)
+	if (m_bUpPicking || m_bDownPicking)
 	{
 		if (GetIntersection())
 		{
@@ -159,11 +159,11 @@ bool Terrain::Frame()
 bool Terrain::Render()
 {
 	m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 0);
-	m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0, 0xffffffff);
+	//m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), 0, 0xffffffff);
 
 	TMatrix matWorld, matScale;
 	D3DXMatrixScaling(&matScale, 100, 100, 100);
-	D3DXMatrixRotationY(&matWorld, LGlobal::g_fGameTimer);
+	//D3DXMatrixRotationY(&matWorld, LGlobal::g_fGameTimer);
 	D3DXMatrixMultiply(&matWorld, &matScale, &matWorld);
 	matWorld._42 = 200.0f;
 

@@ -130,6 +130,7 @@ bool LDXObject::Create(std::wstring shaderFileName, std::wstring texFileName)
 	m_Shader = LManager<LShader>::GetInstance().Load(shaderFileName);
 	CreateLayout();
 	// obj공용 // m_pTexSRV 생성
+
 	m_Tex = LManager<LTexture>::GetInstance().Load(texFileName);
 
 	return true;
@@ -166,7 +167,7 @@ bool LDXObject::PreRender()
 	if (m_Tex)
 	{
 		// PSSetShaderResources // ps에 m_pTexSRV 세팅
-		m_Tex->Apply();
+		//m_Tex->Apply();
 	}
 
 	UINT stride = sizeof(SimpleVertex);

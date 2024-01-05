@@ -170,6 +170,12 @@ bool LShader::LoadVertexShader(std::wstring fileName)
 {
 	HRESULT hr;
 	ID3DBlob* ErrorCode;
+	UINT flag = NULL;
+#ifdef _DEBUG
+	flag |= D3DCOMPILE_DEBUG;
+#endif
+	
+	
 
 	hr = D3DCompileFromFile(
 		fileName.c_str(),
@@ -177,7 +183,7 @@ bool LShader::LoadVertexShader(std::wstring fileName)
 		NULL,
 		"VS",
 		"vs_5_0",
-		NULL,
+		flag,
 		NULL,
 		&m_pVSBlob,
 		&ErrorCode);
@@ -211,6 +217,10 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 {
 	ID3DBlob* ErrorCode;
 	HRESULT hr;
+	UINT flag = NULL;
+#ifdef _DEBUG
+	flag |= D3DCOMPILE_DEBUG;
+#endif
 
 	hr = D3DCompileFromFile(
 		fileName.c_str(),
@@ -218,7 +228,7 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 		NULL,
 		"PS",
 		"ps_5_0",
-		NULL,
+		flag,
 		NULL,
 		&m_pPSBlob,
 		&ErrorCode);
