@@ -18,7 +18,7 @@ void imgui_test::Frame()
 void imgui_test::Render()
 {
 
-    if (_isSave)
+    if (_isSaveWindow)
     {
         ImGui::OpenPopup("Save?");
         if (ImGui::BeginPopupModal("Save?",0, ImGuiWindowFlags_AlwaysAutoResize))
@@ -27,7 +27,7 @@ void imgui_test::Render()
 
             if (ImGui::Button("OK", ImVec2(100.f, 25.f)))
             {
-                _isSave = false;
+                _isSaveWindow = false;
                 ImGui::CloseCurrentPopup();
             }
 
@@ -36,7 +36,7 @@ void imgui_test::Render()
            
             if (ImGui::Button("Cancle", ImVec2(100.f, 25.f)))
             {
-                _isSave = false;
+                _isSaveWindow = false;
                 ImGui::CloseCurrentPopup();
             }
             ImGui::EndPopup();
@@ -77,7 +77,7 @@ void imgui_test::Test()
 
             if (ImGui::MenuItem("Save"))
             {
-                _isSave = true;
+                _isSaveWindow = true;
             }
 
 

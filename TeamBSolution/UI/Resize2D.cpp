@@ -1,5 +1,5 @@
 #include "Resize2D.h"
-#include "KSpriteObj.h"
+#include "KObject.h"
 #include "LGlobal.h"
 #include "LStd.h"
 #include "LInput.h"
@@ -47,7 +47,7 @@ void Resize2D::Frame()
 	GetGameObject()->GetRect().height };
 	barPicking = false;
 	
-	if (static_pointer_cast<PickingUI>(GetGameObject()->GetScript(L"PickingUI"))->GetIsSelected())
+	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected())
 	{
 
 		if (TBASIS_EX::TRectangle::RectToPoint(rTop, { (long)MOUSEX,(long)MOUSEY }))

@@ -5,7 +5,7 @@
     <ClCompile Include="MoveObject.cpp">
       <Filter>Script</Filter>
     </ClCompile>
-    <ClCompile Include="KSpriteObj.cpp">
+    <ClCompile Include="KObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="MonoBehaviour.cpp">
@@ -36,13 +36,20 @@
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="KGlobal.cpp" />
+    <ClCompile Include="ImguiDetail.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
     <ClInclude Include="MoveObject.h">
       <Filter>Script</Filter>
     </ClInclude>
-    <ClInclude Include="KSpriteObj.h">
+    <ClInclude Include="KObject.h">
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="MonoBehaviour.h">
@@ -73,6 +80,13 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="KGlobal.h" />
+    <ClInclude Include="ImguiDetail.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Script">

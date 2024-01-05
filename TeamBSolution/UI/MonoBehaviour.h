@@ -1,6 +1,6 @@
 #pragma once
 #include "LStd.h"
-class KSpriteObj;
+class KObject;
 class MonoBehaviour
 {
 public:
@@ -12,12 +12,12 @@ public:
 	 virtual void Frame() { };
 	
 private:
-	friend class KSpriteObj;
+	friend class KObject;
 public:
-	void SetGameObject(shared_ptr<KSpriteObj> gameObject) { _gameObject = gameObject; }
-	shared_ptr<KSpriteObj> GetGameObject() {return _gameObject.lock();};
+	void SetGameObject(shared_ptr<KObject> gameObject) { _gameObject = gameObject; }
+	shared_ptr<KObject> GetGameObject() {return _gameObject.lock();};
 protected:
 	wstring _name;
-	weak_ptr<KSpriteObj> _gameObject;
+	weak_ptr<KObject> _gameObject;
 };
 

@@ -1,7 +1,7 @@
 #include "MoveObject.h"
 #include "LGlobal.h"
 #include "LInput.h"
-#include "KSpriteObj.h"
+#include "KObject.h"
 
 MoveObject::MoveObject() : MonoBehaviour(L"MoveObject")
 {
