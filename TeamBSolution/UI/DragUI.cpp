@@ -5,6 +5,7 @@
 #include "LInput.h"
 #include "LGlobal.h"
 #include "Resize2D.h"
+#include "Sample.h"
 DragUI::DragUI() : MonoBehaviour(L"DragUI")
 {
 	
@@ -24,9 +25,25 @@ void DragUI::Init()
 
 void DragUI::Frame()
 {
-	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected())
+	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !Sample::s_isMouseInImGuiWindow)
 	{
-		if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && !_resize2D->GetisBarPicking())
-			GetGameObject()->SetPos({ (float)MOUSEX,(float)MOUSEY, 1 });
+
+
+        if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && !_resize2D->GetisBarPicking()) {
+            if (!_isDragging) {
+                // 마우스 버튼이 처음 눌렸을 때
+                offset = GetGameObject()->m_vPosition - TVector3((float)MOUSEX, (float)MOUSEY, 1);
+                _isDragging = true;
+            }
+            else {
+                // 마우스 버튼이 눌린 상태에서 마우스가 이동하는 경우
+                GetGameObject()->SetPos(TVector3((float)MOUSEX, (float)MOUSEY, 1) + offset);
+            }
+        }
+        else {
+            // 마우스 버튼이 떼어진 경우
+            _isDragging = false;
+        }
+
 	}
 }

@@ -12,5 +12,7 @@ public:
     virtual void Frame() override;
 private:
     shared_ptr<Resize2D> _resize2D;
+    bool _isDragging = false;
+    TVector3 offset = { 0,0,0 };
 };
 

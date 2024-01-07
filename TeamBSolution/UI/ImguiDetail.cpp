@@ -1,5 +1,5 @@
-#include "ImguiDetail.h"
 #include "KObject.h"
+#include "ImguiDetail.h"
 #include "PickingUI.h"
 #include "ChangeTexture.h"
 #include "LGlobal.h"
@@ -82,11 +82,11 @@ void ImguiDetail::Frame()
 		if (ImGui::Button("Load Texture From File"))
 		{
 			ImGuiFileDialog::Instance()->OpenDialog("ChooseTexture", "Choose Texture File", ".png", ".");
-			
-		}
-		
 
-			
+		}
+
+
+
 		ImGui::End();
 
 		if (ImGuiFileDialog::Instance()->Display("ChooseTexture"))
@@ -101,9 +101,9 @@ void ImguiDetail::Frame()
 
 				_filePathName = str;
 
-				
 
-				
+
+
 				HRESULT hr = CreateWICTextureFromFile(LGlobal::g_pDevice.Get(), LGlobal::g_pImmediateContext.Get(), _filePathName.c_str(), nullptr, &my_texture);
 				_isTexAcceptWindow = true;
 				if (FAILED(hr))
@@ -116,7 +116,7 @@ void ImguiDetail::Frame()
 			// close
 			ImGuiFileDialog::Instance()->Close();
 		}
-	
+
 		if (my_texture && _isTexAcceptWindow)
 		{
 			ImGui::Image((void*)my_texture, ImVec2(256, 256));
@@ -128,11 +128,12 @@ void ImguiDetail::Frame()
 			if (ImGui::Button("Cancle"))
 			{
 				_isTexAcceptWindow = false;
-				
+
 				//Ã¢´Ý±â
 			}
 		}
 	}
+
 
 
 

@@ -57,11 +57,11 @@ void PickingUI::Frame()
 		{
 			_buttonState = PICKING_STATE::PRESS;
 			_isSelected = true;
-			if (Sample::_clickedObject != nullptr && GetGameObject() != Sample::_clickedObject)
+			if (Sample::s_selectedObject != nullptr && GetGameObject() != Sample::s_selectedObject)
 			{
-				(Sample::_clickedObject->GetScript<PickingUI>(L"PickingUI"))->SetIsSelected(false);
+				(Sample::s_selectedObject->GetScript<PickingUI>(L"PickingUI"))->SetIsSelected(false);
 			}
-			Sample::_clickedObject = GetGameObject();
+			Sample::s_selectedObject = GetGameObject();
 		}
 		else if(LINPUT.m_MouseState[0] == KEY_HOLD)
 			_buttonState = PICKING_STATE::HOLD;

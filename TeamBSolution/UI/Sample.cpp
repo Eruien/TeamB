@@ -2,16 +2,17 @@
 #include "LGlobal.h"
 #include "LPlaneObj.h"
 #include "KObject.h"
-#include "MoveObject.h"
 #include "PickingUI.h"
 #include "DragUI.h"
 #include "Resize2D.h"
-#include "imgui_test.h"
+#include "imgui_menuBar.h"
 #include "ImGuiManager.h"
 #include "ImguiDetail.h"
 #include "Animator.h"
 #include "ChangeTexture.h"
-shared_ptr<KObject> Sample::_clickedObject = nullptr;
+#include "ExitWindow.h"
+shared_ptr<KObject> Sample::s_selectedObject = nullptr;
+bool Sample::s_isMouseInImGuiWindow = false;
 
 bool Sample::Init()
 {
@@ -28,9 +29,12 @@ bool Sample::Init()
 	info.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",1.f });
 	info.keyFrames.push_back({ L"../../res/effect/star3.png",1.f });
 	_imGuiManager = make_shared< ImGuiManager>();
-	_imgui = make_shared< imgui_test>();
+	
+	_imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
+	_imgui_menuBar = make_shared<imgui_menuBar>();
 	_imGuiManager->Init();
-	_imgui->Init();
+	_imGuiObjDetail->Init();
+	_imgui_menuBar->Init();
 
 	
 
@@ -39,7 +43,7 @@ bool Sample::Init()
 	sObj->AddScripts(make_shared<PickingUI>());
 	sObj->AddScripts(make_shared<Resize2D>());
 	sObj->AddScripts(make_shared<DragUI>());
-	sObj->AddScripts(make_shared<ImguiDetail>());
+	//sObj->AddScripts(make_shared<ImguiDetail>());
 	sObj->AddScripts(make_shared<Animator>());
 	sObj->AddScripts(make_shared<ChangeTexture>());
 	sObj->SetPos({ 80,80,0 });
@@ -57,7 +61,7 @@ bool Sample::Init()
 	sObj2->AddScripts(make_shared<PickingUI>());
 	sObj2->AddScripts(make_shared<Resize2D>());
 	sObj2->AddScripts(make_shared<DragUI>());
-	sObj2->AddScripts(make_shared<ImguiDetail>());
+	//sObj2->AddScripts(make_shared<ImguiDetail>());
 	sObj2->AddScripts(make_shared<Animator>());
 	sObj2->AddScripts(make_shared<ChangeTexture>());
 	sObj2->SetPos({ 200,200,0 });
@@ -76,15 +80,16 @@ bool Sample::Init()
 	obj->AddScripts(make_shared<PickingUI>());
 	obj->AddScripts(make_shared<Resize2D>());
 	obj->AddScripts(make_shared<DragUI>());
-	obj->AddScripts(make_shared<ImguiDetail>());
+	//obj->AddScripts(make_shared<ImguiDetail>());
 	obj->AddScripts(make_shared<ChangeTexture>());
+	obj->AddScripts(make_shared<ExitWindow>());
 	obj->SetName("Button3");
 	obj->Set();
 	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/4.png");
 ;	obj->Init();
 	obj->SetPos({ 100,100,1 });
 	obj->SetScale({ 100,100,10 });
-
+	
 	return true;
 }
 
@@ -94,8 +99,8 @@ bool Sample::Frame()
 	// 버튼들의 isClicked 초기화
 
 	_imGuiManager->Frame();
-	_imgui->Frame();
-
+	_imGuiObjDetail->Frame();
+	_imgui_menuBar->Frame();
 
 	
 	
@@ -119,7 +124,8 @@ bool Sample::Render()
 	sObj->Render();
 	sObj2->Render();
 	obj->Render();
-	_imgui->Render();
+	_imGuiObjDetail->Render();
+	_imgui_menuBar->Render();
 	_imGuiManager->Render();
 	return true;
 }

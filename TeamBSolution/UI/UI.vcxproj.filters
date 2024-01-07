@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="MoveObject.cpp">
-      <Filter>Script</Filter>
-    </ClCompile>
     <ClCompile Include="KObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -29,7 +26,7 @@
     <ClCompile Include="DragUI.cpp">
       <Filter>Script</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_test.cpp">
+    <ClCompile Include="imgui_menuBar.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiManager.cpp">
@@ -42,13 +39,16 @@
     <ClCompile Include="Animator.cpp">
       <Filter>Script</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeTexture.cpp" />
+    <ClCompile Include="ChangeTexture.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui_ObjectDetail.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="MoveObject.h">
-      <Filter>Script</Filter>
-    </ClInclude>
     <ClInclude Include="KObject.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -76,7 +76,7 @@
     <ClInclude Include="ImGuiManager.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_test.h">
+    <ClInclude Include="imgui_menuBar.h">
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="KGlobal.h" />
@@ -86,7 +86,13 @@
     <ClInclude Include="Animator.h">
       <Filter>Script</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeTexture.h" />
+    <ClInclude Include="ChangeTexture.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui_ObjectDetail.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Script">
