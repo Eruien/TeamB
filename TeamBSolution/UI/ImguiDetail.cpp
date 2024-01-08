@@ -94,6 +94,7 @@ void ImguiDetail::Frame()
 			// action if OK
 			if (ImGuiFileDialog::Instance()->IsOk())
 			{
+				
 				std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
 				std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 				// action
@@ -114,6 +115,7 @@ void ImguiDetail::Frame()
 			}
 
 			// close
+		
 			ImGuiFileDialog::Instance()->Close();
 		}
 

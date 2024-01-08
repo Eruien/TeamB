@@ -6,6 +6,7 @@
 #include "LGlobal.h"
 #include "Resize2D.h"
 #include "Sample.h"
+
 DragUI::DragUI() : MonoBehaviour(L"DragUI")
 {
 	
@@ -25,7 +26,7 @@ void DragUI::Init()
 
 void DragUI::Frame()
 {
-	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !Sample::s_isMouseInImGuiWindow)
+	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !Sample::s_isMouseInImGuiWindow )
 	{
 
 

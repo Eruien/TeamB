@@ -82,7 +82,7 @@ bool Sample::Init()
 	obj->AddScripts(make_shared<DragUI>());
 	//obj->AddScripts(make_shared<ImguiDetail>());
 	obj->AddScripts(make_shared<ChangeTexture>());
-	obj->AddScripts(make_shared<ExitWindow>());
+	//obj->AddScripts(make_shared<ExitWindow>());
 	obj->SetName("Button3");
 	obj->Set();
 	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/4.png");
@@ -104,10 +104,6 @@ bool Sample::Frame()
 
 	
 	
-
-
-
-
 
 	sObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 	sObj->Frame();

@@ -11,5 +11,6 @@ public:
 	wstring _filePathName;
 	ID3D11ShaderResourceView* my_texture = nullptr;
 	bool _isTexAcceptWindow = false;
+
 };
 

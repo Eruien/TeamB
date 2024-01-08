@@ -6,6 +6,8 @@
 #include <WICTextureLoader.h>
 #pragma comment(lib, "DirectXTK_D.lib")
 #include "Sample.h"
+
+bool Imgui_ObjectDetail::_isDialogWindow = false;
 void Imgui_ObjectDetail::Init()
 {
 }
@@ -85,7 +87,7 @@ void Imgui_ObjectDetail::Frame()
 		if (ImGui::Button("Load Texture From File"))
 		{
 			ImGuiFileDialog::Instance()->OpenDialog("ChooseTexture", "Choose Texture File", ".png", ".");
-
+			_isDialogWindow = true;
 		}
 
 
@@ -95,7 +97,7 @@ void Imgui_ObjectDetail::Frame()
 		if (ImGuiFileDialog::Instance()->Display("ChooseTexture"))
 		{
 	
-		
+			
 			// action if OK
 			if (ImGuiFileDialog::Instance()->IsOk())
 			{
@@ -119,7 +121,7 @@ void Imgui_ObjectDetail::Frame()
 			}
 
 			// close
-
+			_isDialogWindow = false;
 			ImGuiFileDialog::Instance()->Close();
 
 		}

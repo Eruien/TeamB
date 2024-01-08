@@ -48,7 +48,7 @@ void Resize2D::Frame()
 	GetGameObject()->GetRect().height };
 	barPicking = false;
 	
-	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !Sample::s_isMouseInImGuiWindow)
+	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !Sample::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
 	{
 
 		if (TBASIS_EX::TRectangle::RectToPoint(rTop, { (long)MOUSEX,(long)MOUSEY }))

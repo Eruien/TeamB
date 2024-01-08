@@ -45,7 +45,12 @@
     <ClCompile Include="Imgui_ObjectDetail.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ExitWindow.cpp" />
+    <ClCompile Include="ExitWindow.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ModalWindow.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -92,7 +97,12 @@
     <ClInclude Include="Imgui_ObjectDetail.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ExitWindow.h" />
+    <ClInclude Include="ExitWindow.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ModalWindow.h">
+      <Filter>Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Script">

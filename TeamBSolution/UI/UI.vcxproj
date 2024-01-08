@@ -152,6 +152,7 @@
     <ClCompile Include="Imgui_ObjectDetail.cpp" />
     <ClCompile Include="imgui_menuBar.cpp" />
     <ClCompile Include="KGlobal.cpp" />
+    <ClCompile Include="ModalWindow.cpp" />
     <ClCompile Include="PickingUI.cpp" />
     <ClCompile Include="KObject.cpp" />
     <ClCompile Include="MonoBehaviour.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Imgui_ObjectDetail.h" />
     <ClInclude Include="imgui_menuBar.h" />
     <ClInclude Include="KGlobal.h" />
+    <ClInclude Include="ModalWindow.h" />
     <ClInclude Include="PickingUI.h" />
     <ClInclude Include="KObject.h" />
     <ClInclude Include="MonoBehaviour.h" />

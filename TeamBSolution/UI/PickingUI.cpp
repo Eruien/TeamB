@@ -6,7 +6,7 @@
 #include "TMath.h"
 #include "LStd.h"
 #include "Sample.h"
-
+#include "Imgui_ObjectDetail.h"
 
 
 PickingUI::PickingUI() : MonoBehaviour(L"PickingUI")
@@ -51,7 +51,7 @@ void PickingUI::Frame()
 	
 
 	_buttonState = PICKING_STATE::NONE;// 맨마지막에
-	if (TBASIS_EX::TRectangle::RectToPoint(rect, mouse))
+	if (TBASIS_EX::TRectangle::RectToPoint(rect, mouse)&& !Imgui_ObjectDetail::_isDialogWindow)
 	{
 		if (LINPUT.m_MouseState[0] == KEY_PUSH)
 		{
