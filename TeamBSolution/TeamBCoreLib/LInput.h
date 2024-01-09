@@ -79,10 +79,13 @@ public: // for direct input , [½ÃÁø]
 	DIMOUSESTATE	m_DIMouseState;
 	BYTE	m_MouseState[3];
 	BYTE	m_BeforeMouseState[3];
-	BYTE	m_KeyState[256];
+	
 	bool InitDirectInput();
 	bool ShutDownDirectInput();
 	BYTE GetKey(BYTE dwKey);
+
+private:
+	BYTE	m_KeyState[256];
 public:
 	TVector3 m_vOffset = { 0,0,0 };
 	POINT m_MousePos;

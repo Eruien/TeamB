@@ -42,7 +42,7 @@ bool Terrain::Init()
 	// ÇÁ·¯½ºÅÒ ÄÃ¸µ¿ë Æ®¸® 
 	m_Tree = new LQurdtree;
 	m_Tree->Set();
-	m_Tree->m_TreeDepth = 2;
+	m_Tree->m_TreeDepth = 3;
 	// ÇÁ·¯½ºÅÒ ÄÃ¸µÇÒ ¸ÊÀÌ¶û ¸ÊÀÇ Å©±â¸¦ ÀÔ·Â
 	m_Tree->BuildQurdTree(m_HeightMap, 513, 513);
 
