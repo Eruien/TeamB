@@ -15,7 +15,7 @@ void LMainScene::Process()
     std::wstring debugText = L"Key State: " + std::to_wstring(LInput::GetInstance().GetKey(DIK_1));
     LWrite::GetInstance().AddText(debugText, 320.0f, 400.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-     if (LInput::GetInstance().GetKey(DIK_1)  KEY_PUSH)
+     if (LInput::GetInstance().GetKey(DIK_1)==  KEY_PUSH)
    
     {
         Release();

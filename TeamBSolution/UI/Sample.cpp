@@ -1,7 +1,6 @@
 #include "Sample.h"
 #include "LGlobal.h"
 #include "LPlaneObj.h"
-#include "KObject.h"
 #include "PickingUI.h"
 #include "DragUI.h"
 #include "Resize2D.h"
@@ -11,11 +10,26 @@
 #include "Animator.h"
 #include "ChangeTexture.h"
 #include "ExitWindow.h"
+#include "UIManager.h"
+#include "IntToSprite.h"
 shared_ptr<KObject> Sample::s_selectedObject = nullptr;
 bool Sample::s_isMouseInImGuiWindow = false;
 
 bool Sample::Init()
 {
+
+	vector<wstring> num;
+	num.push_back({ L"../../res/ui/0.png" });
+	num.push_back({ L"../../res/ui/1.png" });
+	num.push_back({ L"../../res/ui/2.png" });
+	num.push_back({ L"../../res/ui/3.png" });
+	num.push_back({ L"../../res/ui/4.png" });
+	num.push_back({ L"../../res/ui/5.png" });
+	num.push_back({ L"../../res/ui/6.png" });
+	num.push_back({ L"../../res/ui/7.png" });
+	num.push_back({ L"../../res/ui/8.png" });
+	num.push_back({ L"../../res/ui/9.png" });
+
 	m_DebugCamera = std::make_shared<UICamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_DebugCamera->m_fCameraPitch = 0.0f;
@@ -28,6 +42,14 @@ bool Sample::Init()
 	info.name = L"Anim";
 	info.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",1.f });
 	info.keyFrames.push_back({ L"../../res/effect/star3.png",1.f });
+
+	animInfo info2;
+	info2.isLoop = true;
+	info2.name = L"Anim2";
+	info2.keyFrames.push_back({ L"../../res/ui/0.png",1.f });
+	info2.keyFrames.push_back({ L"../../res/ui/1.png",1.f });
+
+
 	_imGuiManager = make_shared< ImGuiManager>();
 	
 	_imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
@@ -70,7 +92,7 @@ bool Sample::Init()
 	sObj2->Init();
 	sObj2->SetName("Button2");
 	sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"..\\..\\res\\effect\\damaged1.png");
-	sObj2->GetScript<Animator>(L"Animator")->CreateAnimation(info);
+	sObj2->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
 	
 	_objects.push_back(sObj2);
 
@@ -83,20 +105,21 @@ bool Sample::Init()
 	//obj->AddScripts(make_shared<ImguiDetail>());
 	obj->AddScripts(make_shared<ChangeTexture>());
 	//obj->AddScripts(make_shared<ExitWindow>());
+	obj->AddScripts(make_shared<IntToSprite>(2,num));
 	obj->SetName("Button3");
 	obj->Set();
 	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/4.png");
 ;	obj->Init();
 	obj->SetPos({ 100,100,1 });
 	obj->SetScale({ 100,100,10 });
+
 	
 	return true;
 }
 
 bool Sample::Frame()
 {
-
-	// 버튼들의 isClicked 초기화
+	//UIManager::GetInstance().ExecuteDelegate("MemberFunctionDelegate");
 
 	_imGuiManager->Frame();
 	_imGuiObjDetail->Frame();
