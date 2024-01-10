@@ -58,6 +58,9 @@
     <ClCompile Include="ExitWindow.cpp">
       <Filter>Script\ButtonEvent</Filter>
     </ClCompile>
+    <ClCompile Include="NumberObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -116,6 +119,9 @@
     <ClInclude Include="IntToSprite.h" />
     <ClInclude Include="ExitWindow.h">
       <Filter>Script\ButtonEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="NumberObject.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

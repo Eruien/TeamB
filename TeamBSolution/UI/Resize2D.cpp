@@ -68,7 +68,7 @@ void Resize2D::Frame()
 			barPicking = true;
 			if (LINPUT.m_MouseState[0] == KEY_HOLD)
 			{
-				GetGameObject()->m_vScale.y = (MOUSEY - GetGameObject()->m_vPosition.y) * 2;
+				GetGameObject()->m_vScale.y = -(MOUSEY - GetGameObject()->m_vPosition.y) * 2;
 			}
 		}
 		else if (TBASIS_EX::TRectangle::RectToPoint(rLeft, { (long)MOUSEX,(long)MOUSEY }))
@@ -77,7 +77,7 @@ void Resize2D::Frame()
 			barPicking = true;
 			if (LINPUT.m_MouseState[0] == KEY_HOLD)
 			{
-				GetGameObject()->m_vScale.x = (MOUSEX - GetGameObject()->m_vPosition.x) * 2;
+				GetGameObject()->m_vScale.x = -(MOUSEX - GetGameObject()->m_vPosition.x) * 2;
 			}
 		}
 		else if (TBASIS_EX::TRectangle::RectToPoint(rRight, { (long)MOUSEX,(long)MOUSEY }))

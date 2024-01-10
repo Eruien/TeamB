@@ -43,12 +43,12 @@ bool KObject::Render()
 {
 	PreRender();
 	
-	if (GetScript<Animator>(L"Animator"))
+	/*if (GetScript<Animator>(L"Animator"))
 	{
-		
-		m_Tex->m_pTexSRV = LManager<LTexture>::GetInstance().Load(GetScript<Animator>(L"Animator")->GetCurrentKeyframe().texFilePath)->m_pTexSRV;
+
+		m_Tex = LManager<LTexture>::GetInstance().Load(GetScript<Animator>(L"Animator")->GetCurrentKeyframe().texFilePath);
 		m_Tex->Apply();
-	}
+	}*/
 	PostRender();
 	return false;
 }

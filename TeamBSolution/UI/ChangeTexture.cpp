@@ -24,7 +24,7 @@ void ChangeTexture::Frame()
 void ChangeTexture::ChangeFromPath(wstring path)
 {
 	//LTexture* temp = LManager<LTexture>::GetInstance().Load(path);
-	GetGameObject()->m_Tex->m_pTexSRV = LManager<LTexture>::GetInstance().Load(path)->m_pTexSRV;
+	GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(path);
 	GetGameObject()->m_Tex->Apply();
 	//delete temp;
 

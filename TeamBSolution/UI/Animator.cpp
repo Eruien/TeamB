@@ -1,6 +1,6 @@
 #include "Animator.h"
 #include "LGlobal.h"
-
+#include "KObject.h"
 Animator::Animator() : MonoBehaviour(L"Animator")
 {
 }
@@ -29,6 +29,10 @@ void Animator::Frame()
 	if (_sumTime >= keyframe.time)
 	{
 		_currentKeyframeIndex++;
+		
+
+		
+		
 		INT32 totalCount = animation->GetKeyframeCount();
 
 		if (_currentKeyframeIndex >= totalCount)
@@ -38,6 +42,8 @@ void Animator::Frame()
 			else
 				_currentKeyframeIndex = totalCount - 1;
 		}
+		GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(GetCurrentKeyframe().texFilePath);
+		GetGameObject()->m_Tex->Apply();
 
 		_sumTime = 0.f;
 	}
@@ -57,7 +63,7 @@ void Animator::CreateAnimation(animInfo info)
 		animation->AddKeyframe(Keyframe{ keyframe.texFilePath , keyframe.time });
 	}
 	LManager<Animation>::GetInstance().Add(info.name, animation);
-	SetAnimation(animation);
+	SetAnimation(LManager<Animation>::GetInstance().GetPtr(info.name));
 
 }
 Animation* Animator::GetCurrentAnimation()

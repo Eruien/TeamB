@@ -155,6 +155,7 @@
     <ClCompile Include="IntToSprite.cpp" />
     <ClCompile Include="KGlobal.cpp" />
     <ClCompile Include="ModalWindow.cpp" />
+    <ClCompile Include="NumberObject.cpp" />
     <ClCompile Include="PickingUI.cpp" />
     <ClCompile Include="KObject.cpp" />
     <ClCompile Include="MonoBehaviour.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="IntToSprite.h" />
     <ClInclude Include="KGlobal.h" />
     <ClInclude Include="ModalWindow.h" />
+    <ClInclude Include="NumberObject.h" />
     <ClInclude Include="PickingUI.h" />
     <ClInclude Include="KObject.h" />
     <ClInclude Include="MonoBehaviour.h" />
