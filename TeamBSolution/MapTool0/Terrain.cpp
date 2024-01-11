@@ -3,6 +3,12 @@
 
 bool Terrain::Init()
 {
+	// splatting
+	m_pPS[0].Attach(LoadPixelShaderFile(LGlobal::g_pDevice.Get(), L"MultiTexture.hlsl", "LinearBlendAddPS"));
+	m_pPS[1].Attach(LoadPixelShaderFile(LGlobal::g_pDevice.Get(), L"MultiTexture.hlsl", "LinearBlendPS"));
+
+
+	
 	// light
 	m_cbLight.g_cAmbientMaterial = TVector4(0.3f, 0.3f, 0.3f, 1);
 	m_cbLight.g_cDiffuseMaterial = TVector4(1, 1, 1, 1);
@@ -270,6 +276,78 @@ bool Terrain::GetIntersection()
 		}
 	}
 	return false;
+}
+
+ID3D11PixelShader* Terrain::LoadPixelShaderFile(ID3D11Device* pd3dDevice, const void* pShaderFileData, const char* pFunctionName, 
+	bool bBinary, ID3DBlob** pRetBlob)
+{
+	HRESULT hr = S_OK;
+	ID3D11PixelShader* pPixelShader = nullptr;
+	ID3DBlob* pBlob = nullptr;
+	DWORD dwSize = 0;
+	LPCVOID lpData = NULL;
+	if (bBinary == false)
+	{
+		if (pFunctionName == 0)
+		{
+			if (FAILED(hr = CompileShaderFromFile((TCHAR*)pShaderFileData, "PS", "ps_5_0", &pBlob)))
+			{
+				return nullptr;
+			}
+		}
+		else
+		{
+			if (FAILED(hr = CompileShaderFromFile((TCHAR*)pShaderFileData, pFunctionName, "ps_5_0", &pBlob)))
+			{
+				return nullptr;
+			}
+		}
+
+		dwSize = (DWORD)pBlob->GetBufferSize();
+		lpData = pBlob->GetBufferPointer();
+	}
+	else
+	{
+		dwSize = sizeof(pShaderFileData);
+		lpData = pShaderFileData;
+	}
+	if (FAILED(hr = pd3dDevice->CreatePixelShader(lpData, dwSize, NULL, &pPixelShader)))
+	{
+		pBlob->Release();
+		return nullptr;
+	}
+	if (pRetBlob == nullptr)
+	{
+		pBlob->Release();
+	}
+	else
+	{
+		*pRetBlob = pBlob;
+	}
+	return pPixelShader;
+}
+
+HRESULT Terrain::CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
+{
+	HRESULT hr = S_OK;
+
+	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( DEBUG ) || defined( _DEBUG )	
+	dwShaderFlags |= D3DCOMPILE_DEBUG;
+#endif
+	ID3DBlob* pErrorBlob;
+	hr = D3DCompileFromFile(szFileName, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, szEntryPoint, szShaderModel,
+		dwShaderFlags, 0, ppBlobOut, &pErrorBlob);
+	if (FAILED(hr))
+	{
+		if (pErrorBlob != NULL)
+			OutputDebugStringA((char*)pErrorBlob->GetBufferPointer());
+		if (pErrorBlob) pErrorBlob->Release();
+		return hr;
+	}
+	if (pErrorBlob) pErrorBlob->Release();
+
+	return S_OK;
 }
 
 Terrain::~Terrain() {}

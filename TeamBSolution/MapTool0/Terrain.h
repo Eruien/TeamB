@@ -41,6 +41,10 @@ public:
 
 	UINT m_iSplattingTexIndex = 0;
 
+	// for splatting
+	ComPtr<ID3D10ShaderResourceView> m_pTexSRV[4];
+	ComPtr<ID3D11PixelShader> m_pPS[2];
+
 public:
 
 	bool m_bObjectPicking = false;
@@ -57,6 +61,13 @@ public:
 	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex,
 					UINT iSize, bool bDynamic = false);
 	bool GetIntersection();
+
+	// for splating
+	ID3D11PixelShader* LoadPixelShaderFile(ID3D11Device* pd3dDevice,
+		const void* pShaderFileData,
+		const char* pFunctionName=0,
+		bool bBinary=false, ID3DBlob** pRetBlob=nullptr);
+	HRESULT	CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut);
 public:
 	virtual ~Terrain();
 };
