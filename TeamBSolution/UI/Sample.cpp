@@ -75,7 +75,7 @@ bool Sample::Init()
 	sObj->SetScale({ 200,200,1 });
 	sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
 	sObj->Init();
-	sObj->SetName("Button1");
+	sObj->SetName(L"Button1");
 	sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
 	sObj->GetScript<Animator>(L"Animator")->CreateAnimation(info);
 
@@ -95,7 +95,7 @@ bool Sample::Init()
 		sObj2->SetScale({ 200,200,1 });
 		sObj2->SetRect(sObj->m_vPosition, sObj->m_vScale);
 		sObj2->Init();
-		sObj2->SetName("Button2");
+		sObj2->SetName(L"Button2");
 		sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
 		sObj2->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
 
@@ -111,7 +111,7 @@ bool Sample::Init()
 		obj->AddScripts(make_shared<ChangeTexture>());
 		//obj->AddScripts(make_shared<ExitWindow>());
 		obj->Set();
-		obj->SetName("Button3");
+		obj->SetName(L"Button3");
 		obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/8.png");
 		
 		obj->Init();
@@ -123,7 +123,7 @@ bool Sample::Init()
 	nObj->AddScripts(make_shared<PickingUI>());
 	nObj->AddScripts(make_shared<Resize2D>());
 	nObj->AddScripts(make_shared<DragUI>());
-	nObj->SetName("Ammo");
+	nObj->SetName(L"Ammo");
 	nObj->SetPos({ -100,100,1 });
 	nObj->SetScale({ 400,100,10 });
 	nObj->Init();

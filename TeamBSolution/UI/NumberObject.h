@@ -1,5 +1,7 @@
 #pragma once
 #include "KObject.h"
+
+//스크립트화 할것
 class NumberObject : public KObject
 {
 public:

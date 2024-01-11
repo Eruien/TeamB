@@ -13,8 +13,8 @@ public:
 	virtual bool Render() override;
 	virtual bool Release() override;
 
-	void SetName(string name) { _name = name; };
-	string GetName() {	return _name;};
+	void SetName(wstring name) { _name = name; };
+	wstring GetName() {	return _name;};
 	
 	// Rect
 	void SetRect(TVector3 pos, TVector3 scale);
@@ -33,7 +33,7 @@ public:
 
 
 protected:
-	string _name;
+	wstring _name;
 	vector<shared_ptr<MonoBehaviour>> _scripts;
 };
 
