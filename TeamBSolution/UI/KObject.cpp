@@ -41,14 +41,12 @@ bool KObject::Frame()
 
 bool KObject::Render()
 {
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Render();
+	}
 	PreRender();
 	
-	/*if (GetScript<Animator>(L"Animator"))
-	{
-
-		m_Tex = LManager<LTexture>::GetInstance().Load(GetScript<Animator>(L"Animator")->GetCurrentKeyframe().texFilePath);
-		m_Tex->Apply();
-	}*/
 	PostRender();
 	return false;
 }

@@ -12,23 +12,17 @@
 #include "ExitWindow.h"
 #include "UIManager.h"
 #include "IntToSprite.h"
+#include "DigitDisplay.h"
+#include "TextureList.h"
 shared_ptr<KObject> Sample::s_selectedObject = nullptr;
 bool Sample::s_isMouseInImGuiWindow = false;
 
 bool Sample::Init()
 {
+	
+	TextureList* tex = new TextureList();
 
-	/*vector<wstring> num;
-	num.push_back({ L"../../res/ui/0.png" });
-	num.push_back({ L"../../res/ui/1.png" });
-	num.push_back({ L"../../res/ui/2.png" });
-	num.push_back({ L"../../res/ui/3.png" });
-	num.push_back({ L"../../res/ui/4.png" });
-	num.push_back({ L"../../res/ui/5.png" });
-	num.push_back({ L"../../res/ui/6.png" });
-	num.push_back({ L"../../res/ui/7.png" });
-	num.push_back({ L"../../res/ui/8.png" });
-	num.push_back({ L"../../res/ui/9.png" });*/
+	tex->Save(L"testNum.xml");
 
 	m_DebugCamera = std::make_shared<UICamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
@@ -46,10 +40,10 @@ bool Sample::Init()
 	animInfo info2;
 	info2.isLoop = true;
 	info2.name = L"Anim2";
-	info2.keyFrames.push_back({ L"../../res/ui/inhaleeffect12.png",1.f });
-	info2.keyFrames.push_back({ L"../../res/ui/inhaleeffect12.png",1.f });
-	info2.keyFrames.push_back({ L"../../res/ui/star3.png",1.f });
-	info2.keyFrames.push_back({ L"../../res/ui/inhaleeffect12.png",1.f });
+	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
+	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
+	info2.keyFrames.push_back({ L"../../res/effect/star3.png",0.1f });
+	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
 
 
 	_imGuiManager = make_shared< ImGuiManager>();
@@ -69,15 +63,15 @@ bool Sample::Init()
 	sObj->AddScripts(make_shared<Resize2D>());
 	sObj->AddScripts(make_shared<DragUI>());
 	//sObj->AddScripts(make_shared<ImguiDetail>());
-	sObj->AddScripts(make_shared<Animator>());
+	sObj->AddScripts(make_shared<Animator>(L"Anim2.xml"));
 	sObj->AddScripts(make_shared<ChangeTexture>());
 	sObj->SetPos({ 80,80,0 });
 	sObj->SetScale({ 200,200,1 });
 	sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
 	sObj->Init();
 	sObj->SetName(L"Button1");
-	sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
-	sObj->GetScript<Animator>(L"Animator")->CreateAnimation(info);
+	sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+	//sObj->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
 
 	_objects.push_back(sObj);
 	}
@@ -89,15 +83,14 @@ bool Sample::Init()
 		sObj2->AddScripts(make_shared<Resize2D>());
 		sObj2->AddScripts(make_shared<DragUI>());
 		//sObj2->AddScripts(make_shared<ImguiDetail>());
-		sObj2->AddScripts(make_shared<Animator>());
 		sObj2->AddScripts(make_shared<ChangeTexture>());
+		//sObj2->AddScripts(make_shared<DigitDisplay>(3, num));
 		sObj2->SetPos({ 200,200,0 });
 		sObj2->SetScale({ 200,200,1 });
 		sObj2->SetRect(sObj->m_vPosition, sObj->m_vScale);
 		sObj2->Init();
 		sObj2->SetName(L"Button2");
-		sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
-		sObj2->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
+		sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
 
 		_objects.push_back(sObj2);
 	}
@@ -119,16 +112,7 @@ bool Sample::Init()
 		obj->SetScale({ 100,100,10 });
 	}
 
-	nObj = make_shared<NumberObject>(10);
-	nObj->AddScripts(make_shared<PickingUI>());
-	nObj->AddScripts(make_shared<Resize2D>());
-	nObj->AddScripts(make_shared<DragUI>());
-	nObj->SetName(L"Ammo");
-	nObj->SetPos({ -100,100,1 });
-	nObj->SetScale({ 400,100,10 });
-	nObj->Init();
-	nObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"..\\..\\res\\effect\\damaged1.png");
-	nObj->UpdateNumber();
+
 	
 	return true;
 }
@@ -152,15 +136,13 @@ bool Sample::Frame()
 	obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 	obj->Frame();
 
-	nObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	nObj->Frame();
-	nObj->UpdateNumber();
+
+	//sObj2->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber();
 	return true;
 }
 
 bool Sample::Render()
 {
-	nObj->Render();
 	sObj->Render();
 	sObj2->Render();
 	obj->Render();

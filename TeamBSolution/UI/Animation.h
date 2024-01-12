@@ -24,7 +24,10 @@ public:
 	const Keyframe& GetKeyframe(INT32 index);
 	INT32 GetKeyframeCount();
 	void AddKeyframe(const Keyframe& keyframe);
+	void Load(const wstring& path);
+	void Save(const wstring& path);
 	void SetKeyframes(vector<Keyframe> keyframes) { _keyframes = keyframes; };
+
 
 private:
 	bool _loop = false;

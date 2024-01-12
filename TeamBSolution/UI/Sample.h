@@ -5,7 +5,6 @@
 #include "ImGuiManager.h"
 #include "Imgui_ObjectDetail.h"
 #include "imgui_menuBar.h"
-#include "NumberObject.h"
 class imgui_test;
 class LPlaneObj;
 class Sample : public LCore
@@ -21,7 +20,6 @@ public:
 	vector<shared_ptr<KObject>> _objects;
 	shared_ptr<KObject> sObj;
 	shared_ptr<KObject> sObj2;
-	shared_ptr<NumberObject> nObj;
 	shared_ptr< Imgui_ObjectDetail> _imGuiObjDetail;
 	shared_ptr< imgui_menuBar> _imgui_menuBar;
 	shared_ptr<ImGuiManager> _imGuiManager;

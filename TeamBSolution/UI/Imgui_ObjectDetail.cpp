@@ -33,7 +33,8 @@ void Imgui_ObjectDetail::Frame()
 		char buffer[256] = "";  // 문자열을 저장할 버퍼
 
 		// 원래 가지고 있던 이름 표시
-		ImGui::Text("Name: %s", Sample::s_selectedObject->GetName().c_str());
+
+		ImGui::Text("Name: %s",wtm(Sample::s_selectedObject->GetName()).c_str());
 		ImGui::Text("Change Name: ");
 		ImGui::SameLine(0, -1);
 		ImGui::SetNextItemWidth(100);
@@ -42,8 +43,8 @@ void Imgui_ObjectDetail::Frame()
 			// 엔터 키가 눌렸을 때 실행되는 코드
 			// buffer에 사용자의 입력이 저장됨
 			// 변경된 값을 사용하여 원하는 동작을 수행하세요
-			std::string userInput = buffer;
-			Sample::s_selectedObject->SetName(userInput.c_str());  // SetName 함수에 사용자의 입력을 전달
+		
+			Sample::s_selectedObject->SetName(mtw(buffer));  // SetName 함수에 사용자의 입력을 전달
 		}
 		ImGui::Separator();
 

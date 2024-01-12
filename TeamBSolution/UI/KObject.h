@@ -24,7 +24,7 @@ public:
 	void AddScripts(shared_ptr<MonoBehaviour> script) { script->SetGameObject(shared_from_this()); _scripts.push_back(script); };
 	template<class T>
 	shared_ptr<T> GetScript(wstring name);
-
+	vector<shared_ptr<MonoBehaviour>> GetScripts() { return _scripts;};
 	void SetAnimation();
 
 //Rect

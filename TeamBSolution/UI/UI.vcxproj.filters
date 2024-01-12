@@ -58,6 +58,12 @@
     <ClCompile Include="NumberObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="DigitDisplay.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureList.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -116,6 +122,12 @@
     </ClInclude>
     <ClInclude Include="NumberObject.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DigitDisplay.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureList.h">
+      <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

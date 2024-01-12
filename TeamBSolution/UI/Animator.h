@@ -13,7 +13,7 @@ struct animInfo
 class Animator : public MonoBehaviour
 {
 public:
-	Animator();
+	Animator(wstring path);
 	virtual ~Animator();
 
 	void Init() override;
@@ -21,13 +21,15 @@ public:
 
 	//애니메이션
 	void CreateAnimation(animInfo info);
-	Animation* GetCurrentAnimation();
+	shared_ptr<Animation> GetCurrentAnimation();
 	const Keyframe& GetCurrentKeyframe() { return _currentAnimation->GetKeyframe(_currentKeyframeIndex); }
-	void SetAnimation(Animation* animation) { _currentAnimation = animation; }
+	void SetAnimation(shared_ptr<Animation> animation) { _currentAnimation = animation; }
+
+
 	//애니메이션
 protected:
 	float _sumTime = 0.f;
 	INT32 _currentKeyframeIndex = 0;
-	Animation* _currentAnimation;
+	shared_ptr<Animation> _currentAnimation;
 };
 

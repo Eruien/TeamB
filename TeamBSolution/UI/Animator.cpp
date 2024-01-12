@@ -1,8 +1,10 @@
 #include "Animator.h"
 #include "LGlobal.h"
 #include "KObject.h"
-Animator::Animator() : MonoBehaviour(L"Animator")
+Animator::Animator(wstring path) : MonoBehaviour(L"Animator")
 {
+	_currentAnimation = make_shared< Animation>();
+	_currentAnimation->Load(path);
 }
 
 Animator::~Animator()
@@ -15,7 +17,7 @@ void Animator::Init()
 
 void Animator::Frame()
 {
-	Animation* animation = GetCurrentAnimation();
+	shared_ptr<Animation> animation = GetCurrentAnimation();
 
 
 	if (animation == nullptr)
@@ -53,20 +55,20 @@ void Animator::Frame()
 void Animator::CreateAnimation(animInfo info)
 {
 
-	Animation* animation = new Animation();
+	shared_ptr<Animation> animation = make_shared< Animation>();
 	animation->SetName(info.name);
-	//animation->SetTexture(Get<LTexture>(info.textureKey));
 	animation->SetLoop(info.isLoop);
-	//info.keyFrames 
 	for (const auto& keyframe : info.keyFrames) {
 		LTexture* tex = LManager<LTexture>::GetInstance().Load(keyframe.texFilePath);
 		animation->AddKeyframe(Keyframe{ keyframe.texFilePath , keyframe.time });
 	}
-	LManager<Animation>::GetInstance().Add(info.name, animation);
-	SetAnimation(LManager<Animation>::GetInstance().GetPtr(info.name));
+	LManager<Animation>::GetInstance().Add(info.name, animation.get());
 
+	shared_ptr<Animation> temp = make_shared<Animation>(*LManager<Animation>::GetInstance().GetPtr(info.name));
+	SetAnimation(temp);
+	animation->Save(info.name + L".xml");
 }
-Animation* Animator::GetCurrentAnimation()
+shared_ptr<Animation> Animator::GetCurrentAnimation()
 {
 	return _currentAnimation;
 }
