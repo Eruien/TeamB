@@ -431,17 +431,6 @@ static std::string wtm(std::wstring str)
 	return conv.to_bytes(str);
 }
 
-//std::wstring StringToWstring(const std::string& str) {
-//	// Multi-byte to Wide 변환
-//	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-//	return converter.from_bytes(str);
-//}
-//std::string WstringToString(const std::wstring& wstr) {
-//	// Wide to Multi-byte 변환
-//	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-//	return converter.to_bytes(wstr);
-//}
-
 //struct SimpleVertex
 //{
 //    TVector3 p;

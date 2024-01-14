@@ -64,8 +64,8 @@ void Animation::Save(const wstring& path)
 	tinyxml2::XMLElement* root = doc.NewElement("Animation");
 	doc.LinkEndChild(root);
 
-	string nameStr(GetName().begin(), GetName().end());
-	root->SetAttribute("Name", nameStr.c_str());
+
+	root->SetAttribute("Name", wtm(GetName()).c_str());
 	root->SetAttribute("Loop", _loop);
 
 	for (const auto& keyframe : _keyframes)

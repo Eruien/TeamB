@@ -1,5 +1,6 @@
 #pragma once
 #include "MonoBehaviour.h"
+class TextureList;
 class DigitDisplay : public MonoBehaviour
 {
 public:
@@ -10,12 +11,15 @@ public:
 	void Frame() override;
 	void Render() override;
 	void UpdateNumber();
-	void Load();
+	void LoadTextureList(wstring texXmlPath);
+	wstring GetXmlPath() {return _texXmlPath;};
 	void Save();
+
+	int GetDigitNum() {return _digitNum;};
 private:
 	vector<shared_ptr<KObject>> _objects;
 	wstring _texXmlPath;
-	vector<wstring> _texList;
+	shared_ptr<TextureList> _texList;
 	int _digitNum;
 
 	int _num = 923; // 

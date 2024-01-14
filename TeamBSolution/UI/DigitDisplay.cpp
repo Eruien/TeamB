@@ -2,6 +2,7 @@
 #include "KObject.h"
 #include "LGlobal.h"
 #include "LCamera.h"
+#include "TextureList.h"
 DigitDisplay::DigitDisplay(int digit, wstring texXmlPath) : _digitNum(digit), _texXmlPath(texXmlPath), MonoBehaviour(L"DigitDisplay")
 {
     
@@ -13,12 +14,14 @@ DigitDisplay::~DigitDisplay()
 
 void DigitDisplay::Init()
 {
+    LoadTextureList(_texXmlPath);
+
 	for (int i = 0; i < _digitNum; i++)
 	{
 		_objects.push_back(make_shared<KObject>());
 		_objects[i]->Init();
-		_objects[i]->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/0.png");
-		TVector3 pos =GetGameObject()->m_vPosition;
+		_objects[i]->Create(L"../../res/hlsl/CustomizeMap.hlsl", _texList->GetTexList()[0]);
+		TVector3 pos = GetGameObject()->m_vPosition;
 		pos.x = GetGameObject()->m_vPosition.x + (GetGameObject()->m_vScale.x / _digitNum) - (i * (GetGameObject()->m_vScale.x / _digitNum));
 		_objects[i]->SetPos(pos);
 		_objects[i]->SetScale({ GetGameObject()->m_vScale.x / _digitNum,GetGameObject()->m_vScale.y,0 });
@@ -66,7 +69,7 @@ void DigitDisplay::UpdateNumber()
 
     for (int i = 0; i < _digitNum; i++)
     {
-        _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[0]);
+        _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[0]);
         _objects[i]->m_Tex->Apply();
     }
     for (int i = 0; i < digits.size(); i++)
@@ -74,43 +77,43 @@ void DigitDisplay::UpdateNumber()
 
         switch (digits[i]) {
         case 0:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[0]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[0]);
             _objects[i]->m_Tex->Apply();
             break;
         case 1:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[1]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[1]);
             _objects[i]->m_Tex->Apply();
             break;
         case 2:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[2]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[2]);
             _objects[i]->m_Tex->Apply();
             break;
         case 3:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[3]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[3]);
             _objects[i]->m_Tex->Apply();
             break;
         case 4:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[4]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[4]);
             _objects[i]->m_Tex->Apply();
             break;
         case 5:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[5]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[5]);
             _objects[i]->m_Tex->Apply();
             break;
         case 6:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[6]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[6]);
             _objects[i]->m_Tex->Apply();
             break;
         case 7:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[7]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[7]);
             _objects[i]->m_Tex->Apply();
             break;
         case 8:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[8]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[8]);
             _objects[i]->m_Tex->Apply();
             break;
         case 9:
-            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList[9]);
+            _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[9]);
             _objects[i]->m_Tex->Apply();
             break;
         default:
@@ -123,10 +126,12 @@ void DigitDisplay::UpdateNumber()
     }
 }
 
-void DigitDisplay::Load()
+void DigitDisplay::LoadTextureList(wstring texXmlPath)
 {
-
+    _texList = make_shared<TextureList>();
+    _texList->Load(texXmlPath);
 }
+
 
 void DigitDisplay::Save()
 {

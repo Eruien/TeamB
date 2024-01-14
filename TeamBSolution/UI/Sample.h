@@ -1,12 +1,14 @@
 #pragma once
 #include "LCore.h"
-#include "KObject.h"
 #include "UICamera.h"
+
+#include "UIManager.h"
+#include "KObject.h"
+
+
+#include "imgui_menuBar.h"
 #include "ImGuiManager.h"
 #include "Imgui_ObjectDetail.h"
-#include "imgui_menuBar.h"
-class imgui_test;
-class LPlaneObj;
 class Sample : public LCore
 {
 public:
@@ -23,6 +25,8 @@ public:
 	shared_ptr< Imgui_ObjectDetail> _imGuiObjDetail;
 	shared_ptr< imgui_menuBar> _imgui_menuBar;
 	shared_ptr<ImGuiManager> _imGuiManager;
+
+
 	static shared_ptr<KObject> s_selectedObject;
 	static bool s_isMouseInImGuiWindow;
 public:

@@ -1,28 +1,29 @@
 #include "Sample.h"
+
 #include "LGlobal.h"
-#include "LPlaneObj.h"
-#include "PickingUI.h"
-#include "DragUI.h"
-#include "Resize2D.h"
-#include "imgui_menuBar.h"
-#include "ImGuiManager.h"
-#include "ImguiDetail.h"
-#include "Animator.h"
-#include "ChangeTexture.h"
-#include "ExitWindow.h"
-#include "UIManager.h"
-#include "IntToSprite.h"
-#include "DigitDisplay.h"
-#include "TextureList.h"
+
+
 shared_ptr<KObject> Sample::s_selectedObject = nullptr;
 bool Sample::s_isMouseInImGuiWindow = false;
-
 bool Sample::Init()
 {
+	UIManager::GetInstance().Init();
+	UIManager::GetInstance().Load(L"testScene.xml");
+	//TextureList* tex = new TextureList();
+	//tex->SetName(L"DefaultNumber");
+	//tex->AddTexture(L"../../res/ui/0.png");
+	//tex->AddTexture(L"../../res/ui/1.png");
+	//tex->AddTexture(L"../../res/ui/2.png");
+	//tex->AddTexture(L"../../res/ui/3.png");
+	//tex->AddTexture(L"../../res/ui/4.png");
+	//tex->AddTexture(L"../../res/ui/5.png");
+	//tex->AddTexture(L"../../res/ui/6.png");
+	//tex->AddTexture(L"../../res/ui/7.png");
+	//tex->AddTexture(L"../../res/ui/8.png");
+	//tex->AddTexture(L"../../res/ui/9.png");
+	//tex->Save(L"testNum.xml");
+	//tex->Load(L"testNum.xml");
 	
-	TextureList* tex = new TextureList();
-
-	tex->Save(L"testNum.xml");
 
 	m_DebugCamera = std::make_shared<UICamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
@@ -55,62 +56,63 @@ bool Sample::Init()
 	_imgui_menuBar->Init();
 
 	
-	//obj1
-	{
-		sObj = make_shared<KObject>();
-	//scripts
-	sObj->AddScripts(make_shared<PickingUI>());
-	sObj->AddScripts(make_shared<Resize2D>());
-	sObj->AddScripts(make_shared<DragUI>());
-	//sObj->AddScripts(make_shared<ImguiDetail>());
-	sObj->AddScripts(make_shared<Animator>(L"Anim2.xml"));
-	sObj->AddScripts(make_shared<ChangeTexture>());
-	sObj->SetPos({ 80,80,0 });
-	sObj->SetScale({ 200,200,1 });
-	sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
-	sObj->Init();
-	sObj->SetName(L"Button1");
-	sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
-	//sObj->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
+	////obj1
+	//{
+	//	sObj = make_shared<KObject>();
+	////scripts
+	//sObj->AddScripts(make_shared<PickingUI>());
+	//sObj->AddScripts(make_shared<Resize2D>());
+	//sObj->AddScripts(make_shared<DragUI>());
+	////sObj->AddScripts(make_shared<ImguiDetail>());
+	//sObj->AddScripts(make_shared<Animator>(L"Anim2.xml"));
+	//sObj->AddScripts(make_shared<ChangeTexture>());
+	//sObj->SetPos({ 80,80,0 });
+	//sObj->SetScale({ 200,200,1 });
+	//sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
+	//sObj->Init();
+	//sObj->SetName(L"Button1");
+	//sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+	////sObj->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
 
-	_objects.push_back(sObj);
-	}
-	//obj2
-	{
-		sObj2 = make_shared<KObject>();
-		//scripts
-		sObj2->AddScripts(make_shared<PickingUI>());
-		sObj2->AddScripts(make_shared<Resize2D>());
-		sObj2->AddScripts(make_shared<DragUI>());
-		//sObj2->AddScripts(make_shared<ImguiDetail>());
-		sObj2->AddScripts(make_shared<ChangeTexture>());
-		//sObj2->AddScripts(make_shared<DigitDisplay>(3, num));
-		sObj2->SetPos({ 200,200,0 });
-		sObj2->SetScale({ 200,200,1 });
-		sObj2->SetRect(sObj->m_vPosition, sObj->m_vScale);
-		sObj2->Init();
-		sObj2->SetName(L"Button2");
-		sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+	//UIManager::GetInstance().AddUIObject(sObj);
+	//}
+	////obj2
+	//{
+	//	sObj2 = make_shared<KObject>();
+	//	//scripts
+	//	sObj2->AddScripts(make_shared<PickingUI>());
+	//	sObj2->AddScripts(make_shared<Resize2D>());
+	//	sObj2->AddScripts(make_shared<DragUI>());
+	//	//sObj2->AddScripts(make_shared<ImguiDetail>());
+	//	sObj2->AddScripts(make_shared<ChangeTexture>());
+	//	sObj2->AddScripts(make_shared<DigitDisplay>(3, L"testNum.xml"));
+	//	sObj2->SetPos({ 200,200,0 });
+	//	sObj2->SetScale({ 200,200,1 });
+	//	sObj2->SetRect(sObj->m_vPosition, sObj->m_vScale);
+	//	sObj2->Init();
+	//	sObj2->SetName(L"Button2");
+	//	sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
 
-		_objects.push_back(sObj2);
-	}
-	//obj3
-	{
-		obj = make_shared< KObject>();
-		obj->AddScripts(make_shared<PickingUI>());
-		obj->AddScripts(make_shared<Resize2D>());
-		obj->AddScripts(make_shared<DragUI>());
-		//obj->AddScripts(make_shared<ImguiDetail>());
-		obj->AddScripts(make_shared<ChangeTexture>());
-		//obj->AddScripts(make_shared<ExitWindow>());
-		obj->Set();
-		obj->SetName(L"Button3");
-		obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/8.png");
-		
-		obj->Init();
-		obj->SetPos({ 100,100,1 });
-		obj->SetScale({ 100,100,10 });
-	}
+	//	UIManager::GetInstance().AddUIObject(sObj2);
+	//}
+	////obj3
+	//{
+	//	obj = make_shared< KObject>();
+	//	obj->AddScripts(make_shared<PickingUI>());
+	//	obj->AddScripts(make_shared<Resize2D>());
+	//	obj->AddScripts(make_shared<DragUI>());
+	//	//obj->AddScripts(make_shared<ImguiDetail>());
+	//	obj->AddScripts(make_shared<ChangeTexture>());
+	//	//obj->AddScripts(make_shared<ExitWindow>());
+	//	obj->Set();
+	//	obj->SetName(L"Button3");
+	//	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/8.png");
+	//	
+	//	obj->Init();
+	//	obj->SetPos({ 100,100,1 });
+	//	obj->SetScale({ 100,100,10 });
+	//	UIManager::GetInstance().AddUIObject(obj);
+	//}
 
 
 	
@@ -119,33 +121,25 @@ bool Sample::Init()
 
 bool Sample::Frame()
 {
-	//UIManager::GetInstance().ExecuteDelegate("MemberFunctionDelegate");
+
 
 	_imGuiManager->Frame();
 	_imGuiObjDetail->Frame();
 	_imgui_menuBar->Frame();
 
+	UIManager::GetInstance().Frame();
 
-	
-
-	sObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	sObj->Frame();
-	sObj2->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	sObj2->Frame();
-
-	obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	obj->Frame();
 
 
 	//sObj2->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber();
+
 	return true;
 }
 
 bool Sample::Render()
 {
-	sObj->Render();
-	sObj2->Render();
-	obj->Render();
+
+	UIManager::GetInstance().Render();
 	_imGuiObjDetail->Render();
 	_imgui_menuBar->Render();
 	_imGuiManager->Render();

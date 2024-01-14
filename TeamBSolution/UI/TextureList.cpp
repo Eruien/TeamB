@@ -13,8 +13,11 @@ void TextureList::Save(wstring path)
 
     tinyxml2::XMLDocument doc;
 
-    tinyxml2::XMLElement* root = doc.NewElement("Animation");
+    tinyxml2::XMLElement* root = doc.NewElement("TextureList");
     doc.LinkEndChild(root);
+
+  ;
+    root->SetAttribute("Name", wtm(GetName()).c_str());
   
     
     for (int i=0; i < _texList.size(); i++)
@@ -32,28 +35,38 @@ void TextureList::Save(wstring path)
 
 void TextureList::Load(wstring path)
 {
-    tinyxml2::XMLDocument xmlDoc;
-    if (xmlDoc.LoadFile("output.xml") != tinyxml2::XML_SUCCESS) {
-        std::cerr << "XML 파일을 불러오는 데 실패했습니다." << std::endl;
+    tinyxml2::XMLDocument doc;
+
+    string pathStr(path.begin(), path.end());
+    auto result = doc.LoadFile(pathStr.c_str());
+
+    if (result != tinyxml2::XML_SUCCESS) {
+        // 실패한 경우 에러 처리를 수행할 수 있습니다.
+        // 예: throw std::runtime_error("Failed to load XML file");
+        return;
     }
 
-    // 루트 엘리먼트 얻기
-    tinyxml2::XMLElement* root = xmlDoc.FirstChildElement("Images");
+    tinyxml2::XMLElement* root = doc.FirstChildElement("TextureList");
     if (!root) {
-        std::cerr << "루트 엘리먼트를 찾을 수 없습니다." << std::endl;
+        // XML 파일의 형식이 올바르지 않음. 에러 처리를 수행할 수 있습니다.
+        // 예: throw std::runtime_error("Invalid XML file format");
+        return;
     }
 
-    // 자식 엘리먼트들을 반복하면서 데이터 읽기
-   
-    for (tinyxml2::XMLElement* imageElement = root->FirstChildElement("Image"); imageElement; imageElement = imageElement->NextSiblingElement("Image")) {
-        const char* imagePath = imageElement->GetText();
-        if (imagePath) {
-            // char를 wstring으로 변환하여 벡터에 추가
-            std::wstring wImagePath = mtw(imagePath);
-            _texList.push_back(wImagePath);
+    // TextureList의 이름을 불러오기
+    const char* nameAttribute = root->Attribute("Name");
+    if (nameAttribute) {
+        SetName(mtw(nameAttribute));
+    }
+
+    // 텍스처 경로 노드들을 순회하며 텍스처 경로들을 불러오기
+    tinyxml2::XMLElement* texPathsNode = root->FirstChildElement("TexPaths");
+    while (texPathsNode) {
+        const char* texFilePathAttribute = texPathsNode->Attribute("texFilePath");
+        if (texFilePathAttribute) {
+            AddTexture(mtw(texFilePathAttribute));
         }
+
+        texPathsNode = texPathsNode->NextSiblingElement("TexPaths");
     }
-
-
-
 }

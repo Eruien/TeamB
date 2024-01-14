@@ -2,6 +2,7 @@
 #include "imgui_menuBar.h"
 #include "LGlobal.h"
 #include "Sample.h"
+#include "UIManager.h"
 void imgui_menuBar::Init()
 {
 
@@ -28,6 +29,7 @@ void imgui_menuBar::Render()
             if (ImGui::Button("OK", ImVec2(100.f, 25.f)))
             {
                 _isSaveWindow = false;
+                UIManager::GetInstance().Save(L"testScene.xml");
                 ImGui::CloseCurrentPopup();
             }
 

@@ -1,0 +1,41 @@
+<UIScene SceneName="TestScene">
+    <UIObject Name="Button1">
+        <Position x="443" y="-148" z="0"/>
+        <Scale width="200" height="270"/>
+        <Texture texPath="../../res/effect/inhaleeffect12.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="Animator">
+                <args animationPath="Anim2.xml"/>
+            </Script>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="Button2">
+        <Position x="434" y="182" z="0"/>
+        <Scale width="200" height="200"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="DigitDisplay">
+                <args DigitNumber="3" TexListXml="testNum.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="Button3">
+        <Position x="81" y="161" z="1"/>
+        <Scale width="162" height="100"/>
+        <Texture texPath="F:\TeamB\res\ui\6.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+</UIScene>
