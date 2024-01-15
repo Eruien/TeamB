@@ -2,15 +2,25 @@
 #include "tinyxml2.h"
 #include "LGlobal.h"
 
+shared_ptr<KObject> UIManager::s_selectedObject = nullptr;
+bool UIManager::s_isMouseInImGuiWindow = false;
 void UIManager::Init()
 {
+    _imGuiManager = make_shared< ImGuiManager>();
+    _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
+    _imgui_menuBar = make_shared<imgui_menuBar>();
 
-
-
+    _imGuiManager->Init();
+    _imGuiObjDetail->Init();
+    _imgui_menuBar->Init();
 }
 
 void UIManager::Frame()
 {
+    _imGuiManager->Frame();
+    _imGuiObjDetail->Frame();
+    _imgui_menuBar->Frame();
+
 	for (auto obj : _objs)
 	{
 		obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
@@ -20,10 +30,17 @@ void UIManager::Frame()
 
 void UIManager::Render()
 {
+    
 	for (auto obj : _objs)
 	{
 		obj->Render();
 	}
+    
+    _imGuiObjDetail->Render();
+    _imgui_menuBar->Render();
+    _imGuiManager->Render();
+   
+
 }
 
 void UIManager::Save(const wstring filePath)

@@ -6,9 +6,7 @@
 #include "KObject.h"
 
 
-#include "imgui_menuBar.h"
-#include "ImGuiManager.h"
-#include "Imgui_ObjectDetail.h"
+
 class Sample : public LCore
 {
 public:
@@ -22,13 +20,11 @@ public:
 	vector<shared_ptr<KObject>> _objects;
 	shared_ptr<KObject> sObj;
 	shared_ptr<KObject> sObj2;
-	shared_ptr< Imgui_ObjectDetail> _imGuiObjDetail;
-	shared_ptr< imgui_menuBar> _imgui_menuBar;
-	shared_ptr<ImGuiManager> _imGuiManager;
 
 
-	static shared_ptr<KObject> s_selectedObject;
-	static bool s_isMouseInImGuiWindow;
+
+	
+
 public:
 	virtual ~Sample();
 };

@@ -11,6 +11,7 @@ public:
 	 virtual void Init() { };
 	 virtual void Frame() { };
 	 virtual void Render(){ };
+	 virtual void Release() {};
 	
 private:
 	friend class KObject;

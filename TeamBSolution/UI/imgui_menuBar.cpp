@@ -1,7 +1,6 @@
 
 #include "imgui_menuBar.h"
 #include "LGlobal.h"
-#include "Sample.h"
 #include "UIManager.h"
 void imgui_menuBar::Init()
 {
@@ -99,7 +98,26 @@ void imgui_menuBar::Test()
             ImGui::EndMenu();
 
         }
-     
+        if (ImGui::BeginMenu("New"))
+        {
+            if (ImGui::MenuItem("NewObject", "CTRL+N"))
+            {
+                shared_ptr<KObject> obj = make_shared<KObject>();
+                obj->Init();
+                obj->AddScripts(make_shared<PickingUI>());
+                obj->AddScripts(make_shared<Resize2D>());
+                obj->AddScripts(make_shared<DragUI>());
+                obj->AddScripts(make_shared<ChangeTexture>());
+                obj->GetScript<DragUI>(L"DragUI")->Init();
+                obj->SetPos({ 0,0,0 });
+                obj->SetScale({ 200,200,0 });
+                obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/1.png");
+                UIManager::GetInstance().AddUIObject(obj);
+            }
+          
+            ImGui::EndMenu();
+
+        }
     }
     ImGui::EndMainMenuBar();
 

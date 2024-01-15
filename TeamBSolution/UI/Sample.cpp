@@ -3,8 +3,7 @@
 #include "LGlobal.h"
 
 
-shared_ptr<KObject> Sample::s_selectedObject = nullptr;
-bool Sample::s_isMouseInImGuiWindow = false;
+
 bool Sample::Init()
 {
 	UIManager::GetInstance().Init();
@@ -23,7 +22,6 @@ bool Sample::Init()
 	//tex->AddTexture(L"../../res/ui/9.png");
 	//tex->Save(L"testNum.xml");
 	//tex->Load(L"testNum.xml");
-	
 
 	m_DebugCamera = std::make_shared<UICamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
@@ -47,13 +45,8 @@ bool Sample::Init()
 	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
 
 
-	_imGuiManager = make_shared< ImGuiManager>();
 	
-	_imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
-	_imgui_menuBar = make_shared<imgui_menuBar>();
-	_imGuiManager->Init();
-	_imGuiObjDetail->Init();
-	_imgui_menuBar->Init();
+	
 
 	
 	////obj1
@@ -123,13 +116,11 @@ bool Sample::Frame()
 {
 
 
-	_imGuiManager->Frame();
-	_imGuiObjDetail->Frame();
-	_imgui_menuBar->Frame();
+	
 
 	UIManager::GetInstance().Frame();
 
-
+	
 
 	//sObj2->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber();
 
@@ -140,9 +131,7 @@ bool Sample::Render()
 {
 
 	UIManager::GetInstance().Render();
-	_imGuiObjDetail->Render();
-	_imgui_menuBar->Render();
-	_imGuiManager->Render();
+
 	return true;
 }
 

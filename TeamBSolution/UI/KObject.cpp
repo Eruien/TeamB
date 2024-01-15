@@ -107,7 +107,35 @@ bool KObject::CreateVertexBuffer()
 	return true;
 }
 
-void KObject::SetAnimation()
+void KObject::AddScripts(shared_ptr<MonoBehaviour> script)
 {
+	script->SetGameObject(shared_from_this());
+	for (auto scr : _scripts)
+	{
+		if (scr->GetName() == script->GetName())
+			return;
+	}
+	_scripts.push_back(script);
 }
+
+void KObject::RemoveScript(wstring name)
+{
+	shared_ptr<MonoBehaviour> temp;
+	for (auto script : _scripts)
+	{
+		if (script->GetName() == name)
+			 temp= script;
+	}
+
+	auto it = std::remove_if(_scripts.begin(), _scripts.end(),
+		[name](const shared_ptr<MonoBehaviour>& script) {
+			return script->GetName() == name;
+		});
+
+	_scripts.erase(it, _scripts.end());
+
+	temp.reset();
+
+}
+
 

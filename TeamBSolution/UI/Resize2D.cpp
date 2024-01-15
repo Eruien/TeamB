@@ -5,7 +5,7 @@
 #include "LInput.h"
 #include "LWrite.h"
 #include "PickingUI.h"
-#include "Sample.h"
+#include "UIManager.h"
 Resize2D::Resize2D() : MonoBehaviour(L"Resize2D")
 {
 }
@@ -48,7 +48,7 @@ void Resize2D::Frame()
 	GetGameObject()->GetRect().height };
 	barPicking = false;
 	
-	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !Sample::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
+	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !UIManager::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
 	{
 
 		if (TBASIS_EX::TRectangle::RectToPoint(rTop, { (long)MOUSEX,(long)MOUSEY }))

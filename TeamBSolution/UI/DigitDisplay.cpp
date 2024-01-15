@@ -15,7 +15,8 @@ DigitDisplay::~DigitDisplay()
 void DigitDisplay::Init()
 {
     LoadTextureList(_texXmlPath);
-
+    GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(L"../../res/ui/Empty.png");
+    GetGameObject()->m_Tex->Apply();
 	for (int i = 0; i < _digitNum; i++)
 	{
 		_objects.push_back(make_shared<KObject>());

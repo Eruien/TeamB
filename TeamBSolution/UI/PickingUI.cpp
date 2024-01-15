@@ -5,9 +5,8 @@
 #include "LWrite.h"
 #include "TMath.h"
 #include "LStd.h"
-#include "Sample.h"
 #include "Imgui_ObjectDetail.h"
-
+#include "UIManager.h"
 
 PickingUI::PickingUI() : MonoBehaviour(L"PickingUI")
 {
@@ -57,11 +56,11 @@ void PickingUI::Frame()
 		{
 			_buttonState = PICKING_STATE::PRESS;
 			_isSelected = true;
-			if (Sample::s_selectedObject != nullptr && GetGameObject() != Sample::s_selectedObject)
+			if (UIManager::s_selectedObject != nullptr && GetGameObject() != UIManager::s_selectedObject)
 			{
-				(Sample::s_selectedObject->GetScript<PickingUI>(L"PickingUI"))->SetIsSelected(false);
+				(UIManager::s_selectedObject->GetScript<PickingUI>(L"PickingUI"))->SetIsSelected(false);
 			}
-			Sample::s_selectedObject = GetGameObject();
+			UIManager::s_selectedObject = GetGameObject();
 		}
 		else if(LINPUT.m_MouseState[0] == KEY_HOLD)
 			_buttonState = PICKING_STATE::HOLD;

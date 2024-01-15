@@ -21,11 +21,12 @@ public:
 	TRectangle GetRect() { return _rect; };
 	bool CreateVertexBuffer() override;
 	//스크립트
-	void AddScripts(shared_ptr<MonoBehaviour> script) { script->SetGameObject(shared_from_this()); _scripts.push_back(script); };
+	void AddScripts(shared_ptr<MonoBehaviour> script);
+	void RemoveScript(wstring name);
+
 	template<class T>
 	shared_ptr<T> GetScript(wstring name);
 	vector<shared_ptr<MonoBehaviour>> GetScripts() { return _scripts;};
-	void SetAnimation();
 
 //Rect
 public:
