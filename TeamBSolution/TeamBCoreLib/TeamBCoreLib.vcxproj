@@ -47,6 +47,7 @@
     <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="LWindow.cpp" />
     <ClCompile Include="LWrite.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TMath.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +78,7 @@
     <ClInclude Include="LTimer.h" />
     <ClInclude Include="LWindow.h" />
     <ClInclude Include="LWrite.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TMath.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

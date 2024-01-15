@@ -12,6 +12,8 @@ public:
 	std::vector<DWORD> m_Corner;
 	// Frustum 계산을 위한 tbox
 	T_BOX  m_tBox;
+	//
+	DWORD					m_dwFace;
 public:
 	int m_iDepth = 0;
 	bool m_IsLeaf = false;

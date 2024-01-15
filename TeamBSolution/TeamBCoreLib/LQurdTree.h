@@ -1,6 +1,7 @@
 #pragma once
 #include "LNode.h"
 #include "LObject.h"
+#include "Texture.h"
 
 
 class LQurdtree : public LObject
@@ -9,7 +10,7 @@ public:
 	// map의 행렬을 node마다 계산하기 위한 요소들
 	LMap* m_pMap = nullptr;
 	LCamera* m_pCamera = nullptr;
-	LTexture* m_TexArray[5];
+	
 
 	DWORD m_Row = 0;
 	DWORD m_Col = 0;
@@ -24,6 +25,7 @@ public:
 	std::queue<LNode*> m_Queue;
 
 	// for splatting
+	Texture* m_TexArray[5];
 	BYTE* m_fAlphaData;
 	ComPtr<ID3D11Texture2D> m_pMaskAlphaTex;
 	ComPtr<ID3D11ShaderResourceView> m_pMaskAlphaTexSRV;
@@ -45,6 +47,8 @@ public:
 public: // 시진추가 for picking
 	UINT SelectVertexList(T_BOX tBox, vector<LNode*>& selectNodeList);
 	// for splatting
+	
+
 public:
 	bool Init() override;
 	bool Frame() override;

@@ -119,6 +119,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../FX11/inc/</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,15 +147,22 @@
     <ClCompile Include="CamForTool.cpp" />
     <ClCompile Include="LMapLOD.cpp" />
     <ClCompile Include="LSelect.cpp" />
+    <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="SNode.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ATLCONV.h" />
     <ClInclude Include="CamForTool.h" />
     <ClInclude Include="LMapLOD.h" />
     <ClInclude Include="LSelect.h" />
+    <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="SNode.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">

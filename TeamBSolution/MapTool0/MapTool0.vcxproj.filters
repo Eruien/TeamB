@@ -6,6 +6,9 @@
     <ClCompile Include="SNode.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="CamForTool.cpp" />
+    <ClCompile Include="ResourceBase.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMapLOD.h" />
@@ -13,5 +16,9 @@
     <ClInclude Include="SNode.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="CamForTool.h" />
+    <ClInclude Include="ResourceBase.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="ATLCONV.h" />
   </ItemGroup>
 </Project>

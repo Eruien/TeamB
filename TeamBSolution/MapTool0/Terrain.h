@@ -5,6 +5,8 @@
 #include "LHeightMap.h"
 #include "LSelect.h"
 #include "CamForTool.h"
+#include "TextureManager.h"
+//#include <algorithm>
 
 //
 struct LIGHT_CONSTANT_BUFFER
@@ -43,15 +45,15 @@ public:
 
 	// for splatting
 	ComPtr<ID3D10ShaderResourceView> m_pTexSRV[4];
-	ComPtr<ID3D11PixelShader> m_pPS[2];
+	ComPtr<ID3D11PixelShader> m_pPS;
 
 public:
 
 	bool m_bObjectPicking = false;
-	bool m_bUpPicking = true;
+	bool m_bUpPicking = false;
 	bool m_bDownPicking = false;
 	bool m_bPlatPicking = false;
-	bool m_bSplatting = false;
+	bool m_bSplatting = true;
 public:
 	bool Init();
 	bool Frame();
@@ -63,11 +65,11 @@ public:
 	bool GetIntersection();
 
 	// for splating
-	ID3D11PixelShader* LoadPixelShaderFile(ID3D11Device* pd3dDevice,
-		const void* pShaderFileData,
-		const char* pFunctionName=0,
-		bool bBinary=false, ID3DBlob** pRetBlob=nullptr);
-	HRESULT	CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut);
+	void TillingTexture();
+	template <typename T>
+	T MyClamp(const T& value, const T& low, const T& high) {
+		return (value < low) ? low : (value > high) ? high : value;
+	}
 public:
 	virtual ~Terrain();
 };

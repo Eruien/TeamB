@@ -35,18 +35,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{5CC113CB-6
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapTool0", "MapTool0\MapTool0.vcxproj", "{2D2A5300-36C5-4996-8AAB-EED1DF87D414}"
 EndProject
-<<<<<<< HEAD
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7F1-FBA5-4A6A-AC3D-A642F5698AE8}"
 	ProjectSection(SolutionItems) = preProject
 		..\res\hlsl\CharacterShader.hlsl = ..\res\hlsl\CharacterShader.hlsl
 		..\res\hlsl\CustomizeMap.hlsl = ..\res\hlsl\CustomizeMap.hlsl
 		..\res\hlsl\DiffuseLight.hlsl = ..\res\hlsl\DiffuseLight.hlsl
 		..\res\hlsl\HeightMap.hlsl = ..\res\hlsl\HeightMap.hlsl
+		..\res\hlsl\MultiTexture.hlsl = ..\res\hlsl\MultiTexture.hlsl
 		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl
 	EndProjectSection
-=======
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UISample", "UISample\UISample.vcxproj", "{A02F8538-E7C4-47D5-A459-8A4AD86169D2}"
->>>>>>> b0cfa17ba9fe7a824ba2034e83500bc013439f7a
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

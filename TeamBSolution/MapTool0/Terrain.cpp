@@ -4,8 +4,7 @@
 bool Terrain::Init()
 {
 	// splatting
-	m_pPS[0].Attach(LoadPixelShaderFile(LGlobal::g_pDevice.Get(), L"MultiTexture.hlsl", "LinearBlendAddPS"));
-	m_pPS[1].Attach(LoadPixelShaderFile(LGlobal::g_pDevice.Get(), L"MultiTexture.hlsl", "LinearBlendPS"));
+	//m_pPS.Attach
 
 
 	
@@ -51,6 +50,10 @@ bool Terrain::Init()
 	m_Tree->m_TreeDepth = 3;
 	// 프러스텀 컬링할 맵이랑 맵의 크기를 입력
 	m_Tree->BuildQurdTree(m_HeightMap, 513, 513);
+	m_Tree->m_TexArray[0] = I_Tex.Load(L"../../res/map/000.jpg");
+	m_Tree->m_TexArray[1] = I_Tex.Load(L"../../res/map/001.jpg");
+	m_Tree->m_TexArray[2] = I_Tex.Load(L"../../res/map/002.jpg");
+	m_Tree->m_TexArray[3] = I_Tex.Load(L"../../res/map/003.jpg");
 
 
 
@@ -115,7 +118,7 @@ bool Terrain::Frame()
 									node->m_tBox.vMax.y = m_Tree->m_pMap->m_VertexList[iVertex].p.y;
 								}
 							}
-							//
+							//m_Tree->m_pMap->ComputeFaceNormal(iVertex);
 						}
 					}
 					node->m_tBox.vCenter = (node->m_tBox.vMax + node->m_tBox.vMin) * 0.5f;
@@ -160,7 +163,9 @@ bool Terrain::Frame()
 		if (GetIntersection())
 		{
 			fStep = 0.f;
-			m_Tree->Splatting(m_Select->m_vIntersection, m_iSplattingTexIndex);
+			m_Tree->Splatting(m_Select->m_vIntersection, m_iSplattingTexIndex, 300.f);
+			TillingTexture();
+
 		}
 	}
 	return true;
@@ -278,76 +283,47 @@ bool Terrain::GetIntersection()
 	return false;
 }
 
-ID3D11PixelShader* Terrain::LoadPixelShaderFile(ID3D11Device* pd3dDevice, const void* pShaderFileData, const char* pFunctionName, 
-	bool bBinary, ID3DBlob** pRetBlob)
+
+void Terrain::TillingTexture()
 {
-	HRESULT hr = S_OK;
-	ID3D11PixelShader* pPixelShader = nullptr;
-	ID3DBlob* pBlob = nullptr;
-	DWORD dwSize = 0;
-	LPCVOID lpData = NULL;
-	if (bBinary == false)
+	vector<LNode*> nodelist;
+	T_BOX box;
+	TVector3 vMin, vMax;
+	TVector3 vRange(100, 100, 100);
+	vMax = m_Select->m_vIntersection + vRange;
+	vMin = m_Select->m_vIntersection - vRange;
+	box.Set(vMax, vMin);
+	if (m_Tree->SelectVertexList(box, nodelist) > 0)
 	{
-		if (pFunctionName == 0)
+		float fWorkRadius = 20.f; // randstep(3.0f, 20.0f); // 무작위값
+		for (auto node : nodelist)
 		{
-			if (FAILED(hr = CompileShaderFromFile((TCHAR*)pShaderFileData, "PS", "ps_5_0", &pBlob)))
+			for (UINT iVertex = 0; iVertex < m_Tree->m_pMap->m_VertexList.size(); iVertex++)
 			{
-				return nullptr;
+				TVector3 v0 = m_Tree->m_pMap->m_VertexList[iVertex].p;
+				TVector3 v = v0 - m_Select->m_vIntersection;
+				float fDistance = D3DXVec3Length(&v);
+				if (fDistance <= (fWorkRadius + 3.f))
+				{
+					if (fDistance < fWorkRadius)
+					{
+						if (fDistance < 1.f)
+							fDistance = 1.f;
+
+						fDistance = 1 / fDistance;
+						fDistance *= 1000.f;
+
+						m_Tree->m_pMap->m_VertexList[iVertex].c.x += fDistance;
+						m_Tree->m_pMap->m_VertexList[iVertex].c.x = MyClamp(m_Tree->m_pMap->m_VertexList[iVertex].c.x, 0.0f, 255.0f);
+					}
+					//m_Tree->m_pMap->ComputeFaceNormal(iVertex);
+				}
 			}
 		}
-		else
-		{
-			if (FAILED(hr = CompileShaderFromFile((TCHAR*)pShaderFileData, pFunctionName, "ps_5_0", &pBlob)))
-			{
-				return nullptr;
-			}
-		}
+		//m_Tree->m_pMap->UpdateVertexBuffer();
+		// Update Texture
 
-		dwSize = (DWORD)pBlob->GetBufferSize();
-		lpData = pBlob->GetBufferPointer();
 	}
-	else
-	{
-		dwSize = sizeof(pShaderFileData);
-		lpData = pShaderFileData;
-	}
-	if (FAILED(hr = pd3dDevice->CreatePixelShader(lpData, dwSize, NULL, &pPixelShader)))
-	{
-		pBlob->Release();
-		return nullptr;
-	}
-	if (pRetBlob == nullptr)
-	{
-		pBlob->Release();
-	}
-	else
-	{
-		*pRetBlob = pBlob;
-	}
-	return pPixelShader;
-}
-
-HRESULT Terrain::CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
-{
-	HRESULT hr = S_OK;
-
-	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-#if defined( DEBUG ) || defined( _DEBUG )	
-	dwShaderFlags |= D3DCOMPILE_DEBUG;
-#endif
-	ID3DBlob* pErrorBlob;
-	hr = D3DCompileFromFile(szFileName, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, szEntryPoint, szShaderModel,
-		dwShaderFlags, 0, ppBlobOut, &pErrorBlob);
-	if (FAILED(hr))
-	{
-		if (pErrorBlob != NULL)
-			OutputDebugStringA((char*)pErrorBlob->GetBufferPointer());
-		if (pErrorBlob) pErrorBlob->Release();
-		return hr;
-	}
-	if (pErrorBlob) pErrorBlob->Release();
-
-	return S_OK;
 }
 
 Terrain::~Terrain() {}
