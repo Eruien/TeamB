@@ -8,7 +8,6 @@
 #include "UIManager.h"
 DragUI::DragUI() : MonoBehaviour(L"DragUI")
 {
-	
 }
 
 DragUI::~DragUI()
@@ -29,7 +28,22 @@ void DragUI::Frame()
 	{
 
 
-        if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && !_resize2D->GetisBarPicking()) {
+        if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && _resize2D!=nullptr) {
+            if (!_resize2D->GetisBarPicking())
+            {
+                if (!_isDragging) {
+                    // 마우스 버튼이 처음 눌렸을 때
+                    offset = GetGameObject()->m_vPosition - TVector3((float)MOUSEX, (float)MOUSEY, 1);
+                    _isDragging = true;
+                }
+                else {
+                    // 마우스 버튼이 눌린 상태에서 마우스가 이동하는 경우
+                    GetGameObject()->SetPos(TVector3((float)MOUSEX, (float)MOUSEY, 1) + offset);
+                }
+            }
+        }
+        else if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && _resize2D == nullptr)
+        {
             if (!_isDragging) {
                 // 마우스 버튼이 처음 눌렸을 때
                 offset = GetGameObject()->m_vPosition - TVector3((float)MOUSEX, (float)MOUSEY, 1);

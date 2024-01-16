@@ -23,10 +23,10 @@ void Imgui_ObjectDetail::Frame()
 		ImVec2 windowSize = ImGui::GetWindowSize();
 
 		// 창 안에 마우스가 있는지 검사
-		
+
 		UIManager::s_isMouseInImGuiWindow = ImGui::IsMouseHoveringRect(windowPos, ImVec2(windowPos.x + windowSize.x, windowPos.y + windowSize.y));
 
-	
+
 
 
 		char buffer[256] = "";  // 문자열을 저장할 버퍼
@@ -42,7 +42,7 @@ void Imgui_ObjectDetail::Frame()
 			// 엔터 키가 눌렸을 때 실행되는 코드
 			// buffer에 사용자의 입력이 저장됨
 			// 변경된 값을 사용하여 원하는 동작을 수행하세요
-		
+
 			UIManager::s_selectedObject->SetName(mtw(buffer));  // SetName 함수에 사용자의 입력을 전달
 		}
 		ImGui::Separator();
@@ -83,7 +83,8 @@ void Imgui_ObjectDetail::Frame()
 
 		ImGui::Separator();
 
-		//ImGui::Text();
+		ImGui::Text("이미지 불러오기 : ");
+		ImGui::SameLine();
 		if (ImGui::Button("Load Texture From File"))
 		{
 			ImGuiFileDialog::Instance()->OpenDialog("ChooseTexture", "Choose Texture File", ".png", ".");
@@ -106,8 +107,7 @@ void Imgui_ObjectDetail::Frame()
 					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
-				
-					
+
 				}
 				ImGui::EndListBox();
 				if (ImGui::Button("Add"))
@@ -129,7 +129,7 @@ void Imgui_ObjectDetail::Frame()
 						break;
 					case 4:
 						UIManager::s_selectedObject->AddScripts(make_shared<DigitDisplay>(3,L"testNum.xml"));
-						
+
 						UIManager::s_selectedObject->GetScript< DigitDisplay>(L"DigitDisplay")->Init();
 						break;
 					case 5:
@@ -140,7 +140,7 @@ void Imgui_ObjectDetail::Frame()
 					}
 				}
 			}
-			
+
 
 
 
@@ -155,8 +155,14 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("PickingUI"))
 						{
-							ImGui::Text("asdasdas");
-							
+							ImGui::Text("오브젝트 피킹");
+							if (ImGui::Button("Delete"))
+							{
+								UIManager::s_selectedObject->RemoveScript(L"PickingUI");
+								ImGui::EndTabItem();
+								continue;
+
+							}
 							ImGui::EndTabItem();
 						}
 					}
@@ -164,7 +170,15 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("DragUI"))
 						{
-							ImGui::Text("asdasdas");
+							ImGui::Text("오브젝트 드래그");
+
+							if (ImGui::Button("Delete"))
+							{
+								UIManager::s_selectedObject->RemoveScript(L"DragUI");
+								ImGui::EndTabItem();
+								continue;
+
+							}
 							ImGui::EndTabItem();
 						}
 					}
@@ -172,7 +186,15 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("Resize2D"))
 						{
-							ImGui::Text("asdasdas");
+							ImGui::Text("마우스로 오브젝트 크기 조절");
+
+							if (ImGui::Button("Delete"))
+							{
+								UIManager::s_selectedObject->RemoveScript(L"Resize2D");
+								ImGui::EndTabItem();
+								continue;
+
+							}
 							ImGui::EndTabItem();
 						}
 					}
@@ -180,7 +202,15 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("DigitDisplay"))
 						{
-							ImGui::Text("asdasdas");
+							ImGui::Text("숫자를 이미지로 표현");
+
+							if (ImGui::Button("Delete"))
+							{
+								UIManager::s_selectedObject->RemoveScript(L"DigitDisplay");
+								ImGui::EndTabItem();
+								continue;
+
+							}
 							ImGui::EndTabItem();
 						}
 					}
@@ -188,14 +218,20 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("Animator"))
 						{
-							ImGui::Text("asdasdas");
+							ImGui::Text("애니메이션");
 							if (ImGui::Button("Delete"))
 							{
 								UIManager::s_selectedObject->RemoveScript(L"Animator");
 								ImGui::EndTabItem();
 								continue;
-								
+
 							}
+							if (ImGui::Button("Load Animation From File"))
+							{
+								ImGuiFileDialog::Instance()->OpenDialog("ChooseAnimation", "ChooseAnimation File", ".xml", ".");
+								_isDialogWindow = true;
+							}
+
 							ImGui::EndTabItem();
 						}
 					}
@@ -203,12 +239,18 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("ExitWindow"))
 						{
-							ImGui::Text("asdasdas");
+							ImGui::Text("클릭시 프로그램 종료");
+							if (ImGui::Button("Delete"))
+							{
+								UIManager::s_selectedObject->RemoveScript(L"ExitWindow");
+								ImGui::EndTabItem();
+								continue;
+							}
 							ImGui::EndTabItem();
 						}
 					}
 				}
-				
+
 				ImGui::EndTabBar();
 			}
 			ImGui::Separator();
@@ -218,10 +260,11 @@ void Imgui_ObjectDetail::Frame()
 
 		ImGui::End();
 
+
+		//이미지 변경
 		if (ImGuiFileDialog::Instance()->Display("ChooseTexture"))
 		{
-	
-			
+
 			// action if OK
 			if (ImGuiFileDialog::Instance()->IsOk())
 			{
@@ -243,6 +286,23 @@ void Imgui_ObjectDetail::Frame()
 				}
 
 			}
+			// 애니메이션 변경
+			if (ImGuiFileDialog::Instance()->Display("ChooseAnimation"))
+			{
+
+				// action if OK
+				if (ImGuiFileDialog::Instance()->IsOk())
+				{
+					std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+					std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+					// action
+					std::wstring str = wstring().assign(filePathName.begin(), filePathName.end());
+
+					_filePathName = str;
+					//UIManager::s_selectedObject->GetScript<
+					_isTexAcceptWindow = true;
+
+				}
 
 			// close
 			_isDialogWindow = false;
@@ -267,7 +327,7 @@ void Imgui_ObjectDetail::Frame()
 		}
 
 	}
-	
+
 
 }
 
