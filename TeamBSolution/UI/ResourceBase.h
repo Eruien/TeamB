@@ -4,11 +4,8 @@
 enum class ResourceType :  __int8
 {
 	None = -1,
-	Mesh,
-	Shader,
-	Texture,
-	Material,
 	Animation,
+	TextureList,
 
 	End
 };
@@ -25,7 +22,7 @@ public:
 	virtual ~ResourceBase();
 
 	ResourceType GetType() { return _type; }
-
+	wstring GetPath() { return _path; };
 	void SetName(const wstring& name) { _name = name; }
 	const wstring& GetName() { return _name; }
 	UINT32 GetID() { return _id; }

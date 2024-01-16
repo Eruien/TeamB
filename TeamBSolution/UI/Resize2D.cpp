@@ -1,10 +1,11 @@
 #include "Resize2D.h"
-#include "KSpriteObj.h"
+#include "KObject.h"
 #include "LGlobal.h"
 #include "LStd.h"
 #include "LInput.h"
 #include "LWrite.h"
 #include "PickingUI.h"
+#include "UIManager.h"
 Resize2D::Resize2D() : MonoBehaviour(L"Resize2D")
 {
 }
@@ -47,7 +48,7 @@ void Resize2D::Frame()
 	GetGameObject()->GetRect().height };
 	barPicking = false;
 	
-	if (static_pointer_cast<PickingUI>(GetGameObject()->GetScript(L"PickingUI"))->GetIsSelected())
+	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !UIManager::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
 	{
 
 		if (TBASIS_EX::TRectangle::RectToPoint(rTop, { (long)MOUSEX,(long)MOUSEY }))
@@ -67,7 +68,7 @@ void Resize2D::Frame()
 			barPicking = true;
 			if (LINPUT.m_MouseState[0] == KEY_HOLD)
 			{
-				GetGameObject()->m_vScale.y = (MOUSEY - GetGameObject()->m_vPosition.y) * 2;
+				GetGameObject()->m_vScale.y = -(MOUSEY - GetGameObject()->m_vPosition.y) * 2;
 			}
 		}
 		else if (TBASIS_EX::TRectangle::RectToPoint(rLeft, { (long)MOUSEX,(long)MOUSEY }))
@@ -76,7 +77,7 @@ void Resize2D::Frame()
 			barPicking = true;
 			if (LINPUT.m_MouseState[0] == KEY_HOLD)
 			{
-				GetGameObject()->m_vScale.x = (MOUSEX - GetGameObject()->m_vPosition.x) * 2;
+				GetGameObject()->m_vScale.x = -(MOUSEX - GetGameObject()->m_vPosition.x) * 2;
 			}
 		}
 		else if (TBASIS_EX::TRectangle::RectToPoint(rRight, { (long)MOUSEX,(long)MOUSEY }))

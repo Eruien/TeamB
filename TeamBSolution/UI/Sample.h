@@ -1,10 +1,12 @@
 #pragma once
 #include "LCore.h"
-#include "KSpriteObj.h"
 #include "UICamera.h"
-#include "ImGuiManager.h"
-class imgui_test;
-class LPlaneObj;
+
+#include "UIManager.h"
+#include "KObject.h"
+
+
+
 class Sample : public LCore
 {
 public:
@@ -14,13 +16,15 @@ public:
 	bool Frame();
 	bool Render();
 	bool Release();
-	shared_ptr<LPlaneObj> obj;
-	vector<shared_ptr<KSpriteObj>> _objects;
-	shared_ptr< KSpriteObj> sObj;
-	shared_ptr< KSpriteObj> sObj2;
-	shared_ptr<imgui_test> _imgui;
-	shared_ptr<ImGuiManager> _imGuiManager;
-	static shared_ptr<KSpriteObj> _clickedObject;
+	shared_ptr<KObject> obj;
+	vector<shared_ptr<KObject>> _objects;
+	shared_ptr<KObject> sObj;
+	shared_ptr<KObject> sObj2;
+
+
+
+	
+
 public:
 	virtual ~Sample();
 };

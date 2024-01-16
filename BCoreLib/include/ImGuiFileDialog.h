@@ -1947,11 +1947,11 @@ public:
 
 class IGFD_API FileDialog : public BookMarkFeature, public KeyExplorerFeature, public ThumbnailFeature {
 protected:
-    FileDialogInternal m_FileDialogInternal;
     ImGuiListClipper m_FileListClipper;
     ImGuiListClipper m_PathListClipper;
     float prOkCancelButtonWidth = 0.0f;
-
+public :
+    FileDialogInternal m_FileDialogInternal;
 public:
     // Singleton for easier accces form anywhere but only one dialog at a time
     // vCopy or vForce can be used for share a memory pointer in a new memory space like a dll module

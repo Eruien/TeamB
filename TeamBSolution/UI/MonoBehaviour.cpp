@@ -1,5 +1,5 @@
 #include "MonoBehaviour.h"
-#include "KSpriteObj.h"
+#include "KObject.h"
 
 MonoBehaviour::MonoBehaviour(wstring ScriptName) : _name(ScriptName)
 {

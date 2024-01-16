@@ -1,7 +1,6 @@
-#include "KSpriteObj.h"
-#include "LGlobal.h"
-
-bool KSpriteObj::Init()
+#include "KObject.h"
+#include "Animator.h"
+bool KObject::Init()
 {
 	for (shared_ptr<MonoBehaviour>& script : _scripts)
 	{
@@ -17,7 +16,7 @@ bool KSpriteObj::Init()
 		return true;
 }
 
-bool KSpriteObj::Frame()
+bool KObject::Frame()
 {
 	SetRect(m_vPosition, m_vScale);
 
@@ -26,32 +25,7 @@ bool KSpriteObj::Frame()
 		script->Frame();
 	}
 
-	Animation* animation = GetCurrentAnimation();
 
-
-	if (animation == nullptr)
-		return false;
-
-	const Keyframe& keyframe = animation->GetKeyframe(_currentKeyframeIndex);
-
-	float deltaTime = LGlobal::g_fSPF;
-	_sumTime += deltaTime;
-
-	if (_sumTime >= keyframe.time)
-	{
-		_currentKeyframeIndex++;
-		INT32 totalCount = animation->GetKeyframeCount();
-
-		if (_currentKeyframeIndex >= totalCount)
-		{
-			if (animation->IsLoop())
-				_currentKeyframeIndex = 0;
-			else
-				_currentKeyframeIndex = totalCount - 1;
-		}
-
-		_sumTime = 0.f;
-	}
 
 	TMatrix matScale, matRotation, matTranslation;
 	matScale = matScale.CreateScale(m_vScale);
@@ -65,51 +39,32 @@ bool KSpriteObj::Frame()
 	return true;
 }
 
-bool KSpriteObj::Render()
+bool KObject::Render()
 {
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Render();
+	}
 	PreRender();
 	
-	m_Tex->m_pTexSRV = LManager<LTexture>::GetInstance().Load(GetCurrentKeyframe().texFilePath)->m_pTexSRV;
-	 
-	m_Tex->Apply();
-
 	PostRender();
 	return false;
 }
 
-bool KSpriteObj::Release()
+bool KObject::Release()
 {
 	return false;
 }
 
-void KSpriteObj::CreateAnimation(animInfo info)
-{
 
-	Animation* animation = new Animation();
-	animation->SetName(info.name);
-	//animation->SetTexture(Get<LTexture>(info.textureKey));
-	animation->SetLoop(info.isLoop);
-	//info.keyFrames 
-	for (const auto& keyframe : info.keyFrames) {
-		LTexture* tex = LManager<LTexture>::GetInstance().Load(keyframe.texFilePath);
-		animation->AddKeyframe(Keyframe{ keyframe.texFilePath , keyframe.time });
-	}
-	LManager<Animation>::GetInstance().Add(info.name, animation);
-	SetAnimation(animation);
-	
-}
-Animation* KSpriteObj::GetCurrentAnimation()
-{
-	return _currentAnimation;
-}
-void KSpriteObj::SetRect(TVector3 pos, TVector3 scale)
+void KObject::SetRect(TVector3 pos, TVector3 scale)
 {
 	_rect = TRectangle(pos.x, pos.y, scale.x, scale.y);
 
 
 }
 
-bool KSpriteObj::CreateVertexBuffer()
+bool KObject::CreateVertexBuffer()
 {
 	m_VertexList.resize(6);
 
@@ -152,12 +107,35 @@ bool KSpriteObj::CreateVertexBuffer()
 	return true;
 }
 
-shared_ptr<MonoBehaviour> KSpriteObj::GetScript(wstring name)
+void KObject::AddScripts(shared_ptr<MonoBehaviour> script)
 {
-	for (const auto script : _scripts)
+	script->SetGameObject(shared_from_this());
+	for (auto scr : _scripts)
 	{
-		if (script->_name == name)
-			return script;
+		if (scr->GetName() == script->GetName())
+			return;
 	}
-	return nullptr;
+	_scripts.push_back(script);
 }
+
+void KObject::RemoveScript(wstring name)
+{
+	shared_ptr<MonoBehaviour> temp;
+	for (auto script : _scripts)
+	{
+		if (script->GetName() == name)
+			 temp= script;
+	}
+
+	auto it = std::remove_if(_scripts.begin(), _scripts.end(),
+		[name](const shared_ptr<MonoBehaviour>& script) {
+			return script->GetName() == name;
+		});
+
+	_scripts.erase(it, _scripts.end());
+
+	temp.reset();
+
+}
+
+

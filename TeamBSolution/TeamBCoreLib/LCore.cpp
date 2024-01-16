@@ -176,6 +176,7 @@ bool LCore::EngineRender()
     LInput::GetInstance().Render();
     LWrite::GetInstance().PostRender();
     LDevice::PostRender();
+    m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), nullptr, 0xFFFFFFFF);
 
 	return true;
 }

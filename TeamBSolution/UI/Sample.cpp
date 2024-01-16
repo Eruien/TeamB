@@ -1,18 +1,28 @@
 #include "Sample.h"
-#include "LGlobal.h"
-#include "LPlaneObj.h"
-#include "KSpriteObj.h"
-#include "MoveObject.h"
-#include "PickingUI.h"
-#include "DragUI.h"
-#include "Resize2D.h"
-#include "imgui_test.h"
-#include "ImGuiManager.h"
 
-shared_ptr<KSpriteObj> Sample::_clickedObject = nullptr;
+#include "LGlobal.h"
+
+
 
 bool Sample::Init()
 {
+	UIManager::GetInstance().Init();
+	UIManager::GetInstance().Load(L"testScene.xml");
+	//TextureList* tex = new TextureList();
+	//tex->SetName(L"DefaultNumber");
+	//tex->AddTexture(L"../../res/ui/0.png");
+	//tex->AddTexture(L"../../res/ui/1.png");
+	//tex->AddTexture(L"../../res/ui/2.png");
+	//tex->AddTexture(L"../../res/ui/3.png");
+	//tex->AddTexture(L"../../res/ui/4.png");
+	//tex->AddTexture(L"../../res/ui/5.png");
+	//tex->AddTexture(L"../../res/ui/6.png");
+	//tex->AddTexture(L"../../res/ui/7.png");
+	//tex->AddTexture(L"../../res/ui/8.png");
+	//tex->AddTexture(L"../../res/ui/9.png");
+	//tex->Save(L"testNum.xml");
+	//tex->Load(L"testNum.xml");
+
 	m_DebugCamera = std::make_shared<UICamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_DebugCamera->m_fCameraPitch = 0.0f;
@@ -23,131 +33,105 @@ bool Sample::Init()
 	animInfo info;
 	info.isLoop = true;
 	info.name = L"Anim";
-	//info.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.05f });
-	info.keyFrames.push_back({ L"../../res/effect/star3.png",0.05f });
-	_imGuiManager = make_shared< ImGuiManager>();
-	_imgui = make_shared< imgui_test>();
-	_imGuiManager->Init();
-	_imgui->Init();
+	info.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",1.f });
+	info.keyFrames.push_back({ L"../../res/effect/star3.png",1.f });
+
+	animInfo info2;
+	info2.isLoop = true;
+	info2.name = L"Anim2";
+	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
+	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
+	info2.keyFrames.push_back({ L"../../res/effect/star3.png",0.1f });
+	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
+
 
 	
-
-	sObj = make_shared<KSpriteObj>();
-	//scripts
-	sObj->AddScripts(make_shared<PickingUI>());
-	sObj->AddScripts(make_shared<Resize2D>());
-	sObj->AddScripts(make_shared<DragUI>());
-
-	sObj->SetPos({ 0,0,0 });
-	sObj->SetScale({ 200,200,1 });
-	sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
-	sObj->Init();
-	sObj->SetName("Button1");
-	sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
-	sObj->CreateAnimation(info);
-
-	_objects.push_back(sObj);
-
-	sObj2 = make_shared<KSpriteObj>();
-	//scripts
-	sObj2->AddScripts(make_shared<PickingUI>());
-	sObj2->AddScripts(make_shared<Resize2D>());
-	sObj2->AddScripts(make_shared<DragUI>());
-
-	sObj2->SetPos({ 200,200,0 });
-	sObj2->SetScale({ 200,200,1 });
-	sObj2->SetRect(sObj->m_vPosition, sObj->m_vScale);
-	sObj2->Init();
-	sObj2->SetName("Button2");
-	sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
-	sObj2->CreateAnimation(info);
 	
-	_objects.push_back(sObj2);
+
+	
+	////obj1
+	//{
+	//	sObj = make_shared<KObject>();
+	////scripts
+	//sObj->AddScripts(make_shared<PickingUI>());
+	//sObj->AddScripts(make_shared<Resize2D>());
+	//sObj->AddScripts(make_shared<DragUI>());
+	////sObj->AddScripts(make_shared<ImguiDetail>());
+	//sObj->AddScripts(make_shared<Animator>(L"Anim2.xml"));
+	//sObj->AddScripts(make_shared<ChangeTexture>());
+	//sObj->SetPos({ 80,80,0 });
+	//sObj->SetScale({ 200,200,1 });
+	//sObj->SetRect(sObj->m_vPosition, sObj->m_vScale);
+	//sObj->Init();
+	//sObj->SetName(L"Button1");
+	//sObj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+	////sObj->GetScript<Animator>(L"Animator")->CreateAnimation(info2);
+
+	//UIManager::GetInstance().AddUIObject(sObj);
+	//}
+	////obj2
+	//{
+	//	sObj2 = make_shared<KObject>();
+	//	//scripts
+	//	sObj2->AddScripts(make_shared<PickingUI>());
+	//	sObj2->AddScripts(make_shared<Resize2D>());
+	//	sObj2->AddScripts(make_shared<DragUI>());
+	//	//sObj2->AddScripts(make_shared<ImguiDetail>());
+	//	sObj2->AddScripts(make_shared<ChangeTexture>());
+	//	sObj2->AddScripts(make_shared<DigitDisplay>(3, L"testNum.xml"));
+	//	sObj2->SetPos({ 200,200,0 });
+	//	sObj2->SetScale({ 200,200,1 });
+	//	sObj2->SetRect(sObj->m_vPosition, sObj->m_vScale);
+	//	sObj2->Init();
+	//	sObj2->SetName(L"Button2");
+	//	sObj2->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+
+	//	UIManager::GetInstance().AddUIObject(sObj2);
+	//}
+	////obj3
+	//{
+	//	obj = make_shared< KObject>();
+	//	obj->AddScripts(make_shared<PickingUI>());
+	//	obj->AddScripts(make_shared<Resize2D>());
+	//	obj->AddScripts(make_shared<DragUI>());
+	//	//obj->AddScripts(make_shared<ImguiDetail>());
+	//	obj->AddScripts(make_shared<ChangeTexture>());
+	//	//obj->AddScripts(make_shared<ExitWindow>());
+	//	obj->Set();
+	//	obj->SetName(L"Button3");
+	//	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/8.png");
+	//	
+	//	obj->Init();
+	//	obj->SetPos({ 100,100,1 });
+	//	obj->SetScale({ 100,100,10 });
+	//	UIManager::GetInstance().AddUIObject(obj);
+	//}
 
 
-
-//	obj = make_shared< LPlaneObj>();
-//	obj->Set();
-//	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/effect/damaged1.png");
-//;	obj->Init();
-//	obj->SetPos({ 1000,100,1 });
-//	obj->SetScale({ 200,200,10 });
-
+	
 	return true;
 }
 
 bool Sample::Frame()
 {
 
-	// 버튼들의 isClicked 초기화
-
-	_imGuiManager->Frame();
-	_imgui->Frame();
-
 
 	
-		//for (auto obj : _objects)
-		//{
-		//
 
-		//	if (static_pointer_cast<PickingUI>(obj->GetScript(L"PickingUI"))->GetIsSelected())
-		//	{
+	UIManager::GetInstance().Frame();
 
-		//		ImGui::Begin("Object Details");
-		//		if (ImGui::InputText("##ObjectName", const_cast<char*>(obj->GetName().c_str()), sizeof(obj->GetName())))
+	
 
+	//sObj2->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber();
 
-		//			ImGui::Text("Position");
-
-		//		// DragFloat 함수를 사용하여 X, Y, Z 값을 드래그 가능한 값으로 선택
-		//		 // 왼쪽 정렬
-		//		ImGui::Text("X");
-		//		ImGui::SameLine(0, -1);
-		//		ImGui::SetNextItemWidth(150);
-		//		ImGui::DragFloat("##X", &obj->m_vPosition.x);
-
-
-		//		ImGui::Text("Y");
-		//		ImGui::SameLine(0, -1);
-		//		ImGui::SetNextItemWidth(150);
-		//		ImGui::DragFloat("##Y", &obj->m_vPosition.y);
-
-		//		ImGui::Text("Z");
-		//		ImGui::SameLine(0, -1);
-		//		ImGui::SetNextItemWidth(150);
-		//		ImGui::DragFloat("##Z", &obj->m_vPosition.z);
-
-
-
-		//		// 여기에 오브젝트 정보나 설정을 표시하는 ImGui 컨트롤들을 추가
-
-		//		ImGui::End();
-		//		//static_pointer_cast<PickingUI>(obj->GetScript(L"PickingUI"))->SetIsSelected(false);
-		//	}
-	 //   }
-
-
-
-
-
-
-	sObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	sObj->Frame();
-	sObj2->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	sObj2->Frame();
-
-	/*obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	obj->Frame();*/
 	return true;
 }
 
 bool Sample::Render()
 {
-	sObj->Render();
-	sObj2->Render();
-	//obj->Render();
-	_imgui->Render();
-	_imGuiManager->Render();
+
+	UIManager::GetInstance().Render();
+
 	return true;
 }
 

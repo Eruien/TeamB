@@ -9,6 +9,7 @@ void LTexture::Apply()
 
 bool LTexture::Load(std::wstring fileName)
 {
+	m_texPath = fileName;
 	auto imageobj = std::make_unique<DirectX::ScratchImage>();
 	DirectX::TexMetadata mdata;
 
@@ -31,7 +32,6 @@ bool LTexture::Load(std::wstring fileName)
 	hr = DirectX::GetMetadataFromDDSFile(fileName.c_str(), DirectX::DDS_FLAGS_NONE, mdata);
 	hr = DirectX::LoadFromDDSFile(fileName.c_str(), DirectX::DDS_FLAGS_NONE, &mdata, *imageobj);
 	hr = DirectX::CreateShaderResourceView(LGlobal::g_pDevice.Get(), imageobj->GetImages(), imageobj->GetImageCount(), mdata, &m_pTexSRV);
-
 	if (SUCCEEDED(hr))
 	{
 		size.x = mdata.width;

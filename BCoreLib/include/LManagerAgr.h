@@ -11,6 +11,7 @@ public:
 	}
 public:
 	ID3D11ShaderResourceView* m_pTexSRV = nullptr;
+	wstring m_texPath;
 public:
 	void Apply();
 	bool Load(std::wstring fileName);

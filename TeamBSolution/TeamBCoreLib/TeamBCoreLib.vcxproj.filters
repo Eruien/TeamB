@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\imgui\Include\imgui_impl_win32.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tinyxml\tinyxml2.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LCamera.h" />
@@ -130,6 +133,9 @@
       <Filter>ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\Include\imgui_impl_win32.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tinyxml\tinyxml2.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
   </ItemGroup>

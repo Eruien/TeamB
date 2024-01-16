@@ -1,12 +1,13 @@
 
-#include "imgui_test.h"
+#include "imgui_menuBar.h"
 #include "LGlobal.h"
-void imgui_test::Init()
+#include "UIManager.h"
+void imgui_menuBar::Init()
 {
 
 }
 
-void imgui_test::Frame()
+void imgui_menuBar::Frame()
 {
   
 
@@ -15,19 +16,19 @@ void imgui_test::Frame()
     Test();
 }
 
-void imgui_test::Render()
+void imgui_menuBar::Render()
 {
 
-    if (_isSave)
+    if (_isSaveWindow)
     {
         ImGui::OpenPopup("Save?");
         if (ImGui::BeginPopupModal("Save?",0, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            
 
             if (ImGui::Button("OK", ImVec2(100.f, 25.f)))
             {
-                _isSave = false;
+                _isSaveWindow = false;
+                UIManager::GetInstance().Save(L"testScene.xml");
                 ImGui::CloseCurrentPopup();
             }
 
@@ -36,7 +37,7 @@ void imgui_test::Render()
            
             if (ImGui::Button("Cancle", ImVec2(100.f, 25.f)))
             {
-                _isSave = false;
+                _isSaveWindow = false;
                 ImGui::CloseCurrentPopup();
             }
             ImGui::EndPopup();
@@ -61,7 +62,7 @@ void imgui_test::Render()
     // 파일 다이얼로그 창
 }
 
-void imgui_test::Test()
+void imgui_menuBar::Test()
 {
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
      //if (show_demo_window)
@@ -69,15 +70,17 @@ void imgui_test::Test()
 
     if (ImGui::BeginMainMenuBar())
     {
+  
         if (ImGui::BeginMenu("File"))
         {
+
             if (ImGui::MenuItem("Open File Dialog"))
                 ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".h,.XML", ".");
 
 
             if (ImGui::MenuItem("Save"))
             {
-                _isSave = true;
+                _isSaveWindow = true;
             }
 
 
@@ -95,7 +98,26 @@ void imgui_test::Test()
             ImGui::EndMenu();
 
         }
-     
+        if (ImGui::BeginMenu("New"))
+        {
+            if (ImGui::MenuItem("NewObject", "CTRL+N"))
+            {
+                shared_ptr<KObject> obj = make_shared<KObject>();
+                obj->Init();
+                obj->AddScripts(make_shared<PickingUI>());
+                obj->AddScripts(make_shared<Resize2D>());
+                obj->AddScripts(make_shared<DragUI>());
+                obj->AddScripts(make_shared<ChangeTexture>());
+                obj->GetScript<DragUI>(L"DragUI")->Init();
+                obj->SetPos({ 0,0,0 });
+                obj->SetScale({ 200,200,0 });
+                obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/1.png");
+                UIManager::GetInstance().AddUIObject(obj);
+            }
+          
+            ImGui::EndMenu();
+
+        }
     }
     ImGui::EndMainMenuBar();
 
