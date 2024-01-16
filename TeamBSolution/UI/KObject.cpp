@@ -18,24 +18,21 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
-	SetRect(m_vPosition, m_vScale);
+		TMatrix matScale, matRotation, matTranslation;
+		matScale = matScale.CreateScale(m_vScale);
+		matRotation = matRotation.CreateRotationX(m_vRotation.x);
+		matRotation = matRotation.CreateRotationY(m_vRotation.y);
+		matRotation = matRotation.CreateRotationZ(m_vRotation.z);
+		matTranslation.Translation(m_vPosition);
+		m_matWorld = matScale * matRotation * matTranslation;
+
+		SetRect(m_vPosition, m_vScale);
 
 	for (shared_ptr<MonoBehaviour>& script : _scripts)
 	{
 		script->Frame();
 	}
 
-
-
-	TMatrix matScale, matRotation, matTranslation;
-	matScale = matScale.CreateScale(m_vScale);
-	matRotation = matRotation.CreateRotationX(m_vRotation.x);
-	matRotation = matRotation.CreateRotationY(m_vRotation.y);
-	matRotation = matRotation.CreateRotationZ(m_vRotation.z);
-	matTranslation.Translation(m_vPosition);
-	m_matWorld = matScale * matRotation * matTranslation;
-	
-	
 	return true;
 }
 

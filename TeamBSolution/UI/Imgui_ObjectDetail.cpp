@@ -33,7 +33,7 @@ void Imgui_ObjectDetail::Frame()
 
 		// 원래 가지고 있던 이름 표시
 
-		ImGui::Text("Name: %s",wtm(UIManager::s_selectedObject->GetName()).c_str());
+		ImGui::Text("Name: %s", wtm(UIManager::s_selectedObject->GetName()).c_str());
 		ImGui::Text("Change Name: ");
 		ImGui::SameLine(0, -1);
 		ImGui::SetNextItemWidth(100);
@@ -83,7 +83,7 @@ void Imgui_ObjectDetail::Frame()
 
 		ImGui::Separator();
 
-		ImGui::Text("이미지 불러오기 : ");
+		ImGui::Text("Image Load : ");
 		ImGui::SameLine();
 		if (ImGui::Button("Load Texture From File"))
 		{
@@ -94,7 +94,7 @@ void Imgui_ObjectDetail::Frame()
 		if (ImGui::TreeNode("Scripts"))
 		{
 
-			const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow"  };
+			const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow","BillBoard"};
 			static int item_current_idx = 0; // Here we store our selection data as an index.
 			if (ImGui::BeginListBox(""))
 			{
@@ -114,7 +114,7 @@ void Imgui_ObjectDetail::Frame()
 				{
 					switch (item_current_idx)
 					{
-					case 0 :
+					case 0:
 						UIManager::s_selectedObject->AddScripts(make_shared<DragUI>());
 						break;
 					case 1:
@@ -128,12 +128,15 @@ void Imgui_ObjectDetail::Frame()
 						UIManager::s_selectedObject->AddScripts(make_shared<Animator>(L"Anim.xml"));
 						break;
 					case 4:
-						UIManager::s_selectedObject->AddScripts(make_shared<DigitDisplay>(3,L"testNum.xml"));
+						UIManager::s_selectedObject->AddScripts(make_shared<DigitDisplay>(3, L"testNum.xml"));
 
 						UIManager::s_selectedObject->GetScript< DigitDisplay>(L"DigitDisplay")->Init();
 						break;
 					case 5:
 						UIManager::s_selectedObject->AddScripts(make_shared<ExitWindow>());
+						break;
+					case 6:
+						UIManager::s_selectedObject->AddScripts(make_shared<BillBoard>());
 						break;
 					default:
 						break;
@@ -155,7 +158,7 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("PickingUI"))
 						{
-							ImGui::Text("오브젝트 피킹");
+							ImGui::Text("Object mouse picking");
 							if (ImGui::Button("Delete"))
 							{
 								UIManager::s_selectedObject->RemoveScript(L"PickingUI");
@@ -170,7 +173,7 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("DragUI"))
 						{
-							ImGui::Text("오브젝트 드래그");
+							ImGui::Text("Object Drag");
 
 							if (ImGui::Button("Delete"))
 							{
@@ -186,7 +189,7 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("Resize2D"))
 						{
-							ImGui::Text("마우스로 오브젝트 크기 조절");
+							ImGui::Text("Resize object rect");
 
 							if (ImGui::Button("Delete"))
 							{
@@ -198,11 +201,27 @@ void Imgui_ObjectDetail::Frame()
 							ImGui::EndTabItem();
 						}
 					}
+					if (script->GetName() == L"BillBoard")
+					{
+						if (ImGui::BeginTabItem("BillBoard"))
+						{
+							ImGui::Text("BillBoard");
+
+							if (ImGui::Button("Delete"))
+							{
+								UIManager::s_selectedObject->RemoveScript(L"BillBoard");
+								ImGui::EndTabItem();
+								continue;
+
+							}
+							ImGui::EndTabItem();
+						}
+					}
 					if (script->GetName() == L"DigitDisplay")
 					{
 						if (ImGui::BeginTabItem("DigitDisplay"))
 						{
-							ImGui::Text("숫자를 이미지로 표현");
+							ImGui::Text("Number to textureImage");
 
 							if (ImGui::Button("Delete"))
 							{
@@ -218,7 +237,7 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("Animator"))
 						{
-							ImGui::Text("애니메이션");
+							ImGui::Text("Animation");
 							if (ImGui::Button("Delete"))
 							{
 								UIManager::s_selectedObject->RemoveScript(L"Animator");
@@ -239,7 +258,7 @@ void Imgui_ObjectDetail::Frame()
 					{
 						if (ImGui::BeginTabItem("ExitWindow"))
 						{
-							ImGui::Text("클릭시 프로그램 종료");
+							ImGui::Text("object click exit Window");
 							if (ImGui::Button("Delete"))
 							{
 								UIManager::s_selectedObject->RemoveScript(L"ExitWindow");
@@ -304,31 +323,31 @@ void Imgui_ObjectDetail::Frame()
 
 				}
 
-			// close
-			_isDialogWindow = false;
-			ImGuiFileDialog::Instance()->Close();
+				// close
+				_isDialogWindow = false;
+				ImGuiFileDialog::Instance()->Close();
 
-		}
-
-		if (my_texture && _isTexAcceptWindow)
-		{
-			ImGui::Image((void*)my_texture, ImVec2(256, 256));
-			if (ImGui::Button("Accept"))
-			{
-				UIManager::s_selectedObject->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(_filePathName);
-				_isTexAcceptWindow = false;
 			}
-			if (ImGui::Button("Cancle"))
-			{
-				_isTexAcceptWindow = false;
 
-				//창닫기
+			if (my_texture && _isTexAcceptWindow)
+			{
+				ImGui::Image((void*)my_texture, ImVec2(256, 256));
+				if (ImGui::Button("Accept"))
+				{
+					UIManager::s_selectedObject->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(_filePathName);
+					_isTexAcceptWindow = false;
+				}
+				if (ImGui::Button("Cancle"))
+				{
+					_isTexAcceptWindow = false;
+
+					//창닫기
+				}
 			}
+
 		}
 
 	}
-
-
 }
 
 void Imgui_ObjectDetail::Render()

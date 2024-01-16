@@ -10,7 +10,7 @@
 class Sample : public LCore
 {
 public:
-	std::shared_ptr<UICamera> m_DebugCamera = nullptr;
+	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 public:
 	bool Init();
 	bool Frame();

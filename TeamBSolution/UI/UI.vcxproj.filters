@@ -32,7 +32,6 @@
     <ClCompile Include="ImGuiManager.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="KGlobal.cpp" />
     <ClCompile Include="ImguiDetail.cpp">
       <Filter>Script</Filter>
     </ClCompile>
@@ -51,7 +50,6 @@
     <ClCompile Include="UIManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="IntToSprite.cpp" />
     <ClCompile Include="ExitWindow.cpp">
       <Filter>Script\ButtonEvent</Filter>
     </ClCompile>
@@ -63,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="TextureList.cpp">
       <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="BillBoard.cpp">
+      <Filter>Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +98,6 @@
     <ClInclude Include="imgui_menuBar.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="KGlobal.h" />
     <ClInclude Include="ImguiDetail.h">
       <Filter>Script</Filter>
     </ClInclude>
@@ -116,7 +116,6 @@
     <ClInclude Include="UIManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="IntToSprite.h" />
     <ClInclude Include="ExitWindow.h">
       <Filter>Script\ButtonEvent</Filter>
     </ClInclude>
@@ -128,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="TextureList.h">
       <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="BillBoard.h">
+      <Filter>Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
