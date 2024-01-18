@@ -38,6 +38,7 @@
     <ClCompile Include="LFbxImport.cpp" />
     <ClCompile Include="LFbxMgr.cpp" />
     <ClCompile Include="LFbxObj.cpp" />
+    <ClCompile Include="LFbxWeight.cpp" />
     <ClCompile Include="LFiniteState.cpp" />
     <ClCompile Include="LFrustum.cpp" />
     <ClCompile Include="LFSMMgr.cpp" />
@@ -48,6 +49,7 @@
     <ClCompile Include="LManagerAgr.cpp" />
     <ClCompile Include="LMap.cpp" />
     <ClCompile Include="LModel.cpp" />
+    <ClCompile Include="LModelCamera.cpp" />
     <ClCompile Include="LNode.cpp" />
     <ClCompile Include="LObject.cpp" />
     <ClCompile Include="LPlaneObj.cpp" />
@@ -94,6 +96,7 @@
     <ClInclude Include="LManagerAgr.h" />
     <ClInclude Include="LMap.h" />
     <ClInclude Include="LModel.h" />
+    <ClInclude Include="LModelCamera.h" />
     <ClInclude Include="LNode.h" />
     <ClInclude Include="LObject.h" />
     <ClInclude Include="LPlaneObj.h" />

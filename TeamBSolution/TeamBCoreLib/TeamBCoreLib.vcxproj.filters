@@ -57,6 +57,8 @@
     <ClCompile Include="..\..\tinyxml\tinyxml2.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="LFbxWeight.cpp" />
+    <ClCompile Include="LModelCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LCamera.h" />
@@ -138,6 +140,7 @@
     <ClInclude Include="..\..\tinyxml\tinyxml2.h">
       <Filter>ImGUI</Filter>
     </ClInclude>
+    <ClInclude Include="LModelCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGUI">
