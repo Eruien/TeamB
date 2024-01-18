@@ -10,6 +10,7 @@ public:
 public:
 	virtual bool Init() { return true; }
 	virtual	void Process() = 0;
+	virtual	void Render() = 0;
 public:
 	SceneState(LScene* parent) : m_pOwner(parent) {}
 	virtual ~SceneState() {}
@@ -28,9 +29,9 @@ public:
 	State GetState();
 public:
 	virtual	void Process();
+	virtual	void Render();
 	bool Init();
 	bool Frame();
-	bool Render();
 	bool Release();
 public:
 	LScene();

@@ -21,12 +21,25 @@ bool Sample::Init()
 
 bool Sample::Frame()
 {
+	/*if (LInput::GetInstance().m_dwKeyState['1'] == DWORD(KeyState::KEY_PUSH))
+	{
+		LGlobal::g_pMainCamera = m_DebugCamera.get();
+	}
+
+	if (LInput::GetInstance().m_dwKeyState['2'] == DWORD(KeyState::KEY_PUSH))
+	{
+		LGlobal::g_pMainCamera = m_ModelCamera.get();
+	}*/
+
 	m_Scene->Process();
+
 	return true;
 }
 
 bool Sample::Render()
 {
+	m_Scene->Render();
+
 	return true;
 }
 

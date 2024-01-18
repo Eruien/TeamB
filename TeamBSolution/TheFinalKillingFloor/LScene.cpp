@@ -40,17 +40,17 @@ void LScene::Process()
     m_pAction->Process();
 }
 
+void LScene::Render()
+{
+    m_pAction->Render();
+}
+
 bool LScene::Init()
 {
     return true;
 }
 
 bool LScene::Frame()
-{
-    return true;
-}
-
-bool LScene::Render()
 {
     return true;
 }

@@ -9,11 +9,6 @@ bool LMainScene::Init()
 	return true;
 }
 
-void LMainScene::Frame()
-{
-
-}
-
 void LMainScene::Render()
 {
     std::wstring textState = L"Main Scene";
@@ -24,8 +19,6 @@ void LMainScene::Render()
 
 void LMainScene::Process()
 {
-    Frame();
-    Render();
     m_pOwner->SetTransition(Event::GOINGAMESCENE);
     if (g_InputData.bLeftClick)
     {

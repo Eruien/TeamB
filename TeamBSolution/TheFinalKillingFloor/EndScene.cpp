@@ -8,6 +8,11 @@ bool EndScene::Init()
     return true;
 }
 
+void EndScene::Render()
+{
+    
+}
+
 void EndScene::Process()
 {
     std::wstring textState = L"EndScene";

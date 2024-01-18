@@ -5,8 +5,7 @@ class LMainScene : public SceneState
 {
 public:
 	bool Init() override;
-	void Frame();
-	void Render();
+	void Render() override;
 	void Process() override;
 	void Release();
 public:
