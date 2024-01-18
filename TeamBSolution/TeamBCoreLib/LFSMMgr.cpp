@@ -66,15 +66,13 @@ bool LFSMMgr::Init()
 	//Scene
 	std::unique_ptr<LFiniteStateMachine> sceneFSM = std::make_unique<LFiniteStateMachine>();
 
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOUISCENE, State::UISCENE);
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOMAPSCENE, State::MAPSCENE);
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOCHARACTERSCENE, State::CHARACTERSCENE);
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOEFFECTSCENE, State::EFFECTSCENE);
+	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
+	
+	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOMAINSCENE, State::MAINSCENE);
+	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOENDSCENE, State::ENDSCENE);
 
-	sceneFSM->AddStateTransition(State::UISCENE, Event::GOMAINSCENE, State::MAINSCENE);
-	sceneFSM->AddStateTransition(State::MAPSCENE, Event::GOMAINSCENE, State::MAINSCENE);
-	sceneFSM->AddStateTransition(State::CHARACTERSCENE, Event::GOMAINSCENE, State::MAINSCENE);
-	sceneFSM->AddStateTransition(State::EFFECTSCENE, Event::GOMAINSCENE, State::MAINSCENE);
+	sceneFSM->AddStateTransition(State::ENDSCENE, Event::GOMAINSCENE, State::MAINSCENE);
+	sceneFSM->AddStateTransition(State::ENDSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
 
 	m_map.insert(std::make_pair(FSMType::SCENE, std::move(sceneFSM)));
 

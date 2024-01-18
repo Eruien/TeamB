@@ -45,6 +45,7 @@ struct INPUT_MAP
 	bool bRightHold;
 	bool bMiddleHold;
 
+	bool bEnter;
 	bool bExit;
 	bool bSpace;
 	
