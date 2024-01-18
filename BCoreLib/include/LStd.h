@@ -364,6 +364,12 @@ struct T_BOX
     float      fExtent[3];
 };
 
+struct T_SPHERE
+{
+	TVector3		vCenter;
+	float			fRadius;
+};
+
 static void L_DebugString(const WCHAR* msg)
 {
 #ifdef _DEBUG
