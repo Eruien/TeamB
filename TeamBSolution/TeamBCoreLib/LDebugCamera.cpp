@@ -10,6 +10,7 @@ bool LDebugCamera::Init()
 
 bool LDebugCamera::Frame()
 {
+	LInput::GetInstance().Frame();
 	if(g_InputData.bSpace)
 		m_fSpeed += LGlobal::g_fSPF * m_fSpeed;
 
