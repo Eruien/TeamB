@@ -55,7 +55,7 @@ LFbxObj* LFbxMgr::Load(std::wstring filePath, std::wstring shaderFilePath)
 			}
 			else
 			{
-				fbxMesh->Create(shaderFilePath, L"../../res/map/topdownmap.jpg");
+				fbxMesh->Create(shaderFilePath, L"../../res/map/basecolor.jpg"); 
 			}
 
 			fbxMesh->m_MatWorld = managerType->m_MatWorld;

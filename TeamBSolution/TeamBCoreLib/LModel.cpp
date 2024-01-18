@@ -20,7 +20,7 @@ void LModel::SetLFbxObj(LFbxObj* fbxObj)
 LFbxObj* LModel::GetLFbxObj()
 {
 	return m_pModel;
-}
+} 
 
 bool LModel::CreateBoneBuffer()
 {

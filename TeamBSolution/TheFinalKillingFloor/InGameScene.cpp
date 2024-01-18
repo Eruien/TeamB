@@ -13,7 +13,7 @@ bool InGameScene::Init()
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Idle_Rifle_189.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     
     // 오브젝트 예시
-    mapObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Assault_Rifle_A/Assault_Rifle_A.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    mapObj = LFbxMgr::GetInstance().Load(L"../../res/map/Mountain.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
 
     m_PlayerModel = std::make_shared<LPlayer>();
     m_PlayerModel->SetLFbxObj(fbxObj);
@@ -24,8 +24,12 @@ bool InGameScene::Init()
     m_MapModel = std::make_shared<LModel>();
     m_MapModel->SetLFbxObj(mapObj);
     m_MapModel->CreateBoneBuffer();
+    m_MapModel->m_matControl._11 = 10000.f;
+    m_MapModel->m_matControl._22 = 10000.f;
+    m_MapModel->m_matControl._33 = 10000.f;
+    m_MapModel->m_matControl._42 = -5000.f;
  
-    m_CustomMap = std::make_shared<LMap>();
+    /*m_CustomMap = std::make_shared<LMap>();
     m_CustomMap->Set();
     LMapDesc CMapDesc = {};
     CMapDesc.iNumCols = 513;
@@ -33,13 +37,13 @@ bool InGameScene::Init()
     CMapDesc.fCellDistance = 1.0f;
     CMapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
     CMapDesc.TextureFilePath = L"../../res/map/topdownmap.jpg";
-    m_CustomMap->Load(CMapDesc);
+    m_CustomMap->Load(CMapDesc);*/
     return true;
 }
 
 void InGameScene::Process()
 {
-    m_CustomMap->Frame();
+    //m_CustomMap->Frame();
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
     // 오브젝트 예시
@@ -48,8 +52,8 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
-    m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_CustomMap->Render();
+    //m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    //m_CustomMap->Render();
     m_PlayerModel->Render();
     // 오브젝트 예시
     m_MapModel->Render();
