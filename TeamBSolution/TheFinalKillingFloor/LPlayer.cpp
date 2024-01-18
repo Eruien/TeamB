@@ -46,65 +46,65 @@ void LPlayer::Process()
 
 void LPlayer::Move()
 {
-	/*if (LInput::GetInstance().m_dwKeyState['A'] > DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
 	{
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_matControl.Right().x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_matControl.Right().z;
 		m_Speed = 200.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['A'] == DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
 	{
 		m_Speed = 0.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['D'] > DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
 	{
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_matControl.Right().x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_matControl.Right().z;
 		m_Speed = 200.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['D'] == DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_D] == KEY_UP)
 	{
 		m_Speed = 0.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['W'] > DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 	{
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_matControl.Forward().x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_matControl.Forward().z;
 		m_Speed = 200.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['W'] == DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_UP)
 	{
 		m_Speed = 0.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['S'] > DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 	{
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_matControl.Forward().x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_matControl.Forward().z;
 		m_Speed = 200.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState['S'] == DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_S] == KEY_UP)
 	{
 		m_Speed = 0.0f;
-	}*/
+	}
 }
 
 bool LPlayer::Frame()
 {
-	/*if (LInput::GetInstance().m_dwKeyState[VK_LBUTTON] == DWORD(KeyState::KEY_PUSH))
+	if (LInput::GetInstance().m_MouseState[0] == KEY_PUSH)
 	{
 		m_Speed = 0.0f;
 		IsMove = false;
 		IsAttack = true;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState[VK_LBUTTON] == DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_MouseState[0] == KEY_UP)
 	{
 		IsMove = true;
 		IsAttack = false;
@@ -115,15 +115,15 @@ bool LPlayer::Frame()
 		Move();
 	}
 
-	if (LInput::GetInstance().m_dwKeyState[VK_LSHIFT] > DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_UP)
 	{
 		m_Speed = 400.0f;
 	}
 
-	if (LInput::GetInstance().m_dwKeyState[VK_LSHIFT] == DWORD(KeyState::KEY_UP))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
 	{
 		m_Speed = 0.0f;
-	}*/
+	}
 
 	if (m_Speed > 200.0f)
 	{
