@@ -17,22 +17,29 @@ bool InGameScene::Init()
     m_PlayerModel->CreateBoneBuffer();
     //m_PlayerModel->FSM(FSMType::PLAYER);
 
-    m_CustomMap = std::make_shared<LMap>();
-    m_CustomMap->Set();
-    LMapDesc CMapDesc = {};
-    CMapDesc.iNumCols = 513;
-    CMapDesc.iNumRows = 513;
-    CMapDesc.fCellDistance = 1.0f;
-    CMapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    CMapDesc.TextureFilePath = L"../../res/map/topdownmap.jpg";
-    m_CustomMap->Load(CMapDesc);
+    //m_CustomMap = std::make_shared<LMap>();
+    //m_CustomMap->Set();
+    //LMapDesc CMapDesc = {};
+    //CMapDesc.iNumCols = 513;
+    //CMapDesc.iNumRows = 513;
+    //CMapDesc.fCellDistance = 1.0f;
+    //CMapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
+    //CMapDesc.TextureFilePath = L"../../res/map/topdownmap.jpg";
+    //m_CustomMap->Load(CMapDesc);
+
+    fbxMap = LFbxMgr::GetInstance().Load(L"../../res/map/Mountain.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    m_Map = make_shared<LModel>();
+    m_Map->SetLFbxObj(fbxMap);
+    m_Map->CreateBoneBuffer();
     return true;
 }
 
 void InGameScene::Render()
 {
-    m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_CustomMap->Render();
+    //m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    //m_CustomMap->Render();
+    fbxMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_Map->Render();
     m_PlayerModel->Render();
     
     std::wstring textState = L"InGameScene";
@@ -57,7 +64,8 @@ void InGameScene::Render()
 
 void InGameScene::Process()
 {
-    m_CustomMap->Frame();
+    fbxMap->Frame();
+    //m_CustomMap->Frame();
     m_PlayerModel->Frame();
 }
 
