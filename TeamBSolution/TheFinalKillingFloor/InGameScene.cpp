@@ -47,10 +47,10 @@ bool InGameScene::Init()
     m_MapModel = std::make_shared<LModel>();
     m_MapModel->SetLFbxObj(mapObj);
     m_MapModel->CreateBoneBuffer();
-    m_MapModel->m_matControl._11 = 10000.f;
-    m_MapModel->m_matControl._22 = 10000.f;
-    m_MapModel->m_matControl._33 = 10000.f;
-    m_MapModel->m_matControl._42 = -5000.f;
+    m_MapModel->m_matControl._11 = 500.f;
+    m_MapModel->m_matControl._22 = 0.f;
+    m_MapModel->m_matControl._33 = 500.f;
+    m_MapModel->m_matControl._42 = -0.f;
  
     /*m_CustomMap = std::make_shared<LMap>();
     m_CustomMap->Set();
@@ -78,7 +78,7 @@ void InGameScene::Process()
 
     m_ModelCamera->SetTargetPos(TVector3(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._42, m_PlayerModel->m_matControl._43));
 
-    m_CustomMap->Frame();
+    //m_CustomMap->Frame();
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
     // 오브젝트 예시
