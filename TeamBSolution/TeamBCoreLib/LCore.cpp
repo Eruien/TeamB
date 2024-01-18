@@ -47,6 +47,31 @@ void LCore::CreateSamplerState()
     m_pDevice->CreateSamplerState(&descSampler, m_pSamplerState.GetAddressOf());
 }
 
+void LCore::CreateClampState()
+{
+    D3D11_SAMPLER_DESC descSampler;
+    descSampler.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+
+    descSampler.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    descSampler.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    descSampler.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+    descSampler.MipLODBias = 0;
+    descSampler.MaxAnisotropy = 16;
+
+    descSampler.ComparisonFunc = D3D11_COMPARISON_NEVER;
+
+    descSampler.BorderColor[0] = 1.0f;
+    descSampler.BorderColor[1] = 0.0f;
+    descSampler.BorderColor[2] = 0.0f;
+    descSampler.BorderColor[3] = 1.0f;
+
+    descSampler.MinLOD = 0;
+    descSampler.MaxLOD = D3D11_FLOAT32_MAX;
+
+    m_pDevice->CreateSamplerState(&descSampler, m_pClampState.GetAddressOf());
+}
+
 void LCore::CreateDepthStencilState()
 {
     HRESULT hr;
@@ -113,6 +138,7 @@ bool LCore::EngineInit()
 
     CreateBlendState();
     CreateSamplerState();
+    CreateClampState();
     CreateDepthStencilState();
     CreateRasterizerState();
 
@@ -149,6 +175,7 @@ bool LCore::EngineRender()
 {
     LDevice::PreRender();
     m_pImmediateContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
+    m_pImmediateContext->PSSetSamplers(1, 1, m_pClampState.GetAddressOf());
     // 스탠실 스테이트 필요 1은 lessequal로 설정했기 때문에 1보다 같거나 작으면 그려지게 했다
     m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 1);
 

@@ -122,6 +122,16 @@ bool LInput::Init()
 
 bool LInput::Frame()
 {
+
+    // 클라이언트 중앙 포지션 계산 
+    RECT clientRect;
+    GetClientRect(LGlobal::g_hWnd, &clientRect);
+
+    int clientCenterX = (clientRect.right - clientRect.left) / 2;
+    int clientCenterY = (clientRect.bottom - clientRect.top) / 2;
+    POINT point = { clientCenterX, clientCenterY };
+    ClientToScreen(LGlobal::g_hWnd, &point);
+
     // 화면 좌표
     ::GetCursorPos(&m_MousePos);
     // 클라이언트 좌표
@@ -202,6 +212,10 @@ bool LInput::Frame()
     g_InputData.bExit = GetKey(DIK_ESCAPE);
     g_InputData.bSpace = GetKey(DIK_SPACE);
     g_InputData.bF1Key = GetKey(DIK_F1);
+    GetKey(DIK_1);
+    GetKey(DIK_2);
+    GetKey(DIK_LSHIFT);
+    GetKey(DIK_F2);
     
     if (GetKey(DIK_F5) == KEY_HOLD)
         g_InputData.bChangeFillMode = true;
@@ -210,6 +224,13 @@ bool LInput::Frame()
 
     m_vOffset.x = m_MousePos.x - m_BeforeMousePos.x;
     m_vOffset.y = m_MousePos.y - m_BeforeMousePos.y;
+
+    if (ISEndPoint)
+    {
+        m_vOffset.x = 0.0f;
+        m_vOffset.y = 0.0f;
+        ISEndPoint = false;
+    }
 
     //for (int ikey = 0; ikey < 256; ikey++)
     //{
@@ -238,6 +259,22 @@ bool LInput::Frame()
     //        }
     //    }
     //}
+
+    if (m_KeyStateOld[DIK_F2] == KEY_PUSH)
+    {
+        ShowCursor(IsHideCursor);
+        IsHideCursor = !IsHideCursor;
+    }
+
+    if (IsHideCursor)
+    {
+        if (m_MousePos.x <= clientRect.left || m_MousePos.x >= clientRect.right ||
+            m_MousePos.y <= clientRect.top || m_MousePos.y >= clientRect.bottom)
+        {
+            SetCursorPos(point.x, point.y);
+            ISEndPoint = true;
+        }
+    }
 
     m_BeforeMousePos = m_MousePos;
 	return true;
