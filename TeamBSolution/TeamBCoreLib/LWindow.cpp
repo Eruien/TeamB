@@ -1,10 +1,14 @@
 #include "LWindow.h"
 #include "LGlobal.h"
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     LRESULT hr = LGlobal::g_pWindow->MsgProc(hWnd, message, wParam, lParam);
     if (SUCCEEDED(hr)) return 0;
+
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
 
     switch (message)
     {
