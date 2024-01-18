@@ -46,7 +46,7 @@ void LPlayer::Process()
 
 void LPlayer::Move()
 {
-	if (LInput::GetInstance().m_dwKeyState['A'] > DWORD(KeyState::KEY_UP))
+	/*if (LInput::GetInstance().m_dwKeyState['A'] > DWORD(KeyState::KEY_UP))
 	{
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_matControl.Right().x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_matControl.Right().z;
@@ -92,12 +92,12 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_dwKeyState['S'] == DWORD(KeyState::KEY_UP))
 	{
 		m_Speed = 0.0f;
-	}
+	}*/
 }
 
 bool LPlayer::Frame()
 {
-	if (LInput::GetInstance().m_dwKeyState[VK_LBUTTON] == DWORD(KeyState::KEY_PUSH))
+	/*if (LInput::GetInstance().m_dwKeyState[VK_LBUTTON] == DWORD(KeyState::KEY_PUSH))
 	{
 		m_Speed = 0.0f;
 		IsMove = false;
@@ -123,7 +123,7 @@ bool LPlayer::Frame()
 	if (LInput::GetInstance().m_dwKeyState[VK_LSHIFT] == DWORD(KeyState::KEY_UP))
 	{
 		m_Speed = 0.0f;
-	}
+	}*/
 
 	if (m_Speed > 200.0f)
 	{
