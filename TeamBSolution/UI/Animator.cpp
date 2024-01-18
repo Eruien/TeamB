@@ -72,3 +72,8 @@ shared_ptr<Animation> Animator::GetCurrentAnimation()
 {
 	return _currentAnimation;
 }
+
+void Animator::SetAnimationFromXml(wstring path)
+{
+	
+}
