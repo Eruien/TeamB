@@ -26,7 +26,7 @@ bool Sample::Init()
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_DebugCamera->m_fCameraPitch = 0.0f;
 	m_DebugCamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 0, 1);
-	LGlobal::g_pMainCamera = m_DebugCamera.get();
+	LGlobal::g_pUICamera = m_DebugCamera.get();
 
 	//m_DebugCamera = std::make_shared<LDebugCamera>();
 	//m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });

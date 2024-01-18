@@ -23,9 +23,12 @@
 
 #define LWRITE  LWrite::GetInstance()
 #define LINPUT	LInput::GetInstance()
-//마우스 월드좌표
-#define MOUSEX  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).x
-#define MOUSEY  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).y
+
+//마우스 좌표
+#define MOUSEwX  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).x
+#define MOUSEwY  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).y
+#define MOUSEsX  LINPUT.GetMousePos().x - LGlobal::g_WindowWidth / 2
+#define MOUSEsY  -(LINPUT.GetMousePos().y - LGlobal::g_WindowHeight / 2)
 
 #include <windows.h>
 #include <iostream>

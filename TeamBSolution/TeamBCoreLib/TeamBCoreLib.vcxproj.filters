@@ -59,6 +59,7 @@
     </ClCompile>
     <ClCompile Include="LFbxWeight.cpp" />
     <ClCompile Include="LModelCamera.cpp" />
+    <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LCamera.h" />
@@ -141,6 +142,7 @@
       <Filter>ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="LModelCamera.h" />
+    <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGUI">

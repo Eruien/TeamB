@@ -167,6 +167,7 @@ bool LCore::EngineFrame()
     LInput::GetInstance().Frame();
     LWrite::GetInstance().Frame();
     LGlobal::g_pMainCamera->Frame();
+    LGlobal::g_pUICamera->Frame();
     Frame();
     return true;
 }
@@ -198,6 +199,7 @@ bool LCore::EngineRender()
     LWrite::GetInstance().PreRender();
     Render();
     LGlobal::g_pMainCamera->Render();
+    LGlobal::g_pUICamera->Render();
     m_Gametimer->Render();
     LWrite::GetInstance().Render();
     LInput::GetInstance().Render();

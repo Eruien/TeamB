@@ -5,6 +5,8 @@
 
 bool InGameScene::Init()
 {
+    
+
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -14,6 +16,8 @@ bool InGameScene::Init()
     m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     m_ModelCamera->m_fRadius = 100.0f;
     LGlobal::g_pMainCamera = m_ModelCamera.get();
+
+ 
 
     fbxObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/army/army3.fbx", L"../../res/hlsl/CharacterShader.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Fire_Rifle_7.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
@@ -84,7 +88,7 @@ void InGameScene::Render()
     m_PlayerModel->Render();
     // 오브젝트 예시
     m_MapModel->Render();
-    
+
     std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
