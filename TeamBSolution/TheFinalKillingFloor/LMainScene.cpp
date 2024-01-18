@@ -15,7 +15,7 @@ void LMainScene::Process()
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
     std::wstring debugText = L"Key State: " + std::to_wstring(LInput::GetInstance().GetKey(DIK_1));
     LWrite::GetInstance().AddText(debugText, 320.0f, 400.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
-
+    m_pOwner->SetTransition(Event::GOINGAMESCENE);
     if (g_InputData.bLeftClick)
     {
         Release();

@@ -1,11 +1,13 @@
 #pragma once
 #include "LCore.h"
 #include "LScene.h"
+#include "LModelCamera.h"
 
 class Sample : public LCore
 {
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
+	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
 	LScene* m_Scene = nullptr;
 public:
 	bool Init();

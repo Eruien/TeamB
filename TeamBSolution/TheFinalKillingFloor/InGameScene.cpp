@@ -10,7 +10,7 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
-    std::wstring textState = L"Effect";
+    std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     if (LInput::GetInstance().m_KeyState[DIK_ESCAPE] == DWORD(KEY_PUSH))

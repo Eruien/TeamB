@@ -8,7 +8,7 @@ public:
 	void Process() override;
 	void Release();
 public:
-	InGameScene(LScene* parent);
-	virtual ~InGameScene();
+	EndScene(LScene* parent);
+	virtual ~EndScene();
 };
 

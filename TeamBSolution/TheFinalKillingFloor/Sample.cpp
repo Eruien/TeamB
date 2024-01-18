@@ -8,6 +8,11 @@ bool Sample::Init()
 	m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
 	LGlobal::g_pMainCamera = m_DebugCamera.get();
 
+	m_ModelCamera = std::make_shared<LModelCamera>();
+	m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
+	m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+	m_ModelCamera->m_fRadius = 100.0f;
+
 	m_Scene = new LScene;
 	m_Scene->FSM(FSMType::SCENE);
 
