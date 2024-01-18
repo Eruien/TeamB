@@ -1,5 +1,9 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#define RadianToDegree(radian) ( radian * (180.0f / L_PI))
+#define DegreeToRadian(radian) ( radian * (L_PI / 180.0f ))
 #define L_PI (3.141592f)
+#define L_EPSILON (0.0001f)
 // Sub texture types
 #define ID_TBASIS_AM 0   // ambient
 #define ID_TBASIS_DI 1   // diffuse
@@ -19,6 +23,9 @@
 
 #define LWRITE  LWrite::GetInstance()
 #define LINPUT	LInput::GetInstance()
+//마우스 월드좌표
+#define MOUSEX  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).x
+#define MOUSEY  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).y
 
 #include <windows.h>
 #include <iostream>
@@ -30,6 +37,7 @@
 #include <codecvt>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <string>
 //#include "LUtils.h"
 #include "TMath.h"
 
@@ -48,6 +56,12 @@
 
 //#pragma comment(lib, "Effects11d.lib")
 
+//ImGUI
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+#include "imgui_internal.h"
+#include "ImGuiFileDialog.h"
 
 using namespace Microsoft::WRL;
 using namespace DirectX;
@@ -352,6 +366,44 @@ enum class CollisionType
     MAP,
     NPC,
     PLAYER,
+};
+struct T_PLANE
+{
+	float	fA, fB, fC, fD;
+	bool	CreatePlane(TVector3 v0, TVector3 v1, TVector3 v2)
+	{
+		TVector3 vEdge0 = v1 - v0;
+		TVector3 vEdge1 = v2 - v0;
+		TVector3 vNormal;
+		D3DXVec3Cross(&vNormal, &vEdge0, &vEdge1);
+		D3DXVec3Normalize(&vNormal, &vNormal);
+
+		fA = vNormal.x;	fB = vNormal.y;	fC = vNormal.z;
+		fD = -(fA * v0.x + fB * v0.y + fC * v0.z);
+		return true;
+	}
+	bool	CreatePlane(TVector3 vNormal, TVector3 v0)
+	{
+		D3DXVec3Normalize(&vNormal, &vNormal);
+
+		fA = vNormal.x;	fB = vNormal.y;	fC = vNormal.z;
+		fD = -(fA * v0.x + fB * v0.y + fC * v0.z);
+		return true;
+	}
+	void	Normalize()
+	{
+		float fMag = sqrt(fA * fA + fB * fB + fC * fC);
+		fA = fA / fMag;
+		fB = fB / fMag;
+		fC = fC / fMag;
+		fD = fD / fMag;
+	}
+
+};
+struct T_SPHERE
+{
+	TVector3		vCenter;
+	float			fRadius;
 };
 
 struct T_BOX

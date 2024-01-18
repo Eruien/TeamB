@@ -1,20 +1,30 @@
 #pragma once
 #include "LCore.h"
-#include "KSpriteObj.h"
 #include "UICamera.h"
 
-class LPlaneObj;
+#include "UIManager.h"
+#include "KObject.h"
+
+
+
 class Sample : public LCore
 {
 public:
-	std::shared_ptr<UICamera> m_DebugCamera = nullptr;
+	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 public:
 	bool Init();
 	bool Frame();
 	bool Render();
 	bool Release();
-	shared_ptr<LPlaneObj> obj;
-	shared_ptr< KSpriteObj> sObj;
+	shared_ptr<KObject> obj;
+	vector<shared_ptr<KObject>> _objects;
+	shared_ptr<KObject> sObj;
+	shared_ptr<KObject> sObj2;
+
+
+
+	
+
 public:
 	virtual ~Sample();
 };

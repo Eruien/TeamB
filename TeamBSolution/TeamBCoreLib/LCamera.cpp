@@ -45,7 +45,7 @@ void LCamera::CreateOrthographic(const int viewWide, const int viewHeight, float
 {
     
 
-    m_matProj = ::XMMatrixOrthographicLH(viewWide, viewHeight, nearZ, FarZ);
+    m_matOrthoProjection = ::XMMatrixOrthographicLH(viewWide, viewHeight, nearZ, FarZ);
 }
 
 void LCamera::UpdateVector()
@@ -74,6 +74,8 @@ void LCamera::Create(TVector3 pos, TVector2 size)
     m_matView._43 = -m_vCameraPos.z;
     m_matOrthoProjection._11 = 2.0f / ((float)m_dwWindowWidth);
     m_matOrthoProjection._22 = 2.0f / ((float)m_dwWindowHeight);
+
+    D3DXMatrixIdentity(&m_matWorld);
 }
 
 bool LCamera::Init()

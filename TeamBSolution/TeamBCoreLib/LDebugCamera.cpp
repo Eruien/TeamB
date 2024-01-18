@@ -12,23 +12,28 @@ bool LDebugCamera::Frame()
 {
 	if(g_InputData.bSpace)
 		m_fSpeed += LGlobal::g_fSPF * m_fSpeed;
+
 	m_fSpeed -= LGlobal::g_fSPF * m_fSpeed * 0.5f;
 	m_fSpeed = max(10.0f, m_fSpeed);
+
 	if (g_InputData.bWKey)
 	{
 		TVector3 vOffset = m_vLook * LGlobal::g_fSPF * m_fSpeed;
 		m_vCameraPos = m_vCameraPos + vOffset;
 	}
+
 	if (g_InputData.bSKey)
 	{
 		TVector3 vOffset = m_vLook * LGlobal::g_fSPF * m_fSpeed;
 		m_vCameraPos = m_vCameraPos - vOffset;
 	}
+
 	if (g_InputData.bAKey)
 	{
 		TVector3 vOffset = m_vRight * LGlobal::g_fSPF * m_fSpeed;
 		m_vCameraPos = m_vCameraPos - vOffset;
 	}
+
 	if (g_InputData.bDKey)
 	{
 		TVector3 vOffset = m_vRight * LGlobal::g_fSPF * m_fSpeed;

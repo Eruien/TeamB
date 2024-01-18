@@ -1,24 +1,37 @@
 #pragma once
-#include "LObject.h"
 #include "LFbxObj.h"
 
-class LModel : public LObject
+class LModel
 {
-	LFbxObj* m_LFbxObj = nullptr;
-	std::shared_ptr<LMesh> m_Mesh = nullptr;
 public:
-	float m_AnimationSpanTime = 0.0f;
-	float m_AnimationSpeed = 30.0f;
+	LFbxObj* m_pModel = nullptr;
+	LFbxObj* m_pActionModel = nullptr;
 public:
-	std::vector<std::shared_ptr<LModel>> m_SubModel;
+	float m_fCurrentAnimTime = 0.0f;
+	LBoneWorld m_matBoneArray;
+	LBoneWorld m_matMeshBoneArray;
+	ComPtr<ID3D11Buffer> m_pBoneArrayCB = nullptr;
+	TMatrix m_matControl;
+	std::wstring m_ParentBoneName;
 public:
-	// Mesh의 나머지 정보 세팅이랑 Render를 위한 세팅 pnct정점 model로 옮기기
-	void SetLFbxObj(LFbxObj* fbxObj);
-	void SetChild();
-	void SetAnimationSpeed(float speed);
-	float GetAnimationSpeed();
-	LFbxObj* GetLFbxObj();
-	LMesh* GetMesh();
+	virtual void SetInstancing(bool IsIntancing, int instancingCount);
+	virtual void SetLFbxObj(LFbxObj* fbxObj);
+	virtual LFbxObj* GetLFbxObj();
 public:
-	bool PostRender() override;
+	virtual bool CreateBoneBuffer();
+	virtual bool Frame();
+	virtual bool FrameInstancing();
+	virtual bool Render();
+	bool ShadowRender(TMatrix* matShadowWorld, TMatrix* matShadowView, TMatrix* matShadowProj);
+	virtual bool Release();
+};
+
+class LSkinningModel : public LModel
+{
+public:
+	virtual bool AllNodeRender();
+	bool CreateBoneBuffer() override;
+	bool Frame() override;
+	bool Render() override;
+	bool Release() override;
 };

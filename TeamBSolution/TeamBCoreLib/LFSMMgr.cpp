@@ -66,17 +66,44 @@ bool LFSMMgr::Init()
 	//Scene
 	std::unique_ptr<LFiniteStateMachine> sceneFSM = std::make_unique<LFiniteStateMachine>();
 
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOUISCENE, State::UISCENE);
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOMAPSCENE, State::MAPSCENE);
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOCHARACTERSCENE, State::CHARACTERSCENE);
-	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOEFFECTSCENE, State::EFFECTSCENE);
-
-	sceneFSM->AddStateTransition(State::UISCENE, Event::GOMAINSCENE, State::MAINSCENE);
-	sceneFSM->AddStateTransition(State::MAPSCENE, Event::GOMAINSCENE, State::MAINSCENE);
-	sceneFSM->AddStateTransition(State::CHARACTERSCENE, Event::GOMAINSCENE, State::MAINSCENE);
-	sceneFSM->AddStateTransition(State::EFFECTSCENE, Event::GOMAINSCENE, State::MAINSCENE);
+	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
 	
+	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOMAINSCENE, State::MAINSCENE);
+	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOENDSCENE, State::ENDSCENE);
+
+	sceneFSM->AddStateTransition(State::ENDSCENE, Event::GOMAINSCENE, State::MAINSCENE);
+	sceneFSM->AddStateTransition(State::ENDSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
+
 	m_map.insert(std::make_pair(FSMType::SCENE, std::move(sceneFSM)));
+
+	//Player
+	std::unique_ptr<LFiniteStateMachine> PlayerFSM = std::make_unique<LFiniteStateMachine>();
+
+	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::WALKSPEED, State::CHARACTERWALK);
+	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::RUNSPEED, State::CHARACTERRUN);
+	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);
+
+	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::RUNSPEED, State::CHARACTERRUN);
+	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);
+	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::IDLESPEED, State::CHARACTERIDLE);
+
+	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::IDLESPEED, State::CHARACTERIDLE);
+	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::WALKSPEED, State::CHARACTERWALK);
+	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);
+
+	PlayerFSM->AddStateTransition(State::CHARACTERSHOOT, Event::ENDATTACK, State::CHARACTERIDLE);
+
+	m_map.insert(std::make_pair(FSMType::PLAYER, std::move(PlayerFSM)));
+
+	//Enemy
+	std::unique_ptr<LFiniteStateMachine> EnemyFSM = std::make_unique<LFiniteStateMachine>();
+
+	EnemyFSM->AddStateTransition(State::ENEMYPATROL, Event::FINDPLAYER, State::ENEMYTRACE);
+	EnemyFSM->AddStateTransition(State::ENEMYPATROL, Event::FATALDAMAGE, State::ENEMYDEATH);
+
+	EnemyFSM->AddStateTransition(State::ENEMYTRACE, Event::FATALDAMAGE, State::ENEMYDEATH);
+
+	m_map.insert(std::make_pair(FSMType::ENEMY, std::move(EnemyFSM)));
 
 	return true;
 }

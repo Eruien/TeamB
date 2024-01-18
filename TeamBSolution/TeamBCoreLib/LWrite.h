@@ -31,7 +31,7 @@ public:
 	ComPtr<IDWriteFactory> m_pWriteFactory;
 	ComPtr<IDWriteTextFormat> m_ptextFormat;
 	ComPtr<IDXGISwapChain> m_pSwapChain;
-	ComPtr<IDXGISurface1> m_pbackBuffer;
+	IDXGISurface1* m_pbackBuffer = nullptr;
 	ComPtr<ID2D1RenderTarget> m_pRenderTarget;
 	ComPtr<ID2D1SolidColorBrush> m_pSolidColorBrush;
 public:
@@ -39,16 +39,20 @@ public:
 	void SetCreateWriteFactory();
 	void SetCreateTextFormat();
 	void SetCreateBackBuffer(IDXGISwapChain* pSwapChain);
-	void SetCreateWriteRT(HWND hWnd);
+	void SetCreateWriteRT();
+	void SetCreateWriteRT(IDXGISurface1* pBackBuffer);
 public:
 	void AddText(std::wstring text, float x, float y, D2D1::ColorF color = { 0.0f, 0.0f, 0.0f, 1.0f });
 public:
-	bool Create(IDXGISwapChain* pSwapChain, HWND hWnd);
+	bool Create(IDXGISwapChain* pSwapChain);
 	bool Init();
 	bool Frame();
 	bool PreRender();
 	bool Render();
 	bool PostRender();
 	bool Release();
+public:
+	virtual bool DeleteDxResource();
+	virtual bool CreateDxResource(IDXGISurface1* pBackBuffer);
 };
 

@@ -127,10 +127,15 @@ namespace TBASIS_EX
 
 	bool TRectangle::RectToPoint(const TRectangle rect, const POINT point)
 	{
+		TRectangle Rect = rect;
+		if (Rect.height < 0)
+			Rect.height *= -1;
+		if(Rect.width < 0)
+			Rect.width *= -1;
 		if (
-			rect.x - rect.width / 2 <= point.x && rect.x + rect.width / 2 >= point.x
+			Rect.x - Rect.width / 2 <= point.x && Rect.x + Rect.width / 2 >= point.x
 			&&
-			rect.y - rect.height / 2 <= point.y && rect.y + rect.height / 2 >= point.y)
+			Rect.y - Rect.height / 2 <= point.y && Rect.y + Rect.height / 2 >= point.y)
 			return true;
 		else
 		{

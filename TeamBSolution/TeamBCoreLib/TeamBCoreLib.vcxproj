@@ -19,6 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\imgui\Include\imgui.cpp" />
+    <ClCompile Include="..\..\imgui\Include\ImGuiFileDialog.cpp" />
+    <ClCompile Include="..\..\imgui\Include\imgui_demo.cpp" />
+    <ClCompile Include="..\..\imgui\Include\imgui_draw.cpp" />
+    <ClCompile Include="..\..\imgui\Include\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\imgui\Include\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\imgui\Include\imgui_tables.cpp" />
+    <ClCompile Include="..\..\imgui\Include\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\tinyxml\tinyxml2.cpp" />
     <ClCompile Include="LCamera.cpp" />
     <ClCompile Include="LCore.cpp" />
     <ClCompile Include="LDebugCamera.cpp" />
@@ -29,6 +38,7 @@
     <ClCompile Include="LFbxImport.cpp" />
     <ClCompile Include="LFbxMgr.cpp" />
     <ClCompile Include="LFbxObj.cpp" />
+    <ClCompile Include="LFbxWeight.cpp" />
     <ClCompile Include="LFiniteState.cpp" />
     <ClCompile Include="LFrustum.cpp" />
     <ClCompile Include="LFSMMgr.cpp" />
@@ -39,6 +49,7 @@
     <ClCompile Include="LManagerAgr.cpp" />
     <ClCompile Include="LMap.cpp" />
     <ClCompile Include="LModel.cpp" />
+    <ClCompile Include="LModelCamera.cpp" />
     <ClCompile Include="LNode.cpp" />
     <ClCompile Include="LObject.cpp" />
     <ClCompile Include="LPlaneObj.cpp" />
@@ -50,6 +61,23 @@
     <ClCompile Include="TMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\imgui\Include\GraphEditor.h" />
+    <ClInclude Include="..\..\imgui\Include\imconfig.h" />
+    <ClInclude Include="..\..\imgui\Include\ImCurveEdit.h" />
+    <ClInclude Include="..\..\imgui\Include\ImGradient.h" />
+    <ClInclude Include="..\..\imgui\Include\imgui.h" />
+    <ClInclude Include="..\..\imgui\Include\ImGuiFileDialog.h" />
+    <ClInclude Include="..\..\imgui\Include\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="..\..\imgui\Include\ImGuizmo.h" />
+    <ClInclude Include="..\..\imgui\Include\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\imgui\Include\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\imgui\Include\imgui_internal.h" />
+    <ClInclude Include="..\..\imgui\Include\ImSequencer.h" />
+    <ClInclude Include="..\..\imgui\Include\imstb_rectpack.h" />
+    <ClInclude Include="..\..\imgui\Include\imstb_textedit.h" />
+    <ClInclude Include="..\..\imgui\Include\imstb_truetype.h" />
+    <ClInclude Include="..\..\imgui\Include\ImZoomSlider.h" />
+    <ClInclude Include="..\..\tinyxml\tinyxml2.h" />
     <ClInclude Include="LCamera.h" />
     <ClInclude Include="LCore.h" />
     <ClInclude Include="LDebugCamera.h" />
@@ -68,6 +96,7 @@
     <ClInclude Include="LManagerAgr.h" />
     <ClInclude Include="LMap.h" />
     <ClInclude Include="LModel.h" />
+    <ClInclude Include="LModelCamera.h" />
     <ClInclude Include="LNode.h" />
     <ClInclude Include="LObject.h" />
     <ClInclude Include="LPlaneObj.h" />
@@ -181,7 +210,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../fmod/inc/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../FX11/inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../fmod/inc/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../FX11/inc/;../../imgui/Include/;../../tinyxml/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

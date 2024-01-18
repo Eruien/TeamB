@@ -127,10 +127,10 @@ bool LCore::EngineInit()
 
     LInput::GetInstance().Init();
     LWrite::GetInstance().Init();
-    LWrite::GetInstance().Create(m_pSwapChain.Get(), m_hWnd);
+    LWrite::GetInstance().Create(m_pSwapChain.Get());
 
-	Init();
-	return true;
+    Init();
+    return true;
 }
 
 bool LCore::EngineFrame()
@@ -140,8 +140,8 @@ bool LCore::EngineFrame()
     LInput::GetInstance().Frame();
     LWrite::GetInstance().Frame();
     LGlobal::g_pMainCamera->Frame();
-	Frame();
-	return true;
+    Frame();
+    return true;
 }
 
 bool LCore::EngineRender()
@@ -151,7 +151,6 @@ bool LCore::EngineRender()
     // 스탠실 스테이트 필요 1은 lessequal로 설정했기 때문에 1보다 같거나 작으면 그려지게 했다
     m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 1);
 
-    //if (LInput::GetInstance().m_KeyState[VK_F1] == KEY_PUSH)
     if (g_InputData.bF1Key)
     {
         m_ISWireFrame = !m_ISWireFrame;
@@ -177,7 +176,7 @@ bool LCore::EngineRender()
     LWrite::GetInstance().PostRender();
     LDevice::PostRender();
 
-	return true;
+    return true;
 }
 
 bool LCore::EngineRelease()
@@ -190,7 +189,7 @@ bool LCore::EngineRelease()
     LInput::GetInstance().Release();
     LManager<LTexture>::GetInstance().Release();
     LManager<LShader>::GetInstance().Release();
-	return true;
+    return true;
 }
 
 bool LCore::Run()
@@ -215,6 +214,60 @@ bool LCore::Run()
 
     EngineRelease();
 
+    return true;
+}
+
+void LCore::ResizeDevice(UINT width, UINT height)
+{
+    HRESULT hr;
+    if (m_pDevice == nullptr) return;
+    DeleteDxResource();
+
+    m_pImmediateContext->OMSetRenderTargets(0, nullptr, nullptr);
+    m_pRenderTargetView.Reset();
+    m_pDepthStencilView.Reset();
+
+    hr = m_pSwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount,
+        width, height, m_SwapChainDesc.BufferDesc.Format, m_SwapChainDesc.Flags);
+
+    if (FAILED(hr))
+    {
+        MessageBoxA(NULL, "ResizeBuffer Error", "Error Box", MB_OK);
+        return;
+    }
+
+    m_pSwapChain->GetDesc(&m_SwapChainDesc);
+
+    SetRenderTargetView();
+    SetDepthTexture();
+    SetDepthStencilView();
+    SetViewPort();
+
+    GetClientRect(m_hWnd, &m_rcClient);
+    LGlobal::g_WindowWidth = m_WindowWidth = m_rcClient.right;
+    LGlobal::g_WindowHeight = m_WindowHeight = m_rcClient.bottom;
+
+    CreateDxResource();
+}
+
+bool LCore::DeleteDxResource()
+{
+    LWrite::GetInstance().DeleteDxResource();
+    return true;
+}
+
+bool LCore::CreateDxResource()
+{
+    if (m_pSwapChain)
+    {
+        IDXGISurface1* pBackBuffer;
+        HRESULT hr = m_pSwapChain->GetBuffer(0, __uuidof(IDXGISurface1), (LPVOID*)&pBackBuffer);
+
+        if (SUCCEEDED(hr))
+        {
+            LWrite::GetInstance().CreateDxResource(pBackBuffer);
+        }
+    }
     return true;
 }
 

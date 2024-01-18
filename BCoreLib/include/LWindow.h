@@ -12,10 +12,14 @@ public:
     int m_WindowHeight = 0;
     int m_WindowPosX = 1920 / 2 - m_WindowWidth / 2;
     int m_WindowPosY = 1080 / 2 - m_WindowHeight / 2;
+    RECT m_rcClient;
 public:
-	bool SetRegisterWindowClass(HINSTANCE hInstance);
-	bool SetCreateWindow(LPCWSTR lpWindowName = L"기본창", int WindowWidth = 400, int WindowHeight = 300);
+    bool SetRegisterWindowClass(HINSTANCE hInstance);
+    bool SetCreateWindow(LPCWSTR lpWindowName = L"기본창", int WindowWidth = 400, int WindowHeight = 300);
+    int MsgProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+    virtual void ResizeDevice(UINT width, UINT height) {};
 public:
+    LWindow();
     virtual ~LWindow();
 };
 

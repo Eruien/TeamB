@@ -9,8 +9,13 @@ public:
     TVector3 m_vLook;
     TVector3 m_vUp;
     TVector3 m_vRight;
+    float m_fCameraYaw = 0.0f;
+    float m_fCameraPitch = 45.0f;
+    float m_fCameraRoll = 0.0f;
     float m_fSpeed = 10.0f;
 public:
+    TMatrix m_matWorld;
+
     TMatrix m_matView;
     TMatrix m_matOrthoProjection;
     TMatrix m_matProj;

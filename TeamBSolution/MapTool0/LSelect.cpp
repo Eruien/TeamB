@@ -290,8 +290,9 @@ bool    LSelect::GetIntersection(
 	float* fPercentage)
 {
 	TVector3 vDirection = vEnd - vStart;
+	TVector3 v0SubStart = v0 - vStart;
 	float D = D3DXVec3Dot(&vNormal, &vDirection);
-	float a0 = D3DXVec3Dot(&vNormal, &(v0 - vStart));
+	float a0 = D3DXVec3Dot(&vNormal, &v0SubStart);
 	float fT = a0 / D;
 	if (fPercentage != nullptr)
 	{

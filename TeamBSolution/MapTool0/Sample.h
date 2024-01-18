@@ -16,7 +16,7 @@ struct LIGHT_CONSTANT_BUFFER
 	// light
 	TVector4 g_cAmbientLightColor;
 	TVector4 g_cDiffuseLightColor;
-	TVector4 g_cSpecularMaterial;
+	TVector4 g_cSpecularLightColor;
 	TVector4 g_vLightDir; // w : light damping(attenuation) °¨¼è
 	TVector4 g_vLightPos; // w : light radius
 	TVector4 g_vEyeDir; // w : light intensity °­µµ
