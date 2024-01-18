@@ -23,7 +23,6 @@
     <ClCompile Include="LModel.cpp" />
     <ClCompile Include="LNode.cpp" />
     <ClCompile Include="LObject.cpp" />
-    <ClCompile Include="LPlaneObj.cpp" />
     <ClCompile Include="LQurdTree.cpp" />
     <ClCompile Include="LSoundMgr.cpp" />
     <ClCompile Include="LTimer.cpp" />
@@ -60,6 +59,8 @@
     <ClCompile Include="LFbxWeight.cpp" />
     <ClCompile Include="LModelCamera.cpp" />
     <ClCompile Include="UICamera.cpp" />
+    <ClCompile Include="LDxRT.cpp" />
+    <ClCompile Include="LPlaneShape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LCamera.h" />
@@ -82,7 +83,6 @@
     <ClInclude Include="LModel.h" />
     <ClInclude Include="LNode.h" />
     <ClInclude Include="LObject.h" />
-    <ClInclude Include="LPlaneObj.h" />
     <ClInclude Include="LQurdTree.h" />
     <ClInclude Include="LSoundMgr.h" />
     <ClInclude Include="LStd.h" />
@@ -143,6 +143,8 @@
     </ClInclude>
     <ClInclude Include="LModelCamera.h" />
     <ClInclude Include="UICamera.h" />
+    <ClInclude Include="LDxRT.h" />
+    <ClInclude Include="LPlaneShape.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGUI">
