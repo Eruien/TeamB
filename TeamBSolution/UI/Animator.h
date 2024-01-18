@@ -24,7 +24,7 @@ public:
 	shared_ptr<Animation> GetCurrentAnimation();
 	const Keyframe& GetCurrentKeyframe() { return _currentAnimation->GetKeyframe(_currentKeyframeIndex); }
 	void SetAnimation(shared_ptr<Animation> animation) { _currentAnimation = animation; }
-
+	void SetAnimationFromXml(wstring path);
 
 	//애니메이션
 protected:

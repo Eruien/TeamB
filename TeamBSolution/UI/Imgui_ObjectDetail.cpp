@@ -245,6 +245,7 @@ void Imgui_ObjectDetail::Frame()
 								continue;
 
 							}
+							ImGui::SameLine();
 							if (ImGui::Button("Load Animation From File"))
 							{
 								ImGuiFileDialog::Instance()->OpenDialog("ChooseAnimation", "ChooseAnimation File", ".xml", ".");
@@ -304,6 +305,11 @@ void Imgui_ObjectDetail::Frame()
 					MessageBoxA(NULL, "CreateWICTextureFromFile Error", "Error Box", MB_OK);
 				}
 
+
+			}
+			// close
+			_isDialogWindow = false;
+			ImGuiFileDialog::Instance()->Close();
 			}
 			// 애니메이션 변경
 			if (ImGuiFileDialog::Instance()->Display("ChooseAnimation"))
@@ -318,7 +324,7 @@ void Imgui_ObjectDetail::Frame()
 					std::wstring str = wstring().assign(filePathName.begin(), filePathName.end());
 
 					_filePathName = str;
-					//UIManager::s_selectedObject->GetScript<
+					UIManager::s_selectedObject->GetScript<Animator>(L"Animator")->SetAnimation("");
 					_isTexAcceptWindow = true;
 
 				}
@@ -348,7 +354,7 @@ void Imgui_ObjectDetail::Frame()
 		}
 
 	}
-}
+
 
 void Imgui_ObjectDetail::Render()
 {
