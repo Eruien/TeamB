@@ -47,6 +47,11 @@ void Resize2D::Frame()
 	_barSize,
 	GetGameObject()->GetRect().height };
 	barPicking = false;
+
+	LWrite::GetInstance().AddText(to_wstring(GetGameObject()->GetRect().x), 300, 0);
+	LWrite::GetInstance().AddText(to_wstring(GetGameObject()->GetRect().y), 300, 100);
+	LWrite::GetInstance().AddText(to_wstring(GetGameObject()->GetRect().width), 300, 200);
+	LWrite::GetInstance().AddText(to_wstring(GetGameObject()->GetRect().height), 300, 300);
 	
 	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !UIManager::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
 	{

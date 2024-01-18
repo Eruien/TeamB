@@ -46,6 +46,7 @@ void LCamera::CreateOrthographic(const int viewWide, const int viewHeight, float
     
 
     m_matOrthoProjection = ::XMMatrixOrthographicLH(viewWide, viewHeight, nearZ, FarZ);
+
 }
 
 void LCamera::UpdateVector()

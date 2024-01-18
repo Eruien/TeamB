@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../imgui/include/;../../tinyxml/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../imgui/include/;../../tinyxml/;../../TheFinalKillingFloor/UI/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,7 +163,6 @@
     <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="TextureList.cpp" />
-    <ClCompile Include="UICamera.cpp" />
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -187,7 +186,6 @@
     <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="TextureList.h" />
-    <ClInclude Include="UICamera.h" />
     <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>

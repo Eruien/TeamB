@@ -59,6 +59,7 @@
     <ClCompile Include="LWindow.cpp" />
     <ClCompile Include="LWrite.cpp" />
     <ClCompile Include="TMath.cpp" />
+    <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imgui\Include\GraphEditor.h" />
@@ -107,6 +108,7 @@
     <ClInclude Include="LWindow.h" />
     <ClInclude Include="LWrite.h" />
     <ClInclude Include="TMath.h" />
+    <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

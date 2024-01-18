@@ -21,6 +21,7 @@ void UIManager::Frame()
     _imGuiObjDetail->Frame();
     _imgui_menuBar->Frame();
 
+    
 	for (auto obj : _objs)
 	{
         obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matOrthoProjection);

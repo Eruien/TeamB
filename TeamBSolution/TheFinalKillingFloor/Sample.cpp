@@ -1,17 +1,18 @@
 #include "Sample.h"
 #include "LGlobal.h"
+#include "LInput.h"
 
 bool Sample::Init()
 {
-	m_DebugCamera = std::make_shared<LDebugCamera>();
-	m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
-	m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-	LGlobal::g_pMainCamera = m_DebugCamera.get();
 
-	m_ModelCamera = std::make_shared<LModelCamera>();
-	m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
-	m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-	m_ModelCamera->m_fRadius = 100.0f;
+	m_UICamera = std::make_shared<UICamera>();
+	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
+	m_UICamera->m_fCameraPitch = 0.0f;
+	m_UICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 0, 1);
+	LGlobal::g_pUICamera = m_UICamera.get();
+
+	UIManager::GetInstance().Init(m_pDepthStencilState,m_pDepthStencilStateDisable);
+
 
 	m_Scene = new LScene;
 	m_Scene->FSM(FSMType::SCENE);
@@ -21,25 +22,15 @@ bool Sample::Init()
 
 bool Sample::Frame()
 {
-	if (LInput::GetInstance().m_KeyStateOld[DIK_1] == KEY_PUSH)
-	{
-		LGlobal::g_pMainCamera = m_DebugCamera.get();
-	}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_2] == KEY_PUSH)
-	{
-		LGlobal::g_pMainCamera = m_ModelCamera.get();
-	}
-
 	m_Scene->Process();
-
+	UIManager::GetInstance().Frame();
 	return true;
 }
 
 bool Sample::Render()
 {
 	m_Scene->Render();
-
+	UIManager::GetInstance().Render();
 	return true;
 }
 
@@ -54,7 +45,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR IpCmd
 {
 	Sample win;
 	win.SetRegisterWindowClass(hInstance);
-	win.SetCreateWindow(L"TeamBProject", 800, 600);
+	win.SetCreateWindow(L"TeamBProject", LGlobal::g_WindowWidth, LGlobal::g_WindowHeight);
 	win.Run();
 }
 

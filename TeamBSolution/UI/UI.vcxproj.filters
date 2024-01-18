@@ -14,9 +14,6 @@
     <ClCompile Include="ResourceBase.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="UICamera.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="PickingUI.cpp">
       <Filter>Script</Filter>
     </ClCompile>
@@ -79,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="ResourceBase.h">
       <Filter>Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="UICamera.h">
-      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="PickingUI.h">
       <Filter>Script</Filter>

@@ -11,7 +11,7 @@ bool LTexture::Load(std::wstring fileName)
 {
 	auto imageobj = std::make_unique<DirectX::ScratchImage>();
 	DirectX::TexMetadata mdata;
-
+	m_texPath = fileName;
 	HRESULT hr = DirectX::GetMetadataFromWICFile(fileName.c_str(), DirectX::WIC_FLAGS_NONE, mdata);
 	hr = DirectX::LoadFromWICFile(fileName.c_str(), DirectX::WIC_FLAGS_NONE, &mdata, *imageobj);
 	hr = DirectX::CreateShaderResourceView(LGlobal::g_pDevice.Get(), imageobj->GetImages(), imageobj->GetImageCount(), mdata, &m_pTexSRV);

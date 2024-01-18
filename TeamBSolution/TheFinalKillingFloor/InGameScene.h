@@ -3,9 +3,14 @@
 #include "LMap.h"
 #include "LPlayer.h"
 #include "LFbxMgr.h"
+#include "LDebugCamera.h"
+#include "LModelCamera.h"
 
 class InGameScene : public SceneState
 {
+public:
+	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
+	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
 public:
 	std::shared_ptr<LMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;

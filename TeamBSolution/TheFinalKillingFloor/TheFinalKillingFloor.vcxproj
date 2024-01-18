@@ -118,12 +118,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/; ../../fmod/inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../tinyxml/;../../imgui/include/;UI/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../BCoreLib/lib/; ../../BCoreLib/texlib/; ../../fbxsdk/lib/debug/; ../../fmod/lib/x64/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../BCoreLib/lib/;../../BCoreLib/texlib/;../../fbxsdk/lib/debug/;../../fmod/lib/x64/;../../imgui/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,6 +157,26 @@
     <ClCompile Include="PlayerRun.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="UI\Animation.cpp" />
+    <ClCompile Include="UI\Animator.cpp" />
+    <ClCompile Include="UI\BillBoard.cpp" />
+    <ClCompile Include="UI\ChangeTexture.cpp" />
+    <ClCompile Include="UI\DigitDisplay.cpp" />
+    <ClCompile Include="UI\DragUI.cpp" />
+    <ClCompile Include="UI\ExitWindow.cpp" />
+    <ClCompile Include="UI\ImguiDetail.cpp" />
+    <ClCompile Include="UI\ImGuiManager.cpp" />
+    <ClCompile Include="UI\imgui_menuBar.cpp" />
+    <ClCompile Include="UI\Imgui_ObjectDetail.cpp" />
+    <ClCompile Include="UI\KObject.cpp" />
+    <ClCompile Include="UI\ModalWindow.cpp" />
+    <ClCompile Include="UI\MonoBehaviour.cpp" />
+    <ClCompile Include="UI\NumberObject.cpp" />
+    <ClCompile Include="UI\PickingUI.cpp" />
+    <ClCompile Include="UI\Resize2D.cpp" />
+    <ClCompile Include="UI\ResourceBase.cpp" />
+    <ClCompile Include="UI\TextureList.cpp" />
+    <ClCompile Include="UI\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EndScene.h" />
@@ -173,11 +193,44 @@
     <ClInclude Include="PlayerRun.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="UI\Animation.h" />
+    <ClInclude Include="UI\Animator.h" />
+    <ClInclude Include="UI\BillBoard.h" />
+    <ClInclude Include="UI\ChangeTexture.h" />
+    <ClInclude Include="UI\DigitDisplay.h" />
+    <ClInclude Include="UI\DragUI.h" />
+    <ClInclude Include="UI\ExitWindow.h" />
+    <ClInclude Include="UI\ImguiDetail.h" />
+    <ClInclude Include="UI\ImGuiManager.h" />
+    <ClInclude Include="UI\imgui_menuBar.h" />
+    <ClInclude Include="UI\Imgui_ObjectDetail.h" />
+    <ClInclude Include="UI\KObject.h" />
+    <ClInclude Include="UI\ModalWindow.h" />
+    <ClInclude Include="UI\MonoBehaviour.h" />
+    <ClInclude Include="UI\NumberObject.h" />
+    <ClInclude Include="UI\PickingUI.h" />
+    <ClInclude Include="UI\Resize2D.h" />
+    <ClInclude Include="UI\ResourceBase.h" />
+    <ClInclude Include="UI\TextureList.h" />
+    <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
       <Project>{a380f0fb-6663-4804-b20b-1508692423ff}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UI\imgui.ini" />
+    <None Include="UI\UI.vcxproj" />
+    <None Include="UI\UI.vcxproj.filters" />
+    <None Include="UI\UI.vcxproj.user" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="UI\Anim.xml" />
+    <Xml Include="UI\Anim2.xml" />
+    <Xml Include="UI\testNum.xml" />
+    <Xml Include="UI\testScene - 복사본.xml" />
+    <Xml Include="UI\testScene.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -83,6 +83,10 @@ public: // for direct input , [½ÃÁø]
 	BYTE	m_MouseState[3];
 	BYTE	m_BeforeMouseState[3];
 	KeyState m_KeyStateOld[256];
+public:
+	bool m_StartClick = false;
+	bool IsHideCursor = false;
+	bool ISEndPoint = false;
 private:
 	BYTE	m_KeyState[256];
 	BYTE GetKey(BYTE dwKey);

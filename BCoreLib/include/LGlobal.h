@@ -1,10 +1,11 @@
 #pragma once
 #include "LStd.h"
 #include "LCamera.h"
-
+#include "UICamera.h"
 class LWindow;
 class LModel;
 class LSkinningModel;
+
 
 class LGlobal
 {
@@ -19,6 +20,7 @@ public:
 	static float g_fSPF;
 	static float g_fGameTimer;
 	static LCamera* g_pMainCamera;
+	static UICamera* g_pUICamera;
 };
 
 
