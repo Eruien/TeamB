@@ -98,6 +98,7 @@ bool LFbxObj::CreateInstance(int numInstance)
 	for (int i = 0; i < m_InstanceSize; i++)
 	{
 		D3DXMatrixIdentity(&m_matInstanceList.mat[i]);
+		D3DXMatrixScaling(&m_matInstanceList.mat[i], 0.2f, 0.2f, 0.2f);
 		m_matInstanceList.mat[i]._41 = i * 50;
 		D3DXMatrixTranspose(&m_matInstanceList.mat[i], &m_matInstanceList.mat[i]);
 	}

@@ -7,6 +7,7 @@
 #include "LModelCamera.h"
 #include "LDxRT.h"
 #include "LPlaneShape.h"
+#include "LNPC.h"
 
 struct SHADOW_CONSTANT_BUFFER
 {
@@ -21,8 +22,10 @@ public:
 public:
 	std::shared_ptr<LMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
+	std::shared_ptr<LNPC> m_ZombieModel = nullptr;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* fbxObj = nullptr;
+	LFbxObj* zombieObj = nullptr;
 	LFbxObj* mapObj = nullptr;
 public:
 	LDxRT m_RT;

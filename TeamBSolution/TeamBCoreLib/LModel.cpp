@@ -48,13 +48,13 @@ bool LModel::FrameInstancing()
 	auto fbxMeshList = m_pModel->m_DrawList;
 	for (int iSub = 0; iSub < fbxMeshList.size(); iSub++)
 	{
-		/*for (int j = 0; j < 0; j++)
-		{
-
-		}*/
 		LFbxObj* obj = fbxMeshList[iSub].get();
-		obj->m_matInstanceList.mat[iSub] = m_matControl;
-		D3DXMatrixTranspose(&obj->m_matInstanceList.mat[iSub], &obj->m_matInstanceList.mat[iSub]);
+		for (int j = 0; j < obj->m_InstanceSize; j++)
+		{
+			obj->m_matInstanceList.mat[j] = m_matControl;
+			D3DXMatrixTranspose(&obj->m_matInstanceList.mat[j], &obj->m_matInstanceList.mat[j]);
+		}
+
 		LGlobal::g_pImmediateContext->UpdateSubresource(obj->m_pCBInstance.Get(), 0, NULL, &(obj->m_matInstanceList), 0, 0);
 		LGlobal::g_pImmediateContext->VSSetConstantBuffers(3, 1, obj->m_pCBInstance.GetAddressOf());
 	}
