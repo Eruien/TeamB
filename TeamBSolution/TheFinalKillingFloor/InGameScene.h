@@ -7,13 +7,11 @@
 class InGameScene : public SceneState
 {
 public:
-	//std::shared_ptr<LMap> m_CustomMap = nullptr;
-	shared_ptr<LModel> m_Map = nullptr;
-	std::shared_ptr<LModel> m_PlayerModel = nullptr;
+	std::shared_ptr<LMap> m_CustomMap = nullptr;
+	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
+	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* fbxObj = nullptr;
-
-	// fbx map
-	LFbxObj* fbxMap = nullptr;
+	LFbxObj* mapObj = nullptr;
 public:
 	bool Init() override;
 	void Render() override;
