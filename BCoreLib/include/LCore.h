@@ -30,11 +30,15 @@ public:
 	virtual bool Render();
 	virtual bool Release();
 	bool Run();
+	void ResizeDevice(UINT width, UINT height) override;
 private:
 	bool EngineInit();
 	bool EngineFrame();
 	bool EngineRender();
 	bool EngineRelease();
+public:
+	virtual bool DeleteDxResource();
+	virtual bool CreateDxResource();
 public:
 	virtual ~LCore();
 };

@@ -11,7 +11,6 @@ public:
 	}
 public:
 	ID3D11ShaderResourceView* m_pTexSRV = nullptr;
-	wstring m_texPath;
 public:
 	void Apply();
 	bool Load(std::wstring fileName);
@@ -30,7 +29,7 @@ public:
 		static LShader input;
 		return input;
 	}
-private:
+public:
 	ID3D11VertexShader* m_pVS = nullptr;
 	ID3D11PixelShader* m_pPS = nullptr;
 public:
@@ -41,6 +40,7 @@ public:
 	bool Load(std::wstring fileName);
 	bool LoadVertexShader(std::wstring fileName);
 	bool LoadPixelShader(std::wstring fileName);
+	bool LoadPixelShader(std::wstring fileName, const char* funcName);
 public:
 	bool Release();
 public:

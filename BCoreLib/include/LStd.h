@@ -1,5 +1,9 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#define RadianToDegree(radian) ( radian * (180.0f / L_PI))
+#define DegreeToRadian(radian) ( radian * (L_PI / 180.0f ))
 #define L_PI (3.141592f)
+#define L_EPSILON (0.0001f)
 // Sub texture types
 #define ID_TBASIS_AM 0   // ambient
 #define ID_TBASIS_DI 1   // diffuse

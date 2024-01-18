@@ -12,7 +12,9 @@ class LFbxImport
 	FbxImporter* m_pFbxImporter = nullptr;
 	FbxScene* m_pFbxScene = nullptr;
 	FbxNode* m_RootNode = nullptr;
-	std::vector<FbxNode*> m_MeshNodeList;
+	std::vector<std::shared_ptr<LFbxObj>> m_MeshNodeList;
+	std::vector<FbxNode*> m_pNodeList;
+	std::map<FbxNode*, int> m_pFbxNodeNameMap;
 public:
 	void GetAnimation(LFbxObj* fbxObj);
 public:
@@ -22,13 +24,16 @@ public:
 	std::string ParseMaterial(FbxSurfaceMaterial* pMaterial);
 	int GetSubMaterialIndex(FbxLayerElementMaterial* layer, int iPoly);
 public:
+	TMatrix ConvertAMatrix(FbxMatrix& m);
 	TMatrix ConvertAMatrix(FbxAMatrix& m);
 	TMatrix DxConvertMatrix(TMatrix& m);
 	TMatrix ParseTransform(FbxNode* fbxNode);
 public:
+	bool ParseMeshSkinning(FbxMesh* pFbxMesh, LFbxObj* pMesh);
+public:
 	bool Load(std::wstring fbxFilePath, LFbxObj* fbxObj);
-	void PreProcess(FbxNode* fbxNode);
-	void MeshLoad(FbxNode* fbxNode, LMesh* lMesh);
+	void PreProcess(FbxNode* fbxNode, LFbxObj* fbxObj);
+	void MeshLoad(FbxNode* fbxNode, LFbxObj* lMesh);
 public:
 	bool Init();
 	bool Frame();

@@ -3,13 +3,12 @@
 
 //Texture
 void LTexture::Apply()
-{	
+{
 	LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, &m_pTexSRV);
 }
 
 bool LTexture::Load(std::wstring fileName)
 {
-	m_texPath = fileName;
 	auto imageobj = std::make_unique<DirectX::ScratchImage>();
 	DirectX::TexMetadata mdata;
 
@@ -30,6 +29,7 @@ bool LTexture::Load(std::wstring fileName)
 	hr = DirectX::GetMetadataFromDDSFile(fileName.c_str(), DirectX::DDS_FLAGS_NONE, mdata);
 	hr = DirectX::LoadFromDDSFile(fileName.c_str(), DirectX::DDS_FLAGS_NONE, &mdata, *imageobj);
 	hr = DirectX::CreateShaderResourceView(LGlobal::g_pDevice.Get(), imageobj->GetImages(), imageobj->GetImageCount(), mdata, &m_pTexSRV);
+
 	if (SUCCEEDED(hr))
 	{
 		return true;
@@ -53,7 +53,7 @@ bool LTexture::Load(std::wstring fileName)
 	{
 		MessageBoxA(NULL, "Create ShaderResourceView TGA Error", "Error Box", MB_OK);
 	}
-	
+
 	return true;
 }
 
@@ -90,22 +90,28 @@ bool LShader::LoadVertexShader(std::wstring fileName)
 	HRESULT hr;
 	ID3DBlob* ErrorCode;
 
+	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+
 	hr = D3DCompileFromFile(
 		fileName.c_str(),
 		NULL,
 		NULL,
 		"VS",
 		"vs_5_0",
-		NULL,
+		dwShaderFlags,
 		NULL,
 		&m_pVSBlob,
 		&ErrorCode);
 
+
+
 	if (FAILED(hr))
 	{
 		//ErrorCode
-		LPCSTR pMessage[500] = { 0, };
-		MessageBoxA(NULL, *pMessage, "Error Box", MB_OK);
+		TCHAR pMessage[500];
+		mbstowcs(pMessage, (CHAR*)ErrorCode->GetBufferPointer(), 500);
+		MessageBox(NULL, pMessage, L"ERROR", MB_OK);
+		if (ErrorCode) ErrorCode->Release();
 		return false;
 	}
 
@@ -131,11 +137,54 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 	ID3DBlob* ErrorCode;
 	HRESULT hr;
 
+	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+
 	hr = D3DCompileFromFile(
 		fileName.c_str(),
 		NULL,
 		NULL,
 		"PS",
+		"ps_5_0",
+		dwShaderFlags,
+		NULL,
+		&m_pPSBlob,
+		&ErrorCode);
+
+	if (FAILED(hr))
+	{
+		//ErrorCode
+		TCHAR pMessage[500];
+		mbstowcs(pMessage, (CHAR*)ErrorCode->GetBufferPointer(), 500);
+		MessageBox(NULL, pMessage, L"ERROR", MB_OK);
+		if (ErrorCode) ErrorCode->Release();
+		return false;
+	}
+
+	hr = LGlobal::g_pDevice->CreatePixelShader(
+		m_pPSBlob->GetBufferPointer(),
+		m_pPSBlob->GetBufferSize(),
+		NULL,
+		&m_pPS);
+
+	if (FAILED(hr))
+	{
+		MessageBoxA(NULL, "Create PixelShader Error", "Error Box", MB_OK);
+		return false;
+	}
+
+	return true;
+}
+
+bool LShader::LoadPixelShader(std::wstring fileName, const char* funcName)
+{
+	ID3DBlob* ErrorCode;
+	HRESULT hr;
+
+	hr = D3DCompileFromFile(
+		fileName.c_str(),
+		NULL,
+		NULL,
+		funcName,
 		"ps_5_0",
 		NULL,
 		NULL,
@@ -144,8 +193,11 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 
 	if (FAILED(hr))
 	{
-		LPCSTR pMessage[500] = { 0, };
-		MessageBoxA(NULL, *pMessage, "Error Box", MB_OK);
+		//ErrorCode
+		TCHAR pMessage[500];
+		mbstowcs(pMessage, (CHAR*)ErrorCode->GetBufferPointer(), 500);
+		MessageBox(NULL, pMessage, L"ERROR", MB_OK);
+		if (ErrorCode) ErrorCode->Release();
 		return false;
 	}
 
@@ -166,10 +218,10 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 
 bool LShader::Release()
 {
-	if(m_pVSBlob) m_pVSBlob->Release();
-	if(m_pPSBlob) m_pPSBlob->Release();
-	if(m_pVS) m_pVS->Release();
-	if(m_pPS) m_pPS->Release();
+	if (m_pVSBlob) m_pVSBlob->Release();
+	if (m_pPSBlob) m_pPSBlob->Release();
+	if (m_pVS) m_pVS->Release();
+	if (m_pPS) m_pPS->Release();
 	m_pVSBlob = nullptr;
 	m_pPSBlob = nullptr;
 	m_pVS = nullptr;

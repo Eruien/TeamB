@@ -2,7 +2,7 @@
 
 void LFbxImport::GetAnimation(LFbxObj* fbxObj)
 {
-	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);
+	FbxTime::SetGlobalTimeMode(FbxTime::eFrames60);
 	FbxAnimStack* stack = m_pFbxScene->GetSrcObject<FbxAnimStack>(0);
 
 	if (stack == nullptr)
@@ -21,25 +21,27 @@ void LFbxImport::GetAnimation(LFbxObj* fbxObj)
 	FbxLongLong startFrame = startTime.GetFrameCount(timeMode);
 	FbxLongLong endFrame = endTime.GetFrameCount(timeMode);
 
-	FbxTime time;
+	fbxObj->SetAnimation(startFrame, endFrame, 60, 160);
 
+	FbxTime time;
+	fbxObj->m_NameMatrixMap.resize(endFrame);
 	for (int t = startFrame; t < endFrame; t++)
 	{
 		time.SetFrame(t, timeMode);
-
-		for (int iMesh = 0; iMesh < fbxObj->m_MeshList.size(); iMesh++)
+		std::vector<TMatrix> matArray;
+		for (int iMesh = 0; iMesh < fbxObj->m_TreeList.size(); iMesh++)
 		{
-			fbxObj->m_MeshList[iMesh]->m_iStartFrame = startFrame;
-			fbxObj->m_MeshList[iMesh]->m_iEndFrame = endFrame;
-			fbxObj->m_MeshList[iMesh]->m_iFrameSpeed = 30;
-			fbxObj->m_MeshList[iMesh]->m_iTickForFrame = 160;
 
 			// 초당 30프레임 기준으로 프레임1당 fbxMatrix
 			// Mesh당 행렬을 얻는다.
-			FbxAMatrix fbxMat = m_MeshNodeList[iMesh]->EvaluateGlobalTransform(time);
+			FbxAMatrix fbxMat = m_pNodeList[iMesh]->EvaluateGlobalTransform(time);
 			TMatrix mat = ConvertAMatrix(fbxMat);
 			mat = DxConvertMatrix(mat);
-			fbxObj->m_MeshList[iMesh]->m_MatrixArray.push_back(mat);
+			matArray.push_back(mat);
+
+			std::wstring nodeName = mtw(m_pNodeList[iMesh]->GetName());
+			fbxObj->m_NameMatrixMap[t].insert(std::make_pair(nodeName, mat));
 		}
+		fbxObj->m_MatrixArray.push_back(matArray);
 	}
 }

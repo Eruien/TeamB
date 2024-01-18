@@ -166,7 +166,7 @@ std::string LFbxImport::ParseMaterial(FbxSurfaceMaterial* pSurfaceMaterial)
 
 int LFbxImport::GetSubMaterialIndex(FbxLayerElementMaterial* layer, int iPoly)
 {
-	int SubMaterialIndex = -1;
+	int SubMaterialIndex = 0;
 
 	switch (layer->GetMappingMode())
 	{

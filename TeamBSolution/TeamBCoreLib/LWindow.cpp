@@ -1,22 +1,13 @@
 #include "LWindow.h"
 #include "LGlobal.h"
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    LRESULT hr = LGlobal::g_pWindow->MsgProc(hWnd, message, wParam, lParam);
+    if (SUCCEEDED(hr)) return 0;
 
-    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
-        return true;
     switch (message)
     {
-    case WM_CREATE:
-    {
-        // 타이틀바 때문에 좌표가 안맞아서 클라이언트 크기 재조정
-        RECT windowRect = { 0, 0, LGlobal::g_WindowWidth, LGlobal::g_WindowHeight };
-        AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
-        SetWindowPos(hWnd, NULL, 0, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-    }
-    break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -27,12 +18,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+int LWindow::MsgProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_SIZE:
+        if (SIZE_MINIMIZED != wParam)
+        {
+            UINT width = LOWORD(lParam);
+            UINT height = HIWORD(lParam);
+            ResizeDevice(width, height);
+        }
+        break;
+    }
+
+    return -1;
+}
+
 bool LWindow::SetRegisterWindowClass(HINSTANCE hInstance)
 {
     m_hInstance = hInstance;
-    LGlobal::g_hInstance = hInstance;
-    
-    WNDCLASSEXW wcex = {0,};
+
+    WNDCLASSEXW wcex = { 0, };
 
     wcex.cbSize = sizeof(WNDCLASSEXW);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -48,16 +55,15 @@ bool LWindow::SetRegisterWindowClass(HINSTANCE hInstance)
     {
         MessageBoxA(NULL, "Window Class Register Error", "Error Box", MB_OK);
     }
-  
+
     return true;
 }
 
 bool LWindow::SetCreateWindow(LPCWSTR lpWindowName, int WindowWidth, int WindowHeight)
 {
-    LGlobal::g_WindowWidth = m_WindowWidth = WindowWidth;
-    LGlobal::g_WindowHeight = m_WindowHeight = WindowHeight;
+    RECT rc = { 0,0, WindowWidth, WindowHeight };
 
-  
+    AdjustWindowRect(&rc, m_dwStyle, FALSE);
 
     m_hWnd = CreateWindowExW(
         m_dwExStyle,
@@ -66,8 +72,8 @@ bool LWindow::SetCreateWindow(LPCWSTR lpWindowName, int WindowWidth, int WindowH
         m_dwStyle,
         m_WindowPosX,
         m_WindowPosY,
-        m_WindowWidth,
-        m_WindowHeight,
+        rc.right - rc.left,
+        rc.bottom - rc.top,
         nullptr,
         nullptr,
         m_hInstance,
@@ -79,9 +85,19 @@ bool LWindow::SetCreateWindow(LPCWSTR lpWindowName, int WindowWidth, int WindowH
     }
 
     LGlobal::g_hWnd = m_hWnd;
+
+    GetClientRect(m_hWnd, &m_rcClient);
+    LGlobal::g_WindowWidth = m_WindowWidth = m_rcClient.right;
+    LGlobal::g_WindowHeight = m_WindowHeight = m_rcClient.bottom;
+
     ShowWindow(m_hWnd, SW_SHOW);
 
     return true;
+}
+
+LWindow::LWindow()
+{
+    LGlobal::g_pWindow = this;
 }
 
 LWindow::~LWindow() {}

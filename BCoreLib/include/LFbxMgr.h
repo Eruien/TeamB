@@ -15,7 +15,7 @@ public:
 	LList m_map;
 	LFbxImport m_FbxImport;
 public:
-	LFbxObj* Load(std::wstring filePath);
+	LFbxObj* Load(std::wstring filePath, std::wstring shaderFilePath);
 	LFbxObj* GetPtr(std::wstring key);
 };
 
