@@ -80,7 +80,9 @@ public: // for direct input , [½ÃÁø]
 	DIMOUSESTATE	m_DIMouseState;
 	BYTE	m_MouseState[3];
 	BYTE	m_BeforeMouseState[3];
+private:
 	BYTE	m_KeyState[256];
+public:
 	bool InitDirectInput();
 	bool ShutDownDirectInput();
 	BYTE GetKey(BYTE dwKey);

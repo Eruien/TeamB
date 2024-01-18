@@ -38,14 +38,19 @@ void InGameScene::Render()
     std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-    if (LInput::GetInstance().m_KeyState[DIK_ESCAPE] == DWORD(KEY_PUSH))
+
+    if (g_InputData.bWKey)
+        return;
+
+
+    if (LInput::GetInstance().GetKey(DIK_ESCAPE) == KEY_PUSH)
     {
         Release();
         m_pOwner->SetTransition(Event::GOENDSCENE);
         return;
     }
 
-    if (LInput::GetInstance().m_KeyState[DIK_ESCAPE] == DWORD(KEY_PUSH))
+    if (LInput::GetInstance().GetKey(DIK_ESCAPE) == KEY_PUSH)
     {
         Release();
         m_pOwner->SetTransition(Event::GOMAINSCENE);
