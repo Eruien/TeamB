@@ -8,10 +8,12 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
-#define KEY_FREE 0
-#define KEY_UP 1
-#define KEY_PUSH 2
-#define KEY_HOLD 3
+enum KeyState {
+	KEY_FREE,
+	KEY_PUSH,
+	KEY_HOLD,
+	KEY_UP
+};
 
 //enum class KeyState
 //{
@@ -80,12 +82,14 @@ public: // for direct input , [½ÃÁø]
 	DIMOUSESTATE	m_DIMouseState;
 	BYTE	m_MouseState[3];
 	BYTE	m_BeforeMouseState[3];
+	KeyState m_KeyStateOld[256];
 private:
 	BYTE	m_KeyState[256];
+	BYTE GetKey(BYTE dwKey);
+	
 public:
 	bool InitDirectInput();
 	bool ShutDownDirectInput();
-	BYTE GetKey(BYTE dwKey);
 public:
 	TVector3 m_vOffset = { 0,0,0 };
 	POINT m_MousePos;

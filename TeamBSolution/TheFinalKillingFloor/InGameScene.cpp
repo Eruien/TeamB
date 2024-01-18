@@ -39,18 +39,15 @@ void InGameScene::Render()
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 
-    if (g_InputData.bWKey)
-        return;
 
-
-    if (LInput::GetInstance().GetKey(DIK_ESCAPE) == KEY_PUSH)
+    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
         m_pOwner->SetTransition(Event::GOENDSCENE);
         return;
     }
 
-    if (LInput::GetInstance().GetKey(DIK_ESCAPE) == KEY_PUSH)
+    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
         m_pOwner->SetTransition(Event::GOMAINSCENE);

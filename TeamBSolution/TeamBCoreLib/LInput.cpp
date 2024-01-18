@@ -78,28 +78,28 @@ BYTE LInput::GetKey(BYTE dwKey)
     sKey = m_KeyState[dwKey];
     if (sKey & 0x80)
     {
-        if (m_KeyState[dwKey] == KEY_FREE)
+        if (m_KeyStateOld[dwKey] == KEY_FREE)
         {
-            m_KeyState[dwKey] = KEY_PUSH;
+            m_KeyStateOld[dwKey] = KEY_PUSH;
         }
         else
         {
-            m_KeyState[dwKey] = KEY_HOLD;
+            m_KeyStateOld[dwKey] = KEY_HOLD;
         }
     }
     else
     {
-        if (m_KeyState[dwKey] == KEY_PUSH
-            || m_KeyState[dwKey] == KEY_HOLD)
+        if (m_KeyStateOld[dwKey] == KEY_PUSH
+            || m_KeyStateOld[dwKey] == KEY_HOLD)
         {
-            m_KeyState[dwKey] = KEY_UP;
+            m_KeyStateOld[dwKey] = KEY_UP;
         }
         else
         {
-            m_KeyState[dwKey] = KEY_FREE;
+            m_KeyStateOld[dwKey] = KEY_FREE;
         }
     }
-    return m_KeyState[dwKey];
+    return m_KeyStateOld[dwKey];
 }
 
 TVector3 LInput::GetWorldPos(float windowWidth, float windowHeight, float cameraPosX, float cameraPosY)

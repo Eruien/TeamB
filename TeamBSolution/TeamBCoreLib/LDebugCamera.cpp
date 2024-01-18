@@ -10,7 +10,7 @@ bool LDebugCamera::Init()
 
 bool LDebugCamera::Frame()
 {
-	LInput::GetInstance().Frame();
+	
 	if(g_InputData.bSpace)
 		m_fSpeed += LGlobal::g_fSPF * m_fSpeed;
 
@@ -52,6 +52,12 @@ bool LDebugCamera::Frame()
 		TVector3 vOffset = m_vUp * LGlobal::g_fSPF * m_fSpeed;
 		m_vCameraPos = m_vCameraPos - vOffset;
 	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_PUSH)
+	{
+		return false;
+	}
+		
 
 	if (LInput::GetInstance().m_MouseState[0] == KEY_HOLD)
 	{
