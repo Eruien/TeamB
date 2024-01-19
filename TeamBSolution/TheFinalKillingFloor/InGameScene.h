@@ -8,6 +8,7 @@
 #include "LDxRT.h"
 #include "LPlaneShape.h"
 #include "LNPC.h"
+#include "LSkyBox.h"
 
 struct SHADOW_CONSTANT_BUFFER
 {
@@ -19,6 +20,7 @@ class InGameScene : public SceneState
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
+	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 public:
 	std::shared_ptr<LMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;

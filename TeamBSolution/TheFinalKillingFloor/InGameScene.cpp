@@ -17,6 +17,10 @@ bool InGameScene::Init()
 
     CreateShadowConstantBuffer();
 
+    m_SkyBox = std::make_shared<LSkyBox>();
+    m_SkyBox->Set();
+    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
+
     fbxObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/army/army3.fbx", L"../../res/hlsl/CharacterShadow.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Fire_Rifle_7.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Reload_Rifle_65.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
@@ -108,6 +112,11 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
+    m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_SkyBox->Render();
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);
+
     TVector4 vClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     if (m_RT.Begin(vClearColor))

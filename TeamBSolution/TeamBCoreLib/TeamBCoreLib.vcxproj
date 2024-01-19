@@ -55,6 +55,7 @@
     <ClCompile Include="LObject.cpp" />
     <ClCompile Include="LPlaneShape.cpp" />
     <ClCompile Include="LQurdTree.cpp" />
+    <ClCompile Include="LSkyBox.cpp" />
     <ClCompile Include="LSoundMgr.cpp" />
     <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="LWindow.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="LObject.h" />
     <ClInclude Include="LPlaneShape.h" />
     <ClInclude Include="LQurdTree.h" />
+    <ClInclude Include="LSkyBox.h" />
     <ClInclude Include="LSoundMgr.h" />
     <ClInclude Include="LStd.h" />
     <ClInclude Include="LTimer.h" />

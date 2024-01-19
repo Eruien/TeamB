@@ -61,6 +61,7 @@
     <ClCompile Include="UICamera.cpp" />
     <ClCompile Include="LDxRT.cpp" />
     <ClCompile Include="LPlaneShape.cpp" />
+    <ClCompile Include="LSkyBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LCamera.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="UICamera.h" />
     <ClInclude Include="LDxRT.h" />
     <ClInclude Include="LPlaneShape.h" />
+    <ClInclude Include="LSkyBox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGUI">
