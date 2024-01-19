@@ -4,13 +4,14 @@
 class LDevice : public LWindow
 {
 public:
+	DXGI_SWAP_CHAIN_DESC m_SwapChainDesc;
 	// interface
 	ComPtr<ID3D11Device> m_pDevice = nullptr;
 	ComPtr<ID3D11DeviceContext> m_pImmediateContext = nullptr;
 	ComPtr<IDXGISwapChain> m_pSwapChain = nullptr;
 	ComPtr<ID3D11RenderTargetView> m_pRenderTargetView = nullptr;
 	ComPtr<IDXGIFactory> m_pGIFactory = nullptr;
-	ComPtr<ID3D11Texture2D> m_pbackBuffer = nullptr;
+	ID3D11Texture2D* m_pbackBuffer = nullptr;
 	// depth buffer
 	ComPtr<ID3D11DepthStencilView> m_pDepthStencilView = nullptr;
 	ComPtr<ID3D11Texture2D> m_DepthTexture = nullptr;

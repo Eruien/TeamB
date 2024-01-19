@@ -3,6 +3,8 @@
 
 bool Sample::Init()
 {
+
+
 	m_DebugCamera = std::make_shared<LDebugCamera>();
 	m_DebugCamera->CreateLookAt({ 0.0f, 700.0f, -500.0f }, { 0.0f, 0.0f, 1.0f });
 	m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);

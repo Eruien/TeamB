@@ -1,5 +1,9 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#define RadianToDegree(radian) ( radian * (180.0f / L_PI))
+#define DegreeToRadian(radian) ( radian * (L_PI / 180.0f ))
 #define L_PI (3.141592f)
+#define L_EPSILON (0.0001f)
 // Sub texture types
 #define ID_TBASIS_AM 0   // ambient
 #define ID_TBASIS_DI 1   // diffuse
@@ -19,9 +23,12 @@
 
 #define LWRITE  LWrite::GetInstance()
 #define LINPUT	LInput::GetInstance()
-//마우스 월드좌표
-#define MOUSEX  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).x
-#define MOUSEY  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).y
+
+//마우스 좌표
+#define MOUSEwX  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).x
+#define MOUSEwY  LINPUT.GetWorldPos(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight, LGlobal::g_pMainCamera->m_vCameraPos.x, LGlobal::g_pMainCamera->m_vCameraPos.y).y
+#define MOUSEsX  LINPUT.GetMousePos().x - LGlobal::g_WindowWidth / 2
+#define MOUSEsY  -(LINPUT.GetMousePos().y - LGlobal::g_WindowHeight / 2)
 
 #include <windows.h>
 #include <iostream>

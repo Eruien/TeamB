@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../imgui/include/;../../tinyxml/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../imgui/include/;../../tinyxml/;../../TheFinalKillingFloor/UI/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="BillBoard.cpp" />
     <ClCompile Include="ChangeTexture.cpp" />
     <ClCompile Include="DigitDisplay.cpp" />
     <ClCompile Include="ExitWindow.cpp" />
@@ -152,8 +153,6 @@
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="Imgui_ObjectDetail.cpp" />
     <ClCompile Include="imgui_menuBar.cpp" />
-    <ClCompile Include="IntToSprite.cpp" />
-    <ClCompile Include="KGlobal.cpp" />
     <ClCompile Include="ModalWindow.cpp" />
     <ClCompile Include="NumberObject.cpp" />
     <ClCompile Include="PickingUI.cpp" />
@@ -164,12 +163,12 @@
     <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="TextureList.cpp" />
-    <ClCompile Include="UICamera.cpp" />
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="BillBoard.h" />
     <ClInclude Include="ChangeTexture.h" />
     <ClInclude Include="DigitDisplay.h" />
     <ClInclude Include="ExitWindow.h" />
@@ -177,8 +176,6 @@
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Imgui_ObjectDetail.h" />
     <ClInclude Include="imgui_menuBar.h" />
-    <ClInclude Include="IntToSprite.h" />
-    <ClInclude Include="KGlobal.h" />
     <ClInclude Include="ModalWindow.h" />
     <ClInclude Include="NumberObject.h" />
     <ClInclude Include="PickingUI.h" />
@@ -189,7 +186,6 @@
     <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="TextureList.h" />
-    <ClInclude Include="UICamera.h" />
     <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>

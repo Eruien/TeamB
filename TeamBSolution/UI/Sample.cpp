@@ -1,5 +1,4 @@
 #include "Sample.h"
-
 #include "LGlobal.h"
 
 
@@ -27,7 +26,13 @@ bool Sample::Init()
 	m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_DebugCamera->m_fCameraPitch = 0.0f;
 	m_DebugCamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 0, 1);
-	LGlobal::g_pMainCamera = m_DebugCamera.get();
+	LGlobal::g_pUICamera = m_DebugCamera.get();
+
+	//m_DebugCamera = std::make_shared<LDebugCamera>();
+	//m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
+	////m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+	//m_DebugCamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 0, 1);
+	//LGlobal::g_pMainCamera = m_DebugCamera.get();
 
 
 	animInfo info;
@@ -45,10 +50,10 @@ bool Sample::Init()
 	info2.keyFrames.push_back({ L"../../res/effect/inhaleeffect12.png",0.1f });
 
 
-	
-	
 
-	
+
+
+
 	////obj1
 	//{
 	//	sObj = make_shared<KObject>();
@@ -100,7 +105,7 @@ bool Sample::Init()
 	//	obj->Set();
 	//	obj->SetName(L"Button3");
 	//	obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/8.png");
-	//	
+	//
 	//	obj->Init();
 	//	obj->SetPos({ 100,100,1 });
 	//	obj->SetScale({ 100,100,10 });
@@ -108,7 +113,7 @@ bool Sample::Init()
 	//}
 
 
-	
+
 	return true;
 }
 
@@ -116,11 +121,11 @@ bool Sample::Frame()
 {
 
 
-	
+
 
 	UIManager::GetInstance().Frame();
 
-	
+
 
 	//sObj2->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber();
 

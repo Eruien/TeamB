@@ -33,11 +33,13 @@
     <ClCompile Include="LDebugCamera.cpp" />
     <ClCompile Include="LDevice.cpp" />
     <ClCompile Include="LDXObject.cpp" />
+    <ClCompile Include="LDxRT.cpp" />
     <ClCompile Include="LFbxAnimation.cpp" />
     <ClCompile Include="LFbxGeometry.cpp" />
     <ClCompile Include="LFbxImport.cpp" />
     <ClCompile Include="LFbxMgr.cpp" />
     <ClCompile Include="LFbxObj.cpp" />
+    <ClCompile Include="LFbxWeight.cpp" />
     <ClCompile Include="LFiniteState.cpp" />
     <ClCompile Include="LFrustum.cpp" />
     <ClCompile Include="LFSMMgr.cpp" />
@@ -48,15 +50,17 @@
     <ClCompile Include="LManagerAgr.cpp" />
     <ClCompile Include="LMap.cpp" />
     <ClCompile Include="LModel.cpp" />
+    <ClCompile Include="LModelCamera.cpp" />
     <ClCompile Include="LNode.cpp" />
     <ClCompile Include="LObject.cpp" />
-    <ClCompile Include="LPlaneObj.cpp" />
+    <ClCompile Include="LPlaneShape.cpp" />
     <ClCompile Include="LQurdTree.cpp" />
     <ClCompile Include="LSoundMgr.cpp" />
     <ClCompile Include="LTimer.cpp" />
     <ClCompile Include="LWindow.cpp" />
     <ClCompile Include="LWrite.cpp" />
     <ClCompile Include="TMath.cpp" />
+    <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imgui\Include\GraphEditor.h" />
@@ -81,6 +85,7 @@
     <ClInclude Include="LDebugCamera.h" />
     <ClInclude Include="LDevice.h" />
     <ClInclude Include="LDXObject.h" />
+    <ClInclude Include="LDxRT.h" />
     <ClInclude Include="LFbxImport.h" />
     <ClInclude Include="LFbxMgr.h" />
     <ClInclude Include="LFbxObj.h" />
@@ -94,9 +99,10 @@
     <ClInclude Include="LManagerAgr.h" />
     <ClInclude Include="LMap.h" />
     <ClInclude Include="LModel.h" />
+    <ClInclude Include="LModelCamera.h" />
     <ClInclude Include="LNode.h" />
     <ClInclude Include="LObject.h" />
-    <ClInclude Include="LPlaneObj.h" />
+    <ClInclude Include="LPlaneShape.h" />
     <ClInclude Include="LQurdTree.h" />
     <ClInclude Include="LSoundMgr.h" />
     <ClInclude Include="LStd.h" />
@@ -104,6 +110,7 @@
     <ClInclude Include="LWindow.h" />
     <ClInclude Include="LWrite.h" />
     <ClInclude Include="TMath.h" />
+    <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

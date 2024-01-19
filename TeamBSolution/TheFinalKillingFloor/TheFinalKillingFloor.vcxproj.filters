@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="InGameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LMainScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EndScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAttack.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerIdle.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRun.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerWalk.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="LPlayer.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyDeath.cpp">
+      <Filter>NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPatrol.cpp">
+      <Filter>NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTrace.cpp">
+      <Filter>NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="LNPC.cpp">
+      <Filter>NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Animator.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\BillBoard.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ChangeTexture.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DigitDisplay.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DragUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ExitWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\imgui_menuBar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Imgui_ObjectDetail.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ImguiDetail.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ImGuiManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\KObject.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ModalWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\MonoBehaviour.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\NumberObject.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PickingUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Resize2D.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ResourceBase.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TextureList.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Animation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="InGameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LMainScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EndScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAttack.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIdle.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRun.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerWalk.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="LPlayer.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyDeath.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPatrol.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTrace.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="LNPC.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Animation.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Animator.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BillBoard.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ChangeTexture.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DigitDisplay.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DragUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ExitWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\imgui_menuBar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Imgui_ObjectDetail.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ImguiDetail.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ImGuiManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\KObject.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ModalWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MonoBehaviour.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\NumberObject.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PickingUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Resize2D.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ResourceBase.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\TextureList.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{62daf57c-02ea-4816-88f3-2fa9894b833a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{69a8d44f-2848-4e81-a305-314dc643ba55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NPC">
+      <UniqueIdentifier>{9b9b5118-d679-47a6-9a3e-3f0e144d3dd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{aa73e799-9b45-4a04-982a-114911fffbf5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UI\imgui.ini">
+      <Filter>UI</Filter>
+    </None>
+    <None Include="UI\UI.vcxproj">
+      <Filter>UI</Filter>
+    </None>
+    <None Include="UI\UI.vcxproj.filters">
+      <Filter>UI</Filter>
+    </None>
+    <None Include="UI\UI.vcxproj.user">
+      <Filter>UI</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="UI\testNum.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\testScene - 복사본.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\testScene.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\Anim.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\Anim2.xml">
+      <Filter>UI</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

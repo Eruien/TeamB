@@ -2,7 +2,6 @@
 #include "LStd.h"
 #include "KObject.h"
 //
-#include "IntToSprite.h"
 #include "DigitDisplay.h"
 #include "PickingUI.h"
 #include "DragUI.h"
@@ -11,6 +10,7 @@
 #include "ChangeTexture.h"
 #include "ExitWindow.h"
 #include "TextureList.h"
+#include "BillBoard.h"
 //
 #include "imgui_menuBar.h"
 #include "ImGuiManager.h"

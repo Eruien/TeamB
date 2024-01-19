@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<LCamera> m_pDefaultCamera = nullptr;
 	ComPtr<ID3D11BlendState> m_AlphaBlend;
 	ComPtr<ID3D11SamplerState> m_pSamplerState;
+	ComPtr<ID3D11SamplerState> m_pClampState;
 	ComPtr<ID3D11DepthStencilState> m_pDepthStencilState;
 	ComPtr<ID3D11DepthStencilState> m_pDepthStencilStateDisable;
 	ComPtr<ID3D11RasterizerState> m_pRSWireFrame;
@@ -22,6 +23,7 @@ public:
 public:
 	void CreateBlendState();
 	void CreateSamplerState();
+	void CreateClampState();
 	void CreateDepthStencilState();
 	void CreateRasterizerState();
 public:
@@ -30,11 +32,15 @@ public:
 	virtual bool Render();
 	virtual bool Release();
 	bool Run();
+	void ResizeDevice(UINT width, UINT height) override;
 private:
 	bool EngineInit();
 	bool EngineFrame();
 	bool EngineRender();
 	bool EngineRelease();
+public:
+	virtual bool DeleteDxResource();
+	virtual bool CreateDxResource();
 public:
 	virtual ~LCore();
 };

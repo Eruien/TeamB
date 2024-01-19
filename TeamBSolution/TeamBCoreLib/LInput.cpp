@@ -78,28 +78,28 @@ BYTE LInput::GetKey(BYTE dwKey)
     sKey = m_KeyState[dwKey];
     if (sKey & 0x80)
     {
-        if (m_KeyState[dwKey] == KEY_FREE)
+        if (m_KeyStateOld[dwKey] == KEY_FREE)
         {
-            m_KeyState[dwKey] = KEY_PUSH;
+            m_KeyStateOld[dwKey] = KEY_PUSH;
         }
         else
         {
-            m_KeyState[dwKey] = KEY_HOLD;
+            m_KeyStateOld[dwKey] = KEY_HOLD;
         }
     }
     else
     {
-        if (m_KeyState[dwKey] == KEY_PUSH
-            || m_KeyState[dwKey] == KEY_HOLD)
+        if (m_KeyStateOld[dwKey] == KEY_PUSH
+            || m_KeyStateOld[dwKey] == KEY_HOLD)
         {
-            m_KeyState[dwKey] = KEY_UP;
+            m_KeyStateOld[dwKey] = KEY_UP;
         }
         else
         {
-            m_KeyState[dwKey] = KEY_FREE;
+            m_KeyStateOld[dwKey] = KEY_FREE;
         }
     }
-    return m_KeyState[dwKey];
+    return m_KeyStateOld[dwKey];
 }
 
 TVector3 LInput::GetWorldPos(float windowWidth, float windowHeight, float cameraPosX, float cameraPosY)
@@ -122,6 +122,16 @@ bool LInput::Init()
 
 bool LInput::Frame()
 {
+
+    // 클라이언트 중앙 포지션 계산 
+    RECT clientRect;
+    GetClientRect(LGlobal::g_hWnd, &clientRect);
+
+    int clientCenterX = (clientRect.right - clientRect.left) / 2;
+    int clientCenterY = (clientRect.bottom - clientRect.top) / 2;
+    POINT point = { clientCenterX, clientCenterY };
+    ClientToScreen(LGlobal::g_hWnd, &point);
+
     // 화면 좌표
     ::GetCursorPos(&m_MousePos);
     // 클라이언트 좌표
@@ -165,6 +175,9 @@ bool LInput::Frame()
         }
     }
 
+
+
+
     ZeroMemory(&g_InputData, sizeof(INPUT_MAP));
 
     if (m_MouseState[0] == KEY_PUSH)
@@ -195,9 +208,14 @@ bool LInput::Frame()
     g_InputData.bRightKey = GetKey(DIK_RIGHT);
     g_InputData.bUpKey = GetKey(DIK_UP);
     g_InputData.bDownKey = GetKey(DIK_DOWN);
+    g_InputData.bEnter = GetKey(DIK_RETURN);
     g_InputData.bExit = GetKey(DIK_ESCAPE);
     g_InputData.bSpace = GetKey(DIK_SPACE);
     g_InputData.bF1Key = GetKey(DIK_F1);
+    GetKey(DIK_1);
+    GetKey(DIK_2);
+    GetKey(DIK_LSHIFT);
+    GetKey(DIK_F2);
     
     if (GetKey(DIK_F5) == KEY_HOLD)
         g_InputData.bChangeFillMode = true;
@@ -206,6 +224,13 @@ bool LInput::Frame()
 
     m_vOffset.x = m_MousePos.x - m_BeforeMousePos.x;
     m_vOffset.y = m_MousePos.y - m_BeforeMousePos.y;
+
+    if (ISEndPoint)
+    {
+        m_vOffset.x = 0.0f;
+        m_vOffset.y = 0.0f;
+        ISEndPoint = false;
+    }
 
     //for (int ikey = 0; ikey < 256; ikey++)
     //{
@@ -234,6 +259,22 @@ bool LInput::Frame()
     //        }
     //    }
     //}
+
+    if (m_KeyStateOld[DIK_F2] == KEY_PUSH)
+    {
+        ShowCursor(IsHideCursor);
+        IsHideCursor = !IsHideCursor;
+    }
+
+    if (IsHideCursor)
+    {
+        if (m_MousePos.x <= clientRect.left || m_MousePos.x >= clientRect.right ||
+            m_MousePos.y <= clientRect.top || m_MousePos.y >= clientRect.bottom)
+        {
+            SetCursorPos(point.x, point.y);
+            ISEndPoint = true;
+        }
+    }
 
     m_BeforeMousePos = m_MousePos;
 	return true;

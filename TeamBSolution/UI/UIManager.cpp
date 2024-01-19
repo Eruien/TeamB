@@ -21,25 +21,26 @@ void UIManager::Frame()
     _imGuiObjDetail->Frame();
     _imgui_menuBar->Frame();
 
+    
 	for (auto obj : _objs)
 	{
-		obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-		obj->Frame();
+        obj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matOrthoProjection);
+        obj->Frame();
 	}
 }
 
 void UIManager::Render()
 {
-    
+
 	for (auto obj : _objs)
 	{
 		obj->Render();
 	}
-    
+
     _imGuiObjDetail->Render();
     _imgui_menuBar->Render();
     _imGuiManager->Render();
-   
+
 
 }
 
@@ -191,7 +192,7 @@ void UIManager::Load(const wstring filePath)
                         obj->AddScripts(std::make_shared<DragUI>());
                         obj->GetScript<DragUI>(L"DragUI")->Init();
                     }
-                  
+
                     if (mtw(scriptTypeAttr) == L"ChangeTexture")
                     {
                         obj->AddScripts(std::make_shared<ChangeTexture>());
@@ -200,12 +201,16 @@ void UIManager::Load(const wstring filePath)
                     {
                         obj->AddScripts(std::make_shared<ExitWindow>());
                     }
+                    if (mtw(scriptTypeAttr) == L"BillBoard")
+                    {
+                        obj->AddScripts(std::make_shared<BillBoard>());
+                    }
                     // ScriptType에 따라 적절한 스크립트를 추가하고 설정
                     if (mtw(scriptTypeAttr) == L"Animator")
                     {
                         // 여기에 적절한 Animator 생성자 인자를 추가
                         tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
-                        
+
                         if (argsElement)
                         {
                             const char* animationPathAttr = argsElement->Attribute("animationPath");
@@ -224,7 +229,7 @@ void UIManager::Load(const wstring filePath)
                             const char* texListXmlAttr = argsElement->Attribute("TexListXml");
                             obj->AddScripts(std::make_shared<DigitDisplay>(digitNumber, mtw(texListXmlAttr)));
                             obj->GetScript<DigitDisplay>(L"DigitDisplay")->Init();
-                            
+
                         }
                     }
                     // 다른 ScriptType에 대한 처리도 추가 가능
