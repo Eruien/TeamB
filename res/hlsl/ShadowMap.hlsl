@@ -72,5 +72,5 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
         FinalColor = FinalColor * float4(0.5f, 0.5f, 0.5f, 1.0f);
         FinalColor.w = 1.0f;
     }
-    return FinalColor;
+    return FinalColor * 0.3f;
 }
