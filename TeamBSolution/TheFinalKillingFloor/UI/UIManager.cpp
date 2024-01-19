@@ -11,16 +11,16 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
     _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
     _imgui_menuBar = make_shared<imgui_menuBar>();
 
-    _imGuiManager->Init();
-    _imGuiObjDetail->Init();
-    _imgui_menuBar->Init();
+    //_imGuiManager->Init();
+    //_imGuiObjDetail->Init();
+    //_imgui_menuBar->Init();
 }
 
 void UIManager::Frame()
 {
-    _imGuiManager->Frame();
+ /*   _imGuiManager->Frame();
     _imGuiObjDetail->Frame();
-    _imgui_menuBar->Frame();
+    _imgui_menuBar->Frame();*/
 	for (auto obj : _objs)
 	{
         obj->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
@@ -30,17 +30,17 @@ void UIManager::Frame()
 
 void UIManager::Render()
 {
-   
 	for (auto obj : _objs)
 	{
         LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilStateDisable.Get(), 1);
 		obj->Render();
+        if (obj->GetScript<DigitDisplay>(L"DigitDisplay"))
+            obj->GetScript<DigitDisplay>(L"DigitDisplay")->DigitRender();
         LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilState.Get(), 1);
 	}
-    
-    _imGuiObjDetail->Render();
-    _imgui_menuBar->Render();
-    _imGuiManager->Render();
+    //_imGuiObjDetail->Render();
+    //_imgui_menuBar->Render();
+    //_imGuiManager->Render();
 
 
 }
@@ -105,6 +105,24 @@ void UIManager::Save(const wstring filePath)
                 argsNode->SetAttribute("DigitNumber", obj->GetScript<DigitDisplay>(L"DigitDisplay")->GetDigitNum());
                 argsNode->SetAttribute("TexListXml", wtm(obj->GetScript<DigitDisplay>(L"DigitDisplay")->GetXmlPath()).c_str());
             }
+            if (script->GetName() == L"ButtonAction")
+            {
+                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
+                scriptNode->LinkEndChild(argsNode);
+                argsNode->SetAttribute("TexListXml", wtm(obj->GetScript<ButtonAction>(L"ButtonAction")->GetXmlPath()).c_str());
+            }
+            if (script->GetName() == L"Text")
+            {
+                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
+                scriptNode->LinkEndChild(argsNode);
+                argsNode->SetAttribute("Text", wtm(obj->GetScript<Text>(L"Text")->GetText()).c_str());
+            }
+            if (script->GetName() == L"SceneChange")
+            {
+                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
+                scriptNode->LinkEndChild(argsNode);
+                argsNode->SetAttribute("SceneChange", static_cast<int>(obj->GetScript<SceneChange>(L"SceneChange")->GetEvent()));
+            }
         }
     }
 
@@ -114,6 +132,9 @@ void UIManager::Save(const wstring filePath)
 
 void UIManager::Load(const wstring filePath)
 {
+    _objs.clear();
+    s_selectedObject = nullptr;
+
     tinyxml2::XMLDocument doc;
     if (doc.LoadFile(wtm(filePath).c_str()) != tinyxml2::XML_SUCCESS)
     {
@@ -233,7 +254,41 @@ void UIManager::Load(const wstring filePath)
 
                         }
                     }
-                    // 다른 ScriptType에 대한 처리도 추가 가능
+                    if (mtw(scriptTypeAttr) == L"ButtonAction")
+                    {
+                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
+                        if (argsElement)
+                        {
+                            const char* texListXmlAttr = argsElement->Attribute("TexListXml");
+                            obj->AddScripts(std::make_shared<ButtonAction>(mtw(texListXmlAttr)));
+                           // obj->GetScript<ButtonAction>(L"ButtonAction")->Init();
+                        }
+                    }
+                    if (mtw(scriptTypeAttr) == L"Text")
+                    {
+                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
+                        if (argsElement)
+                        {
+                            const char* textAttr = argsElement->Attribute("Text");
+                            if (textAttr)
+                            {
+                                obj->AddScripts(std::make_shared<Text>(mtw(textAttr)));
+                            }
+                        }
+                    }
+                    if (mtw(scriptTypeAttr) == L"SceneChange")
+                    {
+                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
+                        if (argsElement)
+                        {
+                            const char* textAttr = argsElement->Attribute("SceneChange");
+                            if (textAttr)
+                            {
+                               int num = atoi(textAttr);
+                                obj->AddScripts(std::make_shared<SceneChange>(static_cast<Event>(num)));
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -252,6 +307,18 @@ shared_ptr<KObject> UIManager::GetUIObject(wstring name)
 			return obj;
 	}
 	return nullptr;
+}
+
+void UIManager::RemoveObject(wstring name)
+{
+    _objs.erase(
+        std::remove_if(_objs.begin(), _objs.end(),
+            [&name](const std::shared_ptr<KObject>& obj) {
+                return obj->GetName() == name; 
+            }
+        ),
+        _objs.end()
+    );
 }
 
 UIManager::UIManager()

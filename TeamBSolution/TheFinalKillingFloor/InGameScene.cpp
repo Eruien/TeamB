@@ -2,30 +2,30 @@
 #include "LGlobal.h"
 #include "LInput.h"
 #include "LWrite.h"
-
+#include "UIManager.h"
 bool InGameScene::Init()
 {
-    
+
 
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-   
+
     m_ModelCamera = std::make_shared<LModelCamera>();
     m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
     m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     m_ModelCamera->m_fRadius = 100.0f;
     LGlobal::g_pMainCamera = m_ModelCamera.get();
 
- 
+  
 
     fbxObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/army/army3.fbx", L"../../res/hlsl/CharacterShader.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Fire_Rifle_7.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    /*LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Fire_Rifle_7.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Reload_Rifle_65.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Run_Rifle_44.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Walk_Rifle_55.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Idle_Rifle_189.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    
+    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Idle_Rifle_189.fbx", L"../../res/hlsl/CustomizeMap.hlsl");*/
+
     // 오브젝트 예시
     mapObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Assault_Rifle_A/Assault_Rifle_A.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
 
@@ -79,32 +79,34 @@ void InGameScene::Process()
     m_PlayerModel->Process();
     // 오브젝트 예시
     m_MapModel->Frame();
+    UIManager::GetInstance().Frame();
 }
 
 void InGameScene::Render()
 {
+   
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
     m_PlayerModel->Render();
     // 오브젝트 예시
     m_MapModel->Render();
-
-    std::wstring textState = L"InGameScene";
+    UIManager::GetInstance().Render();
+ /*   std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
-        m_pOwner->SetTransition(Event::GOENDSCENE);
+        LScene::GetInstance().SetTransition(Event::GOENDSCENE);
         return;
     }
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
-        m_pOwner->SetTransition(Event::GOMAINSCENE);
+        LScene::GetInstance().SetTransition(Event::GOMAINSCENE);
         return;
-    }
+    }*/
 }
 
 void InGameScene::Release()

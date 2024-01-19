@@ -160,6 +160,7 @@
     <ClCompile Include="UI\Animation.cpp" />
     <ClCompile Include="UI\Animator.cpp" />
     <ClCompile Include="UI\BillBoard.cpp" />
+    <ClCompile Include="UI\ButtonAction.cpp" />
     <ClCompile Include="UI\ChangeTexture.cpp" />
     <ClCompile Include="UI\DigitDisplay.cpp" />
     <ClCompile Include="UI\DragUI.cpp" />
@@ -175,6 +176,8 @@
     <ClCompile Include="UI\PickingUI.cpp" />
     <ClCompile Include="UI\Resize2D.cpp" />
     <ClCompile Include="UI\ResourceBase.cpp" />
+    <ClCompile Include="UI\SceneChange.cpp" />
+    <ClCompile Include="UI\Text.cpp" />
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
   </ItemGroup>
@@ -196,6 +199,7 @@
     <ClInclude Include="UI\Animation.h" />
     <ClInclude Include="UI\Animator.h" />
     <ClInclude Include="UI\BillBoard.h" />
+    <ClInclude Include="UI\ButtonAction.h" />
     <ClInclude Include="UI\ChangeTexture.h" />
     <ClInclude Include="UI\DigitDisplay.h" />
     <ClInclude Include="UI\DragUI.h" />
@@ -211,6 +215,8 @@
     <ClInclude Include="UI\PickingUI.h" />
     <ClInclude Include="UI\Resize2D.h" />
     <ClInclude Include="UI\ResourceBase.h" />
+    <ClInclude Include="UI\SceneChange.h" />
+    <ClInclude Include="UI\Text.h" />
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>

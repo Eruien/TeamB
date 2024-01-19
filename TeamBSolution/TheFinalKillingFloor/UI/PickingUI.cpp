@@ -36,8 +36,8 @@ void PickingUI::Frame()
 	mouse.x = LINPUT.GetMousePos().x - LGlobal::g_WindowWidth/2;
 	mouse.y = -(LINPUT.GetMousePos().y - LGlobal::g_WindowHeight / 2);
 	
-	LWrite::GetInstance().AddText(to_wstring(mouse.x), 100, 400);
-	LWrite::GetInstance().AddText(to_wstring(mouse.y), 300, 400);
+	/*LWrite::GetInstance().AddText(to_wstring(mouse.x), 100, 400);
+	LWrite::GetInstance().AddText(to_wstring(mouse.y), 300, 400);*/
 	
 
 	TRectangle rect;
@@ -59,6 +59,7 @@ void PickingUI::Frame()
 			_isSelected = true;
 			if (UIManager::s_selectedObject != nullptr && GetGameObject() != UIManager::s_selectedObject)
 			{
+				if(!UIManager::s_selectedObject)
 				(UIManager::s_selectedObject->GetScript<PickingUI>(L"PickingUI"))->SetIsSelected(false);
 			}
 			UIManager::s_selectedObject = GetGameObject();
@@ -71,33 +72,6 @@ void PickingUI::Frame()
 		_buttonState = PICKING_STATE::HOVER;
 	}
 
-		switch (_buttonState)
-		{
-		case PICKING_STATE::NONE:
-			LWRITE.AddText(L"NONE", 500, 100);
-			break;
-		case PICKING_STATE::HOVER:
-			LWRITE.AddText(L"HOVER", 500, 100);
-			break;
-		case PICKING_STATE::PRESS:
-			LWRITE.AddText(L"PRESS", 500, 100);
-			break;
-		case PICKING_STATE::HOLD:
-			LWRITE.AddText(L"HOLD", 500, 100);
-			break;
-		case PICKING_STATE::UP:
-			LWRITE.AddText(L"UP", 500, 100);
-			break;
-		default:
-			break;
-		}
-	
-	
-		
-
-
-		
-	
 
 
 }

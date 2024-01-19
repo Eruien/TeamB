@@ -9,7 +9,7 @@ public:
 
 	void Init() override;
 	void Frame() override;
-	void Render() override;
+	void DigitRender();
 	void UpdateNumber();
 	void LoadTextureList(wstring texXmlPath);
 	wstring GetXmlPath() {return _texXmlPath;};

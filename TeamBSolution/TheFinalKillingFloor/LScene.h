@@ -1,6 +1,5 @@
 #pragma once
 #include "LFSMMgr.h"
-
 class LScene;
 
 class SceneState
@@ -18,6 +17,12 @@ public:
 
 class LScene
 {
+public:
+	static LScene& GetInstance()
+	{
+		static LScene instance;
+		return instance;
+	}
 public:
 	State m_CurrentState = State::NONE;
 	LFiniteStateMachine* m_pFsm = nullptr;

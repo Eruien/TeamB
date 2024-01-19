@@ -6,6 +6,7 @@ class MonoBehaviour
 public:
 	MonoBehaviour(wstring ScriptName);
 	 ~MonoBehaviour();
+	 
 public:
 	 virtual void Awake() { };
 	 virtual void Init() { };

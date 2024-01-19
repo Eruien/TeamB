@@ -21,14 +21,14 @@ void EndScene::Process()
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
-        m_pOwner->SetTransition(Event::GOMAINSCENE);
+        LScene::GetInstance().SetTransition(Event::GOMAINSCENE);
         return;
     }
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
-        m_pOwner->SetTransition(Event::GOINGAMESCENE);
+        LScene::GetInstance().SetTransition(Event::GOINGAMESCENE);
         return;
     }
 }

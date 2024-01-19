@@ -43,10 +43,10 @@ void Resize2D::Frame()
 	GetGameObject()->GetRect().height };
 	barPicking = false;
 
-	LWrite::GetInstance().AddText(to_wstring(rTop.x), 300, 5);
-	LWrite::GetInstance().AddText(to_wstring(rTop.y), 300, 100);
-	LWrite::GetInstance().AddText(to_wstring(rTop.width), 300, 150);
-	LWrite::GetInstance().AddText(to_wstring(rTop.height), 300, 200);
+	//LWrite::GetInstance().AddText(to_wstring(rTop.x), 300, 5);
+	//LWrite::GetInstance().AddText(to_wstring(rTop.y), 300, 100);
+	//LWrite::GetInstance().AddText(to_wstring(rTop.width), 300, 150);
+	//LWrite::GetInstance().AddText(to_wstring(rTop.height), 300, 200);
 
 
 

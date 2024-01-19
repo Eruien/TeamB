@@ -24,11 +24,17 @@ void imgui_menuBar::Render()
         ImGui::OpenPopup("Save?");
         if (ImGui::BeginPopupModal("Save?",0, ImGuiWindowFlags_AlwaysAutoResize))
         {
-
+            char buffer[256] = "";
+          
+            if (ImGui::InputText("##SaveFileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+            {
+                saveFileName = mtw(buffer);
+            }
+                ImGui::SameLine();
             if (ImGui::Button("OK", ImVec2(100.f, 25.f)))
             {
                 _isSaveWindow = false;
-                UIManager::GetInstance().Save(L"testScene.xml");
+                UIManager::GetInstance().Save(saveFileName + L".xml");
                 ImGui::CloseCurrentPopup();
             }
 
@@ -46,7 +52,7 @@ void imgui_menuBar::Render()
 
 
     // 파일 다이얼로그 창
-    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+    if (ImGuiFileDialog::Instance()->Display("LoadScene"))
     {
         // action if OK
         if (ImGuiFileDialog::Instance()->IsOk())
@@ -54,6 +60,9 @@ void imgui_menuBar::Render()
             std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
             std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
             // action
+            
+            UIManager::GetInstance().Load(mtw(filePathName));
+
         }
 
         // close
@@ -74,8 +83,8 @@ void imgui_menuBar::Test()
         if (ImGui::BeginMenu("File"))
         {
 
-            if (ImGui::MenuItem("Open File Dialog"))
-                ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".h,.XML", ".");
+            if (ImGui::MenuItem("LoadScene"))
+                ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".xml", ".");
 
 
             if (ImGui::MenuItem("Save"))
