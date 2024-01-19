@@ -130,7 +130,7 @@ void LTexture::CreateTexture(int width, int height)
 	if (FAILED(hr))
 		//Utils::ShowErrorMessage(hr);
 
-	hr = LGlobal::g_pDevice->CreateShaderResourceView(texture.Get(), nullptr, m_pTexSRV.ReleaseAndGetAddressOf());
+	hr = LGlobal::g_pDevice->CreateShaderResourceView(texture.Get(), nullptr, &m_pTexSRV);
 
 	if (FAILED(hr))
 		//Utils::ShowErrorMessage(hr);

@@ -131,6 +131,7 @@ bool LFbxObj::CreateInstanceBuffer()
 		MessageBoxA(NULL, "Create ConstantBuffer Error", "Error Box", MB_OK);
 		return false;
 	}
+	return true;
 }
 
 bool LFbxObj::PostRender()
