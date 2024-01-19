@@ -24,9 +24,9 @@ bool InGameScene::Init()
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Walk_Rifle_55.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Idle_Rifle_189.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
 
-    zombieObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Zombie.fbx", L"../../res/hlsl/CharacterInstancing.hlsl");
+    zombieObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Zombie.fbx", L"../../res/hlsl/CharacterShader.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_Walk_Lock.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_TakeDamage.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    //LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_TakeDamage.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_Death.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     
     //오브젝트 예시
@@ -37,12 +37,6 @@ bool InGameScene::Init()
     m_PlayerModel->CreateBoneBuffer();
     m_PlayerModel->FSM(FSMType::PLAYER);
 
-    m_ZombieModel = std::make_shared<LNPC>(m_PlayerModel.get());
-    m_ZombieModel->SetLFbxObj(zombieObj);
-    m_ZombieModel->CreateBoneBuffer();
-    m_ZombieModel->FSM(FSMType::ENEMY);
-    m_ZombieModel->SetInstancing(true, 10);
-
     TMatrix matScale;
     TMatrix matRot;
     D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
@@ -50,8 +44,16 @@ bool InGameScene::Init()
     D3DXMatrixRotationY(&matRot, 3.14159);
     m_PlayerModel->m_matControl *= matRot;
 
-    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
-    m_ZombieModel->m_matControl *= matScale;
+    for (int i = 0; i < 10; i++)
+    {
+        m_ZombieModel[i] = new LNPC(m_PlayerModel.get());
+        m_ZombieModel[i]->SetLFbxObj(zombieObj);
+        m_ZombieModel[i]->CreateBoneBuffer();
+        m_ZombieModel[i]->FSM(FSMType::ENEMY);
+
+        m_ZombieModel[i]->m_matControl._41 = i * 500;
+        m_ZombieModel[i]->m_matControl._43 = i * 500;
+    }
   
     m_ModelCamera->SetTarget(m_PlayerModel.get());
 
@@ -93,9 +95,13 @@ void InGameScene::Process()
 
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
-    m_ZombieModel->Frame();
-    m_ZombieModel->FrameInstancing();
-    m_ZombieModel->Process();
+
+    for (auto zombie : m_ZombieModel)
+    {
+        zombie->Frame();
+        zombie->Process();
+    }
+   
     // 오브젝트 예시
     m_MapModel->Frame();
 }
@@ -120,7 +126,10 @@ void InGameScene::Render()
     }
 
     RenderObject();
-    m_ZombieModel->Render();
+    for (auto zombie : m_ZombieModel)
+    {
+        zombie->Render();
+    }
 
     m_MapModel->m_pModel->m_DrawList[0]->SetMatrix(&m_MapModel->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CBmatShadow.g_matShadow = m_MapModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;

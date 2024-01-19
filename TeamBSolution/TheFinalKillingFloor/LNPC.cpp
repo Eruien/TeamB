@@ -63,9 +63,13 @@ void LNPC::Move(TVector3 target)
 	//DirectX::XMMatrixRotationQuaternion(,)
 	DirectX::XMVECTOR xmPos = DirectX::XMVectorSet(m_matControl._41, m_matControl._42, m_matControl._43, 1.0f);
 	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmPos);
+
+	TMatrix zombieScale;
+	D3DXMatrixScaling(&zombieScale, 0.2f, 0.2f, 0.2f);
+	TMatrix zombiePos = zombieScale * matRotation;
 	
 	//D3DXMatrixRotationY(&m_matControl, yawRadians);
-	m_matControl = matRotation;
+	m_matControl = zombiePos;
 	m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_Dir.x;
 	m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_Dir.z;
 }
@@ -170,7 +174,7 @@ bool LNPC::FrameInstancing()
 	return true;
 }
 
-LNPC::LNPC(LPlayer* player) : m_Distribution(-500, 0)
+LNPC::LNPC(LPlayer* player) : m_Distribution(-3000, 3000)
 {
 	m_Player = player;
 

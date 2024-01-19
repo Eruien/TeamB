@@ -22,7 +22,7 @@ public:
 public:
 	std::shared_ptr<LMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
-	std::shared_ptr<LNPC> m_ZombieModel = nullptr;
+	LNPC* m_ZombieModel[10];
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* fbxObj = nullptr;
 	LFbxObj* zombieObj = nullptr;
