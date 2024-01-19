@@ -63,16 +63,6 @@ bool InGameScene::Init()
     m_MapModel->m_matControl._22 = 0.f;
     m_MapModel->m_matControl._33 = 500.f;
     m_MapModel->m_matControl._42 = -0.f;
- 
-  /*  m_CustomMap = std::make_shared<LMap>();
-    m_CustomMap->Set();
-    LMapDesc CMapDesc = {};
-    CMapDesc.iNumCols = 513;
-    CMapDesc.iNumRows = 513;
-    CMapDesc.fCellDistance = 1.0f;
-    CMapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    CMapDesc.TextureFilePath = L"../../res/map/topdownmap.jpg";
-    m_CustomMap->Load(CMapDesc);*/
 
     m_pQuad.Set();
     m_pQuad.SetScreenVertex(0, 0, 250, 250, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
@@ -101,7 +91,6 @@ void InGameScene::Process()
 
     m_ModelCamera->SetTargetPos(TVector3(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._42, m_PlayerModel->m_matControl._43));
 
-    //m_CustomMap->Frame();
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
     m_ZombieModel->Frame();
@@ -149,11 +138,6 @@ void InGameScene::Render()
         LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_RT.m_pSRV.GetAddressOf());
     }
     m_pQuad.PostRender();
-    //m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    //m_CustomMap->Render();
-    //m_PlayerModel->Render();
-    // 오브젝트 예시
-   //m_MapModel->Render();
 
     std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });

@@ -45,10 +45,12 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move(TVector3 target);
+	void MoveInstancing(TVector3 target);
 	int GetRandomNumber();
 public:
 	virtual	void Process();
 	bool Frame() override;
+	bool FrameInstancing() override;
 public:
 	LNPC(LPlayer* player);
 };
