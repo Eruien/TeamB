@@ -110,6 +110,12 @@
     <ClCompile Include="UI\SceneChange.cpp">
       <Filter>UI\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="LBox.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="LSelect.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -221,6 +227,12 @@
     <ClInclude Include="UI\SceneChange.h">
       <Filter>UI\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="LBox.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LSelect.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -246,6 +258,9 @@
     </Filter>
     <Filter Include="UI\Resource">
       <UniqueIdentifier>{9d8efd35-8152-422a-a9dc-8acec933020d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{0bd76290-7836-4190-9ef7-8feb768a4b55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
