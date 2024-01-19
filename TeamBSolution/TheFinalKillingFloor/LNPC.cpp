@@ -136,25 +136,17 @@ bool LNPC::Frame()
 
 bool LNPC::FrameInstancing()
 {
-	if (m_pModel == nullptr) return false;
-
 	auto fbxMeshList = m_pModel->m_DrawList;
 	for (int iSub = 0; iSub < fbxMeshList.size(); iSub++)
 	{
-		LFbxObj* obj = fbxMeshList[iSub].get();
-		for (int j = 0; j < obj->m_InstanceSize; j++)
+		for (int i = 0; i < fbxMeshList[iSub]->m_InstanceSize; i++)
 		{
-			obj->m_matInstanceList.mat[j] = m_matControl;
-			D3DXMatrixTranspose(&obj->m_matInstanceList.mat[j], &obj->m_matInstanceList.mat[j]);
+			m_PlayerPos = { m_Player->m_matControl._41, m_Player->m_matControl._42, m_Player->m_matControl._43 };
+		    m_NPCPos = { fbxMeshList[iSub]->m_matInstanceList.mat[i]._41,
+			fbxMeshList[iSub]->m_matInstanceList.mat[i]._42, fbxMeshList[iSub]->m_matInstanceList.mat[i]._43 };
 		}
-
-		LGlobal::g_pImmediateContext->UpdateSubresource(obj->m_pCBInstance.Get(), 0, NULL, &(obj->m_matInstanceList), 0, 0);
-		LGlobal::g_pImmediateContext->VSSetConstantBuffers(3, 1, obj->m_pCBInstance.GetAddressOf());
 	}
-
-	m_PlayerPos = { m_Player->m_matControl._41, m_Player->m_matControl._42, m_Player->m_matControl._43 };
-	m_NPCPos = { m_matControl._41, m_matControl._42, m_matControl._43 };
-
+	
 	if (((m_NPCPos.x - m_PatrolRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_PatrolRange))
 		&& ((m_NPCPos.z - m_PatrolRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_PatrolRange)))
 	{
@@ -172,6 +164,8 @@ bool LNPC::FrameInstancing()
 		m_RandomPos = { float(GetRandomNumber()), 0.0f, float(GetRandomNumber()) };
 		IsEndPatrol = false;
 	}
+
+	LModel::FrameInstancing();
 
 	return true;
 }
