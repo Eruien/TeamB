@@ -156,6 +156,9 @@ bool LCore::EngineInit()
     LWrite::GetInstance().Init();
     LWrite::GetInstance().Create(m_pSwapChain.Get());
 
+    LGlobal::g_pDepthStencilState = m_pDepthStencilState;
+    LGlobal::g_pDepthStencilStateDisable = m_pDepthStencilStateDisable;
+
     Init();
     return true;
 }

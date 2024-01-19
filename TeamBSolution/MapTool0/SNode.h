@@ -2,7 +2,7 @@
 #include "LStd.h"
 #include "LDXObject.h"
 
-#define PNCT_VERTEX SimpleVertex
+
 
 
 struct NodeMtrlInfo

@@ -31,9 +31,9 @@ public:
 	bool IsFindPlayer = false;
 	bool IsEndPatrol = false;
 	bool IsDead = false;
-	float m_Speed = 100.0f;
+	float m_Speed = 50.0f;
 	TVector3 m_Dir;
-	float m_PatrolRange = 1000.0f;
+	float m_PatrolRange = 500.0f;
 	TVector3 m_RandomPos;
 	LPlayer* m_Player;
 	TVector3 m_PlayerPos;
@@ -45,10 +45,12 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move(TVector3 target);
+	void MoveInstancing(TVector3 target);
 	int GetRandomNumber();
 public:
 	virtual	void Process();
 	bool Frame() override;
+	bool FrameInstancing() override;
 public:
 	LNPC(LPlayer* player);
 };

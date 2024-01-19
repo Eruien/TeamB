@@ -12,6 +12,12 @@ public:
 public:
 	ID3D11ShaderResourceView* m_pTexSRV = nullptr;
 	wstring m_texPath;
+
+	// 시진추가
+	TVector2 size;
+	const shared_ptr<::ScratchImage> GetInfo();
+	void Save(wstring path);
+	void CreateTexture(int width, int height);
 public:
 	void Apply();
 	bool Load(std::wstring fileName);
