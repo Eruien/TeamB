@@ -118,7 +118,8 @@ void LBox::SetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
 {
 	if (parent != nullptr)
 	{
-		m_matWorld = m_BoxWorld * (*parent);
+		m_matWorld._41 = (*parent)._41;
+		m_matWorld._43 = (*parent)._43;
 	}
 
 	if (matView != nullptr)

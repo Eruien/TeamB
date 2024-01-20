@@ -31,7 +31,7 @@ public:
 	LFbxObj* fbxObj = nullptr;
 	LFbxObj* zombieObj = nullptr;
 	LFbxObj* mapObj = nullptr;
-	int m_EnemySize = 10;
+	int m_EnemySize = 2;
 public:
 	// Shadow
 	LDxRT m_RT;

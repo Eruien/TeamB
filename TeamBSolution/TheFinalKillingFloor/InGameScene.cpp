@@ -98,14 +98,8 @@ bool InGameScene::Init()
         m_obbBoxList[i] = new LBox;
         m_obbBoxList[i]->Set();
         m_BoxList[i] = new T_BOX;
-        TVector3 ZombieMax = TVector3(m_ZombieModelList[i]->m_matControl._41 + 20.0f,
-            m_ZombieModelList[i]->m_matControl._42 + Head._42,
-            m_ZombieModelList[i]->m_matControl._41 + 30.0f);
-        TVector3 ZombieMin = TVector3(m_ZombieModelList[i]->m_matControl._41 - 20.0f,
-            m_ZombieModelList[i]->m_matControl._42 + Head._42,
-            m_ZombieModelList[i]->m_matControl._41 + 30.0f);
-        m_BoxList[i]->vMax = TVector3(20.0f, Head._42, 30.0f);
-        m_BoxList[i]->vMin = TVector3(-20.0f, Root._42, -5.0f);
+        m_BoxList[i]->vMax = TVector3(20.0f, Head._42, 30.0f) * 0.2f;
+        m_BoxList[i]->vMin = TVector3(-20.0f, Root._42, -5.0f) * 0.2f;
         m_BoxList[i]->vCenter = (m_BoxList[i]->vMax + m_BoxList[i]->vMin);
         m_BoxList[i]->vCenter.x /= 2.0f;
         m_BoxList[i]->vCenter.y /= 2.0f;
@@ -118,20 +112,16 @@ bool InGameScene::Init()
         m_BoxList[i]->vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
         m_BoxList[i]->vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
 
-        m_obbBoxList[i]->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/map/topdownmap.jpg");
-
         TMatrix matScale;
         D3DXMatrixScaling(&matScale, m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2]);
-        m_obbBoxList[i]->m_matWorld *= matScale;
+        m_obbBoxList[i]->m_matWorld = matScale;
         m_obbBoxList[i]->m_matWorld._41 = m_BoxList[i]->vCenter.x;
         m_obbBoxList[i]->m_matWorld._42 = m_BoxList[i]->vCenter.y;
         m_obbBoxList[i]->m_matWorld._43 = m_BoxList[i]->vCenter.z;
 
         m_obbBoxList[i]->CreateOBBBox(m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2],
             m_BoxList[i]->vCenter, m_BoxList[i]->vAxis[0], m_BoxList[i]->vAxis[1], m_BoxList[i]->vAxis[2]);
-
-        boxWorld = m_obbBoxList[i]->m_matWorld * m_ZombieModelList[i]->m_matControl;
-        m_obbBoxList[i]->m_BoxWorld = boxWorld;
+        m_obbBoxList[i]->Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
     }
 
     return true;
@@ -154,10 +144,10 @@ void InGameScene::Process()
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
 
-    for (auto zombie : m_ZombieModelList)
+    for (int i = 0; i < m_EnemySize; i++)
     {
-        zombie->Frame();
-        zombie->Process();
+        m_ZombieModelList[i]->Frame();
+        m_ZombieModelList[i]->Process();
     }
 
     // 오브젝트 예시
@@ -227,10 +217,12 @@ void InGameScene::Render()
 
     for (int i = 0; i < m_EnemySize; i++)
     {
-        m_obbBoxList[i]->SetMatrix(&m_ZombieModelList[i]->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42, m_ZombieModelList[i]->m_matControl._43));
+        m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_obbBoxList[i]->Render();
 
-        /* if (LInput::GetInstance().m_MouseState[0])
+         if (LInput::GetInstance().m_MouseState[0])
          {
              if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
              {
@@ -238,7 +230,7 @@ void InGameScene::Render()
                  std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
                  MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
              }
-         }*/
+         }
     }
 
 
