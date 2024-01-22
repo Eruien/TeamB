@@ -9,9 +9,9 @@ bool EnemyTrace::Init()
 
 void EnemyTrace::Process()
 {
-    if (m_pOwner->IsDead)
+    if (m_pOwner->IsTakeDamage)
     {
-        m_pOwner->SetTransition(Event::FATALDAMAGE);
+        m_pOwner->SetTransition(Event::TAKEDAMAGE);
         return;
     }
 

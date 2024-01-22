@@ -20,6 +20,7 @@ enum class State
 	ENEMYPATROL,
 	ENEMYTRACE,
 	ENEMYDEATH,
+	ENEMYTAKEDAMAGE,
 };
 
 enum class Event
@@ -39,6 +40,8 @@ enum class Event
 	//Enemy
 	FINDPLAYER,
 	FATALDAMAGE,
+	TAKEDAMAGE,
+	RECOVERYDAMAGE,
 };
 
 class LFiniteState

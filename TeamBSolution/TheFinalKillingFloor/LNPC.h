@@ -31,6 +31,7 @@ public:
 	bool IsFindPlayer = false;
 	bool IsEndPatrol = false;
 	bool IsDead = false;
+	bool IsTakeDamage = false;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;
 	float m_PatrolRange = 500.0f;

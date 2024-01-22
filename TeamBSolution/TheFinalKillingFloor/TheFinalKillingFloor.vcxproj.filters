@@ -116,6 +116,9 @@
     <ClCompile Include="LSelect.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyTakeDamage.cpp">
+      <Filter>NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="LSelect.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTakeDamage.h">
+      <Filter>NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
