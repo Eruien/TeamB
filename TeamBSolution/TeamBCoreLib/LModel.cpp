@@ -196,6 +196,10 @@ bool LSkinningModel::Render()
 		LGlobal::g_pImmediateContext->UpdateSubresource(m_pBoneArrayCB.Get(), 0, NULL, &m_matMeshBoneArray, 0, 0);
 		LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pBoneArrayCB.GetAddressOf());
 
+		obj->SetMatrix(&m_matControl,
+			&LGlobal::g_pMainCamera->m_matView,
+			&LGlobal::g_pMainCamera->m_matProj);
+
 		// 각종 IA세팅이랑 텍스처 적용을 여기서 한다.
 		obj->PreRender();
 
@@ -208,9 +212,6 @@ bool LSkinningModel::Render()
 
 		obj->PostRender();
 		// 렌더링 할 때 카메라가 움직이면 카메라의 역행렬을 곱해줌
-		obj->SetMatrix(&m_matControl,
-			&LGlobal::g_pMainCamera->m_matView,
-			&LGlobal::g_pMainCamera->m_matProj);
 	}
 
 	return true;
