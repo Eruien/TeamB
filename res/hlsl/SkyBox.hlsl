@@ -107,5 +107,6 @@ float4 PS_CubeTexture(PS_INPUT vIn) : SV_Target
 	//float depthValue = vIn.p.z / vIn.p.w;
 	float4 fColor = float4(1, 1, 1, 1);
 	fColor = g_txCubeMap.Sample(g_samPointClamp, vIn.r) * 0.3;
+	fColor.w = 1.0f;
 	return fColor;
 }
