@@ -147,12 +147,20 @@ bool LSkinningModel::AllNodeRender()
 bool LSkinningModel::Frame()
 {
 	if (m_pActionModel == nullptr) return false;
+	m_TimerEnd = false;
+
+	if (m_TimerStart)
+	{
+		m_fCurrentAnimTime = 0.0f;
+		m_TimerStart = false;
+	}
 
 	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * 1.0f;
 
 	if (m_fCurrentAnimTime >= m_pActionModel->m_iEndFrame)
 	{
 		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
+		m_TimerEnd = true;
 	}
 
 	for (int iNode = 0; iNode < m_pActionModel->m_AnimationTreeSize; iNode++)

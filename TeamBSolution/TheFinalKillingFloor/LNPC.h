@@ -32,9 +32,12 @@ public:
 	bool IsEndPatrol = false;
 	bool IsDead = false;
 	bool IsTakeDamage = false;
+	bool IsAttackRange = false;
+	int m_LifeCount = 5;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;
 	float m_PatrolRange = 500.0f;
+	float m_AttackRange = 50.0f;
 	TVector3 m_RandomPos;
 	LPlayer* m_Player;
 	TVector3 m_PlayerPos;

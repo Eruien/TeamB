@@ -44,7 +44,7 @@ public:
 	virtual TVector4 GetColorOfVertex(int iVertexIndex);
 	virtual TVector2 GetTextureOfVertex(int, int);
 
-	virtual float GetHeight(float fPosX, float fPosZ);
+	virtual float GetHeight(float fPosx, float fPosZ);
 	virtual float Lerp(float fStart, float fEnd, float fTangent);
 	virtual float GetHeightmap(int row, int col);
 };

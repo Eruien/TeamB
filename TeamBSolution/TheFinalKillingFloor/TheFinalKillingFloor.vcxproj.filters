@@ -119,6 +119,18 @@
     <ClCompile Include="EnemyTakeDamage.cpp">
       <Filter>NPC</Filter>
     </ClCompile>
+    <ClCompile Include="LAnimationIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="LCharacterIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="LExportIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -239,6 +251,18 @@
     <ClInclude Include="EnemyTakeDamage.h">
       <Filter>NPC</Filter>
     </ClInclude>
+    <ClInclude Include="LAnimationIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="LCharacterIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="LExportIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -267,6 +291,9 @@
     </Filter>
     <Filter Include="Collision">
       <UniqueIdentifier>{0bd76290-7836-4190-9ef7-8feb768a4b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileIO">
+      <UniqueIdentifier>{04549de2-0d5c-4617-8e41-31d8a82e1926}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
