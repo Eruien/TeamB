@@ -1,6 +1,7 @@
 #pragma once
 #include "LScene.h"
 #include "LMap.h"
+#include "LHeightMap.h"
 #include "LPlayer.h"
 #include "LFbxMgr.h"
 #include "LDebugCamera.h"
@@ -24,13 +25,13 @@ public:
 	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
 	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 public:
-	std::shared_ptr<LMap> m_CustomMap = nullptr;
+	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
 	std::vector<LNPC*> m_ZombieModelList;
-	std::shared_ptr<LModel> m_MapModel = nullptr;
+	//std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* fbxObj = nullptr;
 	LFbxObj* zombieObj = nullptr;
-	LFbxObj* mapObj = nullptr;
+	//LFbxObj* mapObj = nullptr;
 	int m_EnemySize = 2;
 public:
 	// Shadow
