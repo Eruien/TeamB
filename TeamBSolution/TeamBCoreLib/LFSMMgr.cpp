@@ -21,14 +21,19 @@ State LFiniteStateMachine::StateTransition(State currentState, Event inputEvent)
 {
 	auto finiteIter = m_FiniteStateMap.find(currentState);
 
-	if (m_FiniteStateMap.end() == finiteIter)
+	if (finiteIter == m_FiniteStateMap.end())
 	{
 		return State::NONE;
 	}
 
 	auto retStateIter = finiteIter->second->m_StateMap.find(inputEvent);
-	State state = retStateIter->second;
 
+	if (retStateIter == finiteIter->second->m_StateMap.end())
+	{
+		return State::NONE;
+	}
+
+	State state = retStateIter->second;
 	return state;
 }
 
@@ -66,8 +71,9 @@ bool LFSMMgr::Init()
 	//Scene
 	std::unique_ptr<LFiniteStateMachine> sceneFSM = std::make_unique<LFiniteStateMachine>();
 
+
 	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
-	
+
 	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOMAINSCENE, State::MAINSCENE);
 	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOENDSCENE, State::ENDSCENE);
 

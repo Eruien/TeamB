@@ -32,6 +32,9 @@ void DigitDisplay::Init()
 
 void DigitDisplay::Frame()
 {
+    //TEST
+    UpdateNumber();
+
 
 	for (int i = 0; i < _digitNum; i++)
 	{
@@ -40,19 +43,19 @@ void DigitDisplay::Frame()
 		pos.x = GetGameObject()->m_vPosition.x + (GetGameObject()->m_vScale.x / _digitNum) - (i * (GetGameObject()->m_vScale.x / _digitNum));
 		_objects[i]->SetPos(pos);
 		_objects[i]->SetScale({ GetGameObject()->m_vScale.x / _digitNum,GetGameObject()->m_vScale.y,0 });
-		_objects[i]->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matProj);
+		_objects[i]->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
 		_objects[i]->Frame();
 
 	}
 
 }
 
-void DigitDisplay::Render()
+void DigitDisplay::DigitRender()
 {
-	for (auto obj : _objects)
-	{
-		obj->Render();
-	}
+    for (auto obj : _objects)
+    {
+        obj->Render();
+    }
 }
 
 void DigitDisplay::UpdateNumber()

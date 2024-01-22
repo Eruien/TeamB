@@ -11,6 +11,9 @@
 #include "ExitWindow.h"
 #include "TextureList.h"
 #include "BillBoard.h"
+#include "ButtonAction.h"
+#include "Text.h"
+#include "SceneChange.h"
 //
 #include "imgui_menuBar.h"
 #include "ImGuiManager.h"
@@ -27,8 +30,8 @@ public:
 
     // 프라이빗 생성자
 
-    
-  
+
+
     void Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthStencilState> Disable);
     void Frame();
     void Render();
@@ -38,7 +41,7 @@ public:
 
     void AddUIObject(shared_ptr<KObject> obj) { _objs.push_back(obj); };
     shared_ptr<KObject> GetUIObject(wstring name);
-
+    void RemoveObject(wstring name);
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
 
@@ -51,6 +54,6 @@ private:
     shared_ptr<ImGuiManager> _imGuiManager;
     ComPtr<ID3D11DepthStencilState> _DepthStencilState;
     ComPtr<ID3D11DepthStencilState> _DepthStencilStateDisable;
-   
+
 };
 

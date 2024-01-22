@@ -5,6 +5,7 @@
 bool Sample::Init()
 {
 
+	UIManager::GetInstance().Load(L"MainScene.xml");
 	m_UICamera = std::make_shared<UICamera>();
 	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_UICamera->m_fCameraPitch = 0.0f;
@@ -14,23 +15,22 @@ bool Sample::Init()
 	UIManager::GetInstance().Init(m_pDepthStencilState,m_pDepthStencilStateDisable);
 
 
-	m_Scene = new LScene;
-	m_Scene->FSM(FSMType::SCENE);
+	LScene::GetInstance().FSM(FSMType::SCENE);
 
 	return true;
 }
 
 bool Sample::Frame()
 {
-	m_Scene->Process();
-	UIManager::GetInstance().Frame();
+	LScene::GetInstance().Process();
+
 	return true;
 }
 
 bool Sample::Render()
 {
-	m_Scene->Render();
-	UIManager::GetInstance().Render();
+	LScene::GetInstance().Render();
+
 	return true;
 }
 

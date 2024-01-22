@@ -2,13 +2,14 @@
 #include "LGlobal.h"
 #include "LInput.h"
 #include "LWrite.h"
+#include "UIManager.h"
 
 bool InGameScene::Init()
 {
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-   
+
     m_ModelCamera = std::make_shared<LModelCamera>();
     m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
     m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -32,7 +33,7 @@ bool InGameScene::Init()
     LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_Walk_Lock.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     //LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_TakeDamage.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_Death.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    
+
     //오브젝트 예시
     mapObj = LFbxMgr::GetInstance().Load(L"../../res/map/Mountain.fbx", L"../../res/hlsl/ShadowMap.hlsl");
 
@@ -48,17 +49,18 @@ bool InGameScene::Init()
     D3DXMatrixRotationY(&matRot, 3.14159);
     m_PlayerModel->m_matControl *= matRot;
 
-    for (int i = 0; i < 10; i++)
+    m_ZombieModelList.resize(m_EnemySize);
+    for (int i = 0; i < m_EnemySize; i++)
     {
-        m_ZombieModel[i] = new LNPC(m_PlayerModel.get());
-        m_ZombieModel[i]->SetLFbxObj(zombieObj);
-        m_ZombieModel[i]->CreateBoneBuffer();
-        m_ZombieModel[i]->FSM(FSMType::ENEMY);
+        m_ZombieModelList[i] = new LNPC(m_PlayerModel.get());
+        m_ZombieModelList[i]->SetLFbxObj(zombieObj);
+        m_ZombieModelList[i]->CreateBoneBuffer();
+        m_ZombieModelList[i]->FSM(FSMType::ENEMY);
 
-        m_ZombieModel[i]->m_matControl._41 = i * 500;
-        m_ZombieModel[i]->m_matControl._43 = i * 500;
+        m_ZombieModelList[i]->m_matControl._41 = i * 500;
+        m_ZombieModelList[i]->m_matControl._43 = i * 500;
     }
-  
+
     m_ModelCamera->SetTarget(m_PlayerModel.get());
 
     // 오브젝트 예시
@@ -70,6 +72,7 @@ bool InGameScene::Init()
     m_MapModel->m_matControl._33 = 500.f;
     m_MapModel->m_matControl._42 = -0.f;
 
+    // Shadow
     m_pQuad.Set();
     m_pQuad.SetScreenVertex(0, 0, 250, 250, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
     m_pQuad.Create(L"../../res/hlsl/ShadowMap.hlsl", L"../../res/map/castle.jpg");
@@ -80,6 +83,47 @@ bool InGameScene::Init()
         , 0.0f, -0.5f, 0.0f, 0.0f
         , 0.0f, 0.0f, 1.0f, 0.0f
         , 0.5f, 0.5f, 0.0f, 1.0f);
+
+    // Collision
+    std::wstring head = L"Head";
+    std::wstring root = L"root";
+    TMatrix Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
+
+    m_Select = new LSelect;
+    m_obbBoxList.resize(m_EnemySize);
+    m_BoxList.resize(m_EnemySize);
+    for (int i = 0; i < m_EnemySize; i++)
+    {
+        m_obbBoxList[i] = new LBox;
+        m_obbBoxList[i]->Set();
+        m_BoxList[i] = new T_BOX;
+        m_BoxList[i]->vMax = TVector3(20.0f, Head._42, 30.0f) * 0.2f;
+        m_BoxList[i]->vMin = TVector3(-20.0f, Root._42, -5.0f) * 0.2f;
+        m_BoxList[i]->vCenter = (m_BoxList[i]->vMax + m_BoxList[i]->vMin);
+        m_BoxList[i]->vCenter.x /= 2.0f;
+        m_BoxList[i]->vCenter.y /= 2.0f;
+        m_BoxList[i]->vCenter.z /= 2.0f;
+
+        m_BoxList[i]->fExtent[0] = fabs(m_BoxList[i]->vCenter.x - m_BoxList[i]->vMax.x);
+        m_BoxList[i]->fExtent[1] = fabs(m_BoxList[i]->vCenter.y - m_BoxList[i]->vMax.y);
+        m_BoxList[i]->fExtent[2] = fabs(m_BoxList[i]->vCenter.z - m_BoxList[i]->vMax.z);
+        m_BoxList[i]->vAxis[0] = TVector3(1.0f, 0.0f, 0.0f);
+        m_BoxList[i]->vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
+        m_BoxList[i]->vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
+
+        TMatrix matScale;
+        D3DXMatrixScaling(&matScale, m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2]);
+        m_obbBoxList[i]->m_matWorld = matScale;
+        m_obbBoxList[i]->m_matWorld._41 = m_BoxList[i]->vCenter.x;
+        m_obbBoxList[i]->m_matWorld._42 = m_BoxList[i]->vCenter.y;
+        m_obbBoxList[i]->m_matWorld._43 = m_BoxList[i]->vCenter.z;
+
+        m_obbBoxList[i]->CreateOBBBox(m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2],
+            m_BoxList[i]->vCenter, m_BoxList[i]->vAxis[0], m_BoxList[i]->vAxis[1], m_BoxList[i]->vAxis[2]);
+        m_obbBoxList[i]->Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
+    }
+
     return true;
 }
 
@@ -100,14 +144,25 @@ void InGameScene::Process()
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
 
-    for (auto zombie : m_ZombieModel)
+    for (int i = 0; i < m_EnemySize; i++)
     {
-        zombie->Frame();
-        zombie->Process();
+        m_ZombieModelList[i]->Frame();
+        m_ZombieModelList[i]->Process();
     }
-   
+
     // 오브젝트 예시
     m_MapModel->Frame();
+
+    m_Select->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+
+    for (int i = 0; i < m_EnemySize; i++)
+    {
+        m_obbBoxList[i]->Frame();
+        m_obbBoxList[i]->CreateOBBBox(m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2],
+            { m_obbBoxList[i]->m_matWorld._41, m_obbBoxList[i]->m_matWorld._42, m_obbBoxList[i]->m_matWorld._43 },
+            m_BoxList[i]->vAxis[0], m_BoxList[i]->vAxis[1], m_BoxList[i]->vAxis[2]);
+    }
+    UIManager::GetInstance().Frame();
 }
 
 void InGameScene::Render()
@@ -135,7 +190,7 @@ void InGameScene::Render()
     }
 
     RenderObject();
-    for (auto zombie : m_ZombieModel)
+    for (auto zombie : m_ZombieModelList)
     {
         zombie->Render();
     }
@@ -160,6 +215,25 @@ void InGameScene::Render()
     std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
+    for (int i = 0; i < m_EnemySize; i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42, m_ZombieModelList[i]->m_matControl._43));
+        m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_obbBoxList[i]->Render();
+
+         if (LInput::GetInstance().m_MouseState[0])
+         {
+             if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
+             {
+                 m_ZombieModelList[i]->IsDead = true;
+                 std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                 MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+             }
+         }
+    }
+
+
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
         Release();
@@ -173,6 +247,23 @@ void InGameScene::Render()
         m_pOwner->SetTransition(Event::GOMAINSCENE);
         return;
     }
+    UIManager::GetInstance().Render();
+ /*   std::wstring textState = L"InGameScene";
+    LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
+    {
+        Release();
+        LScene::GetInstance().SetTransition(Event::GOENDSCENE);
+        return;
+    }
+
+    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
+    {
+        Release();
+        LScene::GetInstance().SetTransition(Event::GOMAINSCENE);
+        return;
+    }*/
 }
 
 void InGameScene::Release()

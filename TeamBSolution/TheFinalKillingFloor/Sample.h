@@ -7,7 +7,7 @@
 class Sample : public LCore
 {
 public:
-	LScene* m_Scene = nullptr;
+	//LScene* m_Scene = nullptr;
 	std::shared_ptr<UICamera> m_UICamera = nullptr;
 	
 public:

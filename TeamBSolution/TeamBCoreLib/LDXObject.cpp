@@ -186,6 +186,7 @@ bool LDXObject::PostRender()
 	}
 	else
 	{
+		
 		m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
 	}

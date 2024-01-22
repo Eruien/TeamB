@@ -9,6 +9,8 @@
 #include "LPlaneShape.h"
 #include "LNPC.h"
 #include "LSkyBox.h"
+#include "LSelect.h"
+#include "LBox.h"
 
 struct SHADOW_CONSTANT_BUFFER
 {
@@ -24,12 +26,14 @@ public:
 public:
 	std::shared_ptr<LMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
-	LNPC* m_ZombieModel[10];
+	std::vector<LNPC*> m_ZombieModelList;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* fbxObj = nullptr;
 	LFbxObj* zombieObj = nullptr;
 	LFbxObj* mapObj = nullptr;
+	int m_EnemySize = 2;
 public:
+	// Shadow
 	LDxRT m_RT;
 	LPlaneShape m_pQuad;
 	TMatrix	m_matWorld;
@@ -39,6 +43,12 @@ public:
 	TMatrix	m_matTexture;
 	SHADOW_CONSTANT_BUFFER m_CBmatShadow;
 	ComPtr<ID3D11Buffer> m_pCBShadow;
+public:
+	// Collision
+	LSelect* m_Select = nullptr;
+	std::vector<T_BOX*> m_BoxList;
+	std::vector<LBox*> m_obbBoxList;
+	TMatrix boxWorld;
 public:
 	bool Init() override;
 	void Render() override;
