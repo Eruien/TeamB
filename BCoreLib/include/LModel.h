@@ -14,6 +14,9 @@ public:
 	TMatrix m_matControl;
 	std::wstring m_ParentBoneName;
 public:
+	bool m_TimerStart = false;
+	bool m_TimerEnd = false;
+public:
 	virtual void SetInstancing(bool IsIntancing, int instancingCount);
 	virtual void SetLFbxObj(LFbxObj* fbxObj);
 	virtual LFbxObj* GetLFbxObj();

@@ -29,8 +29,6 @@ public:
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
 	std::vector<LNPC*> m_ZombieModelList;
 	//std::shared_ptr<LModel> m_MapModel = nullptr;
-	LFbxObj* fbxObj = nullptr;
-	LFbxObj* zombieObj = nullptr;
 	//LFbxObj* mapObj = nullptr;
 	int m_EnemySize = 2;
 public:

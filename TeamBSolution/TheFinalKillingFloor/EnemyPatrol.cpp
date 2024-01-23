@@ -9,9 +9,9 @@ bool EnemyPatrol::Init()
 
 void EnemyPatrol::Process()
 {
-    if (m_pOwner->IsDead)
+    if (m_pOwner->IsTakeDamage)
     {
-        m_pOwner->SetTransition(Event::FATALDAMAGE);
+        m_pOwner->SetTransition(Event::TAKEDAMAGE);
         return;
     }
 

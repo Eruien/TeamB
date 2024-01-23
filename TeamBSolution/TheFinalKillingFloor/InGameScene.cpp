@@ -3,6 +3,8 @@
 #include "LInput.h"
 #include "LWrite.h"
 #include "UIManager.h"
+#include "LCharacterIO.h"
+#include "LAnimationIO.h"
 
 bool InGameScene::Init()
 {
@@ -22,22 +24,21 @@ bool InGameScene::Init()
     m_SkyBox->Set();
     m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
 
-    fbxObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/army/army3.fbx", L"../../res/hlsl/CharacterShadow.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Fire_Rifle_7.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Reload_Rifle_65.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Run_Rifle_44.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Walk_Rifle_55.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/army/Animation/Idle_Rifle_189.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_7.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Reload_Rifle_65.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Run_Rifle_44.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Walk_Rifle_55.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_189.bin");
 
-    zombieObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Zombie.fbx", L"../../res/hlsl/CharacterShader.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_Walk_Lock.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    //LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_TakeDamage.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    LFbxMgr::GetInstance().Load(L"../../res/fbx/Zombie/Animation/Zombie_Death.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-
-    //오브젝트 예시
-
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
+   
     m_PlayerModel = std::make_shared<LPlayer>();
-    m_PlayerModel->SetLFbxObj(fbxObj);
+    m_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     m_PlayerModel->CreateBoneBuffer();
     m_PlayerModel->FSM(FSMType::PLAYER);
 
@@ -52,7 +53,7 @@ bool InGameScene::Init()
     for (int i = 0; i < m_EnemySize; i++)
     {
         m_ZombieModelList[i] = new LNPC(m_PlayerModel.get());
-        m_ZombieModelList[i]->SetLFbxObj(zombieObj);
+        m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
         m_ZombieModelList[i]->CreateBoneBuffer();
         m_ZombieModelList[i]->FSM(FSMType::ENEMY);
 
@@ -193,8 +194,6 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
-
-
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SkyBox->Render();
@@ -218,6 +217,7 @@ void InGameScene::Render()
     }
 
     RenderObject();
+
     for (auto zombie : m_ZombieModelList)
     {
         zombie->Render();
@@ -236,6 +236,7 @@ void InGameScene::Render()
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
 
+    // Shadow
     m_pQuad.SetMatrix(NULL, NULL, NULL);
     m_pQuad.PreRender();
     {
@@ -243,9 +244,7 @@ void InGameScene::Render()
     }
     m_pQuad.PostRender();
 
-    std::wstring textState = L"InGameScene";
-    LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
-
+    // Collision
     for (int i = 0; i < m_EnemySize; i++)
     {
         TMatrix zombieTranslation;
@@ -253,17 +252,19 @@ void InGameScene::Render()
         m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_obbBoxList[i]->Render();
 
-         if (LInput::GetInstance().m_MouseState[0])
-         {
-             if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
-             {
-                 m_ZombieModelList[i]->IsDead = true;
-                 std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                 MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
-             }
-         }
+        if (LInput::GetInstance().m_MouseState[0])
+        {
+            if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
+            {
+                m_ZombieModelList[i]->IsTakeDamage = true;
+                std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+            }
+        }
     }
 
+    std::wstring textState = L"InGameScene";
+    LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {
@@ -279,22 +280,6 @@ void InGameScene::Render()
         return;
     }
     UIManager::GetInstance().Render();
- /*   std::wstring textState = L"InGameScene";
-    LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
-
-    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
-    {
-        Release();
-        LScene::GetInstance().SetTransition(Event::GOENDSCENE);
-        return;
-    }
-
-    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
-    {
-        Release();
-        LScene::GetInstance().SetTransition(Event::GOMAINSCENE);
-        return;
-    }*/
 }
 
 void InGameScene::Release()

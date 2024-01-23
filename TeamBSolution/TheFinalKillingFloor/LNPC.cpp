@@ -5,7 +5,8 @@
 #include "EnemyPatrol.h"
 #include "EnemyTrace.h"
 #include "EnemyDeath.h"
-
+#include "EnemyTakeDamage.h"
+#include "EnemyAttack.h"
 
 void LNPC::FSM(FSMType fsmType)
 {
@@ -21,7 +22,9 @@ void LNPC::FSM(FSMType fsmType)
 
 	m_pActionList.insert(std::make_pair(State::ENEMYPATROL, std::make_unique<EnemyPatrol>(this)));
 	m_pActionList.insert(std::make_pair(State::ENEMYTRACE, std::make_unique<EnemyTrace>(this)));
+	m_pActionList.insert(std::make_pair(State::ENEMYTAKEDAMAGE, std::make_unique<EnemyTakeDamage>(this)));
 	m_pActionList.insert(std::make_pair(State::ENEMYDEATH, std::make_unique<EnemyDeath>(this)));
+	m_pActionList.insert(std::make_pair(State::ENEMYATTACK, std::make_unique<EnemyAttack>(this)));
 
 	m_pAction = m_pActionList.find(State::ENEMYPATROL)->second.get();
 	m_CurrentState = State::ENEMYPATROL;
@@ -112,10 +115,25 @@ int LNPC::GetRandomNumber()
 
 bool LNPC::Frame()
 {
+	if (m_LifeCount <= 0)
+	{
+		IsDead = true;
+	}
+
 	LSkinningModel::Frame();
 
 	m_PlayerPos = { m_Player->m_matControl._41, m_Player->m_matControl._42, m_Player->m_matControl._43 };
 	m_NPCPos = { m_matControl._41, m_matControl._42, m_matControl._43 };
+
+	if (((m_NPCPos.x - m_AttackRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_AttackRange))
+		&& ((m_NPCPos.z - m_AttackRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_AttackRange)))
+	{
+		IsAttackRange = true;
+	}
+	else
+	{
+		IsAttackRange = false;
+	}
 
 	if (((m_NPCPos.x - m_PatrolRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_PatrolRange))
 		&& ((m_NPCPos.z - m_PatrolRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_PatrolRange)))

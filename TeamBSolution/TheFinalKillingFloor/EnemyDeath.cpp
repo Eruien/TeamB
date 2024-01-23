@@ -10,6 +10,7 @@ bool EnemyDeath::Init()
 void EnemyDeath::Process()
 {
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Death.fbx");
+    m_pOwner->IsDead = true;
 }
 
 void EnemyDeath::Release()

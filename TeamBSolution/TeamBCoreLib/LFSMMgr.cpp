@@ -106,8 +106,17 @@ bool LFSMMgr::Init()
 
 	EnemyFSM->AddStateTransition(State::ENEMYPATROL, Event::FINDPLAYER, State::ENEMYTRACE);
 	EnemyFSM->AddStateTransition(State::ENEMYPATROL, Event::FATALDAMAGE, State::ENEMYDEATH);
+	EnemyFSM->AddStateTransition(State::ENEMYPATROL, Event::TAKEDAMAGE, State::ENEMYTAKEDAMAGE);
 
 	EnemyFSM->AddStateTransition(State::ENEMYTRACE, Event::FATALDAMAGE, State::ENEMYDEATH);
+	EnemyFSM->AddStateTransition(State::ENEMYTRACE, Event::TAKEDAMAGE, State::ENEMYTAKEDAMAGE);
+	EnemyFSM->AddStateTransition(State::ENEMYTRACE, Event::PLAYERINATTACKRANGE, State::ENEMYATTACK);
+
+	EnemyFSM->AddStateTransition(State::ENEMYATTACK, Event::TAKEDAMAGE, State::ENEMYTAKEDAMAGE);
+	EnemyFSM->AddStateTransition(State::ENEMYATTACK, Event::PLAYEROUTATTACKRANGE, State::ENEMYPATROL);
+
+	EnemyFSM->AddStateTransition(State::ENEMYTAKEDAMAGE, Event::RECOVERYDAMAGE, State::ENEMYPATROL);
+	EnemyFSM->AddStateTransition(State::ENEMYTAKEDAMAGE, Event::FATALDAMAGE, State::ENEMYDEATH);
 
 	m_map.insert(std::make_pair(FSMType::ENEMY, std::move(EnemyFSM)));
 
