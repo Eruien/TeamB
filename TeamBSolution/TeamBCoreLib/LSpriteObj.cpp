@@ -58,7 +58,7 @@ bool LSpriteTexture::Init()
 }
 bool LSpriteTexture::Frame()
 {
-	LPlaneObj::Frame();
+	LPlaneObj::Frame();//메트릭스업데이트
 	
 
 	m_fElapsedTimer += LGlobal::g_fSPF;

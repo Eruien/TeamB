@@ -34,7 +34,7 @@ void LWrite::SetCreateTextFormat()
         DWRITE_FONT_WEIGHT_NORMAL,
         DWRITE_FONT_STYLE_NORMAL,
         DWRITE_FONT_STRETCH_NORMAL,
-        30,
+        20/*수정 사이즈30에서 축소*/,
         L"ko-kr",
         m_ptextFormat.GetAddressOf());
 
