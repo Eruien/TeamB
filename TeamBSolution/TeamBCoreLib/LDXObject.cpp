@@ -98,12 +98,10 @@ bool LDXObject::CreateLayout()
 {
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
-		//{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		//{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		//{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		//{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "POS",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXTURE",  0, DXGI_FORMAT_R32G32_FLOAT, 0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 
 	};
 
@@ -129,21 +127,8 @@ bool LDXObject::CreateLayout()
 	return true;
 }
 
-bool LDXObject::Create(std::wstring shaderFileName, std::wstring texFileName)
-{
-	CreateVertexData();
-	CreateIndexData();
-	CreateVertexBuffer();
-	CreateIndexBuffer();
-	CreateConstantBuffer();
-	// obj공용 // m_pVS, m_pPS 쉐이더 생성
-	m_Shader = LManager<LShader>::GetInstance().Load(shaderFileName);
-	CreateLayout();
-	// obj공용 // m_pTexSRV 생성
-	m_Tex = LManager<LTexture>::GetInstance().Load(texFileName);
-	//UpdateMatrix();
-	return true;
-}
+
+
 
 bool LDXObject::Init()
 {
@@ -189,15 +174,15 @@ bool LDXObject::Render()
 
 bool LDXObject::PostRender()
 {
-	//if (m_pIndexBuffer == nullptr)
-	//{
+	if (m_pIndexBuffer == nullptr)
+	{
 		m_pImmediateContext->Draw(m_VertexList.size(), 0);
-	//}
-	//else
-	//{
-	//	m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);임시
-	//	m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
-	//}
+	}
+	else
+	{
+		m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
+	}
 	
 	return true;
 }

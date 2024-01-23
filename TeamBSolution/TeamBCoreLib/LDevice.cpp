@@ -164,7 +164,7 @@ bool LDevice::Init()
     // 깊이 텍스쳐 생성
     SetDepthTexture();
     // 깊이 텍스쳐 기반 스텐실 뷰 생성
-   // SetDepthStencilView();
+   SetDepthStencilView();
     SetRenderTargetView();
     SetViewPort();
     return true;

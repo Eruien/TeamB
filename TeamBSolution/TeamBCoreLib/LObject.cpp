@@ -22,15 +22,23 @@ void  LObject::SetMatrix(TMatrix* matWorld, TMatrix* matView, TMatrix* matProj)
 	m_cbData.matProj = m_matProj.Transpose();
 	m_pImmediateContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, nullptr, &m_cbData, 0, 0);
 }
-//void LObject::UpdateMatrix()
-//{
-//	TMatrix matScale, matRotation, matTranslation;
-//	matScale.CreateScale(m_vScale);
-//	matRotation.CreateRotationZ(m_vRotation.z);
-//	matTranslation.Translation(m_vPosition);
-//	m_matWorld = matScale * matRotation * matTranslation;
-//
-//}
+void LObject::UpdateMatrix()
+{	//스케일이 안되서 임시 수정
+	//TMatrix matScale, matRotation, matTranslation;
+	//matScale.CreateScale(m_vScale);
+	//matRotation.CreateRotationZ(m_vRotation.z);
+	//matTranslation.Translation(m_vPosition);
+	//m_matWorld = matScale * matRotation * matTranslation;
+	TBASIS_EX::TMatrix matScale, matRotation, matTranslate;
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+	D3DXMatrixRotationZ(&matRotation, m_vRotation.z);
+	D3DXMatrixTranslation(&matTranslate, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+
+	m_matWorld = matScale * matRotation * matTranslate;
+
+
+}
+
 void LObject::SetScale(TVector3 s)
 {
 	m_vScale = s;
@@ -64,7 +72,21 @@ bool LObject::Release()
 	LDXObject::Release();
 	return true;
 }
-
+bool LObject::Create(std::wstring shaderFileName, std::wstring texFileName)
+{
+	CreateVertexData();
+	CreateIndexData();
+	CreateVertexBuffer();
+	CreateIndexBuffer();
+	CreateConstantBuffer();
+	// obj공용 // m_pVS, m_pPS 쉐이더 생성
+	m_Shader = LManager<LShader>::GetInstance().Load(shaderFileName);
+	CreateLayout();
+	// obj공용 // m_pTexSRV 생성
+	m_Tex = LManager<LTexture>::GetInstance().Load(texFileName);
+	UpdateMatrix();
+	return true;
+}
 LObject::LObject()
 {
 	m_vPosition = TVector3(0, 0, 0);
