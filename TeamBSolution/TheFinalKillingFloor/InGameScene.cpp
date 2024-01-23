@@ -170,6 +170,8 @@ void InGameScene::Process()
 
     for (int i = 0; i < m_EnemySize; i++)
     {
+        fHeight = m_CustomMap->GetHeight(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._43);
+        m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
         m_ZombieModelList[i]->Frame();
         m_ZombieModelList[i]->Process();
     }
