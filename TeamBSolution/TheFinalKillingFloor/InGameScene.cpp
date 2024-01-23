@@ -25,11 +25,11 @@ bool InGameScene::Init()
     m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
 
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_7.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Reload_Rifle_65.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Run_Rifle_44.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Walk_Rifle_55.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_189.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Reload_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Sprint_Fwd_Rifle.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Walk_Fwd_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_Ironsights.bin");
 
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");

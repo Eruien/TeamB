@@ -15,7 +15,7 @@ void PlayerAttack::Process()
         return;
     }
 
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_7.fbx");
+    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_Ironsights.fbx");
 }
 
 void PlayerAttack::Release()

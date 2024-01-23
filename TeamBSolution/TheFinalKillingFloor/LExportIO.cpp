@@ -1,37 +1,5 @@
 #include "LExportIO.h"
 
-void LExportIO::SetCharacterFbxPath(std::wstring characterFbxPath, TMatrix characterPos)
-{
-    WriteStringData(wtm(characterFbxPath).c_str(), m_TextMaxSize, pWritePos, iWritePos, m_ExportForm.characterFbxPath);
-    m_ExportForm.characterPos = characterPos;
-    iWritePos = 0;
-}
-
-void LExportIO::SetDefaultPoseAnimationPath(std::wstring defaultAnimationPath)
-{
-    WriteStringData(wtm(defaultAnimationPath).c_str(), m_TextMaxSize, pWritePos, iWritePos, m_ExportForm.defaultposeAnimation);
-    iWritePos = 0;
-}
-
-void LExportIO::SetAnimationPath(std::wstring AnimationPath)
-{
-    WriteStringData(wtm(AnimationPath).c_str(), m_TextMaxSize, pWritePos, iWritePos, m_ExportForm.animationList);
-}
-
-void LExportIO::SetItem(std::wstring ItemPath, std::wstring ParentName, TMatrix matScale, TMatrix matRotation, TMatrix matTranslation)
-{
-    WriteStringData(wtm(ItemPath).c_str(), m_TextMaxSize, pWritePos, iWritePos, m_ExportForm.itemList);
-    WriteStringData(wtm(ParentName).c_str(), m_TextMaxSize, pWritePos, iWritePos2, m_ExportForm.itemMatParentName);
-    m_ExportForm.itemScale[itemCount] = matScale;
-    m_ExportForm.itemRotation[itemCount] = matRotation;
-    m_ExportForm.itemTranslation[itemCount] = matTranslation;
-    for (int i = 0; i < 9; i++)
-    {
-        //m_ExportForm.matNumber[i] = CharacterToolForm::g_matItemNumber[i];
-    }
-    itemCount++;
-}
-
 void LExportIO::Reset()
 {
     ZeroMemory(&m_ExportHeader, sizeof(m_ExportHeader));
@@ -52,15 +20,6 @@ void LExportIO::ResetiPos()
     itemCount = 0;
 }
 
-void LExportIO::WriteStringData(const char* data, int dataSize, void* pPos, int& iPos, char* changePtr)
-{
-    pPos = &changePtr[iPos];
-    CopyMemory(pPos, data, dataSize);
-    iPos += dataSize;
-
-    return;
-}
-
 void LExportIO::ReadStringData(char* buffer, int bufferSize, void* pReadPos, int& iReadPos, char* changePtr)
 {
     pReadPos = &changePtr[iReadPos];
@@ -68,23 +27,6 @@ void LExportIO::ReadStringData(char* buffer, int bufferSize, void* pReadPos, int
     iReadPos += bufferSize;
 
     return;
-}
-
-bool LExportIO::ExportWrite(std::wstring FormFileName, int animationListSize, int itemListSize)
-{
-    std::wstring saveFilePath = L"../../res/UserFile/Form/";
-    saveFilePath += FormFileName;
-    saveFilePath += L".bin";
-
-    m_WriteFile.open(saveFilePath, std::ios::binary);
-
-    m_ExportHeader.animationListSize = animationListSize;
-    m_ExportHeader.itemListSize = itemListSize;
-
-    m_WriteFile.write(reinterpret_cast<char*>(&m_ExportHeader), sizeof(m_ExportHeader));
-    m_WriteFile.write(reinterpret_cast<char*>(&m_ExportForm), sizeof(m_ExportForm));
-    m_WriteFile.close();
-    return true;
 }
 
 bool LExportIO::ExportRead(std::wstring FormFileName)

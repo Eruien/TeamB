@@ -27,7 +27,7 @@ void PlayerWalk::Process()
         return;
     }
 
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Walk_Rifle_55.fbx");
+    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Walk_Fwd_Rifle_Ironsights.fbx");
 }
 
 void PlayerWalk::Release()

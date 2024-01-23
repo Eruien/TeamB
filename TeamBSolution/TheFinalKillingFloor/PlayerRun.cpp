@@ -27,7 +27,7 @@ void PlayerRun::Process()
         return;
     }
   
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Run_Rifle_44.fbx");
+    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Sprint_Fwd_Rifle.fbx");
 }
 
 void PlayerRun::Release()
