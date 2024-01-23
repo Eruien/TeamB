@@ -5,6 +5,7 @@
 #include "UIManager.h"
 #include "LCharacterIO.h"
 #include "LAnimationIO.h"
+#include "LExportIO.h"
 
 bool InGameScene::Init()
 {
@@ -30,12 +31,15 @@ bool InGameScene::Init()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Sprint_Fwd_Rifle.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Walk_Fwd_Rifle_Ironsights.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_Ironsights.bin");
+    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
 
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
+
+    LExportIO::GetInstance().ExportRead(L"LeftHandForm.bin");
    
     m_PlayerModel = std::make_shared<LPlayer>();
     m_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
@@ -49,6 +53,16 @@ bool InGameScene::Init()
     D3DXMatrixRotationY(&matRot, 3.14159);
     m_PlayerModel->m_matControl *= matRot;
 
+    m_GunModel = std::make_shared<LModel>();
+    m_GunModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
+
+    m_GunModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
+    m_GunModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
+    m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
+    m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
+
+    m_GunModel->m_pModel->m_matScale *= matScale;
+    
     m_ZombieModelList.resize(m_EnemySize);
     for (int i = 0; i < m_EnemySize; i++)
     {
@@ -169,12 +183,22 @@ void InGameScene::Process()
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
 
+    m_GunModel->Frame();
+
     for (int i = 0; i < m_EnemySize; i++)
     {
         fHeight = m_CustomMap->GetHeight(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._43);
         m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
         m_ZombieModelList[i]->Frame();
         m_ZombieModelList[i]->Process();
+    }
+
+    if (m_GunModel->m_pModel != nullptr && m_PlayerModel->m_pActionModel != nullptr)
+    {
+        m_GunModel->m_pModel->m_matSocket = m_PlayerModel->m_pActionModel->m_NameMatrixMap[int(m_PlayerModel->m_fCurrentAnimTime)][m_GunModel->m_ParentBoneName];
+
+        m_GunModel->m_matControl = m_GunModel->m_pModel->m_matScale * m_GunModel->m_pModel->m_matRotation * m_GunModel->m_pModel->m_matSocket
+            * m_GunModel->m_pModel->m_matTranslation;
     }
 
     // 맵 오브젝트 예시
@@ -217,6 +241,7 @@ void InGameScene::Render()
     }
 
     RenderObject();
+    m_GunModel->Render();
 
     for (auto zombie : m_ZombieModelList)
     {
@@ -237,12 +262,12 @@ void InGameScene::Render()
     m_CustomMap->Render();
 
     // Shadow
-    m_pQuad.SetMatrix(NULL, NULL, NULL);
+   /* m_pQuad.SetMatrix(NULL, NULL, NULL);
     m_pQuad.PreRender();
     {
         LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_RT.m_pSRV.GetAddressOf());
     }
-    m_pQuad.PostRender();
+    m_pQuad.PostRender();*/
 
     // Collision
     for (int i = 0; i < m_EnemySize; i++)

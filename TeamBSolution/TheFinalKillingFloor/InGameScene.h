@@ -27,6 +27,7 @@ public:
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
+	std::shared_ptr<LModel> m_GunModel = nullptr;
 	std::vector<LNPC*> m_ZombieModelList;
 	//std::shared_ptr<LModel> m_MapModel = nullptr;
 	//LFbxObj* mapObj = nullptr;

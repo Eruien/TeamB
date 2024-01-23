@@ -48,7 +48,6 @@ bool LExportIO::ExportRead(std::wstring FormFileName)
         ReadStringData(pReadTextBuffer, m_TextMaxSize, pReadPos, iReadPos, m_ExportForm.animationList);
         std::wstring animationName = mtw(pReadTextBuffer);
         m_AnimationList.push_back(animationName);
-
     }
 
     ResetiPos();

@@ -27,7 +27,7 @@ void PlayerIdle::Process()
         return;
     }
 
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+   m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
 }
 
 void PlayerIdle::Release()
