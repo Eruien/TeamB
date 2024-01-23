@@ -156,32 +156,32 @@ bool LCore::EngineRender()
     // 스탠실 스테이트 필요 1은 lessequal로 설정했기 때문에 1보다 같거나 작으면 그려지게 했다
     m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 1);
 
-    //if (LInput::GetInstance().m_dwKeyState[VK_F1] == DWORD(KeyState::KEY_PUSH))임시
-    //{
-    //    m_ISWireFrame = !m_ISWireFrame;
-    //}
+    if (LInput::GetInstance().m_dwKeyState[VK_F1] == DWORD(KeyState::KEY_PUSH))
+    {
+        m_ISWireFrame = !m_ISWireFrame;
+    }
 
-    //m_pImmediateContext->RSSetState(m_pRSWireFrame.Get());
+    m_pImmediateContext->RSSetState(m_pRSWireFrame.Get());
 
-    //if (m_ISWireFrame)
-    //{
-    //    m_pImmediateContext->RSSetState(m_pRSWireFrame.Get());
-    //}
-    //else
-    //{
-    //    m_pImmediateContext->RSSetState(m_pRSSolid.Get());
-    //}
+    if (m_ISWireFrame)
+    {
+        m_pImmediateContext->RSSetState(m_pRSWireFrame.Get());
+    }
+    else
+    {
+        m_pImmediateContext->RSSetState(m_pRSSolid.Get());
+    }
     Render();
 
-    //LWrite::GetInstance().PreRender();임시
+    LWrite::GetInstance().PreRender();//임시
 
     LGlobal::g_pMainCamera->Render();
     m_Gametimer->Render();
     LInput::GetInstance().Render();
 
-    //LWrite::GetInstance().Render();임시
+   LWrite::GetInstance().Render();
 
-    //LWrite::GetInstance().PostRender();임시
+   LWrite::GetInstance().PostRender();
    // LSpriteUV::GetInstance().Render();
 
     LDevice::PostRender();

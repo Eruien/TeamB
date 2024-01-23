@@ -138,6 +138,27 @@ bool LDebugCamera::Frame()
 
 bool LDebugCamera::Render()
 {
+#ifdef _DEBUG
+	std::wstring text = L"DeburgCamera Pos (";
+	text += std::to_wstring(m_vCameraPos.x);
+	text += L",";
+	text += std::to_wstring(m_vCameraPos.y);
+	text += L",";
+	text += std::to_wstring(m_vCameraPos.z);
+	text += L")\n";
+	text += L"LookVector (";
+	text += std::to_wstring(m_vLook.x);
+	text += L",";
+	text += std::to_wstring(m_vLook.y);
+	text += L",";
+	text += std::to_wstring(m_vLook.z);
+	text += L")\n";
+	text += L"Camera Speed ";
+	text += std::to_wstring(m_fSpeed);
+
+	LWrite::GetInstance().AddText(text, 0.0f, 25.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+#endif
+
 	LCamera::Render();
 	return true;
 }

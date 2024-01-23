@@ -10,7 +10,7 @@ bool LMap::Load(LMapDesc& mapDesc)
 	m_iNumFace = m_iNumCellRows * m_iNumCellCols * 2;
 	m_fCellDistance = mapDesc.fCellDistance;
 	m_iNumVertices = m_iNumRows * m_iNumCols;
-	LDXObject::Create(mapDesc.ShaderFilePath, mapDesc.TextureFilePath);
+	Create(mapDesc.ShaderFilePath, mapDesc.TextureFilePath);//DXobject에서 Object로 변경
 
 	return true;
 }
