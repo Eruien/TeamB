@@ -24,6 +24,7 @@
     <ClCompile Include="LDebugCamera.cpp" />
     <ClCompile Include="LDevice.cpp" />
     <ClCompile Include="LDXObject.cpp" />
+    <ClCompile Include="LEffect.cpp" />
     <ClCompile Include="LFbxAnimation.cpp" />
     <ClCompile Include="LFbxGeometry.cpp" />
     <ClCompile Include="LFbxImport.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="LDebugCamera.h" />
     <ClInclude Include="LDevice.h" />
     <ClInclude Include="LDXObject.h" />
+    <ClInclude Include="LEffect.h" />
     <ClInclude Include="LFbxImport.h" />
     <ClInclude Include="LFbxMgr.h" />
     <ClInclude Include="LFbxObj.h" />

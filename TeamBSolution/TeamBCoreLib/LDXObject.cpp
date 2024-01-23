@@ -7,15 +7,18 @@ void LDXObject::Set()
 	m_pImmediateContext = LGlobal::g_pImmediateContext;
 }
 
+//비어있음
 bool LDXObject::CreateVertexData()
 {
 	return true;
 }
 
+//비어있음
 bool LDXObject::CreateIndexData()
 {
 	return true;
 }
+
 
 bool LDXObject::CreateVertexBuffer()
 {
@@ -42,6 +45,7 @@ bool LDXObject::CreateVertexBuffer()
 
 	return true;
 }
+
 
 bool LDXObject::CreateIndexBuffer()
 {
@@ -71,6 +75,7 @@ bool LDXObject::CreateIndexBuffer()
 
 	return true;
 }
+
 
 bool LDXObject::CreateConstantBuffer()
 {
@@ -102,6 +107,9 @@ bool LDXObject::CreateLayout()
 		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		//{ "POS",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		//{ "TEXTURE",  0, DXGI_FORMAT_R32G32_FLOAT, 0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
 
 	};
 
@@ -112,8 +120,8 @@ bool LDXObject::CreateLayout()
 			layout, sizeof(layout) / sizeof(layout[0]),
 			m_Shader->m_pVSBlob->GetBufferPointer(),
 			m_Shader->m_pVSBlob->GetBufferSize(),
-			m_pVertexLayout.GetAddressOf());//????
-		//&m_pVertexLayout);//????
+			m_pVertexLayout.GetAddressOf());
+		
 
 		
 		if (FAILED(hr))
@@ -129,12 +137,13 @@ bool LDXObject::CreateLayout()
 
 
 
-
+//비어있음
 bool LDXObject::Init()
 {
 	return true;
 }
 
+//비어있음
 bool LDXObject::Frame()
 {
 	return true;
@@ -187,6 +196,7 @@ bool LDXObject::PostRender()
 	return true;
 }
 
+//비어있음
 bool LDXObject::Release()
 {
 	return true;

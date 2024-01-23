@@ -6,7 +6,7 @@
 #include "LTimer.h"
 #include "LInput.h"
 #include "LWrite.h"
-#include "LSpriteObj.h"
+#include "LEffect.h"
 
 
 class LCore : public LDevice

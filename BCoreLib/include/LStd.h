@@ -21,6 +21,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment (lib, "DirectXTex.lib")
+#define randstep(fmin, fmax) ((float)fmin+((float)fmax-(float)fmin)* rand() / RAND_MAX)//Effect Ãß°¡
 
 using namespace Microsoft::WRL;
 
