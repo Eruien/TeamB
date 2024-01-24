@@ -196,7 +196,7 @@ void InGameScene::Process()
 
     if (m_GunModel->m_pModel != nullptr && m_PlayerModel->m_pActionModel != nullptr)
     {
-        if (m_PlayerModel->m_pActionModel->m_iEndFrame < int(m_PlayerModel->m_fCurrentAnimTime)) return;
+        if (m_PlayerModel->m_pActionModel->m_iEndFrame <= int(m_PlayerModel->m_fCurrentAnimTime)) return;
 
         m_GunModel->m_pModel->m_matSocket = m_PlayerModel->m_pActionModel->m_NameMatrixMap[int(m_PlayerModel->m_fCurrentAnimTime)][m_GunModel->m_ParentBoneName];
 

@@ -115,7 +115,7 @@ bool LPlayer::Frame()
 		Move();
 	}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_UP)
+	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
 	{
 		m_Speed = 400.0f;
 	}

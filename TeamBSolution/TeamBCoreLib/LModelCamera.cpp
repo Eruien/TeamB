@@ -84,12 +84,12 @@ bool LModelCamera::Frame()
    
     m_fCameraPitch = max(-m_MaxPitch, min(m_MaxPitch, m_fCameraPitch));
 
-    if (g_InputData.bQKey)
+    if (LInput::GetInstance().m_KeyStateOld[DIK_Q] > KEY_PUSH)
     {
         m_fRadius += (LGlobal::g_fSPF * 20.0f);
     }
-
-    if (g_InputData.bEKey)
+   
+    if (LInput::GetInstance().m_KeyStateOld[DIK_E] > KEY_PUSH)
     {
         m_fRadius += (-LGlobal::g_fSPF * 20.0f);
     }

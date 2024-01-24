@@ -38,7 +38,7 @@ struct INPUT_MAP
 	bool bZKey;
 	bool bCKey;
 	bool bEKey;
-	
+
 	bool bLeftClick;
 	bool bRightClick;
 	bool bMiddleClick;

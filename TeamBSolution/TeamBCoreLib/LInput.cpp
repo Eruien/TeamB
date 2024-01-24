@@ -201,7 +201,7 @@ bool LInput::Frame()
     g_InputData.bDKey = GetKey(DIK_D);
     g_InputData.bQKey = GetKey(DIK_Q);
     g_InputData.bEKey = GetKey(DIK_E);
-
+   
     g_InputData.bLShift = GetKey(DIK_LSHIFT);
 
     g_InputData.bLeftKey = GetKey(DIK_LEFT);
@@ -214,7 +214,6 @@ bool LInput::Frame()
     g_InputData.bF1Key = GetKey(DIK_F1);
     GetKey(DIK_1);
     GetKey(DIK_2);
-    GetKey(DIK_LSHIFT);
     GetKey(DIK_F2);
     
     if (GetKey(DIK_F5) == KEY_HOLD)
