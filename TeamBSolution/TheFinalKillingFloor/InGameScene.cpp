@@ -276,7 +276,7 @@ void InGameScene::Render()
     for (int i = 0; i < m_EnemySize; i++)
     {
         TMatrix zombieTranslation;
-        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42, m_ZombieModelList[i]->m_matControl._43));
+        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_BoxList[i]->vCenter.y, m_ZombieModelList[i]->m_matControl._43));
         m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_obbBoxList[i]->Render();
 
