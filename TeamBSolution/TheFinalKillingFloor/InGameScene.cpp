@@ -39,7 +39,7 @@ bool InGameScene::Init()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
 
-    LExportIO::GetInstance().ExportRead(L"LeftHandForm.bin");
+    LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
    
     m_PlayerModel = std::make_shared<LPlayer>();
     m_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
@@ -61,8 +61,9 @@ bool InGameScene::Init()
     m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
     m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
 
-    m_GunModel->m_pModel->m_matScale *= matScale;
-    
+   /* D3DXMatrixRotationY(&matRot, -3.14159);
+    m_GunModel->m_pModel->m_matRotation *= matRot;*/
+
     m_ZombieModelList.resize(m_EnemySize);
     for (int i = 0; i < m_EnemySize; i++)
     {
@@ -195,10 +196,12 @@ void InGameScene::Process()
 
     if (m_GunModel->m_pModel != nullptr && m_PlayerModel->m_pActionModel != nullptr)
     {
+        if (m_PlayerModel->m_pActionModel->m_iEndFrame < int(m_PlayerModel->m_fCurrentAnimTime)) return;
+
         m_GunModel->m_pModel->m_matSocket = m_PlayerModel->m_pActionModel->m_NameMatrixMap[int(m_PlayerModel->m_fCurrentAnimTime)][m_GunModel->m_ParentBoneName];
 
         m_GunModel->m_matControl = m_GunModel->m_pModel->m_matScale * m_GunModel->m_pModel->m_matRotation * m_GunModel->m_pModel->m_matSocket
-            * m_GunModel->m_pModel->m_matTranslation;
+            * m_GunModel->m_pModel->m_matTranslation * m_PlayerModel->m_matControl;
     }
 
     // 맵 오브젝트 예시
