@@ -50,7 +50,7 @@ void DigitDisplay::Frame()
 
 }
 
-void DigitDisplay::DigitRender()
+void DigitDisplay::Render()
 {
     for (auto obj : _objects)
     {

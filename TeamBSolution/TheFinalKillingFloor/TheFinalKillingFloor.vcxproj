@@ -149,6 +149,7 @@
     <ClCompile Include="EnemyPatrol.cpp" />
     <ClCompile Include="EnemyTakeDamage.cpp" />
     <ClCompile Include="EnemyTrace.cpp" />
+    <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="InGameScene.cpp" />
     <ClCompile Include="LAnimationIO.cpp" />
     <ClCompile Include="LBox.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="EnemyPatrol.h" />
     <ClInclude Include="EnemyTakeDamage.h" />
     <ClInclude Include="EnemyTrace.h" />
+    <ClInclude Include="HpBar.h" />
     <ClInclude Include="InGameScene.h" />
     <ClInclude Include="LAnimationIO.h" />
     <ClInclude Include="LBox.h" />

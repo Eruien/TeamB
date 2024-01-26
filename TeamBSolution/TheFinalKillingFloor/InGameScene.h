@@ -12,6 +12,7 @@
 #include "LSkyBox.h"
 #include "LSelect.h"
 #include "LBox.h"
+#include "KObject.h"
 
 struct SHADOW_CONSTANT_BUFFER
 {
@@ -23,6 +24,7 @@ class InGameScene : public SceneState
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
+	std::shared_ptr<LCamera> m_MinimapCamera = nullptr;
 	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
@@ -35,7 +37,9 @@ public:
 public:
 	// Shadow
 	LDxRT m_RT;
+	LDxRT m_rtMinimap;
 	LPlaneShape m_pQuad;
+	LPlaneShape m_ShapeMinimap;
 	TMatrix	m_matWorld;
 	TMatrix	m_matShadow;
 	TMatrix	m_matViewLight;
@@ -49,6 +53,8 @@ public:
 	std::vector<T_BOX*> m_BoxList;
 	std::vector<LBox*> m_obbBoxList;
 	TMatrix boxWorld;
+public:
+	shared_ptr<KObject> m_playerIcon;
 public:
 	bool Init() override;
 	void Render() override;
