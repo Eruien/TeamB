@@ -10,9 +10,11 @@ public:
 	ComPtr<ID3D11Texture2D> pAnimationArrayTex = nullptr;
 	ComPtr<ID3D11ShaderResourceView> pAnimationArraySRV = nullptr;
 	std::vector<int> m_texAnimationOffset;
+	std::vector<int> m_AnimationFrameList;
 	int m_offsetCount = 0;
 	ComPtr<ID3D11Buffer> m_pCurrentFrameCB;
 	int m_CurrentFrame[4] = { 0, };
+	static int m_AllAnimationFrame;
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;
@@ -33,7 +35,9 @@ public:
 	virtual void SetLFbxObj(LFbxObj* fbxObj);
 	virtual LFbxObj* GetLFbxObj();
 public:
-	virtual bool Init();
+	virtual bool Init(int animationIndex);
+	virtual bool ComputeOffset();
+	virtual bool SetTexture();
 	virtual bool CreateBoneBuffer();
 	virtual bool Frame();
 	virtual bool FrameInstancing();

@@ -2,7 +2,7 @@
 #define MAX_INSTANCING_MATRICES 100 
 
 Texture2D g_txDiffuse1 : register(t0);
-Texture2D g_txAnimationArray : register(t2);
+Texture2D<float4> g_txAnimationArray : register(t2);
 SamplerState sample0 : register(s0);
 
 struct VS_INPUT
@@ -34,10 +34,10 @@ cbuffer cb0 : register (b0)
     matrix g_matProj  : packoffset(c8);
 };
 
-cbuffer cbAnimMatrices : register (b1)
-{
-    float4x4 g_matBoneWorld[MAX_BONE_MATRICES];
-};
+//cbuffer cbAnimMatrices : register (b1)
+//{
+//    float4x4 g_matBoneWorld[MAX_BONE_MATRICES];
+//};
 
 cbuffer cbCurrentFrame : register (b2)
 {
@@ -56,7 +56,7 @@ float4x4 ReadMatrix(int x, int y) {
 VS_OUTPUT VS(VS_INPUT vIn)
 {
     VS_OUTPUT vOut = (VS_OUTPUT)0;
-    
+  
     /*for (int i = 0; i < MAX_INSTANCING_MATRICES; i++)
     {
         g_matBoneWorld[i] = ReadMatrix(i, g_CurrentFrame[0]);
@@ -100,6 +100,6 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     //float depthValue = vIn.p.z / vIn.p.w;
 
     //            r,g,b,a(1)=불투명, a(0)=완전투명, a(0.0< 1.0f)= 반투명
-    return g_txDiffuse1.Sample(sample0, vIn.t) *vIn.c;
-    //return vIn.c;
+    return g_txDiffuse1.Sample(sample0, vIn.t) * vIn.c;
+//return vIn.c;
 }

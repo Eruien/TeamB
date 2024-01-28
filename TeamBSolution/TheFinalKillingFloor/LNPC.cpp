@@ -120,7 +120,7 @@ bool LNPC::Frame()
 		IsDead = true;
 	}
 
-	LSkinningModel::Frame();
+	LSkinningModel::AniFrame();
 
 	m_PlayerPos = { m_Player->m_matControl._41, m_Player->m_matControl._42, m_Player->m_matControl._43 };
 	m_NPCPos = { m_matControl._41, m_matControl._42, m_matControl._43 };

@@ -25,19 +25,38 @@ bool InGameScene::Init()
     m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     m_MinimapCamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
 
-     m_playerIcon = make_shared<KObject>();
+    m_playerIcon = make_shared<KObject>();
     m_playerIcon->Init();
     m_playerIcon->SetPos({ 0, 0, 0 });
     m_playerIcon->SetScale({100, 25000, 100});
     m_playerIcon->m_vRotation;
     m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/1.png");
 
-
     CreateShadowConstantBuffer();
 
     m_SkyBox = std::make_shared<LSkyBox>();
     m_SkyBox->Set();
     m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
+
+    
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin", L"../../res/hlsl/CharacterShaderInAnimationData.hlsl");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
+
+    m_ZombieModelList.resize(m_EnemySize);
+    for (int i = 0; i < m_EnemySize; i++)
+    {
+        m_ZombieModelList[i] = new LNPC(m_PlayerModel.get());
+        m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
+        m_ZombieModelList[i]->CreateBoneBuffer();
+        m_ZombieModelList[i]->FSM(FSMType::ENEMY);
+
+        m_ZombieModelList[i]->m_matControl._41 = i * 500;
+        m_ZombieModelList[i]->m_matControl._43 = i * 500;
+    }
+    m_ZombieModelList[0]->ComputeOffset();
 
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_Ironsights.bin");
@@ -47,19 +66,13 @@ bool InGameScene::Init()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_Ironsights.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
 
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin", L"../../res/hlsl/CharacterShaderInAnimationData.hlsl");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
-
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
-   
+
     m_PlayerModel = std::make_shared<LPlayer>();
     m_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     m_PlayerModel->CreateBoneBuffer();
     m_PlayerModel->FSM(FSMType::PLAYER);
-   
+
     TMatrix matScale;
     TMatrix matRot;
     D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
@@ -75,45 +88,9 @@ bool InGameScene::Init()
     m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
     m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
 
-   /* D3DXMatrixRotationY(&matRot, -3.14159);
-    m_GunModel->m_pModel->m_matRotation *= matRot;*/
-
-    m_ZombieModelList.resize(m_EnemySize);
     for (int i = 0; i < m_EnemySize; i++)
     {
-        m_ZombieModelList[i] = new LNPC(m_PlayerModel.get());
-        m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
-        m_ZombieModelList[i]->CreateBoneBuffer();
-        m_ZombieModelList[i]->FSM(FSMType::ENEMY);
-
-        m_ZombieModelList[i]->m_matControl._41 = i * 500;
-        m_ZombieModelList[i]->m_matControl._43 = i * 500;
-    }
-
-    int offsetCount = 0;
-    m_ZombieModelList[0]->m_texAnimationOffset.push_back(offsetCount);
-    m_ZombieModelList[0]->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Attack_Anim.fbx");
-    offsetCount += m_ZombieModelList[0]->m_pActionModel->m_iEndFrame;
-    m_ZombieModelList[0]->m_texAnimationOffset.push_back(offsetCount);
-    m_ZombieModelList[0]->Init();
-    m_ZombieModelList[0]->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Death.fbx");
-    offsetCount += m_ZombieModelList[0]->m_pActionModel->m_iEndFrame;
-    m_ZombieModelList[0]->m_texAnimationOffset.push_back(offsetCount);
-    m_ZombieModelList[0]->m_offsetCount++;
-    m_ZombieModelList[0]->Init();
-    m_ZombieModelList[0]->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx");
-    offsetCount += m_ZombieModelList[0]->m_pActionModel->m_iEndFrame;
-    m_ZombieModelList[0]->m_texAnimationOffset.push_back(offsetCount);
-    m_ZombieModelList[0]->m_offsetCount++;
-    m_ZombieModelList[0]->Init();
-    m_ZombieModelList[0]->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx");
-    offsetCount += m_ZombieModelList[0]->m_pActionModel->m_iEndFrame;
-    m_ZombieModelList[0]->m_texAnimationOffset.push_back(offsetCount);
-    m_ZombieModelList[0]->m_offsetCount++;
-    m_ZombieModelList[0]->Init();
-
-    for (int i = 0; i < m_EnemySize; i++)
-    {
+        m_ZombieModelList[i]->m_Player = m_PlayerModel.get();
         m_ZombieModelList[i]->SetAnimationArrayTexture();
         m_ZombieModelList[i]->SetAnimationArraySRV();
         m_ZombieModelList[i]->CreateCurrentFrameBuffer();
@@ -239,7 +216,7 @@ void InGameScene::Process()
     {
         fHeight = m_CustomMap->GetHeight(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._43);
         m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
-        m_ZombieModelList[i]->AniFrame();
+        m_ZombieModelList[i]->Frame();
         m_ZombieModelList[i]->Process();
     }
 
@@ -322,23 +299,23 @@ void InGameScene::Render()
     m_pQuad.PostRender();*/
 
     // Collision
-    //for (int i = 0; i < m_EnemySize; i++)
-    //{
-    //    TMatrix zombieTranslation;
-    //    zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_BoxList[i]->vCenter.y, m_ZombieModelList[i]->m_matControl._43));
-    //    m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    //    m_obbBoxList[i]->Render();
+    for (int i = 0; i < m_EnemySize; i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_BoxList[i]->vCenter.y, m_ZombieModelList[i]->m_matControl._43));
+        m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_obbBoxList[i]->Render();
 
-    //    if (LInput::GetInstance().m_MouseState[0])
-    //    {
-    //        if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
-    //        {
-    //            m_ZombieModelList[i]->IsTakeDamage = true;
-    //            std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-    //            //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
-    //        }
-    //    }
-    //}
+        if (LInput::GetInstance().m_MouseState[0])
+        {
+            if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
+            {
+                m_ZombieModelList[i]->IsTakeDamage = true;
+                std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+            }
+        }
+    }
 
     std::wstring textState = L"InGameScene";
     LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });

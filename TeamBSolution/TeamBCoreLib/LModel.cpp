@@ -1,7 +1,9 @@
 #include "LModel.h"
 #include "LGlobal.h"
+#include "LFbxMgr.h"
 
 std::vector<LBoneWorld> LModel::m_texBoneArray;
+int LModel::m_AllAnimationFrame = 0;
 
 void LModel::SetAnimationArrayTexture()
 {
@@ -9,7 +11,7 @@ void LModel::SetAnimationArrayTexture()
 	ZeroMemory(&texDesc, sizeof(texDesc));
 	texDesc.Width = m_matBoneArraySize * 4;
 	// 전체 프레임수
-	texDesc.Height = 158 + 200 + 130 + 240;
+	texDesc.Height = m_AllAnimationFrame;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = 1;
 	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -19,11 +21,10 @@ void LModel::SetAnimationArrayTexture()
 	texDesc.CPUAccessFlags = 0;
 	texDesc.MiscFlags = 0;
 	
-
 	D3D11_SUBRESOURCE_DATA initialData;
 	ZeroMemory(&initialData, sizeof(initialData));
 	initialData.pSysMem = &m_texBoneArray.at(0);
-	initialData.SysMemPitch = m_matBoneArraySize * 16;
+	initialData.SysMemPitch = m_matBoneArraySize * 4 * 16;
 	initialData.SysMemSlicePitch = 0;
 
 	HRESULT hr = LGlobal::g_pDevice->CreateTexture2D(&texDesc, &initialData, pAnimationArrayTex.GetAddressOf());
@@ -80,12 +81,9 @@ LFbxObj* LModel::GetLFbxObj()
 	return m_pModel;
 }
 
-bool LModel::Init()
+bool LModel::Init(int animationIndex)
 {
 	if (m_pActionModel == nullptr) return false;
-
-	int animationCount = 158 + 200 + 130 + 240;
-	m_texBoneArray.resize(animationCount);
 
 	auto fbxMeshList = m_pModel->m_DrawList;
 
@@ -93,7 +91,7 @@ bool LModel::Init()
 	{
 		LFbxObj* obj = fbxMeshList[iSub].get();
 
-		for (int frame = 0; frame < m_pActionModel->m_iEndFrame; frame++)
+		for (int frame = 0; frame < m_AnimationFrameList[animationIndex]; frame++)
 		{
 			for (int iNode = 0; iNode < m_pActionModel->m_AnimationTreeSize; iNode++)
 			{
@@ -108,11 +106,78 @@ bool LModel::Init()
 				TMatrix matBindPose = model->second;
 				int iIndex = m_pModel->m_pFbxNodeNameMap[name];
 				
-				m_texBoneArray[m_texAnimationOffset[m_offsetCount] + frame].matBoneWorld[iIndex] = matBindPose * m_pActionModel->m_NameMatrixMap[frame][name];
+				m_texBoneArray[m_texAnimationOffset[animationIndex] + frame].matBoneWorld[iIndex] = matBindPose * m_pActionModel->m_NameMatrixMap[frame][name];
 
-				// hlsl에서 dx기준으로 쓸려면 전치시켜서 넘겨줘야 한다
-				D3DXMatrixTranspose(&m_texBoneArray[0].matBoneWorld[iIndex],
-					&m_texBoneArray[0].matBoneWorld[iIndex]);
+				// 전치가 이미 되어있다 
+				/*D3DXMatrixTranspose(&m_texBoneArray[m_texAnimationOffset[m_offsetCount] + frame].matBoneWorld[iIndex],
+					&m_texBoneArray[m_texAnimationOffset[m_offsetCount] + frame].matBoneWorld[iIndex]);*/
+			}
+		}
+	}
+
+	return true;
+}
+
+bool LModel::ComputeOffset()
+{
+	int offsetCount = 0;
+	int animationIndex = 0;
+	m_texAnimationOffset.push_back(offsetCount);
+
+	for (auto iter = LFbxMgr::GetInstance().m_map.begin(); iter != LFbxMgr::GetInstance().m_map.end(); iter++)
+	{
+		if (iter == LFbxMgr::GetInstance().m_map.begin()) continue;
+
+		iter->second->m_iStartFrame = offsetCount;
+		offsetCount += iter->second->m_iEndFrame;
+		m_AnimationFrameList.push_back(iter->second->m_iEndFrame);
+		iter->second->m_iEndFrame = offsetCount;
+		m_texAnimationOffset.push_back(offsetCount);
+		m_texBoneArray.resize(offsetCount);
+		m_pActionModel = iter->second.get();
+		Init(animationIndex);
+
+		animationIndex++;
+	}
+
+	m_AllAnimationFrame = offsetCount;
+
+	return true;
+}
+ 
+bool LModel::SetTexture()
+{
+	if (m_pActionModel == nullptr) return false;
+
+	for (int iFrame = 0; iFrame < m_pActionModel->m_iEndFrame; iFrame++)
+	{
+		for (int iNode = 0; iNode < m_pActionModel->m_AnimationTreeSize; iNode++)
+		{
+			std::wstring name = m_pModel->m_pFbxNodeNameList[iNode];
+			m_texBoneArray[iFrame].matBoneWorld[iNode] = m_pActionModel->m_NameMatrixMap[iFrame][name];
+		}
+	}
+
+	auto fbxMeshList = m_pModel->m_DrawList;
+
+	for (int iSub = 0; iSub < fbxMeshList.size(); iSub++)
+	{
+		LFbxObj* obj = fbxMeshList[iSub].get();
+
+		for (int iFrame = 0; iFrame < m_pActionModel->m_iEndFrame; iFrame++)
+		{
+			for (auto data : m_pModel->m_pFbxNodeNameMap)
+			{
+				auto model = obj->m_dxMatrixBindPoseMap.find(data.first);
+
+				if (model == obj->m_dxMatrixBindPoseMap.end())
+				{
+					continue;
+				}
+
+				TMatrix matBindPose = model->second;
+				int iIndex = data.second;
+				m_texBoneArray[iFrame].matBoneWorld[iIndex] = matBindPose * m_texBoneArray[iFrame].matBoneWorld[iIndex];
 			}
 		}
 	}
@@ -299,7 +364,7 @@ bool LSkinningModel::AniFrame()
 
 	if (m_TimerStart)
 	{
-		m_fCurrentAnimTime = 0.0f;
+		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
 		m_TimerStart = false;
 	}
 
