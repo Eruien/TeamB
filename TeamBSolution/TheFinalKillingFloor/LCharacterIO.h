@@ -96,5 +96,6 @@ public:
     bool ItemRead(std::wstring filePath);
     bool CharacterWrite(std::wstring fbxFilePath);
     bool CharacterRead(std::wstring filePath);
+    bool CharacterRead(std::wstring filePath, std::wstring shaderPath);
 };
 

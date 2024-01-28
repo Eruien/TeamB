@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7
 	ProjectSection(SolutionItems) = preProject
 		..\res\hlsl\CharacterInstancing.hlsl = ..\res\hlsl\CharacterInstancing.hlsl
 		..\res\hlsl\CharacterShader.hlsl = ..\res\hlsl\CharacterShader.hlsl
+		..\res\hlsl\CharacterShaderInAnimationData.hlsl = ..\res\hlsl\CharacterShaderInAnimationData.hlsl
 		..\res\hlsl\CharacterShadow.hlsl = ..\res\hlsl\CharacterShadow.hlsl
 		..\res\hlsl\CustomizeMap.hlsl = ..\res\hlsl\CustomizeMap.hlsl
 		..\res\hlsl\DiffuseLight.hlsl = ..\res\hlsl\DiffuseLight.hlsl
