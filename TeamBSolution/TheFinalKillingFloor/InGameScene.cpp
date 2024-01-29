@@ -219,8 +219,8 @@ void InGameScene::Process()
     {
         fHeight = m_CustomMap->GetHeight(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._43);
         m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
-        m_ZombieModelList[i]->Frame();
         m_ZombieModelList[i]->Process();
+        m_ZombieModelList[i]->Frame();
     }
 
     if (m_GunModel->m_pModel != nullptr && m_PlayerModel->m_pActionModel != nullptr)

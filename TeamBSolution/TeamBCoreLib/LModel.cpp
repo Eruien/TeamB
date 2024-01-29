@@ -360,11 +360,17 @@ bool LSkinningModel::Frame()
 bool LSkinningModel::AniFrame()
 {
 	if (m_pActionModel == nullptr) return false;
+
+	if (m_pComparePtr == nullptr || m_pComparePtr != m_pActionModel)
+	{
+		m_pComparePtr = m_pActionModel;
+		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
+	}
+
 	m_TimerEnd = false;
 
 	if (m_TimerStart)
 	{
-		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
 		m_TimerStart = false;
 	}
 
@@ -378,8 +384,6 @@ bool LSkinningModel::AniFrame()
 
 	m_CurrentFrame[0] = m_fCurrentAnimTime;
 
-	LGlobal::g_pImmediateContext->UpdateSubresource(m_pCurrentFrameCB.Get(), 0, NULL, &m_CurrentFrame, 0, 0);
-	LGlobal::g_pImmediateContext->VSSetConstantBuffers(2, 1, m_pCurrentFrameCB.GetAddressOf());
 	return true;
 }
 
@@ -445,6 +449,9 @@ bool LSkinningModel::AniRender()
 	for (int iSub = 0; iSub < fbxMeshList.size(); iSub++)
 	{
 		LFbxObj* obj = fbxMeshList[iSub].get();
+
+		LGlobal::g_pImmediateContext->UpdateSubresource(m_pCurrentFrameCB.Get(), 0, NULL, &m_CurrentFrame, 0, 0);
+		LGlobal::g_pImmediateContext->VSSetConstantBuffers(2, 1, m_pCurrentFrameCB.GetAddressOf());
 
 		obj->SetMatrix(&m_matControl,
 			&LGlobal::g_pMainCamera->m_matView,
