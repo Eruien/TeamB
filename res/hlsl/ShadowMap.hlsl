@@ -73,7 +73,7 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
         FinalColor.w = 1.0f;
     }
 
-    FinalColor *= 0.3f;
-    FinalColor.w = 1.0f;
+    /*FinalColor *= 0.3f;
+    FinalColor.w = 1.0f;*/
     return FinalColor;
 }

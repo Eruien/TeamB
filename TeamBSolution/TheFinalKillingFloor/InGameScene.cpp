@@ -99,25 +99,20 @@ bool InGameScene::Init()
     m_ModelCamera->SetTarget(m_PlayerModel.get());
 
     // 맵 오브젝트 예시
-    //mapObj = LFbxMgr::GetInstance().Load(L"../../res/map/Mountain.fbx", L"../../res/hlsl/ShadowMap.hlsl");
-    //m_MapModel = std::make_shared<LModel>();
-    //m_MapModel->SetLFbxObj(mapObj);
-    //m_MapModel->CreateBoneBuffer();
+    mapObj = LFbxMgr::GetInstance().Load(L"../../res/heightmap/Textures/Hospital_02_low.FBX", L"../../res/hlsl/ShadowMap.hlsl");
+    m_MapModel = std::make_shared<LModel>();
+    m_MapModel->SetLFbxObj(mapObj);
+    m_MapModel->CreateBoneBuffer();
     //m_MapModel->m_matControl._11 = 500.f;
-    //m_MapModel->m_matControl._22 = 0.f;
+    //m_MapModel->m_matControl._22 = 110.f;
     //m_MapModel->m_matControl._33 = 500.f;
     //m_MapModel->m_matControl._42 = -0.f;
+
+
+
     m_CustomMap = std::make_shared<LHeightMap>();
     m_CustomMap->Set();
-    m_CustomMap->CreateHeightMap(L"../../res/Heightmap/heightMap513.bmp");
-    //m_CustomMap->CreateHeightMap(L"../../res/Heightmap/Heightmap_04_Plains.png");
-    //LMapDesc CMapDesc = {};
-    //CMapDesc.iNumCols = 513;
-    //CMapDesc.iNumRows = 513;
-    //CMapDesc.fCellDistance = 1.0f;
-    //CMapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    //CMapDesc.TextureFilePath = L"../../res/map/baseColor.jpg";
-    //m_CustomMap->Load(CMapDesc);
+    m_CustomMap->CreateHeightMap(L"../../res/heightmap/heightMap513.bmp");
 
     LMapDesc MapDesc = {};
     MapDesc.iNumCols = m_CustomMap->m_iNumCols;
@@ -192,11 +187,11 @@ bool InGameScene::Init()
 void InGameScene::Process()
 {
     // 맵 오브젝트 예시
-    //m_MapModel->Frame();
+    m_MapModel->Frame();
     m_CustomMap->Frame();
 
     float fHeight = m_CustomMap->GetHeight(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._43);
-    m_PlayerModel->m_matControl._42 = fHeight + 1.0f;
+    m_PlayerModel->m_matControl._42 = 200.f; //fHeight + 1.0f;
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_1] > KEY_PUSH)
     {
@@ -279,18 +274,20 @@ void InGameScene::Render()
         zombie->AniRender();
     }
 
-    // map
-    //m_MapModel->m_pModel->m_DrawList[0]->SetMatrix(&m_MapModel->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    //m_CBmatShadow.g_matShadow = m_MapModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
-    //D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
-    //LGlobal::g_pImmediateContext->UpdateSubresource(m_pCBShadow.Get(), 0, NULL, &m_CBmatShadow, 0, 0);
-    //LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pCBShadow.GetAddressOf());
-    //m_MapModel->m_pModel->m_DrawList[0]->PreRender();
-    //ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
-    //LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
-    //m_MapModel->m_pModel->m_DrawList[0]->PostRender();
+    // fbx map
+    m_MapModel->m_pModel->m_DrawList[0]->SetMatrix(&m_MapModel->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_CBmatShadow.g_matShadow = m_MapModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
+    D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
+    LGlobal::g_pImmediateContext->UpdateSubresource(m_pCBShadow.Get(), 0, NULL, &m_CBmatShadow, 0, 0);
+    LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pCBShadow.GetAddressOf());
+    m_MapModel->m_pModel->m_DrawList[0]->PreRender();
+    ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
+    LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
+    m_MapModel->m_pModel->m_DrawList[0]->PostRender();
+
+    //heightmap
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_CustomMap->Render();
+    //m_CustomMap->Render();
 
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
