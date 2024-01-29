@@ -110,6 +110,7 @@ bool InGameScene::Init()
     m_CustomMap = std::make_shared<LHeightMap>();
     m_CustomMap->Set();
     m_CustomMap->CreateHeightMap(L"../../res/Heightmap/heightMap513.bmp");
+    //m_CustomMap->CreateHeightMap(L"../../res/Heightmap/Heightmap_04_Plains.png");
     //LMapDesc CMapDesc = {};
     //CMapDesc.iNumCols = 513;
     //CMapDesc.iNumRows = 513;
@@ -121,10 +122,10 @@ bool InGameScene::Init()
     LMapDesc MapDesc = {};
     MapDesc.iNumCols = m_CustomMap->m_iNumCols;
     MapDesc.iNumRows = m_CustomMap->m_iNumRows;
-    MapDesc.fCellDistance = 1.0f;
-    MapDesc.fScaleHeight = 1.0f;
+    MapDesc.fCellDistance = 4.0f;
+    MapDesc.fScaleHeight = 0.4f;
     MapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    MapDesc.TextureFilePath = L"../../res/map/basecolor.jpg";
+    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
 
     // Shadow
