@@ -20,6 +20,10 @@ cbuffer cb0
     matrix g_matView  : packoffset(c4);
     matrix g_matProj  : packoffset(c8);
 };
+cbuffer cb1
+{
+    float hp;
+};
 VS_OUTPUT VS(VS_INPUT vIn)
 {
     VS_OUTPUT vOut = (VS_OUTPUT)0;
@@ -50,4 +54,13 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     //            r,g,b,a(1)=불투명, a(0)=완전투명, a(0.0< 1.0f)= 반투명
     return g_txDiffuse1.Sample(sample0, vIn.t);// *vIn.c;
     //return vIn.c;
+}
+float4 PS_hp(VS_OUTPUT vIn) : SV_Target
+{
+    
+    float2 uv = vIn.t;
+    uv.x = hp / 100;
+    
+    return g_txDiffuse1.Sample(sample0, uv.x); // *vIn.c;
+
 }

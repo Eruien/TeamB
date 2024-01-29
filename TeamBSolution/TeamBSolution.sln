@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.33801.447
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TeamBSample", "TeamBSample", "{EEE8872F-3041-4F99-8A24-4BA51554F68E}"
 EndProject
@@ -39,11 +39,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7
 	ProjectSection(SolutionItems) = preProject
 		..\res\hlsl\CharacterInstancing.hlsl = ..\res\hlsl\CharacterInstancing.hlsl
 		..\res\hlsl\CharacterShader.hlsl = ..\res\hlsl\CharacterShader.hlsl
-		..\res\hlsl\CharacterShaderInAnimationData.hlsl = ..\res\hlsl\CharacterShaderInAnimationData.hlsl
 		..\res\hlsl\CharacterShadow.hlsl = ..\res\hlsl\CharacterShadow.hlsl
 		..\res\hlsl\CustomizeMap.hlsl = ..\res\hlsl\CustomizeMap.hlsl
 		..\res\hlsl\DiffuseLight.hlsl = ..\res\hlsl\DiffuseLight.hlsl
 		..\res\hlsl\HeightMap.hlsl = ..\res\hlsl\HeightMap.hlsl
+		..\res\hlsl\HpBar.hlsl = ..\res\hlsl\HpBar.hlsl
 		..\res\hlsl\ObjectInstancing.hlsl = ..\res\hlsl\ObjectInstancing.hlsl
 		..\res\hlsl\ProjShadow.hlsl = ..\res\hlsl\ProjShadow.hlsl
 		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl

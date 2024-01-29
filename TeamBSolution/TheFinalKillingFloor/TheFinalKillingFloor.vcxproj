@@ -149,7 +149,6 @@
     <ClCompile Include="EnemyPatrol.cpp" />
     <ClCompile Include="EnemyTakeDamage.cpp" />
     <ClCompile Include="EnemyTrace.cpp" />
-    <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="InGameScene.cpp" />
     <ClCompile Include="LAnimationIO.cpp" />
     <ClCompile Include="LBox.cpp" />
@@ -173,6 +172,7 @@
     <ClCompile Include="UI\DigitDisplay.cpp" />
     <ClCompile Include="UI\DragUI.cpp" />
     <ClCompile Include="UI\ExitWindow.cpp" />
+    <ClCompile Include="UI\HpBar.cpp" />
     <ClCompile Include="UI\ImguiDetail.cpp" />
     <ClCompile Include="UI\ImGuiManager.cpp" />
     <ClCompile Include="UI\imgui_menuBar.cpp" />
@@ -196,7 +196,6 @@
     <ClInclude Include="EnemyPatrol.h" />
     <ClInclude Include="EnemyTakeDamage.h" />
     <ClInclude Include="EnemyTrace.h" />
-    <ClInclude Include="HpBar.h" />
     <ClInclude Include="InGameScene.h" />
     <ClInclude Include="LAnimationIO.h" />
     <ClInclude Include="LBox.h" />
@@ -220,6 +219,7 @@
     <ClInclude Include="UI\DigitDisplay.h" />
     <ClInclude Include="UI\DragUI.h" />
     <ClInclude Include="UI\ExitWindow.h" />
+    <ClInclude Include="UI\HpBar.h" />
     <ClInclude Include="UI\ImguiDetail.h" />
     <ClInclude Include="UI\ImGuiManager.h" />
     <ClInclude Include="UI\imgui_menuBar.h" />

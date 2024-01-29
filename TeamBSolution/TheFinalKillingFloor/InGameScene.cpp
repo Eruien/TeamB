@@ -20,17 +20,17 @@ bool InGameScene::Init()
     LGlobal::g_pMainCamera = m_ModelCamera.get();
 
     m_MinimapCamera = std::make_shared<LCamera>();
-    m_MinimapCamera->CreateLookAt({ 0.0f, 512.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
+    m_MinimapCamera->CreateLookAt({ 0.0f, 2500.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
     m_MinimapCamera->m_fCameraPitch =0.f;
-    m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-    m_MinimapCamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+    m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.25f, 1.0f, 1.0f, 10000.0f);
+    m_MinimapCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
 
     m_playerIcon = make_shared<KObject>();
     m_playerIcon->Init();
-    m_playerIcon->SetPos({ 0, 0, 0 });
-    m_playerIcon->SetScale({100, 25000, 100});
-    m_playerIcon->m_vRotation;
-    m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/1.png");
+    m_playerIcon->SetPos({ 0, 0, -1 });
+    m_playerIcon->SetScale({100,100, 1});
+  
+    m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/PlayerIcon.png");
 
     CreateShadowConstantBuffer();
 
@@ -183,7 +183,7 @@ bool InGameScene::Init()
     //Minimap
     m_ShapeMinimap.Set();
     m_ShapeMinimap.SetScreenVertex(0, 0, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
-    m_ShapeMinimap.Create(L"../../res/hlsl/ShadowMap.hlsl", L"../../res/map/castle.jpg");
+    m_ShapeMinimap.Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Box_128x64.png");
     m_rtMinimap.Create(256, 256);
 
     return true;
@@ -338,6 +338,9 @@ void InGameScene::Render()
     UIManager::GetInstance().Render();
     m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
 
+
+
+    //¹Ì´Ï¸Ê
     if (m_rtMinimap.Begin(vClearColor))
     {
         m_CustomMap->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matProj);
@@ -346,8 +349,11 @@ void InGameScene::Render()
         LWRITE.AddText(to_wstring(m_PlayerModel->m_matControl._41), 100, 400);
         LWRITE.AddText(to_wstring(m_PlayerModel->m_matControl._42), 100, 500);
         LWRITE.AddText(to_wstring(m_PlayerModel->m_matControl._43), 100, 600);
+        LWRITE.AddText(to_wstring(LINPUT.m_vOffset.y), 500, 600);
 
-        m_playerIcon->m_vPosition={ m_PlayerModel->m_matControl._41*(LGlobal::g_WindowWidth / 500) ,0, m_PlayerModel->m_matControl._43 * (LGlobal::g_WindowHeight / 500) };
+        m_playerIcon->m_vPosition={ m_PlayerModel->m_matControl._41*(float(LGlobal::g_WindowWidth) / 2048.f) ,0, m_PlayerModel->m_matControl._43 * (float(LGlobal::g_WindowHeight) / 2048.0f) };
+        m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+        
         m_playerIcon->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matOrthoProjection);
         m_playerIcon->Frame();
         m_playerIcon->Render();
@@ -387,7 +393,7 @@ void InGameScene::RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
     TMatrix* matView, TMatrix* matProj)
 {
     TMatrix matWorldShadow = (*matWorld) * (*matShadow);
-    m_PlayerModel->m_pModel->m_DrawList[0]->SetMatrix(&matWorldShadow, matView, matProj);
+    m_PlayerModel->m_pModel->m_DrawList[0]->SetMatrix( &matWorldShadow, matView, matProj);
     m_PlayerModel->Render();
 }
 

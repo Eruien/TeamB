@@ -103,7 +103,8 @@ void Imgui_ObjectDetail::Frame()
 			if (ImGui::TreeNode("Scripts"))
 			{
 
-				const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow","BillBoard","ButtonAction","Text", "SceneChange" };
+				const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow","BillBoard","ButtonAction","Text", "SceneChange",
+				"HpBar"};
 				static int item_current_idx = 0; // Here we store our selection data as an index.
 				if (ImGui::BeginListBox(""))
 				{
@@ -154,6 +155,10 @@ void Imgui_ObjectDetail::Frame()
 							break;
 						case 9:
 							UIManager::s_selectedObject->AddScripts(make_shared<SceneChange>());
+							break;
+						case 10:
+							UIManager::s_selectedObject->AddScripts(make_shared<HpBar>());
+							UIManager::s_selectedObject->GetScript<HpBar>(L"HpBar")->Init();
 							break;
 						default:
 							break;
@@ -347,6 +352,20 @@ void Imgui_ObjectDetail::Frame()
 								{
 
 									UIManager::s_selectedObject->GetScript<SceneChange>(L"SceneChange")->SetEvent(static_cast<Event>(atoi(buffer)));
+								}
+								ImGui::EndTabItem();
+							}
+						}
+						if (script->GetName() == L"HpBar")
+						{
+							if (ImGui::BeginTabItem("HpBar"))
+							{
+								ImGui::Text("hpBar");
+								if (ImGui::Button("Delete"))
+								{
+									UIManager::s_selectedObject->RemoveScript(L"HpBar");
+									ImGui::EndTabItem();
+									continue;
 								}
 								ImGui::EndTabItem();
 							}

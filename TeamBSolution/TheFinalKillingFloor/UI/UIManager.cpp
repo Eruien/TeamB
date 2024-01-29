@@ -7,6 +7,7 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
 {
     _DepthStencilState = Depth;
     _DepthStencilStateDisable = Disable;
+
     _imGuiManager = make_shared< ImGuiManager>();
     _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
     _imgui_menuBar = make_shared<imgui_menuBar>();
@@ -286,6 +287,11 @@ void UIManager::Load(const wstring filePath)
                                 obj->AddScripts(std::make_shared<SceneChange>(static_cast<Event>(num)));
                             }
                         }
+                    }
+                    if (mtw(scriptTypeAttr) == L"HpBar")
+                    {
+                        obj->AddScripts(std::make_shared<HpBar>());
+                        obj->GetScript<HpBar>(L"HpBar")->Init();
                     }
                 }
             }

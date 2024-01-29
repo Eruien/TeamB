@@ -85,7 +85,7 @@ bool LSkyBox::Create(std::wstring shaderFileName, std::wstring texFileName)
 	LDXObject::Create(shaderFileName, texFileName);
 	CreateClampPoint();
 	m_Shader->LoadPixelShader(shaderFileName, "PS_CubeTexture");
-	
+
 	return true;
 }
 

@@ -131,7 +131,7 @@
     <ClCompile Include="EnemyAttack.cpp">
       <Filter>NPC</Filter>
     </ClCompile>
-    <ClCompile Include="HpBar.cpp">
+    <ClCompile Include="UI\HpBar.cpp">
       <Filter>UI\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,7 +266,7 @@
     <ClInclude Include="EnemyAttack.h">
       <Filter>NPC</Filter>
     </ClInclude>
-    <ClInclude Include="HpBar.h">
+    <ClInclude Include="UI\HpBar.h">
       <Filter>UI\Scripts</Filter>
     </ClInclude>
   </ItemGroup>
