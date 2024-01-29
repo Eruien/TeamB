@@ -191,6 +191,8 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
+    // 맵 오브젝트 예시
+    //m_MapModel->Frame();
     m_CustomMap->Frame();
 
     float fHeight = m_CustomMap->GetHeight(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._43);
@@ -217,8 +219,8 @@ void InGameScene::Process()
     {
         fHeight = m_CustomMap->GetHeight(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._43);
         m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
-        m_ZombieModelList[i]->Frame();
         m_ZombieModelList[i]->Process();
+        m_ZombieModelList[i]->Frame();
     }
 
     if (m_GunModel->m_pModel != nullptr && m_PlayerModel->m_pActionModel != nullptr)
@@ -231,8 +233,7 @@ void InGameScene::Process()
             * m_GunModel->m_pModel->m_matTranslation * m_PlayerModel->m_matControl;
     }
 
-    // 맵 오브젝트 예시
-    //m_MapModel->Frame();
+
 
     m_Select->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 

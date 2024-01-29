@@ -18,6 +18,7 @@ public:
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;
+	LFbxObj* m_pComparePtr = nullptr;
 public:
 	float m_fCurrentAnimTime = 0.0f;
 	LBoneWorld m_matBoneArray;
