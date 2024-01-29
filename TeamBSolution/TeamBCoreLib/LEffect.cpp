@@ -118,7 +118,7 @@ bool LEffect::Init()
 	Spliteinfo.Reset();
 
 
-	//인덱스4 피격시 랜덤위치 핏자국
+	//인덱스4 명중시 피튀김
 	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 4;
@@ -130,8 +130,8 @@ bool LEffect::Init()
 	Spliteinfo.shaderFile = L"../../res/hlsl/CustomizeMap.hlsl";
 
 	Spliteinfo.bBilboard = true;
-	Spliteinfo.bFadeout = true;
-	Spliteinfo.bScreenEffect = true;
+	Spliteinfo.bFadeout = false;
+	Spliteinfo.bScreenEffect = false;
 
 
 	m_pSpriteUVObj->Load(Spliteinfo);
@@ -197,7 +197,7 @@ bool LEffect::Frame()
 				LParticle Spliteinfo;
 				ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 				Spliteinfo.m_bLife = true;
-				Spliteinfo.m_iID = rand() % m_SpriteList.size();
+				Spliteinfo.m_iID = 3;
 
 				Spliteinfo.m_bBilboard = m_SpriteList[Spliteinfo.m_iID]->m_bBilboard;
 				Spliteinfo.m_bFadeout = m_SpriteList[Spliteinfo.m_iID]->m_bFadeout;
@@ -223,7 +223,7 @@ bool LEffect::Frame()
 
 				m_ParticleList.push_back(Spliteinfo);//생성된 이펙트
 		}
-		//P누른상태에서 W클릭시 피격 피튀김 이펙트 인덱스4
+		//P누른상태에서 W클릭시 피격 피튀김 이펙트 인덱스4 
 		if (LInput::GetInstance().m_dwKeyState['W'] == DWORD(KeyState::KEY_PUSH))
 			{
 				LParticle Spliteinfo;
@@ -241,13 +241,17 @@ bool LEffect::Frame()
 				Spliteinfo.m_fOffsetTime = m_SpriteList[Spliteinfo.m_iID]->m_fAnimTimer / Spliteinfo.m_iMaxFrame;
 				Spliteinfo.m_fAnimTimer = m_SpriteList[Spliteinfo.m_iID]->m_fAnimTimer;
 
-				for (int i = 0; i < 20; i++)
-				{
 					if (Spliteinfo.m_bScreenEffect == true)
 					{
 						Spliteinfo.m_vPos = screen;
-						Spliteinfo.m_vPos.x += randstep(-400.0f, 400.0f);
-						Spliteinfo.m_vPos.y += randstep(-300.0f, 300.0f);
+
+
+					}
+					else
+					{
+						Spliteinfo.m_vPos = mouse;
+						Spliteinfo.m_vPos.z = -10.0f;
+
 
 					}
 
@@ -256,11 +260,13 @@ bool LEffect::Frame()
 
 					m_ParticleList.push_back(Spliteinfo);//생성된 이펙트
 
-				}
+				
 
 			}
 	}
 	
+
+
 	for (std::list<LParticle>::iterator iter = m_ParticleList.begin();
 		iter != m_ParticleList.end();)
 	{
@@ -268,7 +274,7 @@ bool LEffect::Frame()
 		Spliteinfo.Frame();
 		if (Spliteinfo.m_bScreenEffect == true)
 		{
-			Spliteinfo.m_vPos = LGlobal::g_pMainCamera->m_vCameraPos + LGlobal::g_pMainCamera->m_vLook * 10;
+			Spliteinfo.m_vPos = screen;
 		}
 
 		if (Spliteinfo.m_bLife == false)
@@ -304,7 +310,7 @@ bool LEffect::Render()
 			//	SetBilboardMatrix();
 
 			//}
-				pBaseObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+			pBaseObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 
 
 
