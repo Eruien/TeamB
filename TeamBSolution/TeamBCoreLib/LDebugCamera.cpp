@@ -74,7 +74,7 @@ bool LDebugCamera::Frame()
 	}
 
 	m_fSpeed -= LGlobal::g_fSPF * m_fSpeed * 0.5f;
-	m_fSpeed = max(10.0f, m_fSpeed);
+	m_fSpeed = max(100.0f, m_fSpeed);
 
 	if (LInput::GetInstance().m_dwKeyState['W'] == DWORD(KeyState::KEY_HOLD))
 	{

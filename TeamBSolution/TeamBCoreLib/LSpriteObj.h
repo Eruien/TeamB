@@ -20,6 +20,8 @@ struct LSpriteInfo
 {
 	int			iNumRow;
 	int			iNumColumn;
+
+	TVector3	n;
 	TVector3	p;
 	TVector3	s;
 	float		fAnimTimer;
@@ -28,18 +30,29 @@ struct LSpriteInfo
 	std::basic_string<wchar_t>		texAlphaFile;
 	std::basic_string<wchar_t>		shaderFile;
 	std::vector<std::basic_string<TCHAR>> texList;
+
+	bool	bBilboard = false;
+	bool	bFadeout = false;
+	bool	bScreenEffect = false;
+
+
 	void Reset()
 	{
 		iNumRow = 1;
 		iNumColumn = 1;
 		fAnimTimer = 1.0f;
 		fElapsedTimer = 0.0f;
+		n = {0.0f,0.0f,1.0f};
 		p = { 1.0f, 1.0f, 1.0f };
 		s = { 0.0f, 0.0f, 0.0f };
 		texList.clear();
 		texFile = L"";
 		texAlphaFile = L"";
 		shaderFile = L"";
+
+		bBilboard = false;
+		bFadeout = false;
+		bScreenEffect = false;
 	}
 	LSpriteInfo()
 	{
@@ -66,7 +79,12 @@ public:
 	int		m_iNumSpriteX = 1;
 	int		m_iNumSpriteY = 1;
 	LSpriteInfo m_InitSpriteInfo;
-	
+public:
+
+	bool	m_bBilboard = false;
+	bool	m_bFadeout = false;
+	bool	m_bScreenEffect = false;
+
 public:
 	virtual bool   Init() override;
 

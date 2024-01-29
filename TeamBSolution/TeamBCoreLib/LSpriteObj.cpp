@@ -17,6 +17,11 @@ bool  LSpriteObj::Load(LSpriteInfo info)
 	LoadTexArray(info.texList);
 
 	SetUVFrame(info.iNumRow, info.iNumColumn);
+	
+	
+	m_bBilboard = info.bBilboard;
+	m_bFadeout = info.bFadeout;
+	m_bScreenEffect = info.bScreenEffect;
 
 	
 	return Create(info.shaderFile, info.texFile);
@@ -123,8 +128,8 @@ void LSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 
 bool LSpriteUV::Init()
 {
-	LPlaneObj::Init();
-	LSpriteObj::Init();
+	LPlaneObj::Init();//업데이트 메트릭스
+	LSpriteObj::Init();//없음
 
 	return true;
 }
