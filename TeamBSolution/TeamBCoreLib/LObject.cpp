@@ -1,5 +1,5 @@
 #include "LObject.h"
-
+//월드좌표 오브젝트를 월드->뷰->투영해서 핸들에 전달
 void  LObject::SetMatrix(TMatrix* matWorld, TMatrix* matView, TMatrix* matProj)
 {
 	if (matWorld != nullptr)
@@ -34,7 +34,7 @@ void LObject::UpdateMatrix()
 	D3DXMatrixRotationZ(&matRotation, m_vRotation.z);
 	D3DXMatrixTranslation(&matTranslate, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 
-	m_matWorld = matScale * matRotation * matTranslate;
+	m_matWorld = matScale * matRotation * matTranslate;//로컬1크기를 스케일->회전->이동 = 월드
 
 
 }
@@ -74,8 +74,8 @@ bool LObject::Release()
 }
 bool LObject::Create(std::wstring shaderFileName, std::wstring texFileName)
 {
-	CreateVertexData();
-	CreateIndexData();
+	CreateVertexData();//비어있음
+	CreateIndexData();//비어있음
 	CreateVertexBuffer();
 	CreateIndexBuffer();
 	CreateConstantBuffer();
@@ -84,7 +84,7 @@ bool LObject::Create(std::wstring shaderFileName, std::wstring texFileName)
 	CreateLayout();
 	// obj공용 // m_pTexSRV 생성
 	m_Tex = LManager<LTexture>::GetInstance().Load(texFileName);
-	UpdateMatrix();
+	UpdateMatrix();//로컬에서 월드로 변환
 	return true;
 }
 LObject::LObject()

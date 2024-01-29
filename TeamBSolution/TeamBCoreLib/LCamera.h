@@ -9,7 +9,7 @@ public:
     TVector3 m_vLook;
     TVector3 m_vUp;
     TVector3 m_vRight;
-    float m_fSpeed = 10.0f;
+    float m_fSpeed = 100.0f;//속도열배로 증가수정
 public:
     TMatrix m_matView;
     TMatrix m_matOrthoProjection;

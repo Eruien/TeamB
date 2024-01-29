@@ -9,8 +9,11 @@ class LParticle
 public:
 	bool     m_bLife = true;
 	TVector3 m_vPos;
-	TVector3 m_vSclae;
+	TVector3 m_vScale;
 	TVector3 m_vRotation;
+
+public:
+
 	float   m_fElapsedTimer = 0.0f;
 	float	m_fOffsetTime = 0.0f;
 	float	m_fAnimTimer = 1.0f;
@@ -19,22 +22,29 @@ public:
 	std::basic_string<wchar_t>   m_szName;
 	int		m_iID = 0;
 	int		m_iMaxFrame = 0;
+
+	bool	m_bBilboard = false;
+	bool	m_bFadeout = false;
+	bool	m_bScreenEffect = false;
+
+
 	void Frame()
 	{
 		if (!m_bLife) return;
-
+		m_fPlayTime += LGlobal::g_fSPF;
 		if (m_iMaxFrame <= 1)
 		{
-			m_fPlayTime += LGlobal::g_fSPF;
+			
 			if (m_fPlayTime > m_fAnimTimer)
 			{
 				m_iCurrentAnimIndex = 0;
 				m_bLife = false;
+				m_fPlayTime=0.0f;
 			}
 		}
 		else
 		{
-			m_fPlayTime += LGlobal::g_fSPF;
+			
 			m_fElapsedTimer += LGlobal::g_fSPF;
 			if (m_fElapsedTimer >= m_fOffsetTime)
 			{
@@ -76,15 +86,23 @@ public:
 
 
 public:
-	void SetBuilboardMatrix()
+
+
+	void SetBilboardMatrix()
 	{
 		//빌보드 축 선택기능추가 필요
 		//SetBuilboardXMatrix();
 		//	SetBuilboardYMatrix();
 		//	SetBuilboardZMatrix();
+		// 
 		TMatrix mat = m_matView;
 		D3DXMatrixInverse(&mat, NULL, &mat);
+		//mat._41 = 0.0f;
+		//mat._42 = 0.0f;
+		//mat._43 = 0.0f;
+		//mat._44 = 1.0f;
 		m_matWorld = m_matWorld* mat;
+
 	}
 
     LFrustum m_Frustum;

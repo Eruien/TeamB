@@ -54,7 +54,7 @@ bool  LPlaneObj::Load(	TVector3 p,	TVector3 s,
 
 bool LPlaneObj::Init()//UpdateMatrix
 {
-	LObject::Init();
+	LObject::Init();//¾øÀ½
 
 
 
