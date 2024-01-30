@@ -28,6 +28,7 @@ public:
 public:
 	void SetMatrix(TMatrix* pWorld, TMatrix* pView, TMatrix* pProj);
 	void Update();
+	void UpdateCursorCenter();
 	TVector3 GetIntersection();
 	bool GetIntersection(TVector3 vStart, TVector3 vEnd, TVector3 vNormal, TVector3 v0, TVector3 v1, TVector3 v2, float* fPercentage = nullptr);
 	bool GetIntersection(float fRayRange, TVector3 vNormal, TVector3 v0, TVector3 v1, TVector3 v2, float* fPercentage = nullptr);

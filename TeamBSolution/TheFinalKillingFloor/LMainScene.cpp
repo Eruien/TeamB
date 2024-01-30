@@ -24,7 +24,7 @@ void LMainScene::Render()
 
 void LMainScene::Process()
 {
-    m_pOwner->SetTransition(Event::GOINGAMESCENE);
+    //m_pOwner->SetTransition(Event::GOINGAMESCENE);
     UIManager::GetInstance().Frame();
 }
 

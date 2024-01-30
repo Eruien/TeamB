@@ -14,7 +14,7 @@
     <UIObject Name="">
         <Position x="0" y="0" z="0"/>
         <Scale width="60" height="60"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\CrossHair.png"/>
+        <Texture texPath="../../res/ui/CrossHair.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -23,7 +23,7 @@
     <UIObject Name="Minimap">
         <Position x="-540" y="260" z="0"/>
         <Scale width="200" height="200"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\minimap.png"/>
+        <Texture texPath="../../res/ui/minimap.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -32,7 +32,7 @@
     <UIObject Name="wp_background">
         <Position x="461" y="-293" z="0"/>
         <Scale width="292" height="86"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\ui_weapon_bg.png"/>
+        <Texture texPath="../../res/ui/ui_weapon_bg.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -41,7 +41,7 @@
     <UIObject Name="weaponUI">
         <Position x="544" y="-291" z="0"/>
         <Scale width="94" height="58"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\ui_weapon_m340.25x.png"/>
+        <Texture texPath="../../res/ui/ui_weapon_m340.25x.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -50,7 +50,7 @@
     <UIObject Name="face">
         <Position x="-556" y="-293" z="0"/>
         <Scale width="58" height="56"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\face.png"/>
+        <Texture texPath="../../res/ui/face.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -59,7 +59,7 @@
     <UIObject Name="HPbar">
         <Position x="-376" y="-297" z="0"/>
         <Scale width="270" height="38"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\hp_bar.png"/>
+        <Texture texPath="../../res/ui/hp_bar.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
