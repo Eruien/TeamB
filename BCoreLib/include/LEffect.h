@@ -72,7 +72,7 @@ public:
 	}
 
 public:
-	std::unique_ptr<LSpriteTexture> m_pSpriteTexObj = nullptr;
+	//std::unique_ptr<LSpriteTexture> m_pSpriteTexObj = nullptr;
 	std::unique_ptr<LSpriteUV> m_pSpriteUVObj = nullptr;
 	std::unique_ptr<LSpriteObj> m_pSpriteAirObj = nullptr;
 	std::unique_ptr<LSpriteTexture> m_pScreenTexObj = nullptr;
