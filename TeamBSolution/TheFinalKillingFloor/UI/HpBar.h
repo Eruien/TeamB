@@ -1,5 +1,15 @@
 #pragma once
 #include "MonoBehaviour.h"
+
+struct hpVertex
+{
+	TVector3		p;
+	TVector3		n;
+	TVector4		c;
+	TVector2		t;
+	float				hp;
+};
+
 struct cbData_hp
 {
 	float hp;
@@ -13,11 +23,12 @@ public:
 	HpBar();
 	~HpBar();
 public:
-	void CreateConstantBuffer();
 	void Init() override;
 	void Frame() override;
 	void UpdateHp(float hp = 50);
+	void SetCrrHp(float hp) { _testCrrHp = hp; }
 private :
-	ComPtr<ID3D11Buffer> _cbBuffer;
+	float _maxHp = 100;
+	float _testCrrHp;
 };
 

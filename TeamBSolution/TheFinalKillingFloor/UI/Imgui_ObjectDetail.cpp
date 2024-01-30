@@ -360,7 +360,12 @@ void Imgui_ObjectDetail::Frame()
 						{
 							if (ImGui::BeginTabItem("HpBar"))
 							{
-								ImGui::Text("hpBar");
+								ImGui::Text("HpBar");
+								if (ImGui::InputText("##hpBar", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+								{
+
+									UIManager::s_selectedObject->GetScript<HpBar>(L"HpBar")->SetCrrHp(static_cast<float>(atoi(buffer)));
+								}
 								if (ImGui::Button("Delete"))
 								{
 									UIManager::s_selectedObject->RemoveScript(L"HpBar");

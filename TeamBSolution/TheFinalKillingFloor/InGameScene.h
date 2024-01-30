@@ -26,6 +26,8 @@ public:
 	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
 	std::shared_ptr<LCamera> m_MinimapCamera = nullptr;
 	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
+	std::shared_ptr<KObject> m_enemyHp;
+
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
