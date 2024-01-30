@@ -20,7 +20,7 @@ void LSelect::SetMatrix(TMatrix* pWorld, TMatrix* pView, TMatrix* pProj)
 		m_matProj = *pProj;
 	}
 
-	Update();
+	UpdateCursorCenter();
 }
 
 void LSelect::Update()
@@ -32,6 +32,33 @@ void LSelect::Update()
 	TVector3 v;
 	v.x = (((2.0f * ptCursor.x) / LGlobal::g_WindowWidth) - 1) / m_matProj._11;
 	v.y = -(((2.0f * ptCursor.y) / LGlobal::g_WindowHeight) - 1) / m_matProj._22;
+	v.z = 1.0f;
+
+	TMatrix mWorldView = m_matWorld * m_matView;
+	TMatrix m;
+	D3DXMatrixInverse(&m, NULL, &mWorldView);
+
+	m_Ray.vOrigin = TVector3(0.0f, 0.0f, 0.0f);
+	m_Ray.vDirection = TVector3(v.x, v.y, v.z);
+	D3DXVec3TransformCoord(&m_Ray.vOrigin, &m_Ray.vOrigin, &m);
+	D3DXVec3TransformNormal(&m_Ray.vDirection, &m_Ray.vDirection, &m);
+	D3DXVec3Normalize(&m_Ray.vDirection, &m_Ray.vDirection);
+}
+
+void LSelect::UpdateCursorCenter()
+{
+	RECT clientRect;
+	GetClientRect(LGlobal::g_hWnd, &clientRect);
+
+	int clientCenterX = (clientRect.right - clientRect.left) / 2;
+	int clientCenterY = (clientRect.bottom - clientRect.top) / 2;
+	POINT point = { clientCenterX, clientCenterY };
+	ClientToScreen(LGlobal::g_hWnd, &point);
+	ScreenToClient(LGlobal::g_hWnd, &point);
+
+	TVector3 v;
+	v.x = (((2.0f * point.x) / LGlobal::g_WindowWidth) - 1) / m_matProj._11;
+	v.y = -(((2.0f * point.y) / LGlobal::g_WindowHeight) - 1) / m_matProj._22;
 	v.z = 1.0f;
 
 	TMatrix mWorldView = m_matWorld * m_matView;
