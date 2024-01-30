@@ -29,6 +29,7 @@ public:
 	bool IsRun = false;
 	bool IsAttack = false;
 	bool IsMove = true;
+	bool IsMovable = true;
 	float m_Speed = 0.0f;
 public:
 	void FSM(FSMType fsmType);

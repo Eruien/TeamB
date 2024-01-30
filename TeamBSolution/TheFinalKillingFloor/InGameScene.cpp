@@ -217,10 +217,31 @@ void InGameScene::Process()
 
     for (int i = 0; i < m_EnemySize; i++)
     {
+        m_ZombieModelList[i]->IsMovable = true;
+    }
+    for (int i = 0; i < m_EnemySize; i++)
+    {
         fHeight = m_CustomMap->GetHeight(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._43);
         m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
         m_ZombieModelList[i]->Process();
         m_ZombieModelList[i]->Frame();
+        // collision check
+        for (int j = i + 1; j < m_EnemySize; j++)
+        {
+            if (m_obbBoxList[i]->CollisionCheck(m_obbBoxList[j]))
+            {
+                m_ZombieModelList[i]->IsMovable = false;
+                m_ZombieModelList[j]->IsMovable = false;
+                float offsetX = m_obbBoxList[i]->m_Box.vCenter.x - m_obbBoxList[j]->m_Box.vCenter.x;
+                float offsetZ = m_obbBoxList[i]->m_Box.vCenter.z - m_obbBoxList[j]->m_Box.vCenter.z;
+
+                m_ZombieModelList[i]->m_matControl._41 += offsetX*0.2;
+                m_ZombieModelList[i]->m_matControl._43 += offsetZ*0.2;
+            }
+            
+        }
+        
+
     }
 
     if (m_GunModel->m_pModel != nullptr && m_PlayerModel->m_pActionModel != nullptr)
@@ -424,3 +445,4 @@ InGameScene::InGameScene(LScene* parent) : SceneState(parent)
     Init();
 }
 InGameScene::~InGameScene() {}
+

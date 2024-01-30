@@ -14,6 +14,7 @@ public:
 		TVector3 vDirZ = TVector3(0.0f, 0.0f, 1.0f));
 	bool CreateVertexData() override;
 	bool CreateIndexData() override;
+	bool CollisionCheck(LBox* other);
 	void SetMatrix(TMatrix* matWorld, TMatrix* matView, TMatrix* matProj) override;
 };
 

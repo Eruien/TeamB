@@ -20,8 +20,8 @@ void EnemyPatrol::Process()
         m_pOwner->SetTransition(Event::FINDPLAYER);
         return;
     }
-
-    m_pOwner->Move(m_pOwner->m_RandomPos);
+    if (m_pOwner->IsMovable)
+        m_pOwner->Move(m_pOwner->m_RandomPos);
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx");
 }
 

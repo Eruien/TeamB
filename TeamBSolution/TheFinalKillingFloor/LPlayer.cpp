@@ -110,7 +110,7 @@ bool LPlayer::Frame()
 		IsAttack = false;
 	}
 
-	if (IsMove)
+	if (IsMove && IsMovable)
 	{
 		Move();
 	}

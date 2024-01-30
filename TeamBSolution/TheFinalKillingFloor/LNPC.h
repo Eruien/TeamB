@@ -33,6 +33,7 @@ public:
 	bool IsDead = false;
 	bool IsTakeDamage = false;
 	bool IsAttackRange = false;
+	bool IsMovable = true;
 	int m_LifeCount = 5;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;

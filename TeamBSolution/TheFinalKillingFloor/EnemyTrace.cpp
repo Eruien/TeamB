@@ -20,8 +20,10 @@ void EnemyTrace::Process()
         m_pOwner->SetTransition(Event::PLAYERINATTACKRANGE);
         return;
     }
-
-    m_pOwner->Move(m_pOwner->m_PlayerPos);
+    if (m_pOwner->IsMovable)
+    {
+        m_pOwner->Move(m_pOwner->m_PlayerPos);
+    }
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx");
 }
 

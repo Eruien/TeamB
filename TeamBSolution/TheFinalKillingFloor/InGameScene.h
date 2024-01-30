@@ -68,4 +68,5 @@ public:
 public:
 	InGameScene(LScene* parent);
 	virtual ~InGameScene();
+
 };

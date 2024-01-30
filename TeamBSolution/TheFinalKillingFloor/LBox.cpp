@@ -114,6 +114,17 @@ bool LBox::CreateIndexData()
 	return true;
 }
 
+bool LBox::CollisionCheck(LBox* other)
+{
+	// 각 축에서 겹치지 않는 경우가 있다면 충돌이 없음
+	if (m_Box.vMax.x < other->m_Box.vMin.x || m_Box.vMin.x > other->m_Box.vMax.x) return false;
+	if (m_Box.vMax.y < other->m_Box.vMin.y || m_Box.vMin.y > other->m_Box.vMax.y) return false;
+	if (m_Box.vMax.z < other->m_Box.vMin.z || m_Box.vMin.z > other->m_Box.vMax.z) return false;
+
+	// 모든 축에서 겹치는 경우만 충돌이 있음
+	return true;
+}
+
 void LBox::SetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
 {
 	if (parent != nullptr)
