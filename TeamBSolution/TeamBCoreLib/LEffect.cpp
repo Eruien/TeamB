@@ -28,7 +28,8 @@ bool LEffect::Init()
 
 	//m_pSpriteTexObj->Load(Spliteinfo);
 	//m_SpriteList.insert(std::make_pair(m_iSpriteIndex++, m_pSpriteTexObj.get()));
-	Spliteinfo.Reset();
+	Spliteinfo.Reset
+	();
 
 	//UVΩ∫«¡∂Û¿Ã∆Æ
 	// 
@@ -36,7 +37,7 @@ bool LEffect::Init()
 	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 1;
-	Spliteinfo.iNumColumn = 3;
+	Spliteinfo.iNumColumn = 4;
 	Spliteinfo.fAnimTimer = 0.2f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 20.0f,20.0f,1.0f };
@@ -57,7 +58,7 @@ bool LEffect::Init()
 	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 1;
-	Spliteinfo.iNumColumn = 3;
+	Spliteinfo.iNumColumn = 4;
 	Spliteinfo.fAnimTimer = 0.2f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 20.0f,20.0f,1.0f };
@@ -76,8 +77,8 @@ bool LEffect::Init()
 	//2¿Œµ¶Ω∫ √—±∏»≠ø∞3
 	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
-	Spliteinfo.iNumRow = 1;
-	Spliteinfo.iNumColumn = 3;
+	Spliteinfo.iNumRow = 4;
+	Spliteinfo.iNumColumn = 1;
 	Spliteinfo.fAnimTimer = 0.2f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 20.0f,20.0f,1.0f };
@@ -357,7 +358,7 @@ bool LEffect::Render()
 bool LEffect::Release()
 {
 	if (m_pSpriteUVObj) m_pSpriteUVObj->Release();
-	if (m_pSpriteTexObj)m_pSpriteTexObj->Release();
+	//if (m_pSpriteTexObj)m_pSpriteTexObj->Release();
 	if (m_pSpriteAirObj) m_pSpriteAirObj->Release();
 	return true;
 }

@@ -140,6 +140,18 @@ public:
 	}
 	
 public:
+	void	Reset()
+	{
+		m_pUVList.clear();
+		/*const*/	LTexture* m_pAlphaTex = nullptr;
+			m_fAnimTimer = 1.0f;  // 전체 시간
+			m_fOffsetTime = 0.0f;	// 1프레임 교체시간
+			m_fElapsedTimer = 0.0f; // 누적시간
+				m_iCurrentAnimIndex = 0;
+				m_iNumSpriteX = 1;
+				m_iNumSpriteY = 1;
+
+	}
 	virtual int    GetMaxSize() { return m_pUVList.size(); }
 	bool Init() override;
 	bool Frame() override;
