@@ -147,37 +147,35 @@ bool InGameScene::Init()
     TMatrix Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
 
     m_Select = new LSelect;
-    m_obbBoxList.resize(m_EnemySize);
-    m_BoxList.resize(m_EnemySize);
+ 
     for (int i = 0; i < m_EnemySize; i++)
     {
-        m_obbBoxList[i] = new LBox;
-        m_obbBoxList[i]->Set();
-        m_BoxList[i] = new T_BOX;
-        m_BoxList[i]->vMax = TVector3(20.0f, Head._42, 30.0f) * 0.2f;
-        m_BoxList[i]->vMin = TVector3(-20.0f, Root._42, -5.0f) * 0.2f;
-        m_BoxList[i]->vCenter = (m_BoxList[i]->vMax + m_BoxList[i]->vMin);
-        m_BoxList[i]->vCenter.x /= 2.0f;
-        m_BoxList[i]->vCenter.y /= 2.0f;
-        m_BoxList[i]->vCenter.z /= 2.0f;
+        m_ZombieModelList[i]->m_obbBoxList.Set();
+       
+        m_ZombieModelList[i]->m_BoxList.vMax = TVector3(20.0f, Head._42, 30.0f) * 0.2f;
+        m_ZombieModelList[i]->m_BoxList.vMin = TVector3(-20.0f, Root._42, -5.0f) * 0.2f;
+        m_ZombieModelList[i]->m_BoxList.vCenter = (m_ZombieModelList[i]->m_BoxList.vMax + m_ZombieModelList[i]->m_BoxList.vMin);
+        m_ZombieModelList[i]->m_BoxList.vCenter.x /= 2.0f;
+        m_ZombieModelList[i]->m_BoxList.vCenter.y /= 2.0f;
+        m_ZombieModelList[i]->m_BoxList.vCenter.z /= 2.0f;
 
-        m_BoxList[i]->fExtent[0] = fabs(m_BoxList[i]->vCenter.x - m_BoxList[i]->vMax.x);
-        m_BoxList[i]->fExtent[1] = fabs(m_BoxList[i]->vCenter.y - m_BoxList[i]->vMax.y);
-        m_BoxList[i]->fExtent[2] = fabs(m_BoxList[i]->vCenter.z - m_BoxList[i]->vMax.z);
-        m_BoxList[i]->vAxis[0] = TVector3(1.0f, 0.0f, 0.0f);
-        m_BoxList[i]->vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
-        m_BoxList[i]->vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
+        m_ZombieModelList[i]->m_BoxList.fExtent[0] = fabs(m_ZombieModelList[i]->m_BoxList.vCenter.x - m_ZombieModelList[i]->m_BoxList.vMax.x);
+        m_ZombieModelList[i]->m_BoxList.fExtent[1] = fabs(m_ZombieModelList[i]->m_BoxList.vCenter.y - m_ZombieModelList[i]->m_BoxList.vMax.y);
+        m_ZombieModelList[i]->m_BoxList.fExtent[2] = fabs(m_ZombieModelList[i]->m_BoxList.vCenter.z - m_ZombieModelList[i]->m_BoxList.vMax.z);
+        m_ZombieModelList[i]->m_BoxList.vAxis[0] = TVector3(1.0f, 0.0f, 0.0f);
+        m_ZombieModelList[i]->m_BoxList.vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
+        m_ZombieModelList[i]->m_BoxList.vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
 
         TMatrix matScale;
-        D3DXMatrixScaling(&matScale, m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2]);
-        m_obbBoxList[i]->m_matWorld = matScale;
-        m_obbBoxList[i]->m_matWorld._41 = m_BoxList[i]->vCenter.x;
-        m_obbBoxList[i]->m_matWorld._42 = m_BoxList[i]->vCenter.y;
-        m_obbBoxList[i]->m_matWorld._43 = m_BoxList[i]->vCenter.z;
+        D3DXMatrixScaling(&matScale, m_ZombieModelList[i]->m_BoxList.fExtent[0], m_ZombieModelList[i]->m_BoxList.fExtent[1], m_ZombieModelList[i]->m_BoxList.fExtent[2]);
+        m_ZombieModelList[i]->m_obbBoxList.m_matWorld = matScale;
+        m_ZombieModelList[i]->m_obbBoxList.m_matWorld._41 = m_ZombieModelList[i]->m_BoxList.vCenter.x;
+        m_ZombieModelList[i]->m_obbBoxList.m_matWorld._42 = m_ZombieModelList[i]->m_BoxList.vCenter.y;
+        m_ZombieModelList[i]->m_obbBoxList.m_matWorld._43 = m_ZombieModelList[i]->m_BoxList.vCenter.z;
 
-        m_obbBoxList[i]->CreateOBBBox(m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2],
-            m_BoxList[i]->vCenter, m_BoxList[i]->vAxis[0], m_BoxList[i]->vAxis[1], m_BoxList[i]->vAxis[2]);
-        m_obbBoxList[i]->Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
+        m_ZombieModelList[i]->m_obbBoxList.CreateOBBBox(m_ZombieModelList[i]->m_BoxList.fExtent[0], m_ZombieModelList[i]->m_BoxList.fExtent[1], m_ZombieModelList[i]->m_BoxList.fExtent[2],
+            m_ZombieModelList[i]->m_BoxList.vCenter, m_ZombieModelList[i]->m_BoxList.vAxis[0], m_ZombieModelList[i]->m_BoxList.vAxis[1], m_ZombieModelList[i]->m_BoxList.vAxis[2]);
+        m_ZombieModelList[i]->m_obbBoxList.Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
     }
 
     //Minimap
@@ -234,12 +232,12 @@ void InGameScene::Process()
         // collision check
         for (int j = i + 1; j < m_EnemySize; j++)
         {
-            if (m_obbBoxList[i]->CollisionCheck(m_obbBoxList[j]))
+            if (m_ZombieModelList[i]->m_obbBoxList.CollisionCheck(&m_ZombieModelList[j]->m_obbBoxList))
             {
                 m_ZombieModelList[i]->IsMovable = false;
                 m_ZombieModelList[j]->IsMovable = false;
-                float offsetX = m_obbBoxList[i]->m_Box.vCenter.x - m_obbBoxList[j]->m_Box.vCenter.x;
-                float offsetZ = m_obbBoxList[i]->m_Box.vCenter.z - m_obbBoxList[j]->m_Box.vCenter.z;
+                float offsetX = m_ZombieModelList[i]->m_obbBoxList.m_Box.vCenter.x - m_ZombieModelList[i]->m_obbBoxList.m_Box.vCenter.x;
+                float offsetZ = m_ZombieModelList[i]->m_obbBoxList.m_Box.vCenter.z - m_ZombieModelList[i]->m_obbBoxList.m_Box.vCenter.z;
 
                 m_ZombieModelList[i]->m_matControl._41 += offsetX*0.2;
                 m_ZombieModelList[i]->m_matControl._43 += offsetZ*0.2;
@@ -291,10 +289,10 @@ void InGameScene::Process()
 
     for (int i = 0; i < m_EnemySize; i++)
     {
-        m_obbBoxList[i]->Frame();
-        m_obbBoxList[i]->CreateOBBBox(m_BoxList[i]->fExtent[0], m_BoxList[i]->fExtent[1], m_BoxList[i]->fExtent[2],
-            { m_obbBoxList[i]->m_matWorld._41, m_obbBoxList[i]->m_matWorld._42, m_obbBoxList[i]->m_matWorld._43 },
-            m_BoxList[i]->vAxis[0], m_BoxList[i]->vAxis[1], m_BoxList[i]->vAxis[2]);
+        m_ZombieModelList[i]->m_obbBoxList.Frame();
+        m_ZombieModelList[i]->m_obbBoxList.CreateOBBBox(m_ZombieModelList[i]->m_BoxList.fExtent[0], m_ZombieModelList[i]->m_BoxList.fExtent[1], m_ZombieModelList[i]->m_BoxList.fExtent[2],
+            { m_ZombieModelList[i]->m_obbBoxList.m_matWorld._41, m_ZombieModelList[i]->m_obbBoxList.m_matWorld._42, m_ZombieModelList[i]->m_obbBoxList.m_matWorld._43 },
+            m_ZombieModelList[i]->m_BoxList.vAxis[0], m_ZombieModelList[i]->m_BoxList.vAxis[1], m_ZombieModelList[i]->m_BoxList.vAxis[2]);
     }
     UIManager::GetInstance().Frame();
 }
@@ -358,13 +356,13 @@ void InGameScene::Render()
     for (int i = 0; i < m_EnemySize; i++)
     {
         TMatrix zombieTranslation;
-        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_BoxList[i]->vCenter.y, m_ZombieModelList[i]->m_matControl._43));
-        m_obbBoxList[i]->SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_obbBoxList[i]->Render();
+        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_ZombieModelList[i]->m_BoxList.vCenter.y, m_ZombieModelList[i]->m_matControl._43));
+        m_ZombieModelList[i]->m_obbBoxList.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_ZombieModelList[i]->m_obbBoxList.Render();
 
         if (LInput::GetInstance().m_MouseState[0])
         {
-            if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
+            if (m_Select->ChkOBBToRay(&m_ZombieModelList[i]->m_obbBoxList.m_Box))
             {
                 if (m_PlayerModel->IsShoot)
                 {

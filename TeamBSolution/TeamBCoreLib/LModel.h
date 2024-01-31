@@ -1,5 +1,6 @@
 #pragma once
 #include "LFbxObj.h"
+#include "LBox.h"
 
 class LModel
 {
@@ -15,6 +16,8 @@ public:
 	ComPtr<ID3D11Buffer> m_pCurrentFrameCB;
 	int m_CurrentFrame[4] = { 0, };
 	static int m_AllAnimationFrame;
+	T_BOX m_BoxList;
+	LBox m_obbBoxList;
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;

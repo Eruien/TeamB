@@ -110,9 +110,6 @@
     <ClCompile Include="UI\SceneChange.cpp">
       <Filter>UI\Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="LBox.cpp">
-      <Filter>Collision</Filter>
-    </ClCompile>
     <ClCompile Include="LSelect.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
@@ -250,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="UI\SceneChange.h">
       <Filter>UI\Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="LBox.h">
-      <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="LSelect.h">
       <Filter>Collision</Filter>

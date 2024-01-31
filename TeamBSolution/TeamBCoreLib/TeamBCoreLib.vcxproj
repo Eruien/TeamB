@@ -28,6 +28,7 @@
     <ClCompile Include="..\..\imgui\Include\imgui_tables.cpp" />
     <ClCompile Include="..\..\imgui\Include\imgui_widgets.cpp" />
     <ClCompile Include="..\..\tinyxml\tinyxml2.cpp" />
+    <ClCompile Include="LBox.cpp" />
     <ClCompile Include="LCamera.cpp" />
     <ClCompile Include="LCore.cpp" />
     <ClCompile Include="LDebugCamera.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="..\..\imgui\Include\imstb_truetype.h" />
     <ClInclude Include="..\..\imgui\Include\ImZoomSlider.h" />
     <ClInclude Include="..\..\tinyxml\tinyxml2.h" />
+    <ClInclude Include="LBox.h" />
     <ClInclude Include="LCamera.h" />
     <ClInclude Include="LCore.h" />
     <ClInclude Include="LDebugCamera.h" />

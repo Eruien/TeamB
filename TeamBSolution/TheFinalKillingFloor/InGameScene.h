@@ -52,9 +52,6 @@ public:
 public:
 	// Collision
 	LSelect* m_Select = nullptr;
-	std::vector<T_BOX*> m_BoxList;
-	std::vector<LBox*> m_obbBoxList;
-	TMatrix boxWorld;
 public:
 	shared_ptr<KObject> m_playerIcon;
 public:

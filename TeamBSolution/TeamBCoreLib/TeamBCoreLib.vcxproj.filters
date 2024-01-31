@@ -62,6 +62,7 @@
     <ClCompile Include="LDxRT.cpp" />
     <ClCompile Include="LPlaneShape.cpp" />
     <ClCompile Include="LSkyBox.cpp" />
+    <ClCompile Include="LBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LCamera.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="LDxRT.h" />
     <ClInclude Include="LPlaneShape.h" />
     <ClInclude Include="LSkyBox.h" />
+    <ClInclude Include="LBox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGUI">
