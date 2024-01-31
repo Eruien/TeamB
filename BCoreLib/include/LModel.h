@@ -16,8 +16,10 @@ public:
 	ComPtr<ID3D11Buffer> m_pCurrentFrameCB;
 	int m_CurrentFrame[4] = { 0, };
 	static int m_AllAnimationFrame;
-	T_BOX m_BoxList;
-	LBox m_obbBoxList;
+	T_BOX m_SettingBox;
+	LBox m_OBBBox;
+	T_BOX m_SettingBoxRightHand;
+	LBox m_OBBBoxRightHand;
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;
@@ -38,6 +40,7 @@ public:
 	virtual void SetInstancing(bool IsIntancing, int instancingCount);
 	virtual void SetLFbxObj(LFbxObj* fbxObj);
 	virtual void SetOBBBox(TVector3 min, TVector3 max, float boxScale);
+	virtual void SetOBBBoxRightHand(TVector3 min, TVector3 max, float boxScale);
 	virtual LFbxObj* GetLFbxObj();
 public:
 	virtual bool Init(int animationIndex);

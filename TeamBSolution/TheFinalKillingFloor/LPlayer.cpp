@@ -174,9 +174,9 @@ bool LPlayer::Frame()
 		{
 			m_StartShoot = 0.0f;
 			IsShoot = true;
-			m_AmmunitionCount -= 1;
+			m_BulletCount -= 1;
 
-			if (m_AmmunitionCount <= 0)
+			if (m_BulletCount <= 0)
 			{
 				IsReload = true;
 			}
