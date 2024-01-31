@@ -30,7 +30,14 @@ public:
 	bool IsAttack = false;
 	bool IsMove = true;
 	bool IsMovable = true;
+	bool IsReload = false;
+	bool IsShoot = false;
+	bool IsMoveOneDir = false;
 	float m_Speed = 0.0f;
+	float m_ShotDelay = 0.1f;
+	float m_StartShoot = 0.0f;
+	int m_AmmunitionCount = 30;
+	TVector3 m_AddDirection;	
 public:
 	void FSM(FSMType fsmType);
 	void SetTransition(Event inputEvent);

@@ -6,6 +6,7 @@
 #include "PlayerWalk.h"
 #include "PlayerRun.h"
 #include "PlayerAttack.h"
+#include "PlayerReload.h"
 
 void LPlayer::FSM(FSMType fsmType)
 {
@@ -23,6 +24,7 @@ void LPlayer::FSM(FSMType fsmType)
 	m_pActionList.insert(std::make_pair(State::CHARACTERWALK, std::make_unique<PlayerWalk>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERRUN, std::make_unique<PlayerRun>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERSHOOT, std::make_unique<PlayerAttack>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERRELOAD, std::make_unique<PlayerReload>(this)));
 
 	m_pAction = m_pActionList.find(State::CHARACTERIDLE)->second.get();
 	m_CurrentState = State::CHARACTERIDLE;
@@ -46,11 +48,94 @@ void LPlayer::Process()
 
 void LPlayer::Move()
 {
-	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+	IsMoveOneDir = false;
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
+		&& !IsMoveOneDir)
 	{
-		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_matControl.Right().x;
-		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_matControl.Right().z;
-		m_Speed = 200.0f;
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
+		m_AddDirection.Normalize();
+		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
+		m_AddDirection.Normalize();
+		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
+		m_AddDirection.Normalize();
+		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
+		m_AddDirection.Normalize();
+		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Forward();
+		m_AddDirection.Normalize();
+		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Right();
+		m_AddDirection.Normalize();
+		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Right();
+		m_AddDirection.Normalize();
+		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH
+		&& !IsMoveOneDir)
+	{
+		IsMoveOneDir = true;
+		m_AddDirection = m_matControl.Forward();
+		m_AddDirection.Normalize();
+		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
+		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
+		m_Speed = 100.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
@@ -58,35 +143,14 @@ void LPlayer::Move()
 		m_Speed = 0.0f;
 	}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-	{
-		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_matControl.Right().x;
-		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_matControl.Right().z;
-		m_Speed = 200.0f;
-	}
-
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] == KEY_UP)
 	{
 		m_Speed = 0.0f;
 	}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
-	{
-		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_matControl.Forward().x;
-		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_matControl.Forward().z;
-		m_Speed = 200.0f;
-	}
-
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_UP)
 	{
 		m_Speed = 0.0f;
-	}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
-	{
-		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_matControl.Forward().x;
-		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_matControl.Forward().z;
-		m_Speed = 200.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] == KEY_UP)
@@ -97,17 +161,33 @@ void LPlayer::Move()
 
 bool LPlayer::Frame()
 {
-	if (LInput::GetInstance().m_MouseState[0] == KEY_PUSH)
+	m_StartShoot += LGlobal::g_fSPF;
+	IsShoot = false;
+
+	if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH)
 	{
 		m_Speed = 0.0f;
 		IsMove = false;
 		IsAttack = true;
+		
+		if (m_StartShoot > m_ShotDelay)
+		{
+			m_StartShoot = 0.0f;
+			IsShoot = true;
+			m_AmmunitionCount -= 1;
+
+			if (m_AmmunitionCount <= 0)
+			{
+				IsReload = true;
+			}
+		}
 	}
 
 	if (LInput::GetInstance().m_MouseState[0] == KEY_UP)
 	{
 		IsMove = true;
 		IsAttack = false;
+		IsReload = false;
 	}
 
 	if (IsMove && IsMovable)
@@ -117,7 +197,7 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
 	{
-		m_Speed = 400.0f;
+		m_Speed = 200.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
@@ -125,7 +205,7 @@ bool LPlayer::Frame()
 		m_Speed = 0.0f;
 	}
 
-	if (m_Speed > 200.0f)
+	if (m_Speed > 150.0f)
 	{
 		IsRun = true;
 		IsWalk = true;

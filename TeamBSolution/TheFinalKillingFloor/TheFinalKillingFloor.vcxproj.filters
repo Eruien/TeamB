@@ -134,6 +134,12 @@
     <ClCompile Include="UI\HpBar.cpp">
       <Filter>UI\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="LGun.cpp">
+      <Filter>Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerReload.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -269,6 +275,12 @@
     <ClInclude Include="UI\HpBar.h">
       <Filter>UI\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="LGun.h">
+      <Filter>Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerReload.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -300,6 +312,9 @@
     </Filter>
     <Filter Include="FileIO">
       <UniqueIdentifier>{04549de2-0d5c-4617-8e41-31d8a82e1926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gun">
+      <UniqueIdentifier>{f3da9b4a-3e2a-4d38-b85b-70e8c416dad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

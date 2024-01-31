@@ -214,7 +214,7 @@ void InGameScene::Process()
         LGlobal::g_pMainCamera = m_ModelCamera.get();
     }
 
-    m_ModelCamera->SetTargetPos(TVector3(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._42, m_PlayerModel->m_matControl._43));
+    m_ModelCamera->SetTargetPos(TVector3(m_PlayerModel->m_matControl._41 + 20, m_PlayerModel->m_matControl._42 + 15, m_PlayerModel->m_matControl._43));
 
     m_PlayerModel->Frame();
     m_PlayerModel->Process();
@@ -366,8 +366,12 @@ void InGameScene::Render()
         {
             if (m_Select->ChkOBBToRay(&m_obbBoxList[i]->m_Box))
             {
-                m_ZombieModelList[i]->IsTakeDamage = true;
-                std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                if (m_PlayerModel->IsShoot)
+                {
+                    m_ZombieModelList[i]->IsTakeDamage = true;
+                }
+                
+                //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
                 //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
             }
         }

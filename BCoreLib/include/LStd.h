@@ -417,28 +417,6 @@ struct T_BOX
     TVector3   vCenter;
     TVector3   vAxis[3];
     float      fExtent[3];
-
-
-	T_BOX()
-	{
-
-	}
-	T_BOX(TVector3	max, TVector3		min)
-	{
-		Set(max, min);
-	}
-	void Set(TVector3	max, TVector3	min)
-	{
-		vMax = max;
-		vMin = min;
-		vCenter = (vMax + vMin) * 0.5f;
-		vAxis[0] = { 1,0,0 };
-		vAxis[1] = { 0,1,0 };
-		vAxis[2] = { 0,0,1 };
-		fExtent[0] = vMax.x - vCenter.x;
-		fExtent[1] = vMax.y - vCenter.y;
-		fExtent[2] = vMax.z - vCenter.z;
-	}
 };
 
 static void L_DebugString(const WCHAR* msg)

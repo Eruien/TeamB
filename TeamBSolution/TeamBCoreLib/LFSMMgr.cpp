@@ -98,6 +98,9 @@ bool LFSMMgr::Init()
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERSHOOT, Event::ENDATTACK, State::CHARACTERIDLE);
+	PlayerFSM->AddStateTransition(State::CHARACTERSHOOT, Event::STARTRELOAD, State::CHARACTERRELOAD);
+
+	PlayerFSM->AddStateTransition(State::CHARACTERRELOAD, Event::ENDRELOAD, State::CHARACTERIDLE);
 
 	m_map.insert(std::make_pair(FSMType::PLAYER, std::move(PlayerFSM)));
 

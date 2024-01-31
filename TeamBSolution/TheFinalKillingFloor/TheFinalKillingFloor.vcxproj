@@ -154,6 +154,7 @@
     <ClCompile Include="LBox.cpp" />
     <ClCompile Include="LCharacterIO.cpp" />
     <ClCompile Include="LExportIO.cpp" />
+    <ClCompile Include="LGun.cpp" />
     <ClCompile Include="LMainScene.cpp" />
     <ClCompile Include="LNPC.cpp" />
     <ClCompile Include="LPlayer.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
+    <ClCompile Include="PlayerReload.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
@@ -201,6 +203,7 @@
     <ClInclude Include="LBox.h" />
     <ClInclude Include="LCharacterIO.h" />
     <ClInclude Include="LExportIO.h" />
+    <ClInclude Include="LGun.h" />
     <ClInclude Include="LMainScene.h" />
     <ClInclude Include="LNPC.h" />
     <ClInclude Include="LPlayer.h" />
@@ -208,6 +211,7 @@
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="PlayerAttack.h" />
     <ClInclude Include="PlayerIdle.h" />
+    <ClInclude Include="PlayerReload.h" />
     <ClInclude Include="PlayerRun.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
