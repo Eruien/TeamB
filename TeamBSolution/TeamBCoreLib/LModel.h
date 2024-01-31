@@ -37,6 +37,7 @@ public:
 	virtual void SetAnimationArraySRV();
 	virtual void SetInstancing(bool IsIntancing, int instancingCount);
 	virtual void SetLFbxObj(LFbxObj* fbxObj);
+	virtual void SetOBBBox(TVector3 min, TVector3 max, float boxScale);
 	virtual LFbxObj* GetLFbxObj();
 public:
 	virtual bool Init(int animationIndex);

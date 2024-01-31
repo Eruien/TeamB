@@ -81,6 +81,36 @@ LFbxObj* LModel::GetLFbxObj()
 	return m_pModel;
 }
 
+void LModel::SetOBBBox(TVector3 min, TVector3 max, float boxScale)
+{
+	m_obbBoxList.Set();
+
+	m_BoxList.vMax = TVector3(max.x, max.y, max.z) * boxScale;
+	m_BoxList.vMin = TVector3(min.x, min.y, min.z) * boxScale;
+	m_BoxList.vCenter = (m_BoxList.vMax + m_BoxList.vMin);
+	m_BoxList.vCenter.x /= 2.0f;
+	m_BoxList.vCenter.y /= 2.0f;
+	m_BoxList.vCenter.z /= 2.0f;
+
+	m_BoxList.fExtent[0] = fabs(m_BoxList.vCenter.x - m_BoxList.vMax.x);
+	m_BoxList.fExtent[1] = fabs(m_BoxList.vCenter.y - m_BoxList.vMax.y);
+	m_BoxList.fExtent[2] = fabs(m_BoxList.vCenter.z - m_BoxList.vMax.z);
+	m_BoxList.vAxis[0] = TVector3(1.0f, 0.0f, 0.0f);
+	m_BoxList.vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
+	m_BoxList.vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
+
+	TMatrix matScale;
+	D3DXMatrixScaling(&matScale, m_BoxList.fExtent[0], m_BoxList.fExtent[1], m_BoxList.fExtent[2]);
+	m_obbBoxList.m_matWorld = matScale;
+	m_obbBoxList.m_matWorld._41 = m_BoxList.vCenter.x;
+	m_obbBoxList.m_matWorld._42 = m_BoxList.vCenter.y;
+	m_obbBoxList.m_matWorld._43 = m_BoxList.vCenter.z;
+
+	m_obbBoxList.CreateOBBBox(m_BoxList.fExtent[0], m_BoxList.fExtent[1], m_BoxList.fExtent[2],
+		m_BoxList.vCenter, m_BoxList.vAxis[0], m_BoxList.vAxis[1], m_BoxList.vAxis[2]);
+	m_obbBoxList.Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
+}
+
 bool LModel::Init(int animationIndex)
 {
 	if (m_pActionModel == nullptr) return false;

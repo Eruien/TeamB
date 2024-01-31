@@ -143,39 +143,20 @@ bool InGameScene::Init()
     // Collision
     std::wstring head = L"Head";
     std::wstring root = L"root";
-    TMatrix Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
+ 
+    TMatrix Head = m_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = m_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
+
+    m_PlayerModel->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+
+    Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
+    Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
 
     m_Select = new LSelect;
- 
+
     for (int i = 0; i < m_EnemySize; i++)
     {
-        m_ZombieModelList[i]->m_obbBoxList.Set();
-       
-        m_ZombieModelList[i]->m_BoxList.vMax = TVector3(20.0f, Head._42, 30.0f) * 0.2f;
-        m_ZombieModelList[i]->m_BoxList.vMin = TVector3(-20.0f, Root._42, -5.0f) * 0.2f;
-        m_ZombieModelList[i]->m_BoxList.vCenter = (m_ZombieModelList[i]->m_BoxList.vMax + m_ZombieModelList[i]->m_BoxList.vMin);
-        m_ZombieModelList[i]->m_BoxList.vCenter.x /= 2.0f;
-        m_ZombieModelList[i]->m_BoxList.vCenter.y /= 2.0f;
-        m_ZombieModelList[i]->m_BoxList.vCenter.z /= 2.0f;
-
-        m_ZombieModelList[i]->m_BoxList.fExtent[0] = fabs(m_ZombieModelList[i]->m_BoxList.vCenter.x - m_ZombieModelList[i]->m_BoxList.vMax.x);
-        m_ZombieModelList[i]->m_BoxList.fExtent[1] = fabs(m_ZombieModelList[i]->m_BoxList.vCenter.y - m_ZombieModelList[i]->m_BoxList.vMax.y);
-        m_ZombieModelList[i]->m_BoxList.fExtent[2] = fabs(m_ZombieModelList[i]->m_BoxList.vCenter.z - m_ZombieModelList[i]->m_BoxList.vMax.z);
-        m_ZombieModelList[i]->m_BoxList.vAxis[0] = TVector3(1.0f, 0.0f, 0.0f);
-        m_ZombieModelList[i]->m_BoxList.vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
-        m_ZombieModelList[i]->m_BoxList.vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
-
-        TMatrix matScale;
-        D3DXMatrixScaling(&matScale, m_ZombieModelList[i]->m_BoxList.fExtent[0], m_ZombieModelList[i]->m_BoxList.fExtent[1], m_ZombieModelList[i]->m_BoxList.fExtent[2]);
-        m_ZombieModelList[i]->m_obbBoxList.m_matWorld = matScale;
-        m_ZombieModelList[i]->m_obbBoxList.m_matWorld._41 = m_ZombieModelList[i]->m_BoxList.vCenter.x;
-        m_ZombieModelList[i]->m_obbBoxList.m_matWorld._42 = m_ZombieModelList[i]->m_BoxList.vCenter.y;
-        m_ZombieModelList[i]->m_obbBoxList.m_matWorld._43 = m_ZombieModelList[i]->m_BoxList.vCenter.z;
-
-        m_ZombieModelList[i]->m_obbBoxList.CreateOBBBox(m_ZombieModelList[i]->m_BoxList.fExtent[0], m_ZombieModelList[i]->m_BoxList.fExtent[1], m_ZombieModelList[i]->m_BoxList.fExtent[2],
-            m_ZombieModelList[i]->m_BoxList.vCenter, m_ZombieModelList[i]->m_BoxList.vAxis[0], m_ZombieModelList[i]->m_BoxList.vAxis[1], m_ZombieModelList[i]->m_BoxList.vAxis[2]);
-        m_ZombieModelList[i]->m_obbBoxList.Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
+        m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
     }
 
     //Minimap
@@ -284,8 +265,13 @@ void InGameScene::Process()
     }
 
 
-
+    // collision
     m_Select->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+
+    m_PlayerModel->m_obbBoxList.Frame();
+    m_PlayerModel->m_obbBoxList.CreateOBBBox(m_PlayerModel->m_BoxList.fExtent[0], m_PlayerModel->m_BoxList.fExtent[1], m_PlayerModel->m_BoxList.fExtent[2],
+        { m_PlayerModel->m_obbBoxList.m_matWorld._41, m_PlayerModel->m_obbBoxList.m_matWorld._42, m_PlayerModel->m_obbBoxList.m_matWorld._43 },
+        m_PlayerModel->m_BoxList.vAxis[0], m_PlayerModel->m_BoxList.vAxis[1], m_PlayerModel->m_BoxList.vAxis[2]);
 
     for (int i = 0; i < m_EnemySize; i++)
     {
@@ -353,6 +339,12 @@ void InGameScene::Render()
     m_pQuad.PostRender();*/
 
     // Collision
+
+    TMatrix playerTranslation;
+    playerTranslation.Translation(TVector3(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._42 + m_PlayerModel->m_BoxList.vCenter.y, m_PlayerModel->m_matControl._43));
+    m_PlayerModel->m_obbBoxList.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_PlayerModel->m_obbBoxList.Render();
+
     for (int i = 0; i < m_EnemySize; i++)
     {
         TMatrix zombieTranslation;
