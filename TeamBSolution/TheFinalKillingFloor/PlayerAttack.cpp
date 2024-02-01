@@ -9,6 +9,18 @@ bool PlayerAttack::Init()
 
 void PlayerAttack::Process()
 {
+    if (m_pOwner->IsDeath)
+    {
+        m_pOwner->SetTransition(Event::FATALDAMAGE);
+        return;
+    }
+
+    if (m_pOwner->IsTakeDamage)
+    {
+        m_pOwner->SetTransition(Event::TAKEDAMAGE);
+        return;
+    }
+
     if (m_pOwner->IsReload)
     {
         m_pOwner->SetTransition(Event::STARTRELOAD);

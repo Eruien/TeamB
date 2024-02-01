@@ -137,6 +137,12 @@
     <ClCompile Include="PlayerReload.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDeath.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTakeDamage.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -273,6 +279,12 @@
       <Filter>Gun</Filter>
     </ClInclude>
     <ClInclude Include="PlayerReload.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDeath.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTakeDamage.h">
       <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>

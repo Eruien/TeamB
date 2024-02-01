@@ -160,9 +160,11 @@
     <ClCompile Include="LScene.cpp" />
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="PlayerReload.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
+    <ClCompile Include="PlayerTakeDamage.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="UI\Animation.cpp" />
@@ -208,9 +210,11 @@
     <ClInclude Include="LScene.h" />
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="PlayerAttack.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerIdle.h" />
     <ClInclude Include="PlayerReload.h" />
     <ClInclude Include="PlayerRun.h" />
+    <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="UI\Animation.h" />
