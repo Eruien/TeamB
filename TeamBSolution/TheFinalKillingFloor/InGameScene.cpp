@@ -127,9 +127,14 @@ bool InGameScene::Init()
     m_Tree = std::make_shared<LModel>();
     m_Tree->SetLFbxObj(treeObj);
     m_Tree->CreateBoneBuffer();
-    m_Tree->m_matControl._11 = 50.f;
-    m_Tree->m_matControl._33 = 50.f;
-    m_Tree->m_matControl._42 = 50.f;
+    DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix;
+    rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
+    scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
+    worldMatrix = DirectX::XMMatrixIdentity();
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+    m_Tree->m_matControl = worldMatrix;
+    
 
 
     LMapDesc MapDesc = {};
@@ -189,6 +194,10 @@ bool InGameScene::Init()
     m_enemyHp->SetPos({ 0, 0, 0 });
     m_enemyHp->SetScale({ 12,2,1 });
 
+
+    // tree height calc
+    float fHeight = m_CustomMap->GetHeight(m_Tree->m_matControl._41, m_Tree->m_matControl._43);
+    m_Tree->m_matControl._42 = fHeight - 5.0f;
     return true;
 }
 
@@ -203,6 +212,8 @@ void InGameScene::Process()
     float fHeight = m_CustomMap->GetHeight(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._43);
     LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
 
+
+    
     if (LInput::GetInstance().m_KeyStateOld[DIK_1] > KEY_PUSH)
     {
         LGlobal::g_pMainCamera = m_DebugCamera.get();
@@ -246,19 +257,53 @@ void InGameScene::Process()
         {
             if (m_ZombieModelList[i]->m_OBBBox.CollisionCheck(&m_ZombieModelList[j]->m_OBBBox))
             {
-                m_ZombieModelList[i]->IsMovable = false;
-                m_ZombieModelList[j]->IsMovable = false;
+                /*m_ZombieModelList[i]->IsMovable = false;
+                m_ZombieModelList[j]->IsMovable = false;*/
                 float offsetX = m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.x - m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
                 float offsetZ = m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.z - m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
 
-                m_ZombieModelList[i]->m_matControl._41 += offsetX*0.2;
-                m_ZombieModelList[i]->m_matControl._43 += offsetZ*0.2;
+                m_ZombieModelList[i]->m_matControl._41 += offsetX*0.1;
+                m_ZombieModelList[i]->m_matControl._43 += offsetZ*0.1;
             }
             
         }
-        
+        // Player <-> zombie
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBox))
+        {
+            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
+            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
 
+            LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
+            LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
+        }
+
+        // zombie <-> tree
+        TVector3 length = { m_Tree->m_matControl._41, m_Tree->m_matControl._42, m_Tree->m_matControl._43 };
+        length -= m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter;
+        float distance = length.Length();
+        if (distance <= 27)
+        {
+            float offsetX = m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.x - m_Tree->m_matControl._41;
+            float offsetZ = m_ZombieModelList[i]->m_OBBBox.m_Box.vCenter.z - m_Tree->m_matControl._43;
+
+            m_ZombieModelList[i]->m_matControl._41 += offsetX * 0.1;
+            m_ZombieModelList[i]->m_matControl._43 += offsetZ * 0.1;
+        }
     }
+
+    TVector3 length = { m_Tree->m_matControl._41, m_Tree->m_matControl._42, m_Tree->m_matControl._43 };
+    length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
+    float distance = length.Length();
+    if (distance <= 27)
+    {
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - m_Tree->m_matControl._41;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - m_Tree->m_matControl._43;
+
+        LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
+        LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
+    }
+
+
     // ºôº¸µå
 
     for (int i = 0; i < m_ZombieModelList.size(); i++)
@@ -368,15 +413,8 @@ void InGameScene::Render()
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
 
-    m_Tree->m_pModel->m_DrawList[0]->SetMatrix(&m_Tree->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_CBmatShadow.g_matShadow = m_Tree->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
-    D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
-    LGlobal::g_pImmediateContext->UpdateSubresource(m_pCBShadow.Get(), 0, NULL, &m_CBmatShadow, 0, 0);
-    LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pCBShadow.GetAddressOf());
-    m_Tree->m_pModel->m_DrawList[0]->PreRender();
-    ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
-    LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
-    m_Tree->m_pModel->m_DrawList[0]->PostRender();
+    m_Tree->Render();
+
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
     m_pQuad.PreRender();
