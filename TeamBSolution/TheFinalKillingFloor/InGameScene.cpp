@@ -149,7 +149,7 @@ bool InGameScene::Init()
     TMatrix Head = m_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
     TMatrix Root = m_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
   
-    m_PlayerModel->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+    m_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
   
     Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
     Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
@@ -161,7 +161,7 @@ bool InGameScene::Init()
     for (int i = 0; i < m_EnemySize; i++)
     {
         m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -5.0f }, { RightShoulder._41, RightShoulder._42, 30.0f }, 0.2f);
+        m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
     }
 
     //Minimap
@@ -368,7 +368,19 @@ void InGameScene::Render()
         m_ZombieModelList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_ZombieModelList[i]->m_OBBBox.Render();
 
-        m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        TMatrix zombieRightHandSocket;
+        TMatrix matRightHand;
+        if (m_ZombieModelList[i]->m_pActionModel != nullptr)
+        {
+            if (m_ZombieModelList[i]->m_pActionModel->m_iEndFrame >= int(m_ZombieModelList[i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_ZombieModelList[i]->m_fCurrentAnimTime - m_ZombieModelList[i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_ZombieModelList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+            }
+        }
+        
+        matRightHand = zombieRightHandSocket * m_ZombieModelList[i]->m_matControl;
+        m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
 
         if (LInput::GetInstance().m_MouseState[0])
