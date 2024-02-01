@@ -188,6 +188,7 @@ bool LPlayer::Frame()
 		IsTakeDamage = false;
 		IsTakeDammageAni = true;
 		m_HP -= 20;
+
 	}
 
 	m_StartShoot += LGlobal::g_fSPF;

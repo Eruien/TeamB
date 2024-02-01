@@ -318,7 +318,7 @@ void UIManager::RemoveObject(wstring name)
     _objs.erase(
         std::remove_if(_objs.begin(), _objs.end(),
             [&name](const std::shared_ptr<KObject>& obj) {
-                return obj->GetName() == name; 
+                return obj->GetName() == name;
             }
         ),
         _objs.end()
