@@ -143,7 +143,9 @@
     <ClCompile Include="PlayerTakeDamage.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="ZombieWave.cpp" />
+    <ClCompile Include="ZombieWave.cpp">
+      <Filter>Wave</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -288,7 +290,9 @@
     <ClInclude Include="PlayerTakeDamage.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="ZombieWave.h" />
+    <ClInclude Include="ZombieWave.h">
+      <Filter>Wave</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">

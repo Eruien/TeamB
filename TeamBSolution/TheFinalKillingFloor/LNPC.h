@@ -56,6 +56,7 @@ public:
 	bool Frame() override;
 	bool FrameInstancing() override;
 public:
+	LNPC() {};
 	LNPC(LPlayer* player);
 };
 
