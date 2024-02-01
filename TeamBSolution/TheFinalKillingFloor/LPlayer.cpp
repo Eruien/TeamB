@@ -165,7 +165,7 @@ void LPlayer::Move()
 
 bool LPlayer::Frame()
 {
-	if (LGlobal::g_HP <= 0)
+	if (m_HP <= 0)
 	{
 		IsDeath = true;
 	}
@@ -186,7 +186,7 @@ bool LPlayer::Frame()
 	{
 		IsInvincibility = true;
 		IsTakeDamage = false;
-		LGlobal::g_HP -= 20;
+		m_HP -= 20;
 	}
 
 	m_StartShoot += LGlobal::g_fSPF;

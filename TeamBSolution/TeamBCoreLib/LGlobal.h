@@ -23,7 +23,6 @@ public:
 	static float g_fGameTimer;
 	static LCamera* g_pMainCamera;
 	static UICamera* g_pUICamera;
-	static float g_HP;
 	static int g_BulletCount;
 };
 

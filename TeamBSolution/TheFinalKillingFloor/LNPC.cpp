@@ -115,7 +115,7 @@ int LNPC::GetRandomNumber()
 
 bool LNPC::Frame()
 {
-	if (m_LifeCount <= 0)
+	if (m_HP <= 0)
 	{
 		IsDead = true;
 	}

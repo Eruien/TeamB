@@ -12,7 +12,7 @@ void PlayerDeath::Process()
     if (m_pOwner->m_TimerEnd)
     {
         m_pOwner->IsDeath = false;
-        LGlobal::g_HP = 100.0f;
+        m_pOwner->m_HP = 100.0f;
         m_pOwner->SetTransition(Event::CHARACTERREVIVE);
         return;
     }

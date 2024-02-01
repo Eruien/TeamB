@@ -191,6 +191,7 @@
     <ClCompile Include="UI\Text.cpp" />
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
+    <ClCompile Include="ZombieWave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EndScene.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="UI\Text.h" />
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIManager.h" />
+    <ClInclude Include="ZombieWave.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">

@@ -13,7 +13,7 @@ void EnemyTakeDamage::Process()
 
     if (!m_Timer)
     {
-        m_pOwner->m_LifeCount -= 1;
+        m_pOwner->m_HP -= 20.0f;
         m_pOwner->IsTakeDamage = false;
         m_pOwner->m_TimerStart = true;
         m_Timer = true;
@@ -21,7 +21,7 @@ void EnemyTakeDamage::Process()
 
     if (m_pOwner->IsTakeDamage)
     {
-        m_pOwner->m_LifeCount -= 1;
+        m_pOwner->m_HP -= 20.0f;
         m_pOwner->IsTakeDamage = false;
     }
 

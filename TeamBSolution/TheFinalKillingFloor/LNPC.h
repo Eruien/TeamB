@@ -34,7 +34,6 @@ public:
 	bool IsTakeDamage = false;
 	bool IsAttackRange = false;
 	bool IsMovable = true;
-	int m_LifeCount = 5;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;
 	float m_PatrolRange = 500.0f;
