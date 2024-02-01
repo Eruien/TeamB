@@ -5,10 +5,16 @@
 #include "LWrite.h"
 #include "LGlobal.h"
 #include "../LScene.h"
-ButtonAction::ButtonAction(wstring texPaths) : MonoBehaviour(L"ButtonAction")
+#include "UIManager.h"
+ButtonAction::ButtonAction(wstring texPaths, wstring bFuntion) : MonoBehaviour(L"ButtonAction")
 {
 	_texXmlPath = texPaths;
 	LoadTextureList(_texXmlPath);
+	_function = bFuntion;
+
+
+	_functionMap[L"MainSceneOption"] = &ButtonAction::MainSceneOption;
+	_functionMap[L"MainSceneOptionClose"] = &ButtonAction::MainSceneOptionClose;
 }
 ButtonAction::~ButtonAction()
 {
@@ -34,6 +40,20 @@ void ButtonAction::Frame()
 		GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[2]);
 		GetGameObject()->m_Tex->Apply();
 	}
+	else if (state == PICKING_STATE::UP)
+	{
+		GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[0]);
+		GetGameObject()->m_Tex->Apply();
+
+		if (_functionMap.find(_function) != _functionMap.end())
+		{
+			(this->*_functionMap[_function])();
+		}
+		else {
+			std::cout << "Function not found" << std::endl;
+		}
+
+	}
 	//if (state == PICKING_STATE::NONE)
 	//{
 	//	GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(L"../../res/ui/button1.png");
@@ -54,4 +74,25 @@ void ButtonAction::LoadTextureList(wstring texXmlPath)
 {
 	_texList = make_shared<TextureList>();
 	_texList->Load(texXmlPath);
+}
+
+void ButtonAction::MainSceneOption()
+{
+
+	vector<shared_ptr<KObject>> group;
+	group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
+	for (auto obj : group)
+	{
+		obj->SetIsRender(true);
+	}
+}
+
+void ButtonAction::MainSceneOptionClose()
+{
+	vector<shared_ptr<KObject>> group;
+	group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
+	for (auto obj : group)
+	{
+		obj->SetIsRender(false);
+	}
 }

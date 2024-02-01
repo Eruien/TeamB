@@ -6,6 +6,7 @@ bool Sample::Init()
 {
 
 	UIManager::GetInstance().Load(L"MainScene.xml");
+	//UIManager::GetInstance().Load(L"IngameScene.xml");
 	m_UICamera = std::make_shared<UICamera>();
 	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_UICamera->m_fCameraPitch = 0.0f;

@@ -42,9 +42,11 @@ public:
 
     void AddUIObject(shared_ptr<KObject> obj) { _objs.push_back(obj); };
     shared_ptr<KObject> GetUIObject(wstring name);
+    vector<shared_ptr<KObject>> GetGroup(wstring groupName);
     void RemoveObject(wstring name);
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
+        bool _debugMode = false;
 
 private:
     vector<shared_ptr<KObject>> _objs;

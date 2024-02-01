@@ -26,6 +26,9 @@
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
+            </Script>
             <Script Type="SceneChange">
                 <args SceneChange="6"/>
             </Script>
@@ -38,6 +41,9 @@
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="MainSceneOption"/>
+            </Script>
         </Scripts>
     </UIObject>
     <UIObject Name="B_exit" isRender="true" Group="None">
@@ -48,6 +54,9 @@
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ExitWindow"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
+            </Script>
         </Scripts>
     </UIObject>
     <UIObject Name="T_Exit" isRender="true" Group="None">

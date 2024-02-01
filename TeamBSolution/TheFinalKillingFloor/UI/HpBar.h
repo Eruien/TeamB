@@ -1,6 +1,8 @@
 #pragma once
 #include "MonoBehaviour.h"
 
+
+
 struct hpVertex
 {
 	TVector3		p;
@@ -25,10 +27,8 @@ public:
 public:
 	void Init() override;
 	void Frame() override;
-	void UpdateHp(float hp = 50);
-	void SetCrrHp(float hp) { _testCrrHp = hp; }
+	void UpdateHp();
 private :
 	float _maxHp = 100;
-	float _testCrrHp;
 };
 

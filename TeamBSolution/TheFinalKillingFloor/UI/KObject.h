@@ -16,6 +16,10 @@ public:
 	void SetName(wstring name) { _name = name; };
 	wstring GetName() {	return _name;};
 	
+	void SetIsRender(bool isRender) { _isRender = isRender; };
+	bool GetIsRender() { return _isRender; };
+
+
 	// Rect
 	void SetRect(TVector3 pos, TVector3 scale);
 	TRectangle GetRect() { return _rect; };
@@ -31,11 +35,13 @@ public:
 //Rect
 public:
 	TRectangle _rect;
-
+	wstring _group = L"None";
 
 protected:
 	wstring _name;
 	vector<shared_ptr<MonoBehaviour>> _scripts;
+	bool _isRender = true;
+	
 };
 
 template<class T>

@@ -48,15 +48,21 @@ void Imgui_ObjectDetail::Frame()
 		}
 		ImGui::Separator();
 
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.1f, 0.1f, 1.0f)); // 버튼의 색상 설정
-		if (ImGui::Button("Remove Object"))
-		{
-			UIManager::GetInstance().RemoveObject(UIManager::s_selectedObject->GetName());
-			UIManager::s_selectedObject = nullptr;
-		}
-		ImGui::PopStyleColor();
+
+
 		if (UIManager::s_selectedObject)
 		{
+			char gbuffer[256] = "";
+			ImGui::Text("Group : %s", wtm(UIManager::s_selectedObject->_group).c_str());
+			ImGui::SetNextItemWidth(100);
+			if (ImGui::InputText("##GroupName", gbuffer, sizeof(gbuffer), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				UIManager::s_selectedObject->_group = mtw(gbuffer);
+			}
+			bool boolVariable = UIManager::s_selectedObject->GetIsRender();
+			ImGui::Checkbox("Is Render", &boolVariable);
+			UIManager::s_selectedObject->SetIsRender(boolVariable);
+
 			ImGui::Text("Position");
 			ImGui::Text("X");
 			ImGui::SameLine();
@@ -91,6 +97,10 @@ void Imgui_ObjectDetail::Frame()
 			ImGui::InputFloat("##ScaleY", &UIManager::s_selectedObject->m_vScale.y);
 
 			ImGui::Separator();
+
+
+
+
 
 			ImGui::Text("Image Load : ");
 			ImGui::SameLine();
@@ -148,7 +158,7 @@ void Imgui_ObjectDetail::Frame()
 							UIManager::s_selectedObject->AddScripts(make_shared<BillBoard>());
 							break;
 						case 7:
-							UIManager::s_selectedObject->AddScripts(make_shared<ButtonAction>(L"../../res/ui/xml/ButtonTex.xml"));
+							UIManager::s_selectedObject->AddScripts(make_shared<ButtonAction>(L"../../res/ui/xml/ButtonTex.xml", L"None"));
 							break;
 						case 8:
 							UIManager::s_selectedObject->AddScripts(make_shared<Text>(L"NULL"));
@@ -301,6 +311,10 @@ void Imgui_ObjectDetail::Frame()
 							if (ImGui::BeginTabItem("ButtonAction"))
 							{
 								ImGui::Text("ButtonStateAction");
+								if (ImGui::InputText("##ButtonFunction", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+								{
+									UIManager::s_selectedObject->GetScript<ButtonAction>(L"ButtonAction")->_function = mtw(buffer);
+								}
 								if (ImGui::Button("Delete"))
 								{
 									UIManager::s_selectedObject->RemoveScript(L"ButtonAction");
@@ -308,7 +322,7 @@ void Imgui_ObjectDetail::Frame()
 									continue;
 								}
 								ImGui::SameLine();
-								if (ImGui::Button("Load Animation From File"))
+								if (ImGui::Button("Load TexList From File"))
 								{
 									ImGuiFileDialog::Instance()->OpenDialog("ChooseButtonTex", "ChooseButtonTex File", ".xml", ".");
 									_isDialogWindow = true;
@@ -364,7 +378,7 @@ void Imgui_ObjectDetail::Frame()
 								if (ImGui::InputText("##hpBar", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
 								{
 
-									UIManager::s_selectedObject->GetScript<HpBar>(L"HpBar")->SetCrrHp(static_cast<float>(atoi(buffer)));
+								//	UIManager::s_selectedObject->GetScript<HpBar>(L"HpBar")->SetCrrHp(static_cast<float>(atoi(buffer)));
 								}
 								if (ImGui::Button("Delete"))
 								{
@@ -385,6 +399,13 @@ void Imgui_ObjectDetail::Frame()
 		}
 		// /script
 
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.1f, 0.1f, 1.0f)); // 버튼의 색상 설정
+		if (ImGui::Button("Remove Object"))
+		{
+			UIManager::GetInstance().RemoveObject(UIManager::s_selectedObject->GetName());
+			UIManager::s_selectedObject = nullptr;
+		}
+		ImGui::PopStyleColor();
 		ImGui::End();
 
 

@@ -1,5 +1,5 @@
 <UIScene SceneName="TestScene">
-    <UIObject Name="Tim">
+    <UIObject Name="Tim" isRender="true" Group="None">
         <Position x="0" y="320" z="0"/>
         <Scale width="252" height="92"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -11,7 +11,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="">
+    <UIObject Name="" isRender="true" Group="None">
         <Position x="0" y="0" z="0"/>
         <Scale width="60" height="60"/>
         <Texture texPath="../../res/ui/CrossHair.png"/>
@@ -20,16 +20,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Minimap">
-        <Position x="-540" y="260" z="0"/>
-        <Scale width="200" height="200"/>
-        <Texture texPath="../../res/ui/minimap.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="wp_background">
+    <UIObject Name="wp_background" isRender="true" Group="None">
         <Position x="461" y="-293" z="0"/>
         <Scale width="292" height="86"/>
         <Texture texPath="../../res/ui/ui_weapon_bg.png"/>
@@ -38,7 +29,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="weaponUI">
+    <UIObject Name="weaponUI" isRender="true" Group="None">
         <Position x="544" y="-291" z="0"/>
         <Scale width="94" height="58"/>
         <Texture texPath="../../res/ui/ui_weapon_m340.25x.png"/>
@@ -47,7 +38,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="face">
+    <UIObject Name="face" isRender="true" Group="None">
         <Position x="-556" y="-293" z="0"/>
         <Scale width="58" height="56"/>
         <Texture texPath="../../res/ui/face.png"/>
@@ -56,16 +47,17 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="HPbar">
+    <UIObject Name="HPbar" isRender="true" Group="None">
         <Position x="-376" y="-297" z="0"/>
         <Scale width="270" height="38"/>
         <Texture texPath="../../res/ui/hp_bar.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
+            <Script Type="HpBar"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Ammo">
+    <UIObject Name="T_Ammo" isRender="true" Group="None">
         <Position x="415" y="-289" z="0"/>
         <Scale width="106" height="46"/>
         <Texture texPath="../../res/ui/Empty.png"/>

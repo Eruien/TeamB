@@ -1,6 +1,7 @@
 #include "HpBar.h"
 #include "KObject.h"
 #include "LGlobal.h"
+#include "../LPlayer.h"
 HpBar::HpBar() : MonoBehaviour(L"HpBar")
 {
 
@@ -14,18 +15,18 @@ HpBar::~HpBar()
 
 void HpBar::Init()
 {
-	SetCrrHp(_maxHp);
+
 
 }
 
 void HpBar::Frame()
 {
-	UpdateHp(_testCrrHp);
+
 }
 
-void HpBar::UpdateHp(float hp)
+void HpBar::UpdateHp()
 {
-
+	float hp = LGlobal::g_PlayerModel->m_HP;
 
 
 	GetGameObject()->m_VertexList[1].p.x = 0.5f - (1-hp / _maxHp);

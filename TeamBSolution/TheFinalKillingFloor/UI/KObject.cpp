@@ -18,6 +18,7 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
+	
 		TMatrix matScale, matRotation, matTranslation;
 		matScale = matScale.CreateScale(m_vScale);
 		matRotation = matRotation.CreateRotationX(m_vRotation.x);
@@ -28,23 +29,26 @@ bool KObject::Frame()
 
 		SetRect(m_vPosition, m_vScale);
 
-	for (shared_ptr<MonoBehaviour>& script : _scripts)
-	{
-		script->Frame();
-	}
-
+		for (shared_ptr<MonoBehaviour>& script : _scripts)
+		{
+			script->Frame();
+		}
+	
 	return true;
 }
 
 bool KObject::Render()
 {
-	for (shared_ptr<MonoBehaviour>& script : _scripts)
-	{
-		script->Render();
-	}
-	PreRender();
 	
-	PostRender();
+		for (shared_ptr<MonoBehaviour>& script : _scripts)
+		{
+
+			script->Render();
+		}
+		PreRender();
+
+		PostRender();
+	
 	return false;
 }
 

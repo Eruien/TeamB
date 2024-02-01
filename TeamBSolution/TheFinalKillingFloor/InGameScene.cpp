@@ -491,37 +491,37 @@ void InGameScene::Render()
     }
     //UI
     UIManager::GetInstance().Render();
-    m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
+   // m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
 
 
 
     //¹Ì´Ï¸Ê
-    if (m_rtMinimap.Begin(vClearColor))
-    {
-        m_CustomMap->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matProj);
-        m_CustomMap->Render();
+   // if (m_rtMinimap.Begin(vClearColor))
+   // {
+   //     m_CustomMap->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matProj);
+   //     m_CustomMap->Render();
 
-        LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
-        LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._42), 100, 500);
-        LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._43), 100, 600);
-        LWRITE.AddText(to_wstring(LINPUT.m_vOffset.y), 500, 600);
+   //     LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
+   //     LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._42), 100, 500);
+   //     LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._43), 100, 600);
+   //     LWRITE.AddText(to_wstring(LINPUT.m_vOffset.y), 500, 600);
 
-        m_playerIcon->m_vPosition={ LGlobal::g_PlayerModel->m_matControl._41*(float(LGlobal::g_WindowWidth) / 2048.f) ,0, LGlobal::g_PlayerModel->m_matControl._43 * (float(LGlobal::g_WindowHeight) / 2048.0f) };
-        m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
-        
-        m_playerIcon->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matOrthoProjection);
-        m_playerIcon->Frame();
-        m_playerIcon->Render();
-        //LGlobal::g_PlayerModel
+   //     m_playerIcon->m_vPosition={ LGlobal::g_PlayerModel->m_matControl._41*(float(LGlobal::g_WindowWidth) / 2048.f) ,0, LGlobal::g_PlayerModel->m_matControl._43 * (float(LGlobal::g_WindowHeight) / 2048.0f) };
+   //     m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+   //     
+   //     m_playerIcon->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matOrthoProjection);
+   //     m_playerIcon->Frame();
+   //     m_playerIcon->Render();
+   //     //LGlobal::g_PlayerModel
 
-        m_rtMinimap.End();
-    }
+   //     m_rtMinimap.End();
+   // }
 
-    m_ShapeMinimap.PreRender();
-   {
-       LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_rtMinimap.m_pSRV.GetAddressOf());
-   }
-   m_ShapeMinimap.PostRender();
+   // m_ShapeMinimap.PreRender();
+   //{
+   //    LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_rtMinimap.m_pSRV.GetAddressOf());
+   //}
+   //m_ShapeMinimap.PostRender();
 
    Release();
 }

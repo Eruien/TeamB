@@ -8,24 +8,33 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
     _DepthStencilState = Depth;
     _DepthStencilStateDisable = Disable;
 
-    _imGuiManager = make_shared< ImGuiManager>();
-    _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
-    _imgui_menuBar = make_shared<imgui_menuBar>();
+    if (_debugMode)
+    {
+        _imGuiManager = make_shared< ImGuiManager>();
+        _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
+        _imgui_menuBar = make_shared<imgui_menuBar>();
 
    _imGuiManager->Init();
    _imGuiObjDetail->Init();
    _imgui_menuBar->Init();
+    }
 }
 
 void UIManager::Frame()
 {
-    _imGuiManager->Frame();
-    _imGuiObjDetail->Frame();
-    _imgui_menuBar->Frame();
+    if (_debugMode)
+    {
+        _imGuiManager->Frame();
+        _imGuiObjDetail->Frame();
+        _imgui_menuBar->Frame();
+    }
 	for (auto obj : _objs)
 	{
-        obj->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
-        obj->Frame();
+        if (obj->GetIsRender()|| _debugMode)
+        {
+            obj->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
+            obj->Frame();
+        }
 	}
 }
 
@@ -34,12 +43,17 @@ void UIManager::Render()
 	for (auto obj : _objs)
 	{
        // LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilStateDisable.Get(), 1);
+        if(obj->GetIsRender()|| _debugMode)
 		obj->Render();
       //  LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilState.Get(), 1);
 	}
-    _imGuiObjDetail->Render();
-    _imgui_menuBar->Render();
-    _imGuiManager->Render();
+    if (_debugMode)
+    {
+        _imGuiObjDetail->Render();
+        _imgui_menuBar->Render();
+        _imGuiManager->Render();
+    }
+
 
 
 }
@@ -59,6 +73,8 @@ void UIManager::Save(const wstring filePath)
 
         // Name
         objRoot->SetAttribute("Name", wtm(obj->GetName()).c_str());
+        objRoot->SetAttribute("isRender", obj->GetIsRender());
+        objRoot->SetAttribute("Group", wtm(obj->_group).c_str());
 
         // 자식 엘리먼트들 추가
         // Pos
@@ -109,6 +125,7 @@ void UIManager::Save(const wstring filePath)
                 tinyxml2::XMLElement* argsNode = doc.NewElement("args");
                 scriptNode->LinkEndChild(argsNode);
                 argsNode->SetAttribute("TexListXml", wtm(obj->GetScript<ButtonAction>(L"ButtonAction")->GetXmlPath()).c_str());
+                argsNode->SetAttribute("Function", wtm(obj->GetScript<ButtonAction>(L"ButtonAction")->_function).c_str());
             }
             if (script->GetName() == L"Text")
             {
@@ -160,6 +177,20 @@ void UIManager::Load(const wstring filePath)
         const char* nameAttr = objElement->Attribute("Name");
         if (nameAttr)
             obj->SetName(mtw(nameAttr));
+        //isRender
+        const char* isRender = objElement->Attribute("isRender");
+
+        if (strcmp(isRender, "true") == 0)
+        {
+            obj->SetIsRender(true);
+        }
+        else
+        {
+            obj->SetIsRender(false);
+        }
+        //Group
+        obj->_group = mtw(objElement->Attribute("Group"));
+
 
         // Position
         tinyxml2::XMLElement* posElement = objElement->FirstChildElement("Position");
@@ -259,7 +290,8 @@ void UIManager::Load(const wstring filePath)
                         if (argsElement)
                         {
                             const char* texListXmlAttr = argsElement->Attribute("TexListXml");
-                            obj->AddScripts(std::make_shared<ButtonAction>(mtw(texListXmlAttr)));
+                            const char* bFunction = argsElement->Attribute("Function");
+                            obj->AddScripts(std::make_shared<ButtonAction>(mtw(texListXmlAttr), mtw(bFunction)));
                            // obj->GetScript<ButtonAction>(L"ButtonAction")->Init();
                         }
                     }
@@ -311,6 +343,19 @@ shared_ptr<KObject> UIManager::GetUIObject(wstring name)
 			return obj;
 	}
 	return nullptr;
+}
+
+vector<shared_ptr<KObject>> UIManager::GetGroup(wstring groupName)
+{
+    vector<shared_ptr<KObject>> group;
+    for (auto obj : _objs)
+    {
+        if (obj->_group == groupName)
+            group.push_back(obj);
+    }
+
+     return group;
+
 }
 
 void UIManager::RemoveObject(wstring name)
