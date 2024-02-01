@@ -252,12 +252,8 @@ void InGameScene::Process()
         m_ZombieModelList[i]->Process();
         m_ZombieModelList[i]->Frame();
 
-        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBox))
-        {
-            LGlobal::g_PlayerModel->IsTakeDamage = true;
-        }
-
-        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBoxRightHand))
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBox)
+            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBoxRightHand))
         {
             LGlobal::g_PlayerModel->IsTakeDamage = true;
         }
@@ -552,6 +548,7 @@ void InGameScene::Release()
 
 void InGameScene::NextWave()
 {
+    if (m_CurrentWave > 3) return;
     int currentWave = m_ZombieWave->m_WaveCountList[m_CurrentWave];
     m_ZombieModelList.resize(currentWave);
     for (int i = 0; i < currentWave; i++)

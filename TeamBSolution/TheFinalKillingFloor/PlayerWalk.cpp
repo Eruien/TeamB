@@ -15,7 +15,7 @@ void PlayerWalk::Process()
         return;
     }
 
-    if (m_pOwner->IsTakeDamage)
+    if (m_pOwner->IsTakeDammageAni)
     {
         m_pOwner->SetTransition(Event::TAKEDAMAGE);
         return;

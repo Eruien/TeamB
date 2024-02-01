@@ -392,6 +392,12 @@ bool LSkinningModel::Frame()
 	if (m_pActionModel == nullptr) return false;
 	m_TimerEnd = false;
 
+	if (m_pComparePtr == nullptr || m_pComparePtr != m_pActionModel)
+	{
+		m_pComparePtr = m_pActionModel;
+		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
+	}
+
 	if (m_TimerStart)
 	{
 		m_fCurrentAnimTime = 0.0f;

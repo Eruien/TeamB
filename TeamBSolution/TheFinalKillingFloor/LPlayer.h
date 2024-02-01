@@ -34,8 +34,9 @@ public:
 	bool IsShoot = false;
 	bool IsMoveOneDir = false;
 	bool IsTakeDamage = false;
-	bool IsInvincibility = false;
+	bool IsInvincibility = true;
 	bool IsDeath = false;
+	bool IsTakeDammageAni = false;
 	float m_Speed = 0.0f;
 	float m_ShotDelay = 0.1f;
 	float m_StartShoot = 0.0f;

@@ -9,8 +9,11 @@ bool PlayerDeath::Init()
 
 void PlayerDeath::Process()
 {
+    m_pOwner->IsMove = false;
+
     if (m_pOwner->m_TimerEnd)
     {
+        m_pOwner->IsMove = true;
         m_pOwner->IsDeath = false;
         m_pOwner->m_HP = 100.0f;
         m_pOwner->SetTransition(Event::CHARACTERREVIVE);

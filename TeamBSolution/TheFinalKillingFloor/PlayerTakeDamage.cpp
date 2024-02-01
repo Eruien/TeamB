@@ -9,6 +9,9 @@ bool PlayerTakeDamage::Init()
 
 void PlayerTakeDamage::Process()
 {
+    m_pOwner->IsMove = true;
+    m_pOwner->IsTakeDammageAni = false;
+
     if (m_pOwner->IsDeath)
     {
         m_pOwner->SetTransition(Event::FATALDAMAGE);

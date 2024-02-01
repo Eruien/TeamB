@@ -36,8 +36,8 @@ public:
 	bool IsMovable = true;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;
-	float m_PatrolRange = 500.0f;
-	float m_AttackRange = 50.0f;
+	float m_PatrolRange = 10000.0f;
+	float m_AttackRange = 25.0f;
 	TVector3 m_RandomPos;
 	LPlayer* m_Player;
 	TVector3 m_PlayerPos;

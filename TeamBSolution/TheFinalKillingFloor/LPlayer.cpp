@@ -186,11 +186,13 @@ bool LPlayer::Frame()
 	{
 		IsInvincibility = true;
 		IsTakeDamage = false;
+		IsTakeDammageAni = true;
 		m_HP -= 20;
 	}
 
 	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;
+	IsReload = false;
 
 	if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH)
 	{
@@ -215,7 +217,6 @@ bool LPlayer::Frame()
 	{
 		IsMove = true;
 		IsAttack = false;
-		IsReload = false;
 	}
 
 	if (IsMove && IsMovable)
