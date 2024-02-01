@@ -33,8 +33,10 @@ public:
 	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
 	std::shared_ptr<LModel> m_GunModel = nullptr;
 	std::vector<LNPC*> m_ZombieModelList;
+		 shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* mapObj = nullptr;
+	LFbxObj* treeObj = nullptr;
 	int m_EnemySize = 2;
 public:
 	// Shadow

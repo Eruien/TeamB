@@ -119,6 +119,16 @@ bool InGameScene::Init()
     //CMapDesc.TextureFilePath = L"../../res/map/baseColor.jpg";
     //m_CustomMap->Load(CMapDesc);
 
+    //tree
+    treeObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/tree/Tree.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    m_Tree = std::make_shared<LModel>();
+    m_Tree->SetLFbxObj(treeObj);
+    m_Tree->CreateBoneBuffer();
+    m_Tree->m_matControl._11 = 50.f;
+    m_Tree->m_matControl._33 = 50.f;
+    m_Tree->m_matControl._42 = 50.f;
+
+
     LMapDesc MapDesc = {};
     MapDesc.iNumCols = m_CustomMap->m_iNumCols;
     MapDesc.iNumRows = m_CustomMap->m_iNumRows;
@@ -184,6 +194,8 @@ void InGameScene::Process()
     // 맵 오브젝트 예시
     //m_MapModel->Frame();
     m_CustomMap->Frame();
+    //tree
+    m_Tree->Frame();
 
     float fHeight = m_CustomMap->GetHeight(m_PlayerModel->m_matControl._41, m_PlayerModel->m_matControl._43);
     m_PlayerModel->m_matControl._42 = fHeight + 1.0f;
@@ -346,6 +358,15 @@ void InGameScene::Render()
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
 
+    m_Tree->m_pModel->m_DrawList[0]->SetMatrix(&m_Tree->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_CBmatShadow.g_matShadow = m_Tree->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
+    D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
+    LGlobal::g_pImmediateContext->UpdateSubresource(m_pCBShadow.Get(), 0, NULL, &m_CBmatShadow, 0, 0);
+    LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pCBShadow.GetAddressOf());
+    m_Tree->m_pModel->m_DrawList[0]->PreRender();
+    ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
+    LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
+    m_Tree->m_pModel->m_DrawList[0]->PostRender();
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
     m_pQuad.PreRender();
