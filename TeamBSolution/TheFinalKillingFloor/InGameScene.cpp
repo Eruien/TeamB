@@ -215,6 +215,17 @@ void InGameScene::Process()
         m_ZombieModelList[i]->m_matControl._42 = fHeight + 1.0f;
         m_ZombieModelList[i]->Process();
         m_ZombieModelList[i]->Frame();
+
+        if (m_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBox))
+        {
+            m_PlayerModel->IsTakeDamage = true;
+        }
+
+        if (m_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBoxRightHand))
+        {
+            m_PlayerModel->IsTakeDamage = true;
+        }
+
         // collision check
         for (int j = i + 1; j < m_EnemySize; j++)
         {
@@ -289,12 +300,6 @@ void InGameScene::Process()
         m_ZombieModelList[i]->m_OBBBoxRightHand.CreateOBBBox(m_ZombieModelList[i]->m_SettingBoxRightHand.fExtent[0], m_ZombieModelList[i]->m_SettingBoxRightHand.fExtent[1], m_ZombieModelList[i]->m_SettingBoxRightHand.fExtent[2],
             { m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
             m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[0], m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[1], m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
-
-       /* if (m_ZombieModelList[i]->m_pActionModel->m_iEndFrame <= int(m_ZombieModelList[i]->m_fCurrentAnimTime)) return;
-
-        TMatrix zombieRightHandSocket = m_ZombieModelList[i]->m_pActionModel->m_NameMatrixMap[int(m_ZombieModelList[i]->m_fCurrentAnimTime)][L"RightHand"];
-
-        m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld = zombieRightHandSocket;*/
     }
     UIManager::GetInstance().Frame();
 }

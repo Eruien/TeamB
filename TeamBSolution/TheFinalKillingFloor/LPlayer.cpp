@@ -161,6 +161,16 @@ void LPlayer::Move()
 
 bool LPlayer::Frame()
 {
+	if (LGlobal::g_HP <= 0)
+	{
+		IsDeath = true;
+	}
+
+	if (IsTakeDamage)
+	{
+		LGlobal::g_HP -= 20;
+	}
+
 	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;
 
@@ -174,9 +184,9 @@ bool LPlayer::Frame()
 		{
 			m_StartShoot = 0.0f;
 			IsShoot = true;
-			m_BulletCount -= 1;
+			LGlobal::g_BulletCount -= 1;
 
-			if (m_BulletCount <= 0)
+			if (LGlobal::g_BulletCount <= 0)
 			{
 				IsReload = true;
 			}
