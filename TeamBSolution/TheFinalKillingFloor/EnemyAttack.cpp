@@ -16,7 +16,7 @@ void EnemyAttack::Process()
         return;
     }
 
-    if (!m_pOwner->IsAttackRange)
+    if (!m_pOwner->IsAttackRange && m_pOwner->m_TimerEnd)
     {
         m_Timer = false;
         m_pOwner->SetTransition(Event::PLAYEROUTATTACKRANGE);

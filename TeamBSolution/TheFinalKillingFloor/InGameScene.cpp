@@ -125,7 +125,7 @@ bool InGameScene::Init()
     MapDesc.fCellDistance = 4.0f;
     MapDesc.fScaleHeight = 0.4f;
     MapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
+    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg"; 
     m_CustomMap->Load(MapDesc);
 
     // Shadow
