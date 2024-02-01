@@ -137,6 +137,15 @@
     <ClCompile Include="PlayerReload.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDeath.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTakeDamage.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieWave.cpp">
+      <Filter>Wave</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -275,6 +284,15 @@
     <ClInclude Include="PlayerReload.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerDeath.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTakeDamage.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieWave.h">
+      <Filter>Wave</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -309,6 +327,9 @@
     </Filter>
     <Filter Include="Gun">
       <UniqueIdentifier>{f3da9b4a-3e2a-4d38-b85b-70e8c416dad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wave">
+      <UniqueIdentifier>{b6468b6d-e8d9-4d29-864d-0b0ffa6aecfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

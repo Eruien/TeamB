@@ -33,11 +33,15 @@ public:
 	bool IsReload = false;
 	bool IsShoot = false;
 	bool IsMoveOneDir = false;
+	bool IsTakeDamage = false;
+	bool IsInvincibility = false;
+	bool IsDeath = false;
 	float m_Speed = 0.0f;
 	float m_ShotDelay = 0.1f;
 	float m_StartShoot = 0.0f;
-	int m_BulletCount = 30;
-	TVector3 m_AddDirection;	
+	float m_StartTakeDamage = 0.0f;
+	float m_EndTakeDamage = 1.0f;
+	TVector3 m_AddDirection;
 public:
 	void FSM(FSMType fsmType);
 	void SetTransition(Event inputEvent);

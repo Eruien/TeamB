@@ -34,6 +34,7 @@ public:
 public:
 	bool m_TimerStart = false;
 	bool m_TimerEnd = false;
+	float m_HP = 100.0f;
 public:
 	virtual void SetAnimationArrayTexture();
 	virtual void SetAnimationArraySRV();

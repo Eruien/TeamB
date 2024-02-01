@@ -9,9 +9,21 @@ bool PlayerReload::Init()
 
 void PlayerReload::Process()
 {
+    if (m_pOwner->IsDeath)
+    {
+        m_pOwner->SetTransition(Event::FATALDAMAGE);
+        return;
+    }
+
+    if (m_pOwner->IsTakeDamage)
+    {
+        m_pOwner->SetTransition(Event::TAKEDAMAGE);
+        return;
+    }
+
     if (m_pOwner->m_TimerEnd)
     {
-        m_pOwner->m_BulletCount = 30;
+        LGlobal::g_BulletCount = 30;
         m_pOwner->SetTransition(Event::ENDRELOAD);
         return;
     }

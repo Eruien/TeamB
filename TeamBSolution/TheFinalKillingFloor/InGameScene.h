@@ -13,6 +13,7 @@
 #include "LSelect.h"
 #include "LBox.h"
 #include "KObject.h"
+#include "ZombieWave.h"
 
 struct SHADOW_CONSTANT_BUFFER
 {
@@ -30,14 +31,18 @@ public:
 
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
-	std::shared_ptr<LPlayer> m_PlayerModel = nullptr;
 	std::shared_ptr<LModel> m_GunModel = nullptr;
 	std::vector<LNPC*> m_ZombieModelList;
 		 shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* mapObj = nullptr;
+<<<<<<< HEAD
 	LFbxObj* treeObj = nullptr;
 	int m_EnemySize = 2;
+=======
+	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
+	int m_WaveCount = 5;
+>>>>>>> 53319bfa3ebaea849a94b94b7f8d6b8791014b59
 public:
 	// Shadow
 	LDxRT m_RT;

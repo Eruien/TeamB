@@ -9,6 +9,18 @@ bool PlayerRun::Init()
 
 void PlayerRun::Process()
 {
+    if (m_pOwner->IsDeath)
+    {
+        m_pOwner->SetTransition(Event::FATALDAMAGE);
+        return;
+    }
+
+    if (m_pOwner->IsTakeDamage)
+    {
+        m_pOwner->SetTransition(Event::TAKEDAMAGE);
+        return;
+    }
+
     if (m_pOwner->IsAttack)
     {
         m_pOwner->SetTransition(Event::CLICKATTACKBUTTON);

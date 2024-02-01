@@ -12,3 +12,5 @@ float LGlobal::g_fGameTimer = 0;
 LCamera* LGlobal::g_pMainCamera = nullptr;
 UICamera* LGlobal::g_pUICamera = nullptr;
 HINSTANCE LGlobal::g_hInstance = nullptr;
+int LGlobal::g_BulletCount = 30;
+LPlayer* LGlobal::g_PlayerModel = nullptr;

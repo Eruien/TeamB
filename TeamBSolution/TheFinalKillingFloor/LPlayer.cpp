@@ -7,6 +7,8 @@
 #include "PlayerRun.h"
 #include "PlayerAttack.h"
 #include "PlayerReload.h"
+#include "PlayerTakeDamage.h"
+#include "PlayerDeath.h"
 
 void LPlayer::FSM(FSMType fsmType)
 {
@@ -25,6 +27,8 @@ void LPlayer::FSM(FSMType fsmType)
 	m_pActionList.insert(std::make_pair(State::CHARACTERRUN, std::make_unique<PlayerRun>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERSHOOT, std::make_unique<PlayerAttack>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERRELOAD, std::make_unique<PlayerReload>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERTAKEDAMAGE, std::make_unique<PlayerTakeDamage>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERDEATH, std::make_unique<PlayerDeath>(this)));
 
 	m_pAction = m_pActionList.find(State::CHARACTERIDLE)->second.get();
 	m_CurrentState = State::CHARACTERIDLE;
@@ -161,6 +165,30 @@ void LPlayer::Move()
 
 bool LPlayer::Frame()
 {
+	if (m_HP <= 0)
+	{
+		IsDeath = true;
+	}
+
+	if (IsInvincibility)
+	{
+		m_StartTakeDamage += LGlobal::g_fSPF;
+	}
+
+	if (m_EndTakeDamage < m_StartTakeDamage)
+	{
+		IsInvincibility = false;
+		m_StartTakeDamage = 0.0f;
+		IsTakeDamage = false;
+	}
+
+	if (IsTakeDamage && !IsInvincibility)
+	{
+		IsInvincibility = true;
+		IsTakeDamage = false;
+		m_HP -= 20;
+	}
+
 	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;
 
@@ -174,9 +202,9 @@ bool LPlayer::Frame()
 		{
 			m_StartShoot = 0.0f;
 			IsShoot = true;
-			m_BulletCount -= 1;
+			LGlobal::g_BulletCount -= 1;
 
-			if (m_BulletCount <= 0)
+			if (LGlobal::g_BulletCount <= 0)
 			{
 				IsReload = true;
 			}

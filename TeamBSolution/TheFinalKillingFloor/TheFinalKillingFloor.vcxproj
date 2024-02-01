@@ -160,9 +160,11 @@
     <ClCompile Include="LScene.cpp" />
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="PlayerReload.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
+    <ClCompile Include="PlayerTakeDamage.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="UI\Animation.cpp" />
@@ -189,6 +191,7 @@
     <ClCompile Include="UI\Text.cpp" />
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
+    <ClCompile Include="ZombieWave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EndScene.h" />
@@ -208,9 +211,11 @@
     <ClInclude Include="LScene.h" />
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="PlayerAttack.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerIdle.h" />
     <ClInclude Include="PlayerReload.h" />
     <ClInclude Include="PlayerRun.h" />
+    <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="UI\Animation.h" />
@@ -237,6 +242,7 @@
     <ClInclude Include="UI\Text.h" />
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIManager.h" />
+    <ClInclude Include="ZombieWave.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
