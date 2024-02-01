@@ -184,17 +184,15 @@ bool LModel::ComputeOffset()
 	int animationIndex = 0;
 	m_texAnimationOffset.push_back(offsetCount);
 
-	for (auto iter = LFbxMgr::GetInstance().m_map.begin(); iter != LFbxMgr::GetInstance().m_map.end(); iter++)
+	for (int i = 0; i < LFbxMgr::GetInstance().m_ZombieMap.size(); i++)
 	{
-		if (iter == LFbxMgr::GetInstance().m_map.begin()) continue;
-
-		iter->second->m_iStartFrame = offsetCount;
-		offsetCount += iter->second->m_iEndFrame;
-		m_AnimationFrameList.push_back(iter->second->m_iEndFrame);
-		iter->second->m_iEndFrame = offsetCount;
+		LFbxMgr::GetInstance().m_ZombieMap[i]->m_iStartFrame = offsetCount;
+		offsetCount += LFbxMgr::GetInstance().m_ZombieMap[i]->m_iEndFrame;
+		m_AnimationFrameList.push_back(LFbxMgr::GetInstance().m_ZombieMap[i]->m_iEndFrame);
+		LFbxMgr::GetInstance().m_ZombieMap[i]->m_iEndFrame = offsetCount;
 		m_texAnimationOffset.push_back(offsetCount);
 		m_texBoneArray.resize(offsetCount);
-		m_pActionModel = iter->second.get();
+		m_pActionModel = LFbxMgr::GetInstance().m_ZombieMap[i];
 		Init(animationIndex);
 
 		animationIndex++;

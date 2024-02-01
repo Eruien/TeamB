@@ -37,9 +37,9 @@ public:
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
-	int m_EnemySize = 2;
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;
+	int m_CurrentWave = 2;
 public:
 	// Shadow
 	LDxRT m_RT;
@@ -59,11 +59,14 @@ public:
 public:
 	shared_ptr<KObject> m_playerIcon;
 public:
+	bool IsNextWave = false;
+public:
 	bool Init() override;
 	void Render() override;
 	void Process() override;
 	void Release();
 public:
+	void NextWave();
 	void RenderObject();
 	void RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
 		TMatrix* matView, TMatrix* matProj);

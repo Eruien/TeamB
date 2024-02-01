@@ -40,4 +40,8 @@ ZombieWave::ZombieWave()
 {
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	m_Generator.seed(seed);
+    
+    m_WaveCountList.insert(std::make_pair(1, Wave1));
+    m_WaveCountList.insert(std::make_pair(2, Wave2));
+    m_WaveCountList.insert(std::make_pair(3, Wave3));
 }

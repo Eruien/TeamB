@@ -11,6 +11,7 @@ public:
 	int m_CurrentZombieCount = 0;
 	std::default_random_engine m_Generator;
 	std::uniform_int_distribution<int> m_Distribution{ -1020, 1020 };
+	std::map<int, int> m_WaveCountList;
 	const int Wave1 = 5;
 	const int Wave2 = 10;
 	const int Wave3 = 15;

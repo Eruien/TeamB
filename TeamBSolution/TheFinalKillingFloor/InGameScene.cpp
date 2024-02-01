@@ -44,6 +44,10 @@ bool InGameScene::Init()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Attack_Anim.fbx"));
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Death.fbx"));
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx"));
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx"));
 
     m_ZombieWave = std::make_shared<ZombieWave>();
     m_ZombieModelList.resize(m_WaveCount);
@@ -203,6 +207,12 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
+    if (IsNextWave)
+    {
+        IsNextWave = false;
+        NextWave();
+    }
+
     // 맵 오브젝트 예시
     //m_MapModel->Frame();
     m_CustomMap->Frame();
@@ -532,7 +542,55 @@ void InGameScene::Release()
         {
             iter++;
         }
+
+        if (m_ZombieModelList.size() <= 0)
+        {
+            IsNextWave = true;
+        }
     }
+}
+
+void InGameScene::NextWave()
+{
+    int currentWave = m_ZombieWave->m_WaveCountList[m_CurrentWave];
+    m_ZombieModelList.resize(currentWave);
+    for (int i = 0; i < currentWave; i++)
+    {
+        m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
+        m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
+        m_ZombieModelList[i]->CreateBoneBuffer();
+        m_ZombieModelList[i]->FSM(FSMType::ENEMY);
+
+        m_ZombieModelList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_ZombieModelList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+    }
+
+    for (int i = 0; i < currentWave; i++)
+    {
+        m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
+        m_ZombieModelList[i]->SetAnimationArrayTexture();
+        m_ZombieModelList[i]->SetAnimationArraySRV();
+        m_ZombieModelList[i]->CreateCurrentFrameBuffer();
+    }
+
+    // Collision
+    std::wstring head = L"Head";
+    std::wstring root = L"root";
+    std::wstring shoulder = L"RightShoulder";
+    std::wstring hand = L"RightHand";
+
+    TMatrix Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix RightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    TMatrix RightHand = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
+
+    for (int i = 0; i < currentWave; i++)
+    {
+        m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+        m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+    }
+
+    m_CurrentWave++;
 }
 
 void InGameScene::RenderObject()
