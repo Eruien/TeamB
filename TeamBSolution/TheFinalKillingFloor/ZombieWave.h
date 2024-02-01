@@ -14,7 +14,7 @@ public:
 	std::map<int, int> m_WaveCountList;
 	const int Wave1 = 5;
 	const int Wave2 = 10;
-	const int Wave3 = 15;
+	const int Wave3 = 100;
 public:
 	void SetZombie();
 	void SpawnZombieWave(LPlayer* player);
