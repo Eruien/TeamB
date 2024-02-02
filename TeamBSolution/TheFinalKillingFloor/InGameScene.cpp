@@ -214,11 +214,7 @@ bool InGameScene::Init()
     m_ShapeMinimap.Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Box_128x64.png");
     m_rtMinimap.Create(256, 256);
 
-    m_enemyHp = make_shared<KObject>();
-    m_enemyHp->Init();
-    m_enemyHp->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/hp_bar.png");
-    m_enemyHp->SetPos({ 0, 0, 0 });
-    m_enemyHp->SetScale({ 12,2,1 });
+  
 
 
     // tree height calc
@@ -384,35 +380,7 @@ void InGameScene::Process()
     if (LGlobal::g_PlayerModel->m_matControl._43 > 900.f) LGlobal::g_PlayerModel->m_matControl._43 = 900.f;
     if (LGlobal::g_PlayerModel->m_matControl._43 < -900.f) LGlobal::g_PlayerModel->m_matControl._43 = -900.f;
 
-
-    // ºôº¸µå
-
-    for (int i = 0; i < m_ZombieModelList.size(); i++)
-    {
-        m_enemyHp->SetPos({ m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + 40,m_ZombieModelList[i]->m_matControl._43 });
-    }
-     /*  LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
-      LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 500);*/
-    TMatrix matRotation, matTrans, matScale, worldMat;
-    D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
-    matRotation._41 = 0.0f;
-    matRotation._42 = 0.0f;
-    matRotation._43 = 0.0f;
-    matRotation._44 = 1.0f;
-
-    D3DXMatrixTranslation(&matTrans, m_enemyHp->m_vPosition.x,
-        m_enemyHp->m_vPosition.y,
-        m_enemyHp->m_vPosition.z
-    );
-
-    D3DXMatrixScaling(&matScale, m_enemyHp->m_vScale.x,
-        m_enemyHp->m_vScale.y,
-        m_enemyHp->m_vScale.z
-    );
-    worldMat = matScale * matRotation * matTrans;
-    m_enemyHp->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_enemyHp->Frame();
-    // ºôº¸µå ³¡
+    
     if (m_GunModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
     {
         if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
@@ -454,7 +422,7 @@ void InGameScene::Render()
     m_SkyBox->Render();
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);
 
-    m_enemyHp->Render();
+ 
 
     TVector4 vClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -524,6 +492,7 @@ void InGameScene::Render()
         zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_ZombieModelList[i]->m_SettingBox.vCenter.y, m_ZombieModelList[i]->m_matControl._43));
         m_ZombieModelList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_ZombieModelList[i]->m_OBBBox.Render();
+        m_ZombieModelList[i]->Render();
 
         TMatrix zombieRightHandSocket;
         TMatrix matRightHand;

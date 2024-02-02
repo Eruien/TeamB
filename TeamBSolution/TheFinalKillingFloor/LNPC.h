@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 
+class KObject;
 class LNPC;
 
 class NPCState
@@ -44,6 +45,7 @@ public:
 	TVector3 m_NPCPos;
 	std::default_random_engine m_Generator;
 	std::uniform_int_distribution<int> m_Distribution;
+	shared_ptr<KObject> m_enemyHp;
 public:
 	void FSM(FSMType fsmType);
 	void SetTransition(Event inputEvent);
@@ -55,6 +57,7 @@ public:
 	virtual	void Process();
 	bool Frame() override;
 	bool FrameInstancing() override;
+	bool Render() override;
 public:
 	LNPC() {};
 	LNPC(LPlayer* player);
