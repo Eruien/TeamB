@@ -6,7 +6,7 @@
 #include "LCharacterIO.h"
 #include "LAnimationIO.h"
 #include "LExportIO.h"
-
+static bool Init_2 = true;
 bool InGameScene::Init()
 {
     m_DebugCamera = std::make_shared<LDebugCamera>();
@@ -33,7 +33,7 @@ bool InGameScene::Init()
     m_playerIcon->Init();
     m_playerIcon->SetPos({ 0, 0, -1 });
     m_playerIcon->SetScale({100,100, 1});
-  
+
     m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/PlayerIcon.png");
 
     CreateShadowConstantBuffer();
@@ -42,7 +42,7 @@ bool InGameScene::Init()
     m_SkyBox->Set();
     m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
 
-    
+
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin", L"../../res/hlsl/CharacterShaderInAnimationData.hlsl");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
@@ -142,7 +142,7 @@ bool InGameScene::Init()
     worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
     worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
     m_Tree->m_matControl = worldMatrix;
-    
+
 
 
     LMapDesc MapDesc = {};
@@ -151,7 +151,7 @@ bool InGameScene::Init()
     MapDesc.fCellDistance = 4.0f;
     MapDesc.fScaleHeight = 0.4f;
     MapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg"; 
+    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
 
     // Shadow
@@ -171,12 +171,12 @@ bool InGameScene::Init()
     std::wstring root = L"root";
     std::wstring shoulder = L"RightShoulder";
     std::wstring hand = L"RightHand";
- 
+
     TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
     TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
-  
+
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
-  
+
     Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
     Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
     TMatrix RightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
@@ -214,8 +214,17 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
+   
+    if(Init_2)
+    {
+        UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveCountList.size());
+        UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_CurrentWave);
+        UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
+        Init_2 = false;
+    }
     if (IsNextWave)
     {
+        
         IsNextWave = false;
         NextWave();
     }
@@ -230,7 +239,7 @@ void InGameScene::Process()
     LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
 
 
-    
+
     if (LInput::GetInstance().m_KeyStateOld[DIK_1] > KEY_PUSH)
     {
         LGlobal::g_pMainCamera = m_DebugCamera.get();
@@ -278,7 +287,7 @@ void InGameScene::Process()
                 m_ZombieModelList[i]->m_matControl._41 += offsetX*0.1;
                 m_ZombieModelList[i]->m_matControl._43 += offsetZ*0.1;
             }
-            
+
         }
         // Player <-> zombie
         if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_ZombieModelList[i]->m_OBBBox))
@@ -400,8 +409,8 @@ void InGameScene::Render()
     {
         TVector3 vLightPos = TVector3(-10000, 10000, -10000);
         //-----------------------------------------------------
-        // 1패스:그림자맵 생성  
-        //-----------------------------------------------------		
+        // 1패스:그림자맵 생성
+        //-----------------------------------------------------
         TVector3 vEye = vLightPos;
         TVector3 vLookat = TVector3(0, 0, 0);
         TVector3 vUp = TVector3(0.0f, 1.0f, 0.0f);
@@ -466,7 +475,7 @@ void InGameScene::Render()
                 zombieRightHandSocket = m_ZombieModelList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
             }
         }
-        
+
         matRightHand = zombieRightHandSocket * m_ZombieModelList[i]->m_matControl;
         m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
@@ -479,7 +488,7 @@ void InGameScene::Render()
                 {
                     m_ZombieModelList[i]->IsTakeDamage = true;
                 }
-                
+
                 //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
                 //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
             }
@@ -521,7 +530,7 @@ void InGameScene::Render()
 
    //     m_playerIcon->m_vPosition={ LGlobal::g_PlayerModel->m_matControl._41*(float(LGlobal::g_WindowWidth) / 2048.f) ,0, LGlobal::g_PlayerModel->m_matControl._43 * (float(LGlobal::g_WindowHeight) / 2048.0f) };
    //     m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
-   //     
+   //
    //     m_playerIcon->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matOrthoProjection);
    //     m_playerIcon->Frame();
    //     m_playerIcon->Render();
@@ -546,6 +555,7 @@ void InGameScene::Release()
         if ((*iter)->IsDead)
         {
             iter = m_ZombieModelList.erase(iter);
+            UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
         }
         else
         {
@@ -561,9 +571,11 @@ void InGameScene::Release()
 
 void InGameScene::NextWave()
 {
+    
     if (m_CurrentWave > 3) return;
     int currentWave = m_ZombieWave->m_WaveCountList[m_CurrentWave];
     m_ZombieModelList.resize(currentWave);
+    
     for (int i = 0; i < currentWave; i++)
     {
         m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
@@ -573,6 +585,7 @@ void InGameScene::NextWave()
 
         m_ZombieModelList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
         m_ZombieModelList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+       
     }
 
     for (int i = 0; i < currentWave; i++)
@@ -601,6 +614,8 @@ void InGameScene::NextWave()
     }
 
     m_CurrentWave++;
+     UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
+    UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_CurrentWave);
 }
 
 void InGameScene::RenderObject()

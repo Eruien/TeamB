@@ -46,10 +46,11 @@ public:
     void RemoveObject(wstring name);
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
-        bool _debugMode = false;
+        bool _debugMode = true;
 
 private:
     vector<shared_ptr<KObject>> _objs;
+    vector<shared_ptr<KObject>> _objsTemp;
     UIManager();
     ~UIManager();
     shared_ptr< Imgui_ObjectDetail> _imGuiObjDetail;

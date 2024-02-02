@@ -1,6 +1,7 @@
 #include "PlayerReload.h"
 #include "LGlobal.h"
 #include "LFbxMgr.h"
+#include "UIManager.h"
 
 bool PlayerReload::Init()
 {
@@ -28,6 +29,7 @@ void PlayerReload::Process()
         m_pOwner->IsMove = true;
         LGlobal::g_BulletCount = 30;
         m_pOwner->SetTransition(Event::ENDRELOAD);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
         return;
     }
  

@@ -41,7 +41,7 @@ public:
 	LFbxObj* treeObj = nullptr;
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;
-	int m_CurrentWave = 2;
+	int m_CurrentWave = 1;
 public:
 	// Shadow
 	LDxRT m_RT;

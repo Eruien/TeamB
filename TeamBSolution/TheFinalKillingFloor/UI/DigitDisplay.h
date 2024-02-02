@@ -10,7 +10,8 @@ public:
 	void Init() override;
 	void Frame() override;
 	void Render() override;
-	void UpdateNumber();
+	void UpdateNumber(int num);
+	void UpdateDigit(int digit);
 	void LoadTextureList(wstring texXmlPath);
 	wstring GetXmlPath() {return _texXmlPath;};
 	void Save();

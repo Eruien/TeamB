@@ -9,7 +9,7 @@ void imgui_menuBar::Init()
 
 void imgui_menuBar::Frame()
 {
-  
+
 
 
     //
@@ -18,14 +18,14 @@ void imgui_menuBar::Frame()
 
 void imgui_menuBar::Render()
 {
-
+    char buffer[256] = "";
     if (_isSaveWindow)
     {
         ImGui::OpenPopup("Save?");
         if (ImGui::BeginPopupModal("Save?",0, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            char buffer[256] = "";
-          
+
+
             if (ImGui::InputText("##SaveFileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
             {
                 saveFileName = mtw(buffer);
@@ -40,7 +40,7 @@ void imgui_menuBar::Render()
 
 
             ImGui::SameLine(0,30);
-           
+
             if (ImGui::Button("Cancle", ImVec2(100.f, 25.f)))
             {
                 _isSaveWindow = false;
@@ -60,7 +60,7 @@ void imgui_menuBar::Render()
             std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
             std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
             // action
-            
+
             UIManager::GetInstance().Load(mtw(filePathName));
 
         }
@@ -79,7 +79,7 @@ void imgui_menuBar::Test()
 
     if (ImGui::BeginMainMenuBar())
     {
-  
+
         if (ImGui::BeginMenu("File"))
         {
 
@@ -123,7 +123,7 @@ void imgui_menuBar::Test()
                 obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/1.png");
                 UIManager::GetInstance().AddUIObject(obj);
             }
-          
+
             ImGui::EndMenu();
 
         }
@@ -150,7 +150,7 @@ void imgui_menuBar::Test()
     //    ImGui::Text("counter = %d", counter);
 
 
-    //   
+    //
     //  //  ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
     //    ImGui::End();
     //}
