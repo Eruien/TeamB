@@ -26,7 +26,6 @@ public:
 	static UICamera* g_pUICamera;
 	static int g_BulletCount;
 	static LPlayer* g_PlayerModel;
-
 };
 
 

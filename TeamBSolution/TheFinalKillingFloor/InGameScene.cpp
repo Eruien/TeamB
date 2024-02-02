@@ -144,8 +144,8 @@ bool InGameScene::Init()
     m_Tree->m_matControl = worldMatrix;
     
     //bullet
-    bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/bullet.fbx", L"../../res/hlsl/Bullet.hlsl");
-    m_BulletList.resize(10);
+    bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
+    m_BulletList.resize(30);
     m_VisibleBulletList.resize(m_BulletList.size());
     for (int i = 0; i < m_BulletList.size(); ++i)
     {
@@ -253,13 +253,15 @@ void InGameScene::Process()
     //tree
     m_Tree->Frame();
     int index = LGlobal::g_BulletCount % m_BulletList.size();
-    if (g_InputData.bLeftClick)
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0)
     {
         if (m_VisibleBulletList[index] == false)
         {
             m_VisibleBulletList[index] = true;
-            m_BulletList[index]->m_matControl = LGlobal::g_PlayerModel->m_matControl;
-            m_BulletList[index]->m_matControl._42 += 30.f;
+            TMatrix scale = TMatrix::CreateScale(0.03);
+            m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
+            
+            m_BulletList[index]->m_matControl._42 += 27.f;
         }
     }
     for (int i = 0; i < m_BulletList.size(); i++)
@@ -268,9 +270,9 @@ void InGameScene::Process()
         {
             m_BulletList[i]->Frame();
             
-            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 30;
-            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 30;
-            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 30;
+            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 100;
+            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 100;
+            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 100;
             if (m_BulletList[i]->m_matControl._41 > 1000.f
                 || m_BulletList[i]->m_matControl._41 < -1000.f
                 || m_BulletList[i]->m_matControl._43 > 1000.f
@@ -280,10 +282,6 @@ void InGameScene::Process()
             {
                 m_VisibleBulletList[i] = false;
             }
-        }
-        else
-        {
-
         }
     }
     
