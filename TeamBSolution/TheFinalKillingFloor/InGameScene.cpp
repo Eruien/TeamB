@@ -266,9 +266,9 @@ void InGameScene::Process()
         {
             m_BulletList[i]->Frame();
             
-            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 100;
-            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 100;
-            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 100;
+            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 5000;
+            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 5000;
+            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 5000;
             if (m_BulletList[i]->m_matControl._41 > 1000.f
                 || m_BulletList[i]->m_matControl._41 < -1000.f
                 || m_BulletList[i]->m_matControl._43 > 1000.f
