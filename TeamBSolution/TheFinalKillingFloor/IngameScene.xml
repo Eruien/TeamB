@@ -23,7 +23,7 @@
     <UIObject Name="weaponUI" isRender="true" Group="None">
         <Position x="367" y="-288" z="0"/>
         <Scale width="94" height="58"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Ammo_Clip.png"/>
+        <Texture texPath="../../res/ui/Hud_Ammo_Clip.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -63,7 +63,7 @@
     <UIObject Name="Wave_bg" isRender="true" Group="None">
         <Position x="534" y="259" z="0"/>
         <Scale width="200" height="200"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Bio_Clock_Circle.png"/>
+        <Texture texPath="../../res/ui/Hud_Bio_Clock_Circle.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -84,7 +84,7 @@
     <UIObject Name="AmmoSlash" isRender="true" Group="AmmoSlash">
         <Position x="493" y="-289" z="0"/>
         <Scale width="16" height="40"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\slash.png"/>
+        <Texture texPath="../../res/ui/slash.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -93,7 +93,7 @@
     <UIObject Name="WaveSlash" isRender="true" Group="None">
         <Position x="536" y="249" z="0"/>
         <Scale width="40" height="50"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\slash.png"/>
+        <Texture texPath="../../res/ui/slash.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -126,7 +126,7 @@
     <UIObject Name="text_Wave" isRender="true" Group="None">
         <Position x="533" y="303" z="0"/>
         <Scale width="114" height="44"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Wave.png"/>
+        <Texture texPath="../../res/ui/Wave.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -135,7 +135,7 @@
     <UIObject Name="EnemyCountBg" isRender="true" Group="None">
         <Position x="-400" y="-292" z="0.5"/>
         <Scale width="436" height="100"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Rectangel_selected.png"/>
+        <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="Resize2D"/>
@@ -146,7 +146,7 @@
     <UIObject Name="Crosshair" isRender="true" Group="None">
         <Position x="0" y="0" z="0"/>
         <Scale width="40" height="40"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\CrossHair.png"/>
+        <Texture texPath="../../res/ui/CrossHair.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
