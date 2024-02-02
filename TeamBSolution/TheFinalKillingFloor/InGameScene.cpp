@@ -297,6 +297,7 @@ void InGameScene::Process()
         }
     }
 
+    // Player <-> Tree
     TVector3 length = { m_Tree->m_matControl._41, m_Tree->m_matControl._42, m_Tree->m_matControl._43 };
     length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
     float distance = length.Length();
@@ -308,6 +309,11 @@ void InGameScene::Process()
         LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
         LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
     }
+    // Player ¸Ê ¹Ù±ù ÀÌµ¿ Á¦ÇÑ
+    if (LGlobal::g_PlayerModel->m_matControl._41 > 900.f) LGlobal::g_PlayerModel->m_matControl._41 = 900.f;
+    if (LGlobal::g_PlayerModel->m_matControl._41 < -900.f) LGlobal::g_PlayerModel->m_matControl._41 = -900.f;
+    if (LGlobal::g_PlayerModel->m_matControl._43 > 900.f) LGlobal::g_PlayerModel->m_matControl._43 = 900.f;
+    if (LGlobal::g_PlayerModel->m_matControl._43 < -900.f) LGlobal::g_PlayerModel->m_matControl._43 = -900.f;
 
 
     // ºôº¸µå
