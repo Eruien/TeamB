@@ -19,6 +19,10 @@ bool InGameScene::Init()
     m_ModelCamera->m_fRadius = 100.0f;
     LGlobal::g_pMainCamera = m_ModelCamera.get();
 
+    m_BackViewCamera = std::make_shared<LBackView>();
+    m_BackViewCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
+    m_BackViewCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+
     m_MinimapCamera = std::make_shared<LCamera>();
     m_MinimapCamera->CreateLookAt({ 0.0f, 2500.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
     m_MinimapCamera->m_fCameraPitch =0.f;
@@ -202,6 +206,9 @@ bool InGameScene::Init()
     // tree height calc
     float fHeight = m_CustomMap->GetHeight(m_Tree->m_matControl._41, m_Tree->m_matControl._43);
     m_Tree->m_matControl._42 = fHeight - 5.0f;
+
+    m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
+
     return true;
 }
 

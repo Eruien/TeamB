@@ -95,7 +95,7 @@
     <UIObject Name="OptionFrame" isRender="false" Group="MainOptionMenu">
         <Position x="-5" y="-71" z="0"/>
         <Scale width="286" height="394"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Box_128x64.png"/>
+        <Texture texPath="../../res\ui\Hud_Box_128x64.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
