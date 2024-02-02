@@ -7,6 +7,7 @@
 #include "EnemyDeath.h"
 #include "EnemyTakeDamage.h"
 #include "EnemyAttack.h"
+#include "KObject.h"
 
 void LNPC::FSM(FSMType fsmType)
 {
@@ -112,9 +113,40 @@ int LNPC::GetRandomNumber()
 {
 	return m_Distribution(m_Generator);
 }
-
 bool LNPC::Frame()
 {
+
+
+	// ºôº¸µå
+
+	
+		m_enemyHp->SetPos({ m_matControl._41,m_matControl._42 + 40, m_matControl._43 });
+	
+	/*  LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
+	 LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 500);*/
+	TMatrix matRotation, matTrans, matScale, worldMat;
+	D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
+	matRotation._41 = 0.0f;
+	matRotation._42 = 0.0f;
+	matRotation._43 = 0.0f;
+	matRotation._44 = 1.0f;
+
+	D3DXMatrixTranslation(&matTrans, m_enemyHp->m_vPosition.x,
+		m_enemyHp->m_vPosition.y,
+		m_enemyHp->m_vPosition.z
+	);
+
+	D3DXMatrixScaling(&matScale, m_enemyHp->m_vScale.x,
+		m_enemyHp->m_vScale.y,
+		m_enemyHp->m_vScale.z
+	);
+	worldMat = matScale * matRotation * matTrans;
+	m_enemyHp->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+	m_enemyHp->Frame();
+	// ºôº¸µå ³¡
+
+
+
 	if (m_HP <= 0)
 	{
 		IsDead = true;
@@ -192,6 +224,12 @@ bool LNPC::FrameInstancing()
 	return true;
 }
 
+bool LNPC::Render()
+{
+	m_enemyHp->Render();
+	return true;
+}
+
 LNPC::LNPC(LPlayer* player) : m_Distribution(-3000, 3000)
 {
 	m_Player = player;
@@ -200,4 +238,10 @@ LNPC::LNPC(LPlayer* player) : m_Distribution(-3000, 3000)
 	m_Generator.seed(seed);
 
 	m_RandomPos = { float(GetRandomNumber()), 0.0f, float(GetRandomNumber()) };
+
+	m_enemyHp = make_shared<KObject>();
+	m_enemyHp->Init();
+	m_enemyHp->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/hp_bar.png");
+	m_enemyHp->SetPos({ 0, 0, 0 });
+	m_enemyHp->SetScale({ 12,2,1 });
 }

@@ -2,6 +2,7 @@
 #include "LStd.h"
 #include "LCamera.h"
 #include "UICamera.h"
+#include "LSoundMgr.h"
 
 class LWindow;
 class LModel;
@@ -26,6 +27,9 @@ public:
 	static UICamera* g_pUICamera;
 	static int g_BulletCount;
 	static LPlayer* g_PlayerModel;
+	static LSound* g_BackgroundSound;
+	static LSound* g_EffectSound1;
+	static LSound* g_EffectSound2;
 };
 
 

@@ -14,3 +14,6 @@ UICamera* LGlobal::g_pUICamera = nullptr;
 HINSTANCE LGlobal::g_hInstance = nullptr;
 int LGlobal::g_BulletCount = 30;
 LPlayer* LGlobal::g_PlayerModel = nullptr;
+LSound* LGlobal::g_BackgroundSound = nullptr;
+LSound* LGlobal::g_EffectSound1 = nullptr;
+LSound* LGlobal::g_EffectSound2 = nullptr;
