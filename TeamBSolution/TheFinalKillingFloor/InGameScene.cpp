@@ -533,7 +533,7 @@ void InGameScene::Render()
     }
 
     std::wstring textState = L"InGameScene";
-    LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+    //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {

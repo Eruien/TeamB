@@ -268,7 +268,7 @@ bool LPlayer::Frame()
 
 	std::wstring wSpeed = L"Speed: ";
 	wSpeed += std::to_wstring(int(m_Speed));
-	LWrite::GetInstance().AddText(wSpeed, 0.0f, 150.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+	//LWrite::GetInstance().AddText(wSpeed, 0.0f, 150.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	LSkinningModel::Frame();
 	return true;
