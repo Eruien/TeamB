@@ -189,11 +189,9 @@ bool LPlayer::Frame()
 		IsTakeDamage = false;
 		IsTakeDammageAni = true;
 		m_HP -= 20;
-<<<<<<< Updated upstream
 
-=======
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
->>>>>>> Stashed changes
+
 	}
 
 	m_StartShoot += LGlobal::g_fSPF;
