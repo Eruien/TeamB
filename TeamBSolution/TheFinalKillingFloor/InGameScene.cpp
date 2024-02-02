@@ -299,6 +299,11 @@ void InGameScene::Process()
         LGlobal::g_pMainCamera = m_ModelCamera.get();
     }
 
+    if (LInput::GetInstance().m_KeyStateOld[DIK_3] > KEY_PUSH)
+    {
+        LGlobal::g_pMainCamera = m_BackViewCamera.get();
+    }
+
     m_ModelCamera->SetTargetPos(TVector3(LGlobal::g_PlayerModel->m_matControl._41 + 20, LGlobal::g_PlayerModel->m_matControl._42 + 15, LGlobal::g_PlayerModel->m_matControl._43));
 
     LGlobal::g_PlayerModel->Frame();

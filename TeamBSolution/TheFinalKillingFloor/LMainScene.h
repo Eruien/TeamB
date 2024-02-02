@@ -1,5 +1,6 @@
 #pragma once
 #include "LScene.h"
+#include "LSoundMgr.h"
 
 class LMainScene : public SceneState
 {
