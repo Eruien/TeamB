@@ -2,6 +2,8 @@
 #include "LStd.h"
 #include "LManager.h"
 #include "LManagerAgr.h"
+#include "LGlobal.h"//이펙트 머지
+
 
 
 

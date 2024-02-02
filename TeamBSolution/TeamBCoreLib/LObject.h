@@ -14,6 +14,8 @@ public:
 	virtual void SetMatrix(TMatrix* matWorld, TMatrix* matView, TMatrix* matProj);
 	void  SetScale(TVector3 s);
 	void  SetPos(TVector3 p);
+	void UpdateMatrix();//이펙트 머지
+
 public:
 	virtual bool Init() override;
 	virtual bool Frame() override;

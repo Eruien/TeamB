@@ -161,6 +161,7 @@ bool LCore::EngineInit()
 
 
     LGlobal::g_hInstance = m_hInstance;
+    LEffect::GetInstance().Init();//ÀÌÆåÆ®¸ÓÁö
 
     LInput::GetInstance().Init();
     LWrite::GetInstance().Init();
@@ -179,6 +180,8 @@ bool LCore::EngineFrame()
     m_Gametimer->Frame();
     LInput::GetInstance().Frame();
     LWrite::GetInstance().Frame();
+    LEffect::GetInstance().Frame();//ÀÌÆåÆ®¸ÓÁö
+
     LGlobal::g_pMainCamera->Frame();
     LGlobal::g_pUICamera->Frame();
     Frame();
@@ -210,6 +213,8 @@ bool LCore::EngineRender()
     }
 
     LWrite::GetInstance().PreRender();
+    LEffect::GetInstance().Render();//ÀÌÆåÆ®¸ÓÁö
+
     Render();
     LGlobal::g_pMainCamera->Render();
     LGlobal::g_pUICamera->Render();
@@ -227,6 +232,7 @@ bool LCore::EngineRelease()
     LDevice::Release();
     Release();
     m_Gametimer->Release();
+    LEffect::GetInstance().Release();//ÀÌÆåÆ®¸ÓÁö
     LGlobal::g_pMainCamera->Release();
     LWrite::GetInstance().Release();
     LInput::GetInstance().Release();

@@ -29,6 +29,7 @@ struct INPUT_MAP
 	bool bDownKey;
 	bool bLeftKey;
 	bool bRightKey;
+	bool bPKey;
 
 	bool bWKey;
 	bool bSKey;

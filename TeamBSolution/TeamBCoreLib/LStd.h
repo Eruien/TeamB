@@ -66,6 +66,9 @@
 #include "imgui_internal.h"
 #include "ImGuiFileDialog.h"
 
+#define randstep(fmin, fmax) ((float)fmin+((float)fmax-(float)fmin)* rand() / RAND_MAX)//Effect Ãß°¡
+
+
 using namespace Microsoft::WRL;
 using namespace DirectX;
 using namespace std;
