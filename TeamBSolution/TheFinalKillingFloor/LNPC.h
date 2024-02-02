@@ -3,6 +3,7 @@
 #include "LInput.h"
 #include "LFSMMgr.h"
 #include "LPlayer.h"
+#include "LSoundMgr.h"
 #include <random>
 #include <chrono>
 
@@ -35,6 +36,7 @@ public:
 	bool IsTakeDamage = false;
 	bool IsAttackRange = false;
 	bool IsMovable = true;
+	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;
 	float m_PatrolRange = 10000.0f;

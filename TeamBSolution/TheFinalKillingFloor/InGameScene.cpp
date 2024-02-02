@@ -9,6 +9,11 @@
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
+    LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
+    LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
+    LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
+   
+    
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -228,7 +233,7 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
-   
+    LGlobal::g_IngameSound->Play();
     if(Init_2)
     {
         UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveCountList.size());
@@ -528,7 +533,7 @@ void InGameScene::Render()
     }
 
     std::wstring textState = L"InGameScene";
-    LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+    //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
     {

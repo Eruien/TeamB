@@ -63,7 +63,7 @@ bool LTimer::Render()
 	text += L"[SPF]";
 	text += std::to_wstring(m_fSPF);
 	
-	LWrite::GetInstance().AddText(text, 0.0f, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f});
+	//LWrite::GetInstance().AddText(text, 0.0f, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f});
 
 	return true;
 }

@@ -9,7 +9,8 @@ bool Sample::Init()
 	UIManager::GetInstance().Load(L"testScene.xml");
 	//TextureList* tex = new TextureList();
 	//tex->SetName(L"DefaultNumber");
-	//tex->AddTexture(L"../../res/ui/0.png");
+	//tex->
+	// ure(L"../../res/ui/0.png");
 	//tex->AddTexture(L"../../res/ui/1.png");
 	//tex->AddTexture(L"../../res/ui/2.png");
 	//tex->AddTexture(L"../../res/ui/3.png");

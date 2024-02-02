@@ -4,11 +4,13 @@
 
 bool PlayerDeath::Init()
 {
+    m_DeathSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Dead.WAV");
     return true;
 }
 
 void PlayerDeath::Process()
 {
+    m_DeathSound->Play(false);
     m_pOwner->IsMove = false;
 
     if (m_pOwner->m_TimerEnd)
@@ -30,6 +32,6 @@ void PlayerDeath::Release()
 
 PlayerDeath::PlayerDeath(LPlayer* parent) : PlayerState(parent)
 {
-
+    Init();
 }
 PlayerDeath::~PlayerDeath() {}

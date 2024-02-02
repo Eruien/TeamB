@@ -116,7 +116,7 @@ int LNPC::GetRandomNumber()
 bool LNPC::Frame()
 {
 
-
+	m_ZombieSound->Play();
 	// ºôº¸µå
 
 	
@@ -233,7 +233,7 @@ bool LNPC::Render()
 LNPC::LNPC(LPlayer* player) : m_Distribution(-3000, 3000)
 {
 	m_Player = player;
-
+	m_ZombieSound = LSoundMgr::GetInstance().Load(L"../../res/sound/zombieSound.mp3");
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	m_Generator.seed(seed);
 
