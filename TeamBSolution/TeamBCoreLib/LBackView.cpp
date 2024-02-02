@@ -34,7 +34,7 @@ bool LBackView::Frame()
 	//xmMatView = DirectX::XMMatrixInverse(NULL, matRotation);
 	//std::memcpy(&m_matView, &xmMatView, sizeof(DirectX::XMMATRIX));
 
-	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, m_fCameraYaw, 0);
+	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(m_fCameraPitch, m_fCameraYaw, 0);
 	DirectX::XMVECTOR xmModelPos = DirectX::XMVectorSet(m_TargetModel->m_matControl._41, m_TargetModel->m_matControl._42, m_TargetModel->m_matControl._43, 1.0f);
 	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmModelPos);
 	
@@ -50,9 +50,6 @@ bool LBackView::Frame()
 	m_vCameraPos -= backView;
 	m_vCameraPos.y += 35.f;
 	CreateLookAt(m_vCameraPos, m_vCameraPos + backView);
-	
-	/*xmMatView = DirectX::XMMatrixInverse(NULL, xmInverse);
-	std::memcpy(&m_matView, &xmMatView, sizeof(DirectX::XMMATRIX));*/
 
 	UpdateVector();
 

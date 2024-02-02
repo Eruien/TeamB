@@ -6,7 +6,6 @@
 #include "UI/UIManager.h"
 bool LMainScene::Init()
 {
-
     LGlobal::g_BackgroundSound = LSoundMgr::GetInstance().Load(L"../../res/sound/IntroScene.mp3");
     LGlobal::g_BackgroundSound->Play();
 	return true;

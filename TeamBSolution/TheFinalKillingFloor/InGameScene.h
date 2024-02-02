@@ -15,6 +15,7 @@
 #include "LBox.h"
 #include "KObject.h"
 #include "ZombieWave.h"
+#include "LSoundMgr.h"
 
 struct SHADOW_CONSTANT_BUFFER
 {

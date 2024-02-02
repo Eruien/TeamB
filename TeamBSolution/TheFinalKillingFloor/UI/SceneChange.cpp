@@ -4,6 +4,7 @@
 #include "KObject.h"
 #include "UIManager.h"
 #include "LGlobal.h"
+
 SceneChange::SceneChange(Event event) : MonoBehaviour(L"SceneChange")
 {
 	_sceneEvent = event;
@@ -36,6 +37,7 @@ void SceneChange::Frame()
 		}
 		else if (_sceneEvent == Event::GOINGAMESCENE)
 		{
+			LGlobal::g_BackgroundSound->Stop();
 			UIManager::GetInstance().Load(L"IngameScene.xml");
 			LScene::GetInstance().SetTransition(_sceneEvent);
 			UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);

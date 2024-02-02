@@ -9,6 +9,7 @@
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
+    LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -228,7 +229,7 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
-   
+    LGlobal::g_IngameSound->Play();
     if(Init_2)
     {
         UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveCountList.size());
