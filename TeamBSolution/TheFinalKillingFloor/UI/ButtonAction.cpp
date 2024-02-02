@@ -96,3 +96,10 @@ void ButtonAction::MainSceneOptionClose()
 		obj->SetIsRender(false);
 	}
 }
+
+void ButtonAction::RetryButton()
+{
+	
+	UIManager::GetInstance().Load(L"MainScene.xml");
+	
+}

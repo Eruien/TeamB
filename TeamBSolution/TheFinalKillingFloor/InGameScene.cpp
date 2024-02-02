@@ -30,14 +30,19 @@ bool InGameScene::Init()
 
     m_MinimapCamera = std::make_shared<LCamera>();
     m_MinimapCamera->CreateLookAt({ 0.0f, 2500.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
-    m_MinimapCamera->m_fCameraPitch =0.f;
-    m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.25f, 1.0f, 1.0f, 10000.0f);
-    m_MinimapCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
+    m_MinimapCamera->m_fCameraPitch = 0.f;
+    m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.1f, 1.0f, -1.0f, 10000.0f);
+    //m_MinimapCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
+
+    m_MinimapPosCamera = std::make_shared<LCamera>();
+    m_MinimapPosCamera->CreateLookAt({ 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
+    m_MinimapPosCamera->m_fCameraPitch = 0.f;
+    m_MinimapPosCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
 
     m_playerIcon = make_shared<KObject>();
     m_playerIcon->Init();
     m_playerIcon->SetPos({ 0, 0, -1 });
-    m_playerIcon->SetScale({100,100, 1});
+    m_playerIcon->SetScale({ 10,10, 1 });
 
     m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/PlayerIcon.png");
 
@@ -111,6 +116,8 @@ bool InGameScene::Init()
         m_ZombieModelList[i]->SetAnimationArrayTexture();
         m_ZombieModelList[i]->SetAnimationArraySRV();
         m_ZombieModelList[i]->CreateCurrentFrameBuffer();
+
+ 
     }
     m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
 
@@ -215,7 +222,7 @@ bool InGameScene::Init()
 
     //Minimap
     m_ShapeMinimap.Set();
-    m_ShapeMinimap.SetScreenVertex(0, 0, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
+    m_ShapeMinimap.SetScreenVertex(10, 10, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
     m_ShapeMinimap.Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Box_128x64.png");
     m_rtMinimap.Create(256, 256);
 
@@ -550,37 +557,53 @@ void InGameScene::Render()
     }
     //UI
     UIManager::GetInstance().Render();
-   // m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
+    m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
 
 
 
     //¹Ì´Ï¸Ê
-   // if (m_rtMinimap.Begin(vClearColor))
-   // {
-   //     m_CustomMap->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matProj);
-   //     m_CustomMap->Render();
+    //
+    //
+    //
+    //
+    if (m_rtMinimap.Begin(vClearColor))
+    {
+        m_CustomMap->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matProj);
+        m_CustomMap->Render();
 
-   //     LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
-   //     LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._42), 100, 500);
-   //     LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._43), 100, 600);
-   //     LWRITE.AddText(to_wstring(LINPUT.m_vOffset.y), 500, 600);
+       
+ 
+        float offset = (   float(LGlobal::g_WindowWidth)/ float(LGlobal::g_WindowHeight))-0.3f;
+        //256==·»´õÅ¸ÄÏ »çÀÌÁî, 2048 = ¸Ê »çÀÌÁî
+        m_playerIcon->m_vPosition={ LGlobal::g_PlayerModel->m_matControl._41 * (256.0f / 2048.0f) ,0, LGlobal::g_PlayerModel->m_matControl._43 * (256.0f / 2048.0f) * offset };
+        m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+     
 
-   //     m_playerIcon->m_vPosition={ LGlobal::g_PlayerModel->m_matControl._41*(float(LGlobal::g_WindowWidth) / 2048.f) ,0, LGlobal::g_PlayerModel->m_matControl._43 * (float(LGlobal::g_WindowHeight) / 2048.0f) };
-   //     m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
-   //
-   //     m_playerIcon->SetMatrix(nullptr, &m_MinimapCamera->m_matView, &m_MinimapCamera->m_matOrthoProjection);
-   //     m_playerIcon->Frame();
-   //     m_playerIcon->Render();
-   //     //LGlobal::g_PlayerModel
 
-   //     m_rtMinimap.End();
-   // }
+        m_playerIcon->SetMatrix(nullptr, &m_MinimapPosCamera->m_matView, &m_MinimapPosCamera->m_matOrthoProjection);
+        m_playerIcon->Frame();
+        m_playerIcon->Render();
 
-   // m_ShapeMinimap.PreRender();
-   //{
-   //    LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_rtMinimap.m_pSRV.GetAddressOf());
-   //}
-   //m_ShapeMinimap.PostRender();
+        for (auto obj : m_ZombieModelList)
+        {
+            obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
+            obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+            obj->m_minimapMarker->SetMatrix(nullptr, &m_MinimapPosCamera->m_matView, &m_MinimapPosCamera->m_matOrthoProjection);
+            obj->m_minimapMarker->Frame();
+            obj->RenderMark();
+       }
+
+
+        //LGlobal::g_PlayerModel
+
+        m_rtMinimap.End();
+    }
+
+    m_ShapeMinimap.PreRender();
+   {
+       LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_rtMinimap.m_pSRV.GetAddressOf());
+   }
+   m_ShapeMinimap.PostRender();
 
    Release();
 }

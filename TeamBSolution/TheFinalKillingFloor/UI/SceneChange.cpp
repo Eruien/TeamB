@@ -32,6 +32,8 @@ void SceneChange::Frame()
 	{
 		if (_sceneEvent == Event::GOMAINSCENE)
 		{
+			//수정해야함
+			LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Init();
 			UIManager::GetInstance().Load(L"MainScene.xml");
 			LScene::GetInstance().SetTransition(_sceneEvent);
 		}

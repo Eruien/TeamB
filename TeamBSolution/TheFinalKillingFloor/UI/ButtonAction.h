@@ -16,6 +16,7 @@ public:
 	//버튼기능
 	void MainSceneOption();
 	void MainSceneOptionClose();
+	void RetryButton();
 	std::unordered_map<wstring, void (ButtonAction::*)()> _functionMap;
 	wstring _function = L"None";
 private:

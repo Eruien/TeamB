@@ -230,6 +230,12 @@ bool LNPC::Render()
 	return true;
 }
 
+bool LNPC::RenderMark()
+{
+	m_minimapMarker->Render();
+	return false;
+}
+
 LNPC::LNPC(LPlayer* player) : m_Distribution(-3000, 3000)
 {
 	m_Player = player;
@@ -244,4 +250,10 @@ LNPC::LNPC(LPlayer* player) : m_Distribution(-3000, 3000)
 	m_enemyHp->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/hp_bar.png");
 	m_enemyHp->SetPos({ 0, 0, 0 });
 	m_enemyHp->SetScale({ 12,2,1 });
+
+	m_minimapMarker = make_shared<KObject>();
+	m_minimapMarker->Init();
+	m_minimapMarker->SetPos({ 0, 0, -1 });
+	m_minimapMarker->SetScale({ 10,10, 1 });
+	m_minimapMarker->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/firemode_dot.png");
 }

@@ -48,6 +48,7 @@ public:
 	std::default_random_engine m_Generator;
 	std::uniform_int_distribution<int> m_Distribution;
 	shared_ptr<KObject> m_enemyHp;
+	shared_ptr<KObject> m_minimapMarker;
 public:
 	void FSM(FSMType fsmType);
 	void SetTransition(Event inputEvent);
@@ -60,6 +61,7 @@ public:
 	bool Frame() override;
 	bool FrameInstancing() override;
 	bool Render() override;
+	bool RenderMark();
 public:
 	LNPC() {};
 	LNPC(LPlayer* player);

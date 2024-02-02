@@ -2,7 +2,7 @@
 #include "LGlobal.h"
 #include "LInput.h"
 #include "LWrite.h"
-
+#include "UIManager.h"
 bool EndScene::Init()
 {
     return true;
@@ -10,7 +10,7 @@ bool EndScene::Init()
 
 void EndScene::Render()
 {
-    
+    UIManager::GetInstance().Render();
 }
 
 void EndScene::Process()
@@ -31,6 +31,7 @@ void EndScene::Process()
         LScene::GetInstance().SetTransition(Event::GOINGAMESCENE);
         return;
     }
+    UIManager::GetInstance().Frame();
 }
 
 void EndScene::Release()

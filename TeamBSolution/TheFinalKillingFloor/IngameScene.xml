@@ -152,4 +152,13 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
+    <UIObject Name="MinimapBg" isRender="true" Group="None">
+        <Position x="-502" y="218" z="0"/>
+        <Scale width="270" height="270"/>
+        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Box_128x64.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
 </UIScene>
