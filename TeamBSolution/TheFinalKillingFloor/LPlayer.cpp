@@ -215,7 +215,11 @@ bool LPlayer::Frame()
 		
 		if (m_StartShoot > m_ShotDelay)
 		{
-			LGlobal::g_EffectSound1->PlayEffect();
+			if (LGlobal::g_BulletCount >= 0)
+			{
+				LGlobal::g_EffectSound1->PlayEffect();
+			}
+
 			m_StartShoot = 0.0f;
 			IsShoot = true;
 			LGlobal::g_BulletCount -= 1;
@@ -224,6 +228,7 @@ bool LPlayer::Frame()
 			{
 				IsReload = true;
 			}
+			
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
 		}
 

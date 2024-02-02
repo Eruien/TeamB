@@ -22,11 +22,11 @@ bool InGameScene::Init()
     m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
     m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     m_ModelCamera->m_fRadius = 100.0f;
-    LGlobal::g_pMainCamera = m_ModelCamera.get();
-
+    
     m_BackViewCamera = std::make_shared<LBackView>();
     m_BackViewCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_BackViewCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+    LGlobal::g_pMainCamera = m_BackViewCamera.get();
 
     m_MinimapCamera = std::make_shared<LCamera>();
     m_MinimapCamera->CreateLookAt({ 0.0f, 2500.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
@@ -240,6 +240,10 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
+    if (LGlobal::g_PlayerModel->IsDeath)
+    {
+        IsEndGame = true;
+    }
     LGlobal::g_IngameSound->Play();
     if(Init_2)
     {
@@ -606,6 +610,11 @@ void InGameScene::Render()
    m_ShapeMinimap.PostRender();
 
    Release();
+
+   if (IsEndGame)
+   {
+       m_pOwner->SetTransition(Event::GOENDSCENE);
+   }
 }
 
 void InGameScene::Release()
@@ -632,7 +641,11 @@ void InGameScene::Release()
 void InGameScene::NextWave()
 {
     
-    if (m_CurrentWave > 3) return;
+    if (m_CurrentWave > 3)
+    {
+        IsEndGame = true;
+        return;
+    }
     int currentWave = m_ZombieWave->m_WaveCountList[m_CurrentWave];
     m_ZombieModelList.resize(currentWave);
     
@@ -674,6 +687,8 @@ void InGameScene::NextWave()
     }
 
     m_CurrentWave++;
+
+    if (m_CurrentWave > 3) return;
      UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
     UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_CurrentWave);
 }

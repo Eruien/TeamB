@@ -67,6 +67,7 @@ public:
 	shared_ptr<KObject> m_playerIcon;
 public:
 	bool IsNextWave = false;
+	bool IsEndGame = false;
 public:
 	bool Init() override;
 	void Render() override;

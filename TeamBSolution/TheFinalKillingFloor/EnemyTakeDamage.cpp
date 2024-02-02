@@ -11,7 +11,7 @@ void EnemyTakeDamage::Process()
 {
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx");
 
-    if (!m_Timer)
+    if (!m_Timer && LGlobal::g_BulletCount > 0)
     {
         m_pOwner->m_HP -= 20.0f;
         m_pOwner->IsTakeDamage = false;
@@ -19,7 +19,7 @@ void EnemyTakeDamage::Process()
         m_Timer = true;
     }
 
-    if (m_pOwner->IsTakeDamage)
+    if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
         m_pOwner->m_HP -= 20.0f;
         UpdateHPbar();
