@@ -37,6 +37,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapTool0", "MapTool0\MapToo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7F1-FBA5-4A6A-AC3D-A642F5698AE8}"
 	ProjectSection(SolutionItems) = preProject
+		..\res\hlsl\Bullet.hlsl = ..\res\hlsl\Bullet.hlsl
 		..\res\hlsl\CharacterInstancing.hlsl = ..\res\hlsl\CharacterInstancing.hlsl
 		..\res\hlsl\CharacterShader.hlsl = ..\res\hlsl\CharacterShader.hlsl
 		..\res\hlsl\CharacterShadow.hlsl = ..\res\hlsl\CharacterShadow.hlsl

@@ -33,10 +33,14 @@ public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LModel> m_GunModel = nullptr;
 	std::vector<LNPC*> m_ZombieModelList;
+		vector<shared_ptr<LModel>> m_BulletList;
+		vector<bool> m_VisibleBulletList;
+		int BulletIndex = 0;
 		 shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
+	LFbxObj* bulletObj;
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;
 	int m_CurrentWave = 2;

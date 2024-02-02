@@ -139,8 +139,26 @@ bool InGameScene::Init()
     worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
     m_Tree->m_matControl = worldMatrix;
     
+    //bullet
+    bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/bullet.fbx", L"../../res/hlsl/Bullet.hlsl");
+    m_BulletList.resize(10);
+    m_VisibleBulletList.resize(m_BulletList.size());
+    for (int i = 0; i < m_BulletList.size(); ++i)
+    {
+        m_VisibleBulletList[i] = false;
+        m_BulletList[i] = std::make_shared<LModel>();
+        m_BulletList[i]->SetLFbxObj(bulletObj);
+        m_BulletList[i]->CreateBoneBuffer();
+        scalingMatrix = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
+        worldMatrix = DirectX::XMMatrixIdentity();
+        worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+        m_BulletList[i]->m_matControl = worldMatrix;
+        //m_BulletList[i]->m_matControl = worldMatrix;
+    }
 
 
+
+    //map
     LMapDesc MapDesc = {};
     MapDesc.iNumCols = m_CustomMap->m_iNumCols;
     MapDesc.iNumRows = m_CustomMap->m_iNumRows;
@@ -218,6 +236,41 @@ void InGameScene::Process()
     m_CustomMap->Frame();
     //tree
     m_Tree->Frame();
+    int index = LGlobal::g_BulletCount % m_BulletList.size();
+    if (g_InputData.bLeftClick)
+    {
+        if (m_VisibleBulletList[index] == false)
+        {
+            m_VisibleBulletList[index] = true;
+            m_BulletList[index]->m_matControl = LGlobal::g_PlayerModel->m_matControl;
+            m_BulletList[index]->m_matControl._42 += 30.f;
+        }
+    }
+    for (int i = 0; i < m_BulletList.size(); i++)
+    {
+        if (m_VisibleBulletList[i])
+        {
+            m_BulletList[i]->Frame();
+            
+            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 30;
+            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 30;
+            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 30;
+            if (m_BulletList[i]->m_matControl._41 > 1000.f
+                || m_BulletList[i]->m_matControl._41 < -1000.f
+                || m_BulletList[i]->m_matControl._43 > 1000.f
+                || m_BulletList[i]->m_matControl._43 < -1000.f
+                || m_BulletList[i]->m_matControl._42 > 1000.f
+                || m_BulletList[i]->m_matControl._42 < -1000.f)
+            {
+                m_VisibleBulletList[i] = false;
+            }
+        }
+        else
+        {
+
+        }
+    }
+    
 
     float fHeight = m_CustomMap->GetHeight(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._43);
     LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
@@ -427,6 +480,13 @@ void InGameScene::Render()
 
     m_Tree->Render();
 
+    for (int i = 0; i < m_BulletList.size(); i++)
+    {
+        if (m_VisibleBulletList[i])
+        {
+            m_BulletList[i]->Render();
+        }
+    }
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
     m_pQuad.PreRender();
