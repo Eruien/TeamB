@@ -28,14 +28,20 @@ void UIManager::Frame()
         _imGuiObjDetail->Frame();
         _imgui_menuBar->Frame();
     }
-	for (auto obj : _objs)
+
+
+    if(_objsTemp.empty()|| _objsTemp.size() != _objs.size())
+        _objsTemp = _objs;
+
+	for (auto obj : _objsTemp)
 	{
-        if (obj->GetIsRender()|| _debugMode)
+        if (obj->GetIsRender() || _debugMode)
         {
             obj->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
             obj->Frame();
         }
 	}
+
 }
 
 void UIManager::Render()

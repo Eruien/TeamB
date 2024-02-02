@@ -14,26 +14,14 @@ DigitDisplay::~DigitDisplay()
 
 void DigitDisplay::Init()
 {
-    LoadTextureList(_texXmlPath);
-    GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(L"../../res/ui/Empty.png");
-    GetGameObject()->m_Tex->Apply();
-	for (int i = 0; i < _digitNum; i++)
-	{
-		_objects.push_back(make_shared<KObject>());
-		_objects[i]->Init();
-		_objects[i]->Create(L"../../res/hlsl/CustomizeMap.hlsl", _texList->GetTexList()[0]);
-		TVector3 pos = GetGameObject()->m_vPosition;
-		pos.x = GetGameObject()->m_vPosition.x + (GetGameObject()->m_vScale.x / _digitNum) - (i * (GetGameObject()->m_vScale.x / _digitNum));
-		_objects[i]->SetPos(pos);
-		_objects[i]->SetScale({ GetGameObject()->m_vScale.x / _digitNum,GetGameObject()->m_vScale.y,0 });
-	}
+    UpdateDigit(_digitNum);
 
 }
 
 void DigitDisplay::Frame()
 {
     //TEST
-    UpdateNumber();
+    //UpdateNumber(123);
 
 
 	for (int i = 0; i < _digitNum; i++)
@@ -58,13 +46,13 @@ void DigitDisplay::Render()
     }
 }
 
-void DigitDisplay::UpdateNumber()
+void DigitDisplay::UpdateNumber(int num)
 {
     vector<int> digits;
     //int temp = _num;
 
-    int temp = LGlobal::g_fGameTimer;
-
+    _num = num;
+    int temp = _num;
     while (temp > 0) {
         int digit = temp % 10;
         digits.push_back(digit);
@@ -128,6 +116,27 @@ void DigitDisplay::UpdateNumber()
 
 
     }
+}
+
+void DigitDisplay::UpdateDigit(int digit)
+{
+    _digitNum = digit;
+
+    LoadTextureList(_texXmlPath);
+    GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(L"../../res/ui/Empty.png");
+    GetGameObject()->m_Tex->Apply();
+    _objects.clear();
+    for (int i = 0; i < _digitNum; i++)
+    {
+        _objects.push_back(make_shared<KObject>());
+        _objects[i]->Init();
+        _objects[i]->Create(L"../../res/hlsl/CustomizeMap.hlsl", _texList->GetTexList()[0]);
+        TVector3 pos = GetGameObject()->m_vPosition;
+        pos.x = GetGameObject()->m_vPosition.x + (GetGameObject()->m_vScale.x / _digitNum) - (i * (GetGameObject()->m_vScale.x / _digitNum));
+        _objects[i]->SetPos(pos);
+        _objects[i]->SetScale({ GetGameObject()->m_vScale.x / _digitNum,GetGameObject()->m_vScale.y,0 });
+    }
+
 }
 
 void DigitDisplay::LoadTextureList(wstring texXmlPath)

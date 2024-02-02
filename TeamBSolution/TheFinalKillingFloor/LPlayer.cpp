@@ -214,7 +214,9 @@ bool LPlayer::Frame()
 			{
 				IsReload = true;
 			}
+			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
 		}
+
 	}
 
 	if (LInput::GetInstance().m_MouseState[0] == KEY_UP)

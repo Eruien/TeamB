@@ -6,6 +6,7 @@
 #include "LFbxMgr.h"
 #include "LDebugCamera.h"
 #include "LModelCamera.h"
+#include "LBackView.h"
 #include "LDxRT.h"
 #include "LPlaneShape.h"
 #include "LNPC.h"
@@ -25,6 +26,7 @@ class InGameScene : public SceneState
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
 	std::shared_ptr<LModelCamera> m_ModelCamera = nullptr;
+	std::shared_ptr<LBackView> m_BackViewCamera = nullptr;
 	std::shared_ptr<LCamera> m_MinimapCamera = nullptr;
 	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 	std::shared_ptr<KObject> m_enemyHp;
@@ -43,7 +45,7 @@ public:
 	LFbxObj* bulletObj;
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;
-	int m_CurrentWave = 2;
+	int m_CurrentWave = 1;
 public:
 	// Shadow
 	LDxRT m_RT;

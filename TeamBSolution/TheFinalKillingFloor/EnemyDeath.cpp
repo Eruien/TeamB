@@ -1,7 +1,7 @@
 #include "EnemyDeath.h"
 #include "LGlobal.h"
 #include "LFbxMgr.h"
-
+#include "UIManager.h"
 bool EnemyDeath::Init()
 {
     return true;

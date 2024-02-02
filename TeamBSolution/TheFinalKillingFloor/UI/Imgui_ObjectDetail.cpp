@@ -254,6 +254,9 @@ void Imgui_ObjectDetail::Frame()
 							if (ImGui::BeginTabItem("DigitDisplay"))
 							{
 								ImGui::Text("Number to textureImage");
+								int myInt = 0;
+								if(ImGui::InputInt("Digit Input", &myInt))
+									UIManager::s_selectedObject->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateDigit(myInt);
 
 								if (ImGui::Button("Delete"))
 								{
