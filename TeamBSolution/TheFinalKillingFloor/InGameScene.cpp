@@ -29,7 +29,7 @@ bool InGameScene::Init()
     LGlobal::g_pMainCamera = m_BackViewCamera.get();
 
     m_MinimapCamera = std::make_shared<LCamera>();
-    m_MinimapCamera->CreateLookAt({ 0.0f, 2500.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
+    m_MinimapCamera->CreateLookAt({ 0.0f, 6000.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
     m_MinimapCamera->m_fCameraPitch = 0.f;
     m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.1f, 1.0f, -1.0f, 10000.0f);
     //m_MinimapCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
@@ -580,7 +580,7 @@ void InGameScene::Render()
         float offset = (   float(LGlobal::g_WindowWidth)/ float(LGlobal::g_WindowHeight))-0.3f;
         //256==렌더타켓 사이즈, 2048 = 맵 사이즈
         m_playerIcon->m_vPosition={ LGlobal::g_PlayerModel->m_matControl._41 * (256.0f / 2048.0f) ,0, LGlobal::g_PlayerModel->m_matControl._43 * (256.0f / 2048.0f) * offset };
-        m_playerIcon->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+        m_playerIcon->m_vRotation.z =- LGlobal::g_pMainCamera->m_fCameraYaw;
      
 
 
@@ -591,7 +591,7 @@ void InGameScene::Render()
         for (auto obj : m_ZombieModelList)
         {
             obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
-            obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+            //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
             obj->m_minimapMarker->SetMatrix(nullptr, &m_MinimapPosCamera->m_matView, &m_MinimapPosCamera->m_matOrthoProjection);
             obj->m_minimapMarker->Frame();
             obj->RenderMark();
@@ -613,6 +613,7 @@ void InGameScene::Render()
 
    if (IsEndGame)
    {
+       UIManager::GetInstance().Load(L"EndScene.xml");
        m_pOwner->SetTransition(Event::GOENDSCENE);
    }
 }

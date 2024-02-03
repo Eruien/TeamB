@@ -2,7 +2,7 @@
     <UIObject Name="Bg" isRender="true" Group="None">
         <Position x="0" y="0" z="0"/>
         <Scale width="1280" height="720"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\End.png"/>
+        <Texture texPath="../../res\ui\End.png"/>
         <Scripts>
             <Script Type="ChangeTexture"/>
         </Scripts>
@@ -38,7 +38,7 @@
     <UIObject Name="Text_Retry" isRender="true" Group="None">
         <Position x="-236" y="224" z="0"/>
         <Scale width="50" height="50"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
+        <Texture texPath="../../res\ui\Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -50,7 +50,7 @@
     <UIObject Name="Text_Exit" isRender="true" Group="None">
         <Position x="111" y="224" z="0"/>
         <Scale width="50" height="50"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
+        <Texture texPath="../../res\ui\Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
