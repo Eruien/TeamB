@@ -146,6 +146,9 @@
     <ClCompile Include="ZombieWave.cpp">
       <Filter>Wave</Filter>
     </ClCompile>
+    <ClCompile Include="UIEvent.cpp">
+      <Filter>UI\Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="ZombieWave.h">
       <Filter>Wave</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEvent.h">
+      <Filter>UI\Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,16 +1,4 @@
 <UIScene SceneName="TestScene">
-    <UIObject Name="EnemyCount" isRender="true" Group="None">
-        <Position x="-32" y="299" z="-1"/>
-        <Scale width="130" height="70"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="DigitDisplay">
-                <args DigitNumber="2" TexListXml="../../res/ui/xml/testNum.xml"/>
-            </Script>
-        </Scripts>
-    </UIObject>
     <UIObject Name="wp_background" isRender="true" Group="None">
         <Position x="461" y="-293" z="0"/>
         <Scale width="292" height="86"/>
@@ -166,6 +154,39 @@
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="EnemyCountBg" isRender="true" Group="None">
+        <Position x="-35" y="300" z="0"/>
+        <Scale width="200" height="110"/>
+        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Box_128x64.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="EnemyCount" isRender="true" Group="None">
+        <Position x="-57" y="283" z="0"/>
+        <Scale width="88" height="54"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="DigitDisplay">
+                <args DigitNumber="2" TexListXml="../../res/ui/xml/testNum.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="Text_EnemyCount" isRender="true" Group="None">
+        <Position x="-124" y="357" z="0"/>
+        <Scale width="86" height="68"/>
+        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="Text">
+                <args Text="Enemy Count"/>
+            </Script>
         </Scripts>
     </UIObject>
 </UIScene>

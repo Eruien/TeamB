@@ -167,6 +167,7 @@
     <ClCompile Include="PlayerTakeDamage.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="UIEvent.cpp" />
     <ClCompile Include="UI\Animation.cpp" />
     <ClCompile Include="UI\Animator.cpp" />
     <ClCompile Include="UI\BillBoard.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="UIEvent.h" />
     <ClInclude Include="UI\Animation.h" />
     <ClInclude Include="UI\Animator.h" />
     <ClInclude Include="UI\BillBoard.h" />
