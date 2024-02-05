@@ -200,7 +200,14 @@ bool LPlayer::Frame()
 		m_HP -= 20;
 
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
-
+		if (m_HP <= 61.0f)
+		{
+			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face2.png");
+		}
+		if (m_HP <= 21.0f)
+		{
+			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face3.png");
+		}
 	}
 
 	m_StartShoot += LGlobal::g_fSPF;
@@ -212,7 +219,7 @@ bool LPlayer::Frame()
 		m_Speed = 0.0f;
 		IsMove = false;
 		IsAttack = true;
-		
+
 		if (m_StartShoot > m_ShotDelay)
 		{
 			if (LGlobal::g_BulletCount >= 0)
@@ -228,7 +235,7 @@ bool LPlayer::Frame()
 			{
 				IsReload = true;
 			}
-			
+
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
 		}
 

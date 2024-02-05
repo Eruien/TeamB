@@ -30,7 +30,7 @@
         </Scripts>
     </UIObject>
     <UIObject Name="face" isRender="true" Group="None">
-        <Position x="-556" y="-293" z="0"/>
+        <Position x="-556" y="-293" z="-0.5"/>
         <Scale width="58" height="56"/>
         <Texture texPath="../../res/ui/face.png"/>
         <Scripts>
@@ -39,9 +39,9 @@
         </Scripts>
     </UIObject>
     <UIObject Name="HPbar" isRender="true" Group="None">
-        <Position x="-376" y="-297" z="0"/>
-        <Scale width="270" height="38"/>
-        <Texture texPath="../../res/ui/hp_bar.png"/>
+        <Position x="-336" y="-310" z="-0.5"/>
+        <Scale width="362" height="25"/>
+        <Texture texPath="../../res/ui/FrontHP.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -133,13 +133,11 @@
         </Scripts>
     </UIObject>
     <UIObject Name="EnemyCountBg" isRender="true" Group="None">
-        <Position x="-400" y="-292" z="0.5"/>
-        <Scale width="436" height="100"/>
+        <Position x="-374" y="-297" z="0.5"/>
+        <Scale width="480" height="100"/>
         <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
-            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
@@ -156,6 +154,15 @@
         <Position x="-502" y="218" z="0"/>
         <Scale width="270" height="270"/>
         <Texture texPath="../../res/ui/Hud_Box_128x64.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="BackHP" isRender="true" Group="None">
+        <Position x="-371" y="-297" z="0"/>
+        <Scale width="437" height="75"/>
+        <Texture texPath="../../res/ui/BackHP2.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
