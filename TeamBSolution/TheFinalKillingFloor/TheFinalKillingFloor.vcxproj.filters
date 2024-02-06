@@ -149,6 +149,24 @@
     <ClCompile Include="UIEvent.cpp">
       <Filter>UI\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="TankCombo.cpp">
+      <Filter>Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="TankDeath.cpp">
+      <Filter>Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="TankRush.cpp">
+      <Filter>Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="TankTakeDamage.cpp">
+      <Filter>Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="TankTrace.cpp">
+      <Filter>Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>Tank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -299,6 +317,24 @@
     <ClInclude Include="UIEvent.h">
       <Filter>UI\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="TankCombo.h">
+      <Filter>Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="TankDeath.h">
+      <Filter>Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="TankRush.h">
+      <Filter>Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="TankTakeDamage.h">
+      <Filter>Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="TankTrace.h">
+      <Filter>Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>Tank</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -336,6 +372,9 @@
     </Filter>
     <Filter Include="Wave">
       <UniqueIdentifier>{b6468b6d-e8d9-4d29-864d-0b0ffa6aecfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tank">
+      <UniqueIdentifier>{c37e89bd-3117-47dc-8135-40bc60b5815f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

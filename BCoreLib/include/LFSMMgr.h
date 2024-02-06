@@ -6,6 +6,7 @@ enum class FSMType
 	SCENE,
 	PLAYER,
 	ENEMY,
+	TANK,
 };
 
 class LFiniteStateMachine

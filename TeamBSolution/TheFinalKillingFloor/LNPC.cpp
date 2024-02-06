@@ -56,15 +56,11 @@ void LNPC::Move(TVector3 target)
 	float dirX = m_Dir.x;
 	float dirZ = m_Dir.z;
 
-	/*float forwardX = forward.x;
-	float forwardZ = forward.z;*/
-
 	DirectX::XMVECTOR gRotation;
 	DirectX::XMMATRIX matRotation;
 
 	float yawRadians = atan2(dirZ, dirX);
 	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, -yawRadians - 1.5708, 0);
-	//DirectX::XMMatrixRotationQuaternion(,)
 	DirectX::XMVECTOR xmPos = DirectX::XMVectorSet(m_matControl._41, m_matControl._42, m_matControl._43, 1.0f);
 	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmPos);
 
@@ -72,7 +68,6 @@ void LNPC::Move(TVector3 target)
 	D3DXMatrixScaling(&zombieScale, 0.2f, 0.2f, 0.2f);
 	TMatrix zombiePos = zombieScale * matRotation;
 	
-	//D3DXMatrixRotationY(&m_matControl, yawRadians);
 	m_matControl = zombiePos;
 	m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_Dir.x;
 	m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_Dir.z;
