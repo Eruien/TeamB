@@ -89,7 +89,7 @@ bool InGameScene::Init()
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
 
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
-    LGlobal::
+
     LGlobal::g_PlayerModel = new LPlayer;
     LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
@@ -174,15 +174,28 @@ bool InGameScene::Init()
 
 
 
-    //map
-    LMapDesc MapDesc = {};
-    MapDesc.iNumCols = m_CustomMap->m_iNumCols;
-    MapDesc.iNumRows = m_CustomMap->m_iNumRows;
-    MapDesc.fCellDistance = 4.0f;
-    MapDesc.fScaleHeight = 0.4f;
-    MapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
-    m_CustomMap->Load(MapDesc);
+
+
+    // light
+    m_pConstantBufferLight[0].Attach(CreateConstantBuffer(
+        LGlobal::g_pDevice.Get(), &m_cbLight1, 1, sizeof(LIGHT_CONSTANT_BUFFER1)));
+    m_pConstantBufferLight[1].Attach(CreateConstantBuffer(
+        LGlobal::g_pDevice.Get(), &m_cbLight2, 1, sizeof(LIGHT_CONSTANT_BUFFER2)));
+    float fLightRange = 50.0f;
+    TVector3 vRotation = TVector3(0.f, 0.0f, 0.0f); //TVector3(-(XM_PI * 0.2f), 0.0f, 0.0f);
+    TVector3 vDir = TVector3(0.0f, -1.0f, 0.0f);
+    TVector3 v0 = TVector3(0.0f, 10.0f, 0.0f);
+    TVector4 v1 = TVector4(1.0f, 1.0f, 1.0f, 1.0f); // color
+    TVector3 v2 = TVector3(10.0f, 10.0f, 10.0f);    // scale
+    m_PointLight[0].SetValue(&v0,
+                             &vDir,
+                             &fLightRange,
+                             &v1,
+                             &v2,
+                             &vRotation,
+                             90.0f, // 내부
+                             120.0f);//외부
+
 
     // Shadow
     m_pQuad.Set();
@@ -195,6 +208,16 @@ bool InGameScene::Init()
         , 0.0f, -0.5f, 0.0f, 0.0f
         , 0.0f, 0.0f, 1.0f, 0.0f
         , 0.5f, 0.5f, 0.0f, 1.0f);
+
+    //map
+    LMapDesc MapDesc = {};
+    MapDesc.iNumCols = m_CustomMap->m_iNumCols;
+    MapDesc.iNumRows = m_CustomMap->m_iNumRows;
+    MapDesc.fCellDistance = 4.0f;
+    MapDesc.fScaleHeight = 0.4f;
+    MapDesc.ShaderFilePath = L"../../res/hlsl/LightShadowMap.hlsl";
+    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
+    m_CustomMap->Load(MapDesc);
 
     // Collision
     std::wstring head = L"Head";
@@ -432,6 +455,13 @@ void InGameScene::Process()
             m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[0], m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[1], m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
     }
     UIManager::GetInstance().Frame();
+
+    // Light Frame
+
+    m_PointLight[0].Frame(LGlobal::g_PlayerModel->m_matControl._41 + LGlobal::g_PlayerModel->m_matControl.Forward().x * 150,
+                        LGlobal::g_PlayerModel->m_matControl._42,
+                        LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
+
 }
 
 void InGameScene::Render()
@@ -440,9 +470,44 @@ void InGameScene::Render()
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SkyBox->Render();
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);
+    //LGlobal::g_pImmediateContext->OMSetBlendState(0, 0, 0xffffffff);
+    // Light Render
+    m_cbLight1.g_cAmbientMaterial[0] = TVector4(0.1f, 0.1f, 0.1f, 1);
+    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cSpecularMaterial[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cEmissionMaterial[0] = TVector4(0, 0, 0, 1);
 
- 
+    m_cbLight1.g_cAmbientLightColor[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cSpecularLightColor[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cDiffuseLightColor[0] = TVector4(m_PointLight[0].m_DiffuseColor.x,
+        m_PointLight[0].m_DiffuseColor.y,
+        m_PointLight[0].m_DiffuseColor.z, 1.0f);
+    /*TMatrix matInvWorld;
+    D3DXMatrixInverse(&matInvWorld, NULL, &m_PointLight[0].m_matWorld);
+    D3DXMatrixTranspose(&matInvWorld, &matInvWorld);
+    D3DXMatrixTranspose(&m_cbLight2.g_matInvWorld[0], &matInvWorld);*/
 
+   /* m_cbLight2.g_vEyeDir[0].x = LGlobal::g_pMainCamera->m_vLook.x;
+    m_cbLight2.g_vEyeDir[0].y = LGlobal::g_pMainCamera->m_vLook.y;
+    m_cbLight2.g_vEyeDir[0].z = LGlobal::g_pMainCamera->m_vLook.z;*/
+    //m_cbLight2.g_vEyeDir[0].w = 100.0f; // 강도
+
+    m_cbLight2.g_vLightPos[0] = TVector4(m_PointLight[0].m_vPosition.x,
+        m_PointLight[0].m_vPosition.y,
+        m_PointLight[0].m_vPosition.z,
+        m_PointLight[0].m_fRange);
+
+    m_cbLight2.g_vLightDir[0] = TVector4(m_PointLight[0].m_vDirection.x,
+        m_PointLight[0].m_vDirection.y,
+        m_PointLight[0].m_vDirection.z, 1.0f);
+    LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[0].Get(), 0, NULL, &m_cbLight1, 0, 0);
+    LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[1].Get(), 0, NULL, &m_cbLight2, 0, 0);
+    ID3D11Buffer* pBuffers[2];
+    pBuffers[0] = m_pConstantBufferLight[0].Get();
+    pBuffers[1] = m_pConstantBufferLight[1].Get();
+    LGlobal::g_pImmediateContext->PSSetConstantBuffers(2, 2, pBuffers);
+
+    //
     TVector4 vClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     if (m_RT.Begin(vClearColor))
@@ -616,6 +681,7 @@ void InGameScene::Render()
        UIManager::GetInstance().Load(L"EndScene.xml");
        m_pOwner->SetTransition(Event::GOENDSCENE);
    }
+
 }
 
 void InGameScene::Release()
@@ -741,4 +807,44 @@ InGameScene::InGameScene(LScene* parent) : SceneState(parent)
     Init();
 }
 InGameScene::~InGameScene() {}
+
+ID3D11Buffer* InGameScene::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic)
+{
+    HRESULT hr = S_OK;
+    ID3D11Buffer* pBuffer = nullptr;
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+    D3D11_SUBRESOURCE_DATA InitData;
+    ZeroMemory(&InitData, sizeof(InitData));
+    if (bDynamic)
+    {
+        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    }
+    else
+    {
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.CPUAccessFlags = 0;
+    }
+    bd.ByteWidth = iSize * iNumIndex;
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    InitData.pSysMem = data;
+    if (data != NULL)
+    {
+        if (FAILED(hr = pd3dDevice->CreateBuffer(&bd, &InitData, &pBuffer)))
+        {
+            //H(hr);
+            return nullptr;
+        }
+    }
+    else
+    {
+        if (FAILED(hr = pd3dDevice->CreateBuffer(&bd, NULL, &pBuffer)))
+        {
+            //H(hr);
+            return nullptr;
+        }
+    }
+    return pBuffer;
+}
 

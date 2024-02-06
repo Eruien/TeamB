@@ -16,6 +16,10 @@
 #include "KObject.h"
 #include "ZombieWave.h"
 #include "LSoundMgr.h"
+#include "Light.h" // light
+
+const int g_iMaxLight = 1;
+
 
 struct SHADOW_CONSTANT_BUFFER
 {
@@ -47,6 +51,12 @@ public:
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;
 	int m_CurrentWave = 1;
+
+public: // light
+	LIGHT_CONSTANT_BUFFER1	m_cbLight1;
+	LIGHT_CONSTANT_BUFFER2	m_cbLight2;
+	ComPtr<ID3D11Buffer>	m_pConstantBufferLight[2];
+	Light					m_PointLight[1];
 public:
 	// Shadow
 	LDxRT m_RT;
@@ -83,4 +93,7 @@ public:
 	InGameScene(LScene* parent);
 	virtual ~InGameScene();
 
+
+
+	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic = false);
 };

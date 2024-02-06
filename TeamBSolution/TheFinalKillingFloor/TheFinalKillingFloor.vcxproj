@@ -154,6 +154,7 @@
     <ClCompile Include="LCharacterIO.cpp" />
     <ClCompile Include="LExportIO.cpp" />
     <ClCompile Include="LGun.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="LMainScene.cpp" />
     <ClCompile Include="LNPC.cpp" />
     <ClCompile Include="LPlayer.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="LCharacterIO.h" />
     <ClInclude Include="LExportIO.h" />
     <ClInclude Include="LGun.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="LMainScene.h" />
     <ClInclude Include="LNPC.h" />
     <ClInclude Include="LPlayer.h" />

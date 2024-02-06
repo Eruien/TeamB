@@ -146,6 +146,7 @@
     <ClCompile Include="ZombieWave.cpp">
       <Filter>Wave</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -293,6 +294,7 @@
     <ClInclude Include="ZombieWave.h">
       <Filter>Wave</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
