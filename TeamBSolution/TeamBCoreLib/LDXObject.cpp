@@ -171,6 +171,7 @@ bool LDXObject::PreRender()
 	m_pImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+
 	return true;
 }
 
@@ -189,6 +190,7 @@ bool LDXObject::PostRender()
 	}
 	else
 	{
+		
 		m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
 	}

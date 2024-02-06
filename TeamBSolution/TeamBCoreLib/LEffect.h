@@ -3,6 +3,7 @@
 #include "LInput.h"
 #include "LWrite.h"
 #include "LDebugCamera.h"
+#include "LGlobal.h"
 
 class LParticle
 {
@@ -31,7 +32,7 @@ public:
 	void Frame()
 	{
 		if (!m_bLife) return;
-		m_fPlayTime += LGlobal::g_fSPF;
+		m_fPlayTime += LGlobal::g_fSPF; 
 		if (m_iMaxFrame <= 1)
 		{
 			
@@ -88,22 +89,22 @@ public:
 public:
 
 
-	void SetBilboardMatrix()
-	{
-		//빌보드 축 선택기능추가 필요
-		//SetBuilboardXMatrix();
-		//	SetBuilboardYMatrix();
-		//	SetBuilboardZMatrix();
-		// 
-		TMatrix mat = m_matView;
-		D3DXMatrixInverse(&mat, NULL, &mat);
-		//mat._41 = 0.0f;
-		//mat._42 = 0.0f;
-		//mat._43 = 0.0f;
-		//mat._44 = 1.0f;
-		m_matWorld = m_matWorld* mat;
+	//void SetBilboardMatrix()
+	//{
+	//	//빌보드 축 선택기능추가 필요
+	//	//SetBuilboardXMatrix();
+	//	//	SetBuilboardYMatrix();
+	//	//	SetBuilboardZMatrix();
+	//	// 
+	//	TMatrix mat = m_matView;
+	//	D3DXMatrixInverse(&mat, NULL, &mat);
+	//	//mat._41 = 0.0f;
+	//	//mat._42 = 0.0f;
+	//	//mat._43 = 0.0f;
+	//	//mat._44 = 1.0f;
+	//	m_matWorld = m_matWorld* mat;
 
-	}
+	//}
 
     LFrustum m_Frustum;
 public:

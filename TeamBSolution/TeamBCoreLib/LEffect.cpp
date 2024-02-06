@@ -150,11 +150,11 @@ bool LEffect::Frame()
 
 
 	//P 누른채로 마우스 좌클릭 마우스 위치 생성 인덱스0
-	if (LInput::GetInstance().m_dwKeyState['P'] == DWORD(KeyState::KEY_HOLD))
+	if (LInput::GetInstance().m_KeyStateOld[DIK_P] == KEY_HOLD)
 	{
 
 
-		if (LInput::GetInstance().m_dwKeyState[VK_LBUTTON] == DWORD(KeyState::KEY_PUSH))
+		if (LInput::GetInstance().m_MouseState[0] == KEY_PUSH)
 		{
 
 			LParticle Spliteinfo;
@@ -193,7 +193,7 @@ bool LEffect::Frame()
 
 	
 		//P누른상태에서 Q클릭시 피격이펙트 인덱스3 생성
-		if (LInput::GetInstance().m_dwKeyState['Q'] == DWORD(KeyState::KEY_PUSH))
+		if (LInput::GetInstance().m_KeyStateOld[DIK_Q] == KEY_PUSH)
 		{
 				LParticle Spliteinfo;
 				ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
@@ -225,7 +225,7 @@ bool LEffect::Frame()
 				m_ParticleList.push_back(Spliteinfo);//생성된 이펙트
 		}
 		//P누른상태에서 W클릭시 피격 피튀김 이펙트 인덱스4 
-		if (LInput::GetInstance().m_dwKeyState['W'] == DWORD(KeyState::KEY_PUSH))
+		if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_PUSH)
 			{
 				LParticle Spliteinfo;
 				ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
@@ -311,7 +311,8 @@ bool LEffect::Render()
 			//	SetBilboardMatrix();
 
 			//}
-			pBaseObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+			pBaseObj->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj); 
+
 
 
 

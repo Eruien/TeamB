@@ -61,6 +61,24 @@ bool LObject::Frame()
 	return true;
 }
 
+void LObject::UpdateMatrix()//이펙트 머지
+{	//스케일이 안되서 임시 수정
+	TMatrix matScale, matRotation, matTranslation;
+	matScale.CreateScale(m_vScale);
+	matRotation.CreateRotationZ(m_vRotation.z);
+	matTranslation.Translation(m_vPosition);
+	m_matWorld = matScale * matRotation * matTranslation;
+	//TBASIS_EX::TMatrix matScale, matRotation, matTranslate;
+	//D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+	//D3DXMatrixRotationZ(&matRotation, m_vRotation.z);
+	//D3DXMatrixTranslation(&matTranslate, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+
+	//m_matWorld = matScale * matRotation * matTranslate;//로컬1크기를 스케일->회전->이동 = 월드
+
+
+}
+
+
 bool LObject::Render()
 {
 	LDXObject::Render();

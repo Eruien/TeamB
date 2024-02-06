@@ -9,8 +9,13 @@ public:
     TVector3 m_vLook;
     TVector3 m_vUp;
     TVector3 m_vRight;
-    float m_fSpeed = 100.0f;//속도열배로 증가수정
+    float m_fCameraYaw = 0.0f;
+    float m_fCameraPitch = 45.0f;
+    float m_fCameraRoll = 0.0f;
+    float m_fSpeed = 10.0f;
 public:
+    TMatrix m_matWorld;
+
     TMatrix m_matView;
     TMatrix m_matOrthoProjection;
     TMatrix m_matProj;
@@ -21,6 +26,7 @@ public:
 public:
     TMatrix   CreateLookAt(TVector3 vPosition, TVector3 vTarget, TVector3 vUp = { 0,1,0 });
     TMatrix   CreatePerspectiveFov(float fFov, float fAspect, float fNear, float fFar);
+    void   CreateOrthographic(const int viewWide, const int viewHeight, float nearZ, float FarZ);
     void UpdateVector();
 public:
     virtual bool Init();

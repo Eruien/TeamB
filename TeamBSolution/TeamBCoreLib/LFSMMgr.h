@@ -4,6 +4,8 @@
 enum class FSMType
 {
 	SCENE,
+	PLAYER,
+	ENEMY,
 };
 
 class LFiniteStateMachine

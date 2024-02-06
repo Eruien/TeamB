@@ -2,14 +2,10 @@
 #include "LStd.h"
 #include "LManager.h"
 #include "LManagerAgr.h"
+#include "LGlobal.h"//이펙트 머지
 
-struct SimpleVertex
-{
-	TVector3 p;
-	TVector3 n;
-	TVector4 c;
-	TVector2 t;
-};
+
+
 
 struct CB_Data
 {

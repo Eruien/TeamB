@@ -22,25 +22,25 @@ bool Sample::Frame()
 	LInput& input = LInput::GetInstance();
 
 	// 마우스 왼쪽 플레이
-	if (input.m_dwKeyState[VK_LBUTTON] == DWORD(KeyState::KEY_PUSH))
+	if (input.m_KeyState[VK_LBUTTON] == KEY_PUSH)
 	{
 		moonlight->Play();
 	}
 
 	// 마우스 오른쪽 종료
-	if (input.m_dwKeyState[VK_RBUTTON] == DWORD(KeyState::KEY_PUSH))
+	if (input.m_KeyState[VK_RBUTTON] == KEY_PUSH)
 	{
 		moonlight->Stop();
 	}
 	
 	// +키 증가
-	if (input.m_dwKeyState[VK_OEM_PLUS] == DWORD(KeyState::KEY_PUSH))
+	if (input.m_KeyState[VK_OEM_PLUS] == KEY_PUSH)
 	{
 		moonlight->VolumeUp();
 	}
 
 	//-키 감소
-	if (input.m_dwKeyState[VK_OEM_MINUS] == DWORD(KeyState::KEY_PUSH))
+	if (input.m_KeyState[VK_OEM_MINUS] == KEY_PUSH)
 	{
 		moonlight->VolumeDown();
 	}

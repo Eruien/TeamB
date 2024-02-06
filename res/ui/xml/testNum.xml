@@ -1,0 +1,12 @@
+<TextureList Name="DefaultNumber">
+<TexPaths texFilePath="../../res/ui/num/0.png"/>
+<TexPaths texFilePath="../../res/ui/num/1.png"/>
+<TexPaths texFilePath="../../res/ui/num/2.png"/>
+<TexPaths texFilePath="../../res/ui/num/3.png"/>
+<TexPaths texFilePath="../../res/ui/num/4.png"/>
+<TexPaths texFilePath="../../res/ui/num/5.png"/>
+<TexPaths texFilePath="../../res/ui/num/6.png"/>
+<TexPaths texFilePath="../../res/ui/num/7.png"/>
+<TexPaths texFilePath="../../res/ui/num/8.png"/>
+<TexPaths texFilePath="../../res/ui/num/9.png"/>
+</TextureList>

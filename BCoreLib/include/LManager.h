@@ -14,15 +14,12 @@ public:
 	using LList = std::unordered_map<std::wstring, T*>;
 public:
 	LList m_map;
-public: 
+public:
 	T* Load(std::wstring filePath);
 	T* GetPtr(std::wstring key);
 	bool Get(std::wstring key, T& managerType);
-	void Set(ID3D11Device* pDevice, ID3D11DeviceContext* pImmediateContext)
-	{
-		
-	};
-
+	void Set(ID3D11Device* pDevice, ID3D11DeviceContext* pImmediateContext);
+	void Add(const wstring& key, T* object);
 	bool Release();
 private:
 	LManager() {}
@@ -54,6 +51,12 @@ T* LManager<T>::Load(std::wstring filePath)
 
 	delete managerType;
 	return nullptr;
+}
+
+template<class T>
+void LManager<T>::Add(const wstring& key, T* object)
+{
+	m_map.insert(std::make_pair(key, object));
 }
 
 template<class T>
@@ -91,7 +94,7 @@ bool LManager<T>::Release()
 		map.second->Release();
 		delete map.second;
 	}
-	
+
 	m_map.clear();
 	return true;
 }

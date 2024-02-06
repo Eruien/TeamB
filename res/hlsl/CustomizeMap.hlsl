@@ -13,13 +13,14 @@ struct VS_OUTPUT
     float2 t : TEXCOORD0;
 };
 // 상수버퍼(레지스터 단위로 저장되어야 한다.)
-// 레지스터 단위란, float4(x,y,z,w) 
-cbuffer cb0 
+// 레지스터 단위란, float4(x,y,z,w)
+cbuffer cb0
 {
-    matrix g_matWorld  : packoffset(c0);// float4x4 // 4개    
+    matrix g_matWorld  : packoffset(c0);// float4x4 // 4개
     matrix g_matView  : packoffset(c4);
     matrix g_matProj  : packoffset(c8);
 };
+
 VS_OUTPUT VS(VS_INPUT vIn)
 {
     VS_OUTPUT vOut = (VS_OUTPUT)0;
@@ -27,7 +28,7 @@ VS_OUTPUT VS(VS_INPUT vIn)
     // v dot c0 = v.x
     // v dot c1 = v.y
     // v dot c2 = v.z
-    // v dot c3 = v.w     
+    // v dot c3 = v.w
     float4 vWorld = mul(float4(vIn.p,1.0f),g_matWorld);
     float4 vView = mul(vWorld, g_matView);
     float4 vProj = mul(vView, g_matProj);

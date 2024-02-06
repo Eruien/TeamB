@@ -12,7 +12,7 @@ bool Sample::Init()
 
     m_pMapObj = std::make_unique<LPlaneObj>();
 	m_pMapObj.get()->Load({ 0.0f,0.0f ,0.0f }, {(float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, 1.0f},
-		 L"../../res/topdownmap.jpg",  L"../../res/hlsl/CustomizeMap.hlsl");
+		 L"../../res/effect/topdownmap.jpg",  L"../../res/hlsl/CustomizeMap.hlsl");
 	//m_pMapObj = std::make_unique<LMap>();
 	//m_pMapObj->Set();
 	//m_pMapObj->SetPos({ 0.0f,0.0f ,0.0f });

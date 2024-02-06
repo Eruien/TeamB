@@ -118,12 +118,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/; ../../fmod/inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../BCoreLib/include/;../../BCoreLib/texinclude/;../../fbxsdk/include/;../../fmod/inc/;../../imgui/include/;../../tinyxml/;../../TheFinalKillingFloor/UI/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../BCoreLib/lib/; ../../BCoreLib/texlib/; ../../fbxsdk/lib/debug/; ../../fmod/lib/x64/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../BCoreLib/lib/;../../BCoreLib/texlib/;../../fbxsdk/lib/debug/;../../fmod/lib/x64/;../../imgui/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,10 +143,50 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="BillBoard.cpp" />
+    <ClCompile Include="ChangeTexture.cpp" />
+    <ClCompile Include="DigitDisplay.cpp" />
+    <ClCompile Include="ExitWindow.cpp" />
+    <ClCompile Include="ImguiDetail.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
+    <ClCompile Include="Imgui_ObjectDetail.cpp" />
+    <ClCompile Include="imgui_menuBar.cpp" />
+    <ClCompile Include="ModalWindow.cpp" />
+    <ClCompile Include="NumberObject.cpp" />
+    <ClCompile Include="PickingUI.cpp" />
+    <ClCompile Include="KObject.cpp" />
+    <ClCompile Include="MonoBehaviour.cpp" />
+    <ClCompile Include="DragUI.cpp" />
+    <ClCompile Include="Resize2D.cpp" />
+    <ClCompile Include="ResourceBase.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="TextureList.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="BillBoard.h" />
+    <ClInclude Include="ChangeTexture.h" />
+    <ClInclude Include="DigitDisplay.h" />
+    <ClInclude Include="ExitWindow.h" />
+    <ClInclude Include="ImguiDetail.h" />
+    <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="Imgui_ObjectDetail.h" />
+    <ClInclude Include="imgui_menuBar.h" />
+    <ClInclude Include="ModalWindow.h" />
+    <ClInclude Include="NumberObject.h" />
+    <ClInclude Include="PickingUI.h" />
+    <ClInclude Include="KObject.h" />
+    <ClInclude Include="MonoBehaviour.h" />
+    <ClInclude Include="DragUI.h" />
+    <ClInclude Include="Resize2D.h" />
+    <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="TextureList.h" />
+    <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">

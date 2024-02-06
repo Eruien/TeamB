@@ -7,21 +7,21 @@ enum class CullResult {
     OUTSIDE
 };
 
-class xPlane
-{
-public:
-    float fa, fb, fc, fd;
-public:
-    void Normalize();
-    void CreatePlane(TVector3 v0, TVector3 v1, TVector3 v2);
-    void CreatePlane(TVector3 v0, TVector3 vNormal);
-};
+//class xPlane
+//{
+//public:
+//    float fa, fb, fc, fd;
+//public:
+//    void Normalize();
+//    void CreatePlane(TVector3 v0, TVector3 v1, TVector3 v2);
+//    void CreatePlane(TVector3 v0, TVector3 vNormal);
+//};
 
 class LFrustum
 {
 public:
     TVector3  m_vFrustum[8];
-    xPlane    m_xPlane[6];
+    T_PLANE    m_xPlane[6];
 public:
     void Create(TMatrix matView, TMatrix matProj);
     CullResult CheckOBBInPlane(T_BOX& box);

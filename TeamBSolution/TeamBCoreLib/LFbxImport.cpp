@@ -1,5 +1,19 @@
 #include "LFbxImport.h"
 
+TMatrix LFbxImport::ConvertAMatrix(FbxMatrix& m)
+{
+	TMatrix mat;
+	float* pMatArray = reinterpret_cast<float*>(&mat);
+	double* pSrcArray = reinterpret_cast<double*>(&m);
+
+	for (int i = 0; i < 16; i++)
+	{
+		pMatArray[i] = pSrcArray[i];
+	}
+
+	return mat;
+}
+
 TMatrix LFbxImport::ConvertAMatrix(FbxAMatrix& m)
 {
 	TMatrix mat;
@@ -56,8 +70,8 @@ bool LFbxImport::Load(std::wstring fbxFilePath, LFbxObj* fbxObj)
 		MessageBoxA(NULL, "FbxRootNode is Null", "Error Box", MB_OK);
 		return false;
 	}
-	
-	PreProcess(m_RootNode);
+
+	PreProcess(m_RootNode, fbxObj);
 
 	// 파일 이름만 빠진 경로를 뽑아냄 path에 저장되어 있음
 	std::size_t found = fbxFilePath.find_last_of(L"/");
@@ -65,13 +79,13 @@ bool LFbxImport::Load(std::wstring fbxFilePath, LFbxObj* fbxObj)
 
 	for (int i = 0; i < m_MeshNodeList.size(); i++)
 	{
-		std::shared_ptr<LMesh> lMesh = std::make_shared<LMesh>();
-		// 메쉬에 Texture배열을 로드할거기 때문에 Texture이름이 필요 경로 저장
-		lMesh->m_DefaultFilePath = path;
-
+		std::shared_ptr<LFbxObj> fbxMesh = m_MeshNodeList[i];
+		fbxMesh->m_DefaultFilePath = path;
+		//auto iter = m_pFbxNodeNameMap.find(m_MeshNodeList[i]);
 		// 메쉬가 있는 노드에서 메쉬 관련된 정보를 뽑아냄
-		MeshLoad(m_MeshNodeList[i], lMesh.get());
-		fbxObj->m_MeshList.push_back(lMesh);
+		MeshLoad(m_pNodeList[fbxMesh->m_iBoneIndex], fbxMesh.get());
+
+		fbxObj->m_DrawList.push_back(fbxMesh);
 	}
 
 	GetAnimation(fbxObj);
@@ -79,28 +93,46 @@ bool LFbxImport::Load(std::wstring fbxFilePath, LFbxObj* fbxObj)
 	return true;
 }
 
-void LFbxImport::PreProcess(FbxNode* fbxNode)
+void LFbxImport::PreProcess(FbxNode* fbxNode, LFbxObj* fbxObj)
 {
 	if (fbxNode == nullptr) return;
 	if (fbxNode->GetCamera() || fbxNode->GetLight()) return;
 
+	std::shared_ptr<LFbxObj> fbxChildObj = std::make_shared<LFbxObj>();
+	fbxChildObj->m_Name = mtw(fbxNode->GetName());
+	fbxChildObj->m_iBoneType = LFbxObj::BONE_NODE;
+	fbxChildObj->m_iBoneIndex = fbxObj->m_TreeList.size();
+
+	fbxObj->m_TreeList.push_back(fbxChildObj);
+	fbxObj->m_pFbxNodeNameList.push_back(fbxChildObj->m_Name);
+	fbxObj->m_pFbxNodeNameMap.insert(std::make_pair(fbxChildObj->m_Name, fbxChildObj->m_iBoneIndex));
+
+	m_pNodeList.push_back(fbxNode);
+	m_pFbxNodeNameMap.insert(std::make_pair(fbxNode, fbxChildObj->m_iBoneIndex));
+
 	if (fbxNode->GetMesh())
 	{
-		m_MeshNodeList.push_back(fbxNode);
+		fbxChildObj->m_iBoneType = LFbxObj::MESH_NODE;
+		m_MeshNodeList.push_back(fbxChildObj);
 	}
-	
+
 	for (int i = 0; i < fbxNode->GetChildCount(); i++)
 	{
-		PreProcess(fbxNode->GetChild(i));
+		PreProcess(fbxNode->GetChild(i), fbxObj);
 	}
 }
 
-void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
+void LFbxImport::MeshLoad(FbxNode* fbxNode, LFbxObj* lMesh)
 {
 	// 메쉬가 있는 노드에서 메쉬를 가지고 옴
 	FbxMesh* fbxMesh = fbxNode->GetMesh();
 	// 메쉬가 가지고 있는 폴리곤의 총 갯수
 	int iPolyCount = fbxMesh->GetPolygonCount();
+
+	lMesh->m_bSkinning = ParseMeshSkinning(fbxMesh, lMesh);
+	lMesh->m_iBoneType = LFbxObj::SKIN_NODE;
+
+
 	// 제어점의 배열을 가지고 옴
 	FbxVector4* fbxControlPointList = fbxMesh->GetControlPoints();
 	// 레이어들의 반복을 돌릴 레이어 카운터
@@ -145,6 +177,7 @@ void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
 	if (iSubMaterialCount > 0)
 	{
 		lMesh->m_TriangleList.resize(iSubMaterialCount);
+		lMesh->m_pSubVertexListIW.resize(iSubMaterialCount);
 	}
 
 	// 텍스처 파일의 이름을 불러오고 그걸 기반으로 텍스처 배열도 로드한다.
@@ -167,13 +200,6 @@ void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
 		lMesh->m_TexFileNameList.push_back(mtw(texName));
 	}
 
-	for (int i = 0; i < lMesh->m_TexFileNameList.size(); i++)
-	{
-		std::wstring textureName = lMesh->m_DefaultFilePath;
-		textureName += lMesh->m_TexFileNameList[i];
-		lMesh->LoadTexture(textureName);
-	}
-
 	// 행렬 정보를 불러온다. 행렬 정보는 local정점 x 자신과부모의 변환행렬 x 기하학적 행렬
 	// 자신과 부모의 변환행렬은 ParseTransform 에서 기하학적 행렬은 바로 아래에서 뽑아낸다.
 	FbxAMatrix GeometircMatrix;
@@ -192,8 +218,6 @@ void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
 		normalMatrix = normalMatrix.Transpose();
 	}
 
-	lMesh->m_MatWorld = ParseTransform(fbxNode);
-	
 	// 제어점 기반이 아니라 폴리곤의 정점 기반 계산이다.
 	// 삼각형 기반 cell이 9개일 경우 9 x 2 x 3 = 54개의 정점 계산
 	// 폴리곤의 숫자, 삼각형의 숫자, 삼각형의 정점의 숫자
@@ -221,7 +245,7 @@ void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
 			uv[2] = fbxMesh->GetTextureUVIndex(iPoly, iTriangle + 1);
 
 			int iPolyIndex[3] = { 0, iTriangle + 2, iTriangle + 1 };
-		
+
 			for (int iVertex = 0; iVertex < 3; iVertex++)
 			{
 				SimpleVertex pnct;
@@ -235,7 +259,7 @@ void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
 
 				if (NormalLayerList.size() > 0)
 				{
-					FbxVector4 normal = {0.0f, 0.0f, 0.0f};
+					FbxVector4 normal = { 0.0f, 0.0f, 0.0f };
 					normal = ReadNormal(NormalLayerList[0], iDCIndex, uv[iVertex] + iBasePolyIndex);
 
 					pnct.n.x = normal.mData[0];
@@ -259,6 +283,28 @@ void LFbxImport::MeshLoad(FbxNode* fbxNode, LMesh* lMesh)
 				pnct.t.y = 1.0f - textureUV.mData[1];
 
 				lMesh->m_TriangleList[iSubMaterialIndex].push_back(pnct);
+
+				LVertexIW iwVertex;
+
+				FbxGeometryElementTangent* vertexTangent = fbxMesh->GetElementTangent(0);
+				iwVertex.tan = { 0, 0, 0 };
+
+				if (lMesh->m_bSkinning)
+				{
+					LWeight* weight = &lMesh->m_WeightList[iDCIndex];
+
+					for (int i = 0; i < 4; i++)
+					{
+						iwVertex.i[i] = weight->index[i];
+						iwVertex.w[i] = weight->weight[i];
+					}
+				}
+				else
+				{
+					iwVertex.i[0] = lMesh->m_iBoneIndex;
+					iwVertex.w[0] = 1.0f;
+				}
+				lMesh->m_pSubVertexListIW[iSubMaterialIndex].push_back(iwVertex);
 			}
 		}
 	}
@@ -288,13 +334,15 @@ bool LFbxImport::Release()
 	m_pFbxScene->Destroy();
 	m_pFbxImporter->Destroy();
 	m_pFbxManager->Destroy();
-	
+
 	m_RootNode = nullptr;
 	m_pFbxScene = nullptr;
 	m_pFbxImporter = nullptr;
 	m_pFbxManager = nullptr;
-	
+
 	m_MeshNodeList.clear();
+	m_pNodeList.clear();
+	m_pFbxNodeNameMap.clear();
 
 	return true;
 }

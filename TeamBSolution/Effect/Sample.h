@@ -1,6 +1,7 @@
 #pragma once
 #include "LCore.h"
 #include "LMap.h"
+#include "LPlaneObj.h"
 
 class Sample : public LCore
 {
