@@ -44,4 +44,8 @@ ZombieWave::ZombieWave()
     m_WaveCountList.insert(std::make_pair(1, Wave1));
     m_WaveCountList.insert(std::make_pair(2, Wave2));
     m_WaveCountList.insert(std::make_pair(3, Wave3));
+
+    m_TankCountList.insert(std::make_pair(1, 0));
+    m_TankCountList.insert(std::make_pair(2, TankWave2));
+    m_TankCountList.insert(std::make_pair(3, TankWave3));
 }

@@ -10,11 +10,11 @@ bool TankTakeDamage::Init()
 
 void TankTakeDamage::Process()
 {
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx");
+    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Tank_TakeDamage.fbx");
 
     if (!m_Timer && LGlobal::g_BulletCount > 0)
     {
-        m_pOwner->m_HP -= 20.0f;
+        m_pOwner->m_HP -= 5.0f;
         m_pOwner->IsTakeDamage = false;
         m_pOwner->m_TimerStart = true;
         m_Timer = true;
@@ -22,7 +22,7 @@ void TankTakeDamage::Process()
 
     if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
-        m_pOwner->m_HP -= 20.0f;
+        m_pOwner->m_HP -= 5.0f;
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;
     }
@@ -48,9 +48,7 @@ void TankTakeDamage::Release()
 
 void TankTakeDamage::UpdateHPbar()
 {
-
     float hp = LGlobal::g_PlayerModel->m_HP;
-
 
     m_pOwner->m_enemyHp->m_VertexList[1].p.x = 0.5f - (1 - m_pOwner->m_HP / 100);
     m_pOwner->m_enemyHp->m_VertexList[4].p.x = 0.5f - (1 - m_pOwner->m_HP / 100);
@@ -74,8 +72,6 @@ void TankTakeDamage::UpdateHPbar()
         MessageBoxA(NULL, "Create Buffer Error", "Error Box", MB_OK);
         return;
     }
-
-
 }
 
 TankTakeDamage::TankTakeDamage(Tank* parent) : TankState(parent)
