@@ -99,7 +99,7 @@ bool Tank::Frame()
 	m_ZombieSound->Play();
 	// ºôº¸µå
 
-	m_enemyHp->SetPos({ m_matControl._41,m_matControl._42 + 40, m_matControl._43 });
+	m_enemyHp->SetPos({ m_matControl._41,m_matControl._42 + 55, m_matControl._43 });
 
 	TMatrix matRotation, matTrans, matScale, worldMat;
 	D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);

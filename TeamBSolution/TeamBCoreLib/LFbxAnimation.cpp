@@ -7,7 +7,7 @@ void LFbxImport::GetAnimation(LFbxObj* fbxObj)
 
 	if (stack == nullptr)
 	{
-		MessageBoxA(NULL, "AnimationStack is Null", "Error Box", MB_OK);
+		//MessageBoxA(NULL, "AnimationStack is Null", "Error Box", MB_OK);
 		return;
 	}
 
