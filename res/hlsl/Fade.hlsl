@@ -14,11 +14,15 @@ struct VS_OUTPUT
 };
 // 상수버퍼(레지스터 단위로 저장되어야 한다.)
 // 레지스터 단위란, float4(x,y,z,w) 
-cbuffer cb0 
+cbuffer cb0 :register(b0)
 {
     matrix g_matWorld  : packoffset(c0);// float4x4 // 4개    
     matrix g_matView  : packoffset(c4);
     matrix g_matProj  : packoffset(c8);
+};
+cbuffer cb5 :register(b5)
+{
+    float alpha[4];
 };
 VS_OUTPUT VS(VS_INPUT vIn)
 {
@@ -48,6 +52,8 @@ struct PS_IN
 float4 PS(VS_OUTPUT vIn) : SV_Target
 {
     //            r,g,b,a(1)=불투명, a(0)=완전투명, a(0.0< 1.0f)= 반투명
-    return g_txDiffuse1.Sample(sample0, vIn.t);// *vIn.c;
+    float4 temp = g_txDiffuse1.Sample(sample0, vIn.t);// *vIn.c;
+    temp.a = temp.a - alpha[0];
+    return temp;
     //return vIn.c;
 }

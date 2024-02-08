@@ -174,7 +174,6 @@
     <ClCompile Include="TankRush.cpp" />
     <ClCompile Include="TankTakeDamage.cpp" />
     <ClCompile Include="TankTrace.cpp" />
-    <ClCompile Include="UIEvent.cpp" />
     <ClCompile Include="UI\Animation.cpp" />
     <ClCompile Include="UI\Animator.cpp" />
     <ClCompile Include="UI\BillBoard.cpp" />
@@ -198,6 +197,7 @@
     <ClCompile Include="UI\SceneChange.cpp" />
     <ClCompile Include="UI\Text.cpp" />
     <ClCompile Include="UI\TextureList.cpp" />
+    <ClCompile Include="UI\UIEvent.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
     <ClCompile Include="ZombieWave.cpp" />
   </ItemGroup>
@@ -233,7 +233,6 @@
     <ClInclude Include="TankRush.h" />
     <ClInclude Include="TankTakeDamage.h" />
     <ClInclude Include="TankTrace.h" />
-    <ClInclude Include="UIEvent.h" />
     <ClInclude Include="UI\Animation.h" />
     <ClInclude Include="UI\Animator.h" />
     <ClInclude Include="UI\BillBoard.h" />
@@ -257,6 +256,7 @@
     <ClInclude Include="UI\SceneChange.h" />
     <ClInclude Include="UI\Text.h" />
     <ClInclude Include="UI\TextureList.h" />
+    <ClInclude Include="UI\UIEvent.h" />
     <ClInclude Include="UI\UIManager.h" />
     <ClInclude Include="ZombieWave.h" />
   </ItemGroup>

@@ -114,7 +114,7 @@ void Imgui_ObjectDetail::Frame()
 			{
 
 				const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow","BillBoard","ButtonAction","Text", "SceneChange",
-				"HpBar"};
+				"HpBar", "UIEvent"};
 				static int item_current_idx = 0; // Here we store our selection data as an index.
 				if (ImGui::BeginListBox(""))
 				{
@@ -169,6 +169,10 @@ void Imgui_ObjectDetail::Frame()
 						case 10:
 							UIManager::s_selectedObject->AddScripts(make_shared<HpBar>());
 							UIManager::s_selectedObject->GetScript<HpBar>(L"HpBar")->Init();
+							break;
+						case 11:
+							UIManager::s_selectedObject->AddScripts(make_shared<UIEvent>(L"None"));
+							UIManager::s_selectedObject->GetScript<UIEvent>(L"UIEvent")->Init();
 							break;
 						default:
 							break;
@@ -386,6 +390,24 @@ void Imgui_ObjectDetail::Frame()
 								if (ImGui::Button("Delete"))
 								{
 									UIManager::s_selectedObject->RemoveScript(L"HpBar");
+									ImGui::EndTabItem();
+									continue;
+								}
+								ImGui::EndTabItem();
+							}
+						}
+						if (script->GetName() == L"UIEvent")
+						{
+							if (ImGui::BeginTabItem("UIEvent"))
+							{
+								ImGui::Text("UIEvent");
+								if (ImGui::InputText("##UIEvent", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+								{
+									UIManager::s_selectedObject->GetScript<UIEvent>(L"UIEvent")->_function = mtw(buffer);
+								}
+								if (ImGui::Button("Delete"))
+								{
+									UIManager::s_selectedObject->RemoveScript(L"UIEvent");
 									ImGui::EndTabItem();
 									continue;
 								}

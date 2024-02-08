@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="PlayerWalk.cpp">
@@ -337,6 +338,124 @@
     <ClInclude Include="UI\UIManager.h">
       <Filter>UI</Filter>
     </ClInclude>
+=======
+    <ClCompile Include="EndScene.cpp" />
+    <ClCompile Include="EnemyAttack.cpp" />
+    <ClCompile Include="EnemyDeath.cpp" />
+    <ClCompile Include="EnemyPatrol.cpp" />
+    <ClCompile Include="EnemyTakeDamage.cpp" />
+    <ClCompile Include="EnemyTrace.cpp" />
+    <ClCompile Include="InGameScene.cpp" />
+    <ClCompile Include="LAnimationIO.cpp" />
+    <ClCompile Include="LCharacterIO.cpp" />
+    <ClCompile Include="LExportIO.cpp" />
+    <ClCompile Include="LGun.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LMainScene.cpp" />
+    <ClCompile Include="LNPC.cpp" />
+    <ClCompile Include="LPlayer.cpp" />
+    <ClCompile Include="LScene.cpp" />
+    <ClCompile Include="LSelect.cpp" />
+    <ClCompile Include="PlayerAttack.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
+    <ClCompile Include="PlayerIdle.cpp" />
+    <ClCompile Include="PlayerReload.cpp" />
+    <ClCompile Include="PlayerRun.cpp" />
+    <ClCompile Include="PlayerTakeDamage.cpp" />
+    <ClCompile Include="PlayerWalk.cpp" />
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="TankCombo.cpp" />
+    <ClCompile Include="TankDeath.cpp" />
+    <ClCompile Include="TankRush.cpp" />
+    <ClCompile Include="TankTakeDamage.cpp" />
+    <ClCompile Include="TankTrace.cpp" />
+    <ClCompile Include="UI\Animation.cpp" />
+    <ClCompile Include="UI\Animator.cpp" />
+    <ClCompile Include="UI\BillBoard.cpp" />
+    <ClCompile Include="UI\ButtonAction.cpp" />
+    <ClCompile Include="UI\ChangeTexture.cpp" />
+    <ClCompile Include="UI\DigitDisplay.cpp" />
+    <ClCompile Include="UI\DragUI.cpp" />
+    <ClCompile Include="UI\ExitWindow.cpp" />
+    <ClCompile Include="UI\HpBar.cpp" />
+    <ClCompile Include="UI\ImguiDetail.cpp" />
+    <ClCompile Include="UI\ImGuiManager.cpp" />
+    <ClCompile Include="UI\imgui_menuBar.cpp" />
+    <ClCompile Include="UI\Imgui_ObjectDetail.cpp" />
+    <ClCompile Include="UI\KObject.cpp" />
+    <ClCompile Include="UI\ModalWindow.cpp" />
+    <ClCompile Include="UI\MonoBehaviour.cpp" />
+    <ClCompile Include="UI\NumberObject.cpp" />
+    <ClCompile Include="UI\PickingUI.cpp" />
+    <ClCompile Include="UI\Resize2D.cpp" />
+    <ClCompile Include="UI\ResourceBase.cpp" />
+    <ClCompile Include="UI\SceneChange.cpp" />
+    <ClCompile Include="UI\Text.cpp" />
+    <ClCompile Include="UI\TextureList.cpp" />
+    <ClCompile Include="UI\UIManager.cpp" />
+    <ClCompile Include="ZombieWave.cpp" />
+    <ClCompile Include="UI\UIEvent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EndScene.h" />
+    <ClInclude Include="EnemyAttack.h" />
+    <ClInclude Include="EnemyDeath.h" />
+    <ClInclude Include="EnemyPatrol.h" />
+    <ClInclude Include="EnemyTakeDamage.h" />
+    <ClInclude Include="EnemyTrace.h" />
+    <ClInclude Include="InGameScene.h" />
+    <ClInclude Include="LAnimationIO.h" />
+    <ClInclude Include="LCharacterIO.h" />
+    <ClInclude Include="LExportIO.h" />
+    <ClInclude Include="LGun.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LMainScene.h" />
+    <ClInclude Include="LNPC.h" />
+    <ClInclude Include="LPlayer.h" />
+    <ClInclude Include="LScene.h" />
+    <ClInclude Include="LSelect.h" />
+    <ClInclude Include="PlayerAttack.h" />
+    <ClInclude Include="PlayerDeath.h" />
+    <ClInclude Include="PlayerIdle.h" />
+    <ClInclude Include="PlayerReload.h" />
+    <ClInclude Include="PlayerRun.h" />
+    <ClInclude Include="PlayerTakeDamage.h" />
+    <ClInclude Include="PlayerWalk.h" />
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="Tank.h" />
+    <ClInclude Include="TankCombo.h" />
+    <ClInclude Include="TankDeath.h" />
+    <ClInclude Include="TankRush.h" />
+    <ClInclude Include="TankTakeDamage.h" />
+    <ClInclude Include="TankTrace.h" />
+    <ClInclude Include="UI\Animation.h" />
+    <ClInclude Include="UI\Animator.h" />
+    <ClInclude Include="UI\BillBoard.h" />
+    <ClInclude Include="UI\ButtonAction.h" />
+    <ClInclude Include="UI\ChangeTexture.h" />
+    <ClInclude Include="UI\DigitDisplay.h" />
+    <ClInclude Include="UI\DragUI.h" />
+    <ClInclude Include="UI\ExitWindow.h" />
+    <ClInclude Include="UI\HpBar.h" />
+    <ClInclude Include="UI\ImguiDetail.h" />
+    <ClInclude Include="UI\ImGuiManager.h" />
+    <ClInclude Include="UI\imgui_menuBar.h" />
+    <ClInclude Include="UI\Imgui_ObjectDetail.h" />
+    <ClInclude Include="UI\KObject.h" />
+    <ClInclude Include="UI\ModalWindow.h" />
+    <ClInclude Include="UI\MonoBehaviour.h" />
+    <ClInclude Include="UI\NumberObject.h" />
+    <ClInclude Include="UI\PickingUI.h" />
+    <ClInclude Include="UI\Resize2D.h" />
+    <ClInclude Include="UI\ResourceBase.h" />
+    <ClInclude Include="UI\SceneChange.h" />
+    <ClInclude Include="UI\Text.h" />
+    <ClInclude Include="UI\TextureList.h" />
+    <ClInclude Include="UI\UIManager.h" />
+    <ClInclude Include="ZombieWave.h" />
+    <ClInclude Include="UI\UIEvent.h" />
+>>>>>>> 52c7b28097303e9ed5ac087ade4de36484df58f9
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim.xml">
@@ -369,6 +488,7 @@
       <Filter>UI</Filter>
     </None>
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <Filter Include="Player">
       <UniqueIdentifier>{7414a7ab-f2c2-4c10-a421-46cf6cee4a15}</UniqueIdentifier>
@@ -398,4 +518,6 @@
       <UniqueIdentifier>{2319978f-3288-41a6-99db-653efd6779fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+=======
+>>>>>>> 52c7b28097303e9ed5ac087ade4de36484df58f9
 </Project>

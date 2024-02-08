@@ -15,6 +15,7 @@
 #include "Text.h"
 #include "SceneChange.h"
 #include "HpBar.h"
+#include "UIEvent.h"
 //
 #include "imgui_menuBar.h"
 #include "ImGuiManager.h"

@@ -48,6 +48,12 @@ void UIManager::Render()
 {
 	for (auto obj : _objs)
 	{
+ /*       if (obj->GetScript<UIEvent>(L"UIEvent"))
+        {
+            obj->GetScript<UIEvent>(L"UIEvent")->Render();
+            continue;
+        }*/
+
        // LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilStateDisable.Get(), 1);
         if(obj->GetIsRender()|| _debugMode)
 		obj->Render();
@@ -144,6 +150,12 @@ void UIManager::Save(const wstring filePath)
                 tinyxml2::XMLElement* argsNode = doc.NewElement("args");
                 scriptNode->LinkEndChild(argsNode);
                 argsNode->SetAttribute("SceneChange", static_cast<int>(obj->GetScript<SceneChange>(L"SceneChange")->GetEvent()));
+            }
+            if (script->GetName() == L"UIEvent")
+            {
+                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
+                scriptNode->LinkEndChild(argsNode);
+                argsNode->SetAttribute("Function", wtm(obj->GetScript<UIEvent>(L"UIEvent")->_function).c_str());
             }
         }
     }
@@ -330,6 +342,16 @@ void UIManager::Load(const wstring filePath)
                     {
                         obj->AddScripts(std::make_shared<HpBar>());
                         obj->GetScript<HpBar>(L"HpBar")->Init();
+                    }
+                    if (mtw(scriptTypeAttr) == L"UIEvent")
+                    {
+                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
+                        if (argsElement)
+                        {
+                            const char* bFunction = argsElement->Attribute("Function");
+                            obj->AddScripts(std::make_shared<UIEvent>(mtw(bFunction)));
+                             obj->GetScript<UIEvent>(L"UIEvent")->Init();
+                        }
                     }
                 }
             }

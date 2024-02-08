@@ -189,4 +189,14 @@
             </Script>
         </Scripts>
     </UIObject>
+    <UIObject Name="ScreenBlood" isRender="false" Group="None">
+        <Position x="0" y="0" z="0.69999999"/>
+        <Scale width="1280" height="720"/>
+        <Texture texPath="../../res/ui/GoreSplash.png"/>
+        <Scripts>
+            <Script Type="UIEvent">
+                <args Function="HitPlayerEffect"/>
+            </Script>
+        </Scripts>
+    </UIObject>
 </UIScene>
