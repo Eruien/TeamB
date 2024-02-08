@@ -253,7 +253,13 @@ bool InGameScene::Init()
     m_ShapeMinimap.SetScreenVertex(10, 10, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
     m_ShapeMinimap.Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Box_128x64.png");
     m_rtMinimap.Create(256, 256);
-
+    //muzzleflash
+    m_muzzleFlash = make_shared<KObject>();
+    m_muzzleFlash->Init();
+    m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
+    m_muzzleFlash->SetScale({ 20,20,1.f });
+    m_muzzleFlash->SetPos({0,30,0});
+   // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
   
 
 
@@ -268,6 +274,34 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
+    //포워드 구하는법좀..
+    TMatrix matRotation, matTrans, matScale, worldMat;
+    matScale = TMatrix::Identity;
+    D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
+    matRotation._41 = 0.0f;
+    matRotation._42 = 0.0f;
+    matRotation._43 = 0.0f;
+    matRotation._44 = 1.0f;
+    TVector3 foward;
+    foward = LGlobal::g_PlayerModel->m_matControl.Forward();
+    TVector3 vTrans = { m_GunModel->m_matControl._41 ,m_GunModel->m_matControl._42 ,m_GunModel->m_matControl._43 };
+    vTrans = vTrans + (foward*150);
+    D3DXMatrixTranslation(&matTrans, vTrans.x,
+        vTrans.y,
+        vTrans.z
+    );
+    
+    D3DXMatrixScaling(&matScale, m_muzzleFlash->m_vScale.x,
+        m_muzzleFlash->m_vScale.y,
+        m_muzzleFlash->m_vScale.z
+    );
+    worldMat = matScale * matRotation * matTrans;
+    m_muzzleFlash->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+   // m_muzzleFlash->SetPos({ m_GunModel->m_matControl._41,m_GunModel->m_matControl._42 ,m_GunModel->m_matControl._43 });
+   // m_muzzleFlash->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_muzzleFlash->Frame();
+
+
     if (LGlobal::g_PlayerModel->IsDeath)
     {
         IsEndGame = true;
@@ -535,7 +569,7 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
-    
+   
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
         m_PointLight[0].m_vPosition.y = -1000.f;
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
@@ -600,6 +634,7 @@ void InGameScene::Render()
 
     RenderObject();
     m_GunModel->Render();
+   
 
     for (auto zombie : m_ZombieModelList)
     {
@@ -806,7 +841,7 @@ void InGameScene::Render()
        UIManager::GetInstance().Load(L"EndScene.xml");
        m_pOwner->SetTransition(Event::GOENDSCENE);
    }
-
+   
 }
 
 void InGameScene::Release()
@@ -938,6 +973,7 @@ void InGameScene::RenderObject()
     ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
     LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
     LGlobal::g_PlayerModel->Render();
+    m_muzzleFlash->Render();
 }
 
 void InGameScene::RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
@@ -967,6 +1003,7 @@ void InGameScene::CreateShadowConstantBuffer()
         MessageBoxA(NULL, "Create ConstantBuffer Error", "Error Box", MB_OK);
         return;
     }
+   
 }
 
 InGameScene::InGameScene(LScene* parent) : SceneState(parent)

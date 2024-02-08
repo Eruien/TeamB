@@ -27,11 +27,11 @@ void BillBoard::Frame()
 	//}
 	TMatrix matRotation, matTrans, matScale, worldMat;
 		matScale = TMatrix::Identity;
-	 D3DXMatrixInverse(&matRotation ,nullptr, &LGlobal::g_pUICamera->m_matView);
-	 //matRotation._41 = 0.0f;
-	 //matRotation._42 = 0.0f;
-	 //matRotation._43 = 0.0f;
-	 //matRotation._44 = 1.0f;
+	 D3DXMatrixInverse(&matRotation ,nullptr, &LGlobal::g_pMainCamera->m_matView);
+	 matRotation._41 = 0.0f;
+	 matRotation._42 = 0.0f;
+	 matRotation._43 = 0.0f;
+	 matRotation._44 = 1.0f;
 
 	D3DXMatrixTranslation(&matTrans ,GetGameObject()->m_vPosition.x,
 		GetGameObject()->m_vPosition.y,
@@ -43,5 +43,5 @@ void BillBoard::Frame()
 		 GetGameObject()->m_vScale.z
 	);
 	 worldMat = matScale * matRotation * matTrans;
-	 GetGameObject()->SetMatrix(&worldMat, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
+	 GetGameObject()->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matOrthoProjection);
 }
