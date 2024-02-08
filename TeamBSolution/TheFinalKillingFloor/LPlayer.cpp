@@ -222,7 +222,7 @@ bool LPlayer::Frame()
 
 		if (m_StartShoot > m_ShotDelay)
 		{
-			if (LGlobal::g_BulletCount >= 0)
+			if (LGlobal::g_BulletCount > 0)
 			{
 				LGlobal::g_EffectSound1->PlayEffect();
 			}
@@ -246,6 +246,11 @@ bool LPlayer::Frame()
 	{
 		IsMove = true;
 		IsAttack = false;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_R] == KEY_UP)
+	{
+		IsReload = true;
 	}
 
 	if (IsMove && IsMovable)

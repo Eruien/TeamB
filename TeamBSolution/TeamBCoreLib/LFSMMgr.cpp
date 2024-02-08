@@ -87,18 +87,21 @@ bool LFSMMgr::Init()
 
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::TAKEDAMAGE, State::CHARACTERTAKEDAMAGE);
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::FATALDAMAGE, State::CHARACTERDEATH);
+	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::STARTRELOAD, State::CHARACTERRELOAD);
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::WALKSPEED, State::CHARACTERWALK);
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::RUNSPEED, State::CHARACTERRUN);
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::TAKEDAMAGE, State::CHARACTERTAKEDAMAGE);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::FATALDAMAGE, State::CHARACTERDEATH);
+	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::STARTRELOAD, State::CHARACTERRELOAD);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::RUNSPEED, State::CHARACTERRUN);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::IDLESPEED, State::CHARACTERIDLE);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::TAKEDAMAGE, State::CHARACTERTAKEDAMAGE);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::FATALDAMAGE, State::CHARACTERDEATH);
+	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::STARTRELOAD, State::CHARACTERRELOAD);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::IDLESPEED, State::CHARACTERIDLE);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::WALKSPEED, State::CHARACTERWALK);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::CLICKATTACKBUTTON, State::CHARACTERSHOOT);

@@ -21,6 +21,12 @@ void PlayerRun::Process()
         return;
     }
 
+    if (m_pOwner->IsReload)
+    {
+        m_pOwner->SetTransition(Event::STARTRELOAD);
+        return;
+    }
+
     if (m_pOwner->IsAttack)
     {
         m_pOwner->SetTransition(Event::CLICKATTACKBUTTON);
