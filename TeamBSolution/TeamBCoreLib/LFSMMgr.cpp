@@ -138,6 +138,27 @@ bool LFSMMgr::Init()
 
 	m_map.insert(std::make_pair(FSMType::ENEMY, std::move(EnemyFSM)));
 
+	//Tank
+	std::unique_ptr<LFiniteStateMachine> TankFSM = std::make_unique<LFiniteStateMachine>();
+
+	TankFSM->AddStateTransition(State::TANKTRACE, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
+	TankFSM->AddStateTransition(State::TANKTRACE, Event::FATALDAMAGE, State::TANKDEATH);
+	TankFSM->AddStateTransition(State::TANKTRACE, Event::TANKCOMBOATTACK, State::TANKCOMBO);
+	TankFSM->AddStateTransition(State::TANKTRACE, Event::TANKRUSHATTACK, State::TANKRUSH);
+
+	TankFSM->AddStateTransition(State::TANKCOMBO, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
+	TankFSM->AddStateTransition(State::TANKCOMBO, Event::FATALDAMAGE, State::TANKDEATH);
+	TankFSM->AddStateTransition(State::TANKCOMBO, Event::ENDATTACK, State::TANKTRACE);
+
+	TankFSM->AddStateTransition(State::TANKRUSH, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
+	TankFSM->AddStateTransition(State::TANKRUSH, Event::FATALDAMAGE, State::TANKDEATH);
+	TankFSM->AddStateTransition(State::TANKRUSH, Event::ENDATTACK, State::TANKTRACE);
+
+	TankFSM->AddStateTransition(State::TANKTAKEDAMAGE, Event::FATALDAMAGE, State::TANKDEATH);
+	TankFSM->AddStateTransition(State::TANKTAKEDAMAGE, Event::RECOVERYDAMAGE, State::TANKTRACE);
+
+	m_map.insert(std::make_pair(FSMType::TANK, std::move(TankFSM)));
+
 	return true;
 }
 

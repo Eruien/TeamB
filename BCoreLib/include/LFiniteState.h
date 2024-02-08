@@ -25,6 +25,13 @@ enum class State
 	ENEMYDEATH,
 	ENEMYTAKEDAMAGE,
 	ENEMYATTACK,
+
+	//Tank
+	TANKTRACE,
+	TANKDEATH,
+	TANKTAKEDAMAGE,
+	TANKRUSH,
+	TANKCOMBO,
 };
 
 enum class Event
@@ -52,6 +59,10 @@ enum class Event
 	STARTRELOAD,
 	ENDRELOAD,
 	CHARACTERREVIVE,
+
+	//Tank
+	TANKCOMBOATTACK,
+	TANKRUSHATTACK,
 };
 
 class LFiniteState

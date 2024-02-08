@@ -63,6 +63,13 @@ bool InGameScene::Init()
     LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx"));
     LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx"));
 
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Tank.bin", L"../../res/hlsl/CharacterShader.hlsl");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Combo.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Death.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Walk.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
+
     m_ZombieWave = std::make_shared<ZombieWave>();
     m_ZombieModelList.resize(m_WaveCount);
     for (int i = 0; i < m_WaveCount; i++)
@@ -116,8 +123,6 @@ bool InGameScene::Init()
         m_ZombieModelList[i]->SetAnimationArrayTexture();
         m_ZombieModelList[i]->SetAnimationArraySRV();
         m_ZombieModelList[i]->CreateCurrentFrameBuffer();
-
- 
     }
     m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
 
@@ -275,9 +280,9 @@ void InGameScene::Process()
         UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
         Init_2 = false;
     }
-    if (IsNextWave)
+    if (IsNextWave && IsReleaseTank)
     {
-        
+        IsReleaseTank = false;
         IsNextWave = false;
         NextWave();
     }
@@ -404,6 +409,56 @@ void InGameScene::Process()
         }
     }
 
+    for (int i = 0; i < m_TankList.size(); i++)
+    {
+        fHeight = m_CustomMap->GetHeight(m_TankList[i]->m_matControl._41, m_TankList[i]->m_matControl._43);
+        m_TankList[i]->m_matControl._42 = fHeight + 1.0f;
+        m_TankList[i]->Process();
+        m_TankList[i]->Frame();
+
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_TankList[i]->m_OBBBox)
+            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_TankList[i]->m_OBBBoxRightHand))
+        {
+            LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
+
+        // collision check
+        for (int j = i + 1; j < m_TankList.size(); j++)
+        {
+            if (m_TankList[i]->m_OBBBox.CollisionCheck(&m_TankList[j]->m_OBBBox))
+            {
+                float offsetX = m_TankList[i]->m_OBBBox.m_Box.vCenter.x - m_TankList[i]->m_OBBBox.m_Box.vCenter.x;
+                float offsetZ = m_TankList[i]->m_OBBBox.m_Box.vCenter.z - m_TankList[i]->m_OBBBox.m_Box.vCenter.z;
+
+                m_TankList[i]->m_matControl._41 += offsetX * 0.1;
+                m_TankList[i]->m_matControl._43 += offsetZ * 0.1;
+            }
+
+        }
+        // Player <-> zombie
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&m_TankList[i]->m_OBBBox))
+        {
+            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - m_TankList[i]->m_OBBBox.m_Box.vCenter.x;
+            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - m_TankList[i]->m_OBBBox.m_Box.vCenter.z;
+
+            LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
+            LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
+        }
+
+        // zombie <-> tree
+        TVector3 length = { m_Tree->m_matControl._41, m_Tree->m_matControl._42, m_Tree->m_matControl._43 };
+        length -= m_TankList[i]->m_OBBBox.m_Box.vCenter;
+        float distance = length.Length();
+        if (distance <= 27)
+        {
+            float offsetX = m_TankList[i]->m_OBBBox.m_Box.vCenter.x - m_Tree->m_matControl._41;
+            float offsetZ = m_TankList[i]->m_OBBBox.m_Box.vCenter.z - m_Tree->m_matControl._43;
+
+            m_TankList[i]->m_matControl._41 += offsetX * 0.1;
+            m_TankList[i]->m_matControl._43 += offsetZ * 0.1;
+        }
+    }
+
     // Player <-> Tree
     TVector3 length = { m_Tree->m_matControl._41, m_Tree->m_matControl._42, m_Tree->m_matControl._43 };
     length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
@@ -454,6 +509,20 @@ void InGameScene::Process()
             { m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, m_ZombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
             m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[0], m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[1], m_ZombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
     }
+
+    for (int i = 0; i < m_TankList.size(); i++)
+    {
+        m_TankList[i]->m_OBBBox.Frame();
+        m_TankList[i]->m_OBBBox.CreateOBBBox(m_TankList[i]->m_SettingBox.fExtent[0], m_TankList[i]->m_SettingBox.fExtent[1], m_TankList[i]->m_SettingBox.fExtent[2],
+            { m_TankList[i]->m_OBBBox.m_matWorld._41, m_TankList[i]->m_OBBBox.m_matWorld._42, m_TankList[i]->m_OBBBox.m_matWorld._43 },
+            m_TankList[i]->m_SettingBox.vAxis[0], m_TankList[i]->m_SettingBox.vAxis[1], m_TankList[i]->m_SettingBox.vAxis[2]);
+
+        m_TankList[i]->m_OBBBoxRightHand.Frame();
+        m_TankList[i]->m_OBBBoxRightHand.CreateOBBBox(m_TankList[i]->m_SettingBoxRightHand.fExtent[0], m_TankList[i]->m_SettingBoxRightHand.fExtent[1], m_TankList[i]->m_SettingBoxRightHand.fExtent[2],
+            { m_TankList[i]->m_OBBBoxRightHand.m_matWorld._41, m_TankList[i]->m_OBBBoxRightHand.m_matWorld._42, m_TankList[i]->m_OBBBoxRightHand.m_matWorld._43 },
+            m_TankList[i]->m_SettingBoxRightHand.vAxis[0], m_TankList[i]->m_SettingBoxRightHand.vAxis[1], m_TankList[i]->m_SettingBoxRightHand.vAxis[2]);
+    }
+
     UIManager::GetInstance().Frame();
 
     // Light Frame
@@ -537,6 +606,11 @@ void InGameScene::Render()
         zombie->AniRender();
     }
 
+    for (auto tank : m_TankList)
+    {
+        tank->Render();
+    }
+
     // map
     //m_MapModel->m_pModel->m_DrawList[0]->SetMatrix(&m_MapModel->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     //m_CBmatShadow.g_matShadow = m_MapModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
@@ -612,6 +686,44 @@ void InGameScene::Render()
         }
     }
 
+    for (int i = 0; i < m_TankList.size(); i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_TankList[i]->m_matControl._41, m_TankList[i]->m_matControl._42 + m_TankList[i]->m_SettingBox.vCenter.y, m_TankList[i]->m_matControl._43));
+        m_TankList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_TankList[i]->m_OBBBox.Render();
+        m_TankList[i]->Render();
+
+        TMatrix zombieRightHandSocket;
+        TMatrix matRightHand;
+        if (m_TankList[i]->m_pActionModel != nullptr)
+        {
+            if (m_TankList[i]->m_pActionModel->m_iEndFrame >= int(m_TankList[i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_TankList[i]->m_fCurrentAnimTime - m_TankList[i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_TankList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+            }
+        }
+
+        matRightHand = zombieRightHandSocket * m_TankList[i]->m_matControl;
+        m_TankList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_TankList[i]->m_OBBBoxRightHand.Render();
+
+        if (LInput::GetInstance().m_MouseState[0])
+        {
+            if (m_Select->ChkOBBToRay(&m_TankList[i]->m_OBBBox.m_Box))
+            {
+                if (LGlobal::g_PlayerModel->IsShoot)
+                {
+                    m_TankList[i]->IsTakeDamage = true;
+                }
+
+                //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+            }
+        }
+    }
+
     std::wstring textState = L"InGameScene";
     //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
@@ -664,7 +776,16 @@ void InGameScene::Render()
             obj->m_minimapMarker->SetMatrix(nullptr, &m_MinimapPosCamera->m_matView, &m_MinimapPosCamera->m_matOrthoProjection);
             obj->m_minimapMarker->Frame();
             obj->RenderMark();
-       }
+        }
+
+        for (auto obj : m_TankList)
+        {
+            obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
+            //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+            obj->m_minimapMarker->SetMatrix(nullptr, &m_MinimapPosCamera->m_matView, &m_MinimapPosCamera->m_matOrthoProjection);
+            obj->m_minimapMarker->Frame();
+            obj->RenderMark();
+        }
 
 
         //LGlobal::g_PlayerModel
@@ -707,20 +828,42 @@ void InGameScene::Release()
             IsNextWave = true;
         }
     }
+
+    for (auto iter = m_TankList.begin(); iter != m_TankList.end();)
+    {
+        if ((*iter)->IsDead)
+        {
+            iter = m_TankList.erase(iter);
+        }
+        else
+        {
+            iter++;
+        }
+    }
+
+    if (m_TankList.size() <= 0)
+    {
+        IsReleaseTank = true;
+    }
 }
 
 void InGameScene::NextWave()
 {
-    
+    m_CurrentWave++;
+
     if (m_CurrentWave > 3)
     {
         IsEndGame = true;
         return;
     }
-    int currentWave = m_ZombieWave->m_WaveCountList[m_CurrentWave];
-    m_ZombieModelList.resize(currentWave);
+
+    int currentWaveCount = m_ZombieWave->m_WaveCountList[m_CurrentWave];
+    m_ZombieModelList.resize(currentWaveCount);
+
+    int tankCount = m_ZombieWave->m_TankCountList[m_CurrentWave];
+    m_TankList.resize(tankCount);
     
-    for (int i = 0; i < currentWave; i++)
+    for (int i = 0; i < currentWaveCount; i++)
     {
         m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
         m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
@@ -732,7 +875,18 @@ void InGameScene::NextWave()
        
     }
 
-    for (int i = 0; i < currentWave; i++)
+    for (int i = 0; i < tankCount; i++)
+    {
+        m_TankList[i] = new Tank(LGlobal::g_PlayerModel);
+        m_TankList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Tank.fbx");
+        m_TankList[i]->CreateBoneBuffer();
+        m_TankList[i]->FSM(FSMType::TANK);
+
+        m_TankList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_TankList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+    }
+
+    for (int i = 0; i < currentWaveCount; i++)
     {
         m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
         m_ZombieModelList[i]->SetAnimationArrayTexture();
@@ -751,13 +905,22 @@ void InGameScene::NextWave()
     TMatrix RightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
     TMatrix RightHand = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
 
-    for (int i = 0; i < currentWave; i++)
+    TMatrix TankHead = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix TankRoot = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix TankRightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    TMatrix TankRightHand = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
+
+    for (int i = 0; i < currentWaveCount; i++)
     {
         m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
         m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
     }
 
-    m_CurrentWave++;
+    for (int i = 0; i < tankCount; i++)
+    {
+        m_TankList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+        m_TankList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+    }
 
     if (m_CurrentWave > 3) return;
      UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());

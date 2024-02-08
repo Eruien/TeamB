@@ -168,6 +168,13 @@
     <ClCompile Include="PlayerTakeDamage.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="TankCombo.cpp" />
+    <ClCompile Include="TankDeath.cpp" />
+    <ClCompile Include="TankRush.cpp" />
+    <ClCompile Include="TankTakeDamage.cpp" />
+    <ClCompile Include="TankTrace.cpp" />
+    <ClCompile Include="UIEvent.cpp" />
     <ClCompile Include="UI\Animation.cpp" />
     <ClCompile Include="UI\Animator.cpp" />
     <ClCompile Include="UI\BillBoard.cpp" />
@@ -220,6 +227,13 @@
     <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="Tank.h" />
+    <ClInclude Include="TankCombo.h" />
+    <ClInclude Include="TankDeath.h" />
+    <ClInclude Include="TankRush.h" />
+    <ClInclude Include="TankTakeDamage.h" />
+    <ClInclude Include="TankTrace.h" />
+    <ClInclude Include="UIEvent.h" />
     <ClInclude Include="UI\Animation.h" />
     <ClInclude Include="UI\Animator.h" />
     <ClInclude Include="UI\BillBoard.h" />
