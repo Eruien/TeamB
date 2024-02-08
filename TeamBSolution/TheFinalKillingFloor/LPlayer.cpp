@@ -227,6 +227,7 @@ bool LPlayer::Frame()
 			if (LGlobal::g_BulletCount <= 0)
 			{
 				IsReload = true;
+				LGlobal::g_BulletCount = 0;
 			}
 			
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);

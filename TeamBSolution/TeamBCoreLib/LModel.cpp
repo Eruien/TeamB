@@ -516,6 +516,7 @@ bool LSkinningModel::AniRender()
 
 		LGlobal::g_pImmediateContext->UpdateSubresource(m_pCurrentFrameCB.Get(), 0, NULL, &m_CurrentFrame, 0, 0);
 		LGlobal::g_pImmediateContext->VSSetConstantBuffers(2, 1, m_pCurrentFrameCB.GetAddressOf());
+		//LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, LGlobal::pBuffers);
 
 		obj->SetMatrix(&m_matControl,
 			&LGlobal::g_pMainCamera->m_matView,

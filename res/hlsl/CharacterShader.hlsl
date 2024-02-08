@@ -1,4 +1,5 @@
 #define MAX_BONE_MATRICES 255 
+#define g_iNumLight  1
 struct VS_INPUT
 {
     float3 p : POSITION;
@@ -16,6 +17,7 @@ struct VS_OUTPUT
     float3 n : NORMAL;
     float4 c : COLOR0;
     float2 t : TEXCOORD0;
+    float4 v : TEXCOORD3; // for light
 };
 // 상수버퍼(레지스터 단위로 저장되어야 한다.)
 // 레지스터 단위란, float4(x,y,z,w) 
@@ -42,6 +44,30 @@ cbuffer cbAnimMatrices : register (b1)
 //    mret = float4x4(row1, row2, row3, row4);
 //    return mret;
 //}
+// for light
+cbuffer cb3: register(b3)
+{
+    float4				g_cAmbientMaterial[g_iNumLight];
+    float4				g_cDiffuseMaterial[g_iNumLight];
+    float4				g_cSpecularMaterial[g_iNumLight];
+    float4				g_cEmissionMaterial[g_iNumLight];
+
+    float4				g_cAmbientLightColor[g_iNumLight];
+    float4				g_cDiffuseLightColor[g_iNumLight];
+    float4				g_cSpecularLightColor[g_iNumLight];
+};
+//--------------------------------------------------------------------------------------
+//Lighting Variables
+//--------------------------------------------------------------------------------------
+cbuffer cb4: register(b4)
+{
+    matrix				g_matWorldInverse[g_iNumLight];
+    float4				g_vLightDir[g_iNumLight];
+    float4				g_vLightPos[g_iNumLight];
+    float4				g_vEyeDir[g_iNumLight];
+    float4				g_vEyePos[g_iNumLight];
+};
+
 VS_OUTPUT VS(VS_INPUT vIn)
 {
     VS_OUTPUT vOut = (VS_OUTPUT)0;
@@ -64,7 +90,26 @@ VS_OUTPUT VS(VS_INPUT vIn)
     vOut.n = vNormal;
     vOut.t = vIn.t;
     vOut.c = vIn.c;
+    vOut.v = vWorld; // for light
     return vOut;
+}
+
+float4 ComputePointLight(float3 vVertexPos, float3 vVertexNormal, int nNumLights)
+{
+    float4 vPointLightColor = float4(0, 0, 0, 1);
+    for (int iLight = 0; iLight < nNumLights; iLight++)
+    {
+        float4 vLight;
+        vLight.xyz = normalize(vVertexPos - g_vLightPos[iLight].xyz);
+        vLight.w = distance(vVertexPos, g_vLightPos[iLight].xyz) / 4;
+
+        float fAttenuation = 1.0f / (1.0f + 0.005f * vLight.w * vLight.w); // 감소함수 추가
+        float fLuminance = smoothstep(vLight.w - 5, vLight.w, g_vLightPos[iLight].w);
+        float fIntensity = saturate(dot(vVertexNormal, -vLight.xyz));
+
+        vPointLightColor += float4(g_cDiffuseLightColor[iLight].rgb * fLuminance * fAttenuation, 1.0f); // 감소함수 적용
+    }
+    return vPointLightColor;
 }
 
 Texture2D g_txDiffuse1 : register(t0);
@@ -77,6 +122,14 @@ struct PS_IN
 float4 PS(VS_OUTPUT vIn) : SV_Target
 {
     //            r,g,b,a(1)=불투명, a(0)=완전투명, a(0.0< 1.0f)= 반투명
-    return g_txDiffuse1.Sample(sample0, vIn.t) *vIn.c;
+    float4 vTexColor = g_txDiffuse1.Sample(sample0, vIn.t);
+    float4 vPointLightColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
+    return vTexColor * (vPointLightColor + 0.1f);
     //return vIn.c;
+}
+
+float4 PS_Color(VS_OUTPUT vIn) : SV_Target
+{
+    float4 vFinalColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
+    return vFinalColor;
 }

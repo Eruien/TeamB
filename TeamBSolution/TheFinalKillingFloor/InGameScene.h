@@ -57,6 +57,7 @@ public: // light
 	LIGHT_CONSTANT_BUFFER2	m_cbLight2;
 	ComPtr<ID3D11Buffer>	m_pConstantBufferLight[2];
 	Light					m_PointLight[1];
+	
 public:
 	// Shadow
 	LDxRT m_RT;

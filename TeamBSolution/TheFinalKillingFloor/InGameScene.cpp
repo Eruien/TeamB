@@ -143,7 +143,7 @@ bool InGameScene::Init()
     //m_CustomMap->Load(CMapDesc);
 
     //tree
-    treeObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/tree/Tree.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    treeObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/tree/Tree.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
     m_Tree = std::make_shared<LModel>();
     m_Tree->SetLFbxObj(treeObj);
     m_Tree->CreateBoneBuffer();
@@ -157,7 +157,7 @@ bool InGameScene::Init()
     
     //bullet
     bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
-    m_BulletList.resize(30);
+    m_BulletList.resize(31);
     m_VisibleBulletList.resize(m_BulletList.size());
     for (int i = 0; i < m_BulletList.size(); ++i)
     {
@@ -408,7 +408,7 @@ void InGameScene::Process()
     TVector3 length = { m_Tree->m_matControl._41, m_Tree->m_matControl._42, m_Tree->m_matControl._43 };
     length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
     float distance = length.Length();
-    if (distance <= 27)
+    if (distance <= 30)
     {
         float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - m_Tree->m_matControl._41;
         float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - m_Tree->m_matControl._43;
@@ -466,6 +466,9 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
+    
+    if (!m_VisibleBulletList[LGlobal::g_BulletCount])
+        m_PointLight[0].m_vPosition.y = -1000.f;
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SkyBox->Render();
@@ -502,10 +505,11 @@ void InGameScene::Render()
         m_PointLight[0].m_vDirection.z, 1.0f);
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[0].Get(), 0, NULL, &m_cbLight1, 0, 0);
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[1].Get(), 0, NULL, &m_cbLight2, 0, 0);
+    
     ID3D11Buffer* pBuffers[2];
     pBuffers[0] = m_pConstantBufferLight[0].Get();
     pBuffers[1] = m_pConstantBufferLight[1].Get();
-    LGlobal::g_pImmediateContext->PSSetConstantBuffers(2, 2, pBuffers);
+    LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
 
     //
     TVector4 vClearColor(0.0f, 0.0f, 0.0f, 1.0f);

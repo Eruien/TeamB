@@ -24,7 +24,7 @@ cbuffer cb1 : register (b1)
     matrix g_matShadow1; // 첫 번째 그림자 맵의 변환 행렬
     matrix g_matShadow2; // 두 번째 그림자 맵의 변환 행렬
 };
-cbuffer cb2: register(b2)
+cbuffer cb3: register(b3)
 {
     float4				g_cAmbientMaterial[g_iNumLight];
     float4				g_cDiffuseMaterial[g_iNumLight];
@@ -38,7 +38,7 @@ cbuffer cb2: register(b2)
 //--------------------------------------------------------------------------------------
 //Lighting Variables
 //--------------------------------------------------------------------------------------
-cbuffer cb3: register(b3)
+cbuffer cb4: register(b4)
 {
     matrix				g_matWorldInverse[g_iNumLight];
     float4				g_vLightDir[g_iNumLight];
@@ -88,11 +88,13 @@ float4 ComputePointLight(float3 vVertexPos, float3 vVertexNormal, int nNumLights
     {
         float4 vLight;
         vLight.xyz = normalize(vVertexPos - g_vLightPos[iLight].xyz);
-        vLight.w = distance(vVertexPos, g_vLightPos[iLight].xyz);
+        vLight.w = distance(vVertexPos, g_vLightPos[iLight].xyz) / 4;
 
+        float fAttenuation = 1.0f / (1.0f + 0.005f * vLight.w * vLight.w); // 감소함수 추가
         float fLuminance = smoothstep(vLight.w - 5, vLight.w, g_vLightPos[iLight].w);
         float fIntensity = saturate(dot(vVertexNormal, -vLight.xyz));
-        vPointLightColor += float4(g_cDiffuseLightColor[iLight].rgb * fLuminance, 1.0f);
+
+        vPointLightColor += float4(g_cDiffuseLightColor[iLight].rgb * fLuminance * fAttenuation, 1.0f); // 감소함수 적용
     }
     return vPointLightColor;
 }
@@ -107,7 +109,7 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     // light
     float4 vPointLightColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
     // 기본 텍스처의 색상을 샘플링
-    float4 FinalColor = vTexColor * (vPointLightColor + 0.2f);
+    float4 FinalColor = vTexColor * (vPointLightColor + 0.1f);
 
     
 
