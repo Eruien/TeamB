@@ -227,8 +227,6 @@ bool LPlayer::Frame()
 				LGlobal::g_EffectSound1->PlayEffect();
 			}
 
-			m_StartShoot = 0.0f;
-			IsShoot = true;
 			LGlobal::g_BulletCount -= 1;
 
 			if (LGlobal::g_BulletCount <= 0)
@@ -237,6 +235,9 @@ bool LPlayer::Frame()
 				LGlobal::g_BulletCount = 0;
 			}
 
+			m_StartShoot = 0.0f;
+			IsShoot = true;
+			
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
 		}
 

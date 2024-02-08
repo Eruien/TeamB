@@ -10,7 +10,7 @@ bool PlayerReload::Init()
 
 void PlayerReload::Process()
 {
-    m_pOwner->IsMove = false;
+    m_pOwner->IsMove = true;
     m_pOwner->IsEndReload = false;
 
     if (m_pOwner->IsDeath)

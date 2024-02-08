@@ -12,6 +12,14 @@ void TankTakeDamage::Process()
 {
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Tank_TakeDamage.fbx");
 
+   /* if (!m_Timer && LGlobal::g_BulletCount > 0)
+    {
+        m_pOwner->m_HP -= 5.0f;
+        m_pOwner->IsTakeDamage = false;
+        m_pOwner->m_TimerStart = true;
+        m_Timer = true;
+    }*/
+
     if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
         m_pOwner->m_HP -= 5.0f;
@@ -28,6 +36,7 @@ void TankTakeDamage::Process()
     if (m_pOwner->m_TimerEnd)
     {
         m_Timer = false;
+        m_pOwner->IsTakeDamage = false;
         m_pOwner->SetTransition(Event::RECOVERYDAMAGE);
         return;
     }
