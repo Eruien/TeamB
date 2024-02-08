@@ -214,7 +214,7 @@ bool LPlayer::Frame()
 	IsShoot = false;
 	IsReload = false;
 
-	if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH)
+	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH) && IsEndReload)
 	{
 		m_Speed = 0.0f;
 		IsMove = false;
@@ -283,6 +283,8 @@ bool LPlayer::Frame()
 		IsRun = false;
 		IsWalk = false;
 	}
+
+	IsEndReload = true;
 
 	std::wstring wSpeed = L"Speed: ";
 	wSpeed += std::to_wstring(int(m_Speed));

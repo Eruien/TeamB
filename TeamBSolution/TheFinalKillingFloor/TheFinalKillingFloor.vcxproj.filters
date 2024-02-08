@@ -1,40 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="EndScene.cpp" />
-    <ClCompile Include="LAnimationIO.cpp" />
-    <ClCompile Include="LCharacterIO.cpp" />
-    <ClCompile Include="LExportIO.cpp" />
-    <ClCompile Include="LGun.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="UIEvent.cpp" />
-    <ClCompile Include="UI\Animation.cpp" />
-    <ClCompile Include="UI\Animator.cpp" />
-    <ClCompile Include="UI\BillBoard.cpp" />
-    <ClCompile Include="UI\ButtonAction.cpp" />
-    <ClCompile Include="UI\ChangeTexture.cpp" />
-    <ClCompile Include="UI\DigitDisplay.cpp" />
-    <ClCompile Include="UI\DragUI.cpp" />
-    <ClCompile Include="UI\ExitWindow.cpp" />
-    <ClCompile Include="UI\HpBar.cpp" />
-    <ClCompile Include="UI\ImguiDetail.cpp" />
-    <ClCompile Include="UI\ImGuiManager.cpp" />
-    <ClCompile Include="UI\imgui_menuBar.cpp" />
-    <ClCompile Include="UI\Imgui_ObjectDetail.cpp" />
-    <ClCompile Include="UI\KObject.cpp" />
-    <ClCompile Include="UI\ModalWindow.cpp" />
-    <ClCompile Include="UI\MonoBehaviour.cpp" />
-    <ClCompile Include="UI\NumberObject.cpp" />
-    <ClCompile Include="UI\PickingUI.cpp" />
-    <ClCompile Include="UI\Resize2D.cpp" />
-    <ClCompile Include="UI\ResourceBase.cpp" />
-    <ClCompile Include="UI\SceneChange.cpp" />
-    <ClCompile Include="UI\Text.cpp" />
-    <ClCompile Include="UI\TextureList.cpp" />
-    <ClCompile Include="UI\UIManager.cpp" />
-    <ClCompile Include="ZombieWave.cpp" />
     <ClCompile Include="PlayerWalk.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -104,42 +72,106 @@
     <ClCompile Include="InGameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="ZombieWave.cpp">
+      <Filter>Wave</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Animation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Animator.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\BillBoard.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ChangeTexture.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ButtonAction.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DigitDisplay.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DragUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ExitWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="EndScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\imgui_menuBar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\HpBar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\KObject.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ImGuiManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ImguiDetail.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Imgui_ObjectDetail.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="LAnimationIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="LCharacterIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="LExportIO.cpp">
+      <Filter>FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="LSelect.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="LGun.cpp">
+      <Filter>Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ModalWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\MonoBehaviour.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\NumberObject.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PickingUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Resize2D.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ResourceBase.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\SceneChange.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Text.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TextureList.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEvent.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EndScene.h" />
-    <ClInclude Include="LAnimationIO.h" />
-    <ClInclude Include="LCharacterIO.h" />
-    <ClInclude Include="LExportIO.h" />
-    <ClInclude Include="LGun.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="LSelect.h" />
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="UIEvent.h" />
-    <ClInclude Include="UI\Animation.h" />
-    <ClInclude Include="UI\Animator.h" />
-    <ClInclude Include="UI\BillBoard.h" />
-    <ClInclude Include="UI\ButtonAction.h" />
-    <ClInclude Include="UI\ChangeTexture.h" />
-    <ClInclude Include="UI\DigitDisplay.h" />
-    <ClInclude Include="UI\DragUI.h" />
-    <ClInclude Include="UI\ExitWindow.h" />
-    <ClInclude Include="UI\HpBar.h" />
-    <ClInclude Include="UI\ImguiDetail.h" />
-    <ClInclude Include="UI\ImGuiManager.h" />
-    <ClInclude Include="UI\imgui_menuBar.h" />
-    <ClInclude Include="UI\Imgui_ObjectDetail.h" />
-    <ClInclude Include="UI\KObject.h" />
-    <ClInclude Include="UI\ModalWindow.h" />
-    <ClInclude Include="UI\MonoBehaviour.h" />
-    <ClInclude Include="UI\NumberObject.h" />
-    <ClInclude Include="UI\PickingUI.h" />
-    <ClInclude Include="UI\Resize2D.h" />
-    <ClInclude Include="UI\ResourceBase.h" />
-    <ClInclude Include="UI\SceneChange.h" />
-    <ClInclude Include="UI\Text.h" />
-    <ClInclude Include="UI\TextureList.h" />
-    <ClInclude Include="UI\UIManager.h" />
-    <ClInclude Include="ZombieWave.h" />
     <ClInclude Include="PlayerWalk.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -209,19 +241,133 @@
     <ClInclude Include="InGameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="ZombieWave.h">
+      <Filter>Wave</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Animation.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Animator.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BillBoard.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ButtonAction.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ChangeTexture.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DigitDisplay.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DragUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ExitWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EndScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\HpBar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\KObject.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ImGuiManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ImguiDetail.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Imgui_ObjectDetail.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\imgui_menuBar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LAnimationIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="LCharacterIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="LExportIO.h">
+      <Filter>FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="LSelect.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LGun.h">
+      <Filter>Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ModalWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MonoBehaviour.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\NumberObject.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PickingUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Resize2D.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ResourceBase.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\SceneChange.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Text.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\TextureList.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEvent.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="UI\Anim.xml" />
-    <Xml Include="UI\Anim2.xml" />
-    <Xml Include="UI\testNum.xml" />
-    <Xml Include="UI\testScene - 복사본.xml" />
-    <Xml Include="UI\testScene.xml" />
+    <Xml Include="UI\Anim.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\Anim2.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\testNum.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\testScene - 복사본.xml">
+      <Filter>UI</Filter>
+    </Xml>
+    <Xml Include="UI\testScene.xml">
+      <Filter>UI</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\imgui.ini" />
-    <None Include="UI\UI.vcxproj" />
-    <None Include="UI\UI.vcxproj.filters" />
-    <None Include="UI\UI.vcxproj.user" />
+    <None Include="UI\imgui.ini">
+      <Filter>UI</Filter>
+    </None>
+    <None Include="UI\UI.vcxproj">
+      <Filter>UI</Filter>
+    </None>
+    <None Include="UI\UI.vcxproj.filters">
+      <Filter>UI</Filter>
+    </None>
+    <None Include="UI\UI.vcxproj.user">
+      <Filter>UI</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Player">
@@ -235,6 +381,21 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{5349bb9f-1a7b-4102-84f6-accc29d17f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wave">
+      <UniqueIdentifier>{fcc005a0-c7c9-4c9f-bd8b-6024992eab36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{405aad5b-519c-4b98-9241-8ebacb989b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileIO">
+      <UniqueIdentifier>{4ffea22c-64dc-4f45-952b-7faddf541291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{5279b6cc-94de-4b53-8405-98bdd7f3daf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gun">
+      <UniqueIdentifier>{2319978f-3288-41a6-99db-653efd6779fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

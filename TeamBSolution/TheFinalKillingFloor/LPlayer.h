@@ -31,6 +31,7 @@ public:
 	bool IsMove = true;
 	bool IsMovable = true;
 	bool IsReload = false;
+	bool IsEndReload = true;
 	bool IsShoot = false;
 	bool IsMoveOneDir = false;
 	bool IsTakeDamage = false;
