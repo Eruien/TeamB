@@ -48,5 +48,5 @@ struct PS_IN
 };
 float4 PS(VS_OUTPUT vIn) : SV_Target
 {
-    return float4(0.9f, 0.9f, 0.3f, 1.0f); // ÃÑ¾Ë Èò»öÀ¸·Î
+    return float4(0.9f, 0.9f, 0.9f, 1.0f); // ÃÑ¾Ë Èò»öÀ¸·Î
 }
