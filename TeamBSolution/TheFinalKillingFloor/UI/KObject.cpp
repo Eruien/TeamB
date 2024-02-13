@@ -40,6 +40,8 @@ bool KObject::Frame()
 bool KObject::Render()
 {
 	
+	if (_isRender)
+	{
 		for (shared_ptr<MonoBehaviour>& script : _scripts)
 		{
 
@@ -48,7 +50,7 @@ bool KObject::Render()
 		PreRender();
 
 		PostRender();
-	
+	}
 	return false;
 }
 

@@ -257,7 +257,7 @@ bool InGameScene::Init()
     m_muzzleFlash = make_shared<KObject>();
     m_muzzleFlash->Init();
     m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
-    m_muzzleFlash->SetScale({ 20,20,1.f });
+    m_muzzleFlash->SetScale({ 10,10,1.f });
     m_muzzleFlash->SetPos({0,30,0});
    // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
   
@@ -285,7 +285,7 @@ void InGameScene::Process()
     TVector3 foward;
     foward = LGlobal::g_PlayerModel->m_matControl.Forward();
     TVector3 vTrans = { m_GunModel->m_matControl._41 ,m_GunModel->m_matControl._42 ,m_GunModel->m_matControl._43 };
-    vTrans = vTrans + (foward*150);
+    vTrans = vTrans + (foward*180);
     D3DXMatrixTranslation(&matTrans, vTrans.x,
         vTrans.y,
         vTrans.z
@@ -656,9 +656,27 @@ void InGameScene::Render()
     //ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
     //LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
     //m_MapModel->m_pModel->m_DrawList[0]->PostRender();
+  
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
+    static float sTime;
+    sTime += LGlobal::g_fSPF;
 
+    if (LGlobal::g_PlayerModel->IsAttack && !LGlobal::g_PlayerModel->IsReload)
+    {
+        if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
+        {
+            m_muzzleFlash->SetIsRender(true);
+
+            sTime = 0;
+        }
+        else if(sTime +0.05f>= LGlobal::g_PlayerModel->m_ShotDelay)
+        {
+            m_muzzleFlash->SetIsRender(false);
+        }
+        m_muzzleFlash->Render();
+    }
+    
     m_Tree->Render();
 
     for (int i = 0; i < m_BulletList.size(); i++)
@@ -677,7 +695,7 @@ void InGameScene::Render()
     m_pQuad.PostRender();*/
 
     // Collision
-
+    
     TMatrix playerTranslation;
     playerTranslation.Translation(TVector3(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42 + LGlobal::g_PlayerModel->m_SettingBox.vCenter.y, LGlobal::g_PlayerModel->m_matControl._43));
     LGlobal::g_PlayerModel->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
@@ -743,7 +761,7 @@ void InGameScene::Render()
         matRightHand = zombieRightHandSocket * m_TankList[i]->m_matControl;
         m_TankList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         m_TankList[i]->m_OBBBoxRightHand.Render();
-
+     
         if (LInput::GetInstance().m_MouseState[0])
         {
             if (m_Select->ChkOBBToRay(&m_TankList[i]->m_OBBBox.m_Box))
@@ -758,7 +776,7 @@ void InGameScene::Render()
             }
         }
     }
-
+   
     std::wstring textState = L"InGameScene";
     //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
@@ -777,6 +795,7 @@ void InGameScene::Render()
     }
     //UI
     UIManager::GetInstance().Render();
+ 
     m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
 
 
@@ -964,6 +983,7 @@ void InGameScene::NextWave()
 
 void InGameScene::RenderObject()
 {
+    
     LGlobal::g_PlayerModel->m_pModel->m_DrawList[0]->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CBmatShadow.g_matShadow = LGlobal::g_PlayerModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
     D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
@@ -973,7 +993,7 @@ void InGameScene::RenderObject()
     ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
     LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
     LGlobal::g_PlayerModel->Render();
-    m_muzzleFlash->Render();
+  
 }
 
 void InGameScene::RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
