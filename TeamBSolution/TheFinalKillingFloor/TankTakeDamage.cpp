@@ -22,7 +22,7 @@ void TankTakeDamage::Process()
 
     if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
-        m_pOwner->m_HP -= 5.0f;
+        m_pOwner->m_HP -= 3.0f;
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;
     }
