@@ -55,7 +55,7 @@ bool LEffect::Init()
 
 	//1¿Œµ¶Ω∫ √—±∏»≠ø∞2
 
-	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
+	
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 1;
 	Spliteinfo.iNumColumn = 4;
@@ -75,7 +75,7 @@ bool LEffect::Init()
 	Spliteinfo.Reset();
 
 	//2¿Œµ¶Ω∫ √—±∏»≠ø∞3
-	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
+	
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 4;
 	Spliteinfo.iNumColumn = 1;
@@ -120,7 +120,7 @@ bool LEffect::Init()
 
 
 	//¿Œµ¶Ω∫4 ∏Ì¡ﬂΩ√ ««∆¢±Ë
-	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
+	
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 4;
 	Spliteinfo.iNumColumn = 4;

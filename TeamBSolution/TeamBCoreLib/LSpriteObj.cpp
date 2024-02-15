@@ -129,7 +129,6 @@ void LSpriteUV::SetUVFrame(int iNumRow, int iNumColumn)
 bool LSpriteUV::Init()
 {
 	LPlaneObj::Init();//업데이트 메트릭스
-	LSpriteObj::Init();//없음
 
 	return true;
 }
