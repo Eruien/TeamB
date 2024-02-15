@@ -327,7 +327,7 @@ void InGameScene::Process()
     //tree
     m_Tree->Frame();
     int index = LGlobal::g_BulletCount % m_BulletList.size();
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && !LGlobal::g_PlayerModel->IsReload)
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
         if (m_VisibleBulletList[index] == false)
         {
@@ -662,7 +662,7 @@ void InGameScene::Render()
     static float sTime;
     sTime += LGlobal::g_fSPF;
 
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && !LGlobal::g_PlayerModel->IsReload)
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
         if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
         {
