@@ -28,8 +28,7 @@ bool LEffect::Init()
 
 	//m_pSpriteTexObj->Load(Spliteinfo);
 	//m_SpriteList.insert(std::make_pair(m_iSpriteIndex++, m_pSpriteTexObj.get()));
-	Spliteinfo.Reset
-	();
+	Spliteinfo.Reset();
 
 	//UVΩ∫«¡∂Û¿Ã∆Æ
 	// 
@@ -38,7 +37,7 @@ bool LEffect::Init()
 	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 1;
 	Spliteinfo.iNumColumn = 4;
-	Spliteinfo.fAnimTimer = 0.2f;
+	Spliteinfo.fAnimTimer = 5.0f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 20.0f,20.0f,1.0f };
 	Spliteinfo.texFile = L"../../res/effect/shotone1.png";
@@ -55,11 +54,9 @@ bool LEffect::Init()
 
 	//1¿Œµ¶Ω∫ √—±∏»≠ø∞2
 
-	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
-	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 1;
 	Spliteinfo.iNumColumn = 4;
-	Spliteinfo.fAnimTimer = 0.2f;
+	Spliteinfo.fAnimTimer = 5.0f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 20.0f,20.0f,1.0f };
 	Spliteinfo.texFile = L"../../res/effect/shottwo1.png";
@@ -75,11 +72,9 @@ bool LEffect::Init()
 	Spliteinfo.Reset();
 
 	//2¿Œµ¶Ω∫ √—±∏»≠ø∞3
-	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
-	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 4;
 	Spliteinfo.iNumColumn = 1;
-	Spliteinfo.fAnimTimer = 0.2f;
+	Spliteinfo.fAnimTimer = 5.0f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 20.0f,20.0f,1.0f };
 	Spliteinfo.texFile = L"../../res/effect/shotthree1.png";
@@ -98,7 +93,6 @@ bool LEffect::Init()
 	//Ω∫≈©∏∞ ≈ÿΩ∫√ƒ¿Ã∆Â∆Æ
 	//¿Œµ¶Ω∫3 ±Ÿ¡¢««∞› πﬂ≈È¿⁄±π
 	m_pScreenTexObj = std::make_unique<LSpriteTexture>();
-	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	//Spliteinfo.s = { (float) LGlobal::g_WindowWidth,(float) LGlobal::g_WindowHeight,1.0f };
 	Spliteinfo.s = { 400.0f,300.0f,1.0f };
@@ -120,11 +114,11 @@ bool LEffect::Init()
 
 
 	//¿Œµ¶Ω∫4 ∏Ì¡ﬂΩ√ ««∆¢±Ë
-	m_pSpriteUVObj = std::make_unique<LSpriteUV>();
-	ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
+	//m_pSpriteUVObj = std::make_unique<LSpriteUV>();
+	//ZeroMemory(&Spliteinfo, sizeof(Spliteinfo));
 	Spliteinfo.iNumRow = 4;
 	Spliteinfo.iNumColumn = 4;
-	Spliteinfo.fAnimTimer = 0.2f;
+	Spliteinfo.fAnimTimer = 5.0f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
 	Spliteinfo.s = { 10.0f,10.0f,1.0f };
 	Spliteinfo.texFile = L"../../res/effect/bloodefect.png";
@@ -319,7 +313,8 @@ bool LEffect::Render()
 
 		pBaseObj->Render();
 #ifdef _DEBUG
-		std::wstring text;
+		std::wstring text = L"DeburgCamera Pos (";
+		
 		for (int i = 0; i < m_iParticleIndex; i++)
 		{
 			text += L"\n"; text += L")\n"; text += L")\n";
