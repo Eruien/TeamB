@@ -28,8 +28,7 @@ bool LEffect::Init()
 
 	//m_pSpriteTexObj->Load(Spliteinfo);
 	//m_SpriteList.insert(std::make_pair(m_iSpriteIndex++, m_pSpriteTexObj.get()));
-	Spliteinfo.Reset
-	();
+	Spliteinfo.Reset();
 
 	//UV스프라이트
 	// 
@@ -40,7 +39,7 @@ bool LEffect::Init()
 	Spliteinfo.iNumColumn = 4;
 	Spliteinfo.fAnimTimer = 0.2f;
 	Spliteinfo.p = { 0.0f,0.0f,0.0f };
-	Spliteinfo.s = { 20.0f,20.0f,1.0f };
+	Spliteinfo.s = { 5.0f,5.0f,1.0f };
 	Spliteinfo.texFile = L"../../res/effect/shotone1.png";
 	Spliteinfo.shaderFile = L"../../res/hlsl/CustomizeMap.hlsl";
 	
