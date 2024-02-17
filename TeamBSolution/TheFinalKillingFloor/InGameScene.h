@@ -94,6 +94,26 @@ public:
 	void RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
 		TMatrix* matView, TMatrix* matProj);
 	void CreateShadowConstantBuffer();
+
+public: // Map
+	void LoadMapAndSky();
+	void LoadTreeAndBullet();
+	void LoadLightAndShadow();
+	void SetCameras();
+	void LoadPlayer();
+	void LoadZombie();
+
+	void FrameMap();
+	void FramePlayerAndZombie();
+	void CalcPhysics();
+	void FrameBullet();
+	void FrameMuzzleFlash();
+	void FrameCamera();
+
+	void CreateOBBBox();
+	void LoadMinimap();
+	void LoadMuzzleFlash();
+
 public:
 	InGameScene(LScene* parent);
 	virtual ~InGameScene();
