@@ -1,6 +1,5 @@
 #pragma once
 #include "LStd.h"
-#include "LGlobal.h"
 
 class LTexture
 {
@@ -22,15 +21,12 @@ public:
 public:
 	void Apply();
 	bool Load(std::wstring fileName);
-	
-
 public:
 	bool Release();
 public:
 	LTexture();
 	virtual ~LTexture();
 };
-
 
 class LShader
 {

@@ -26,7 +26,7 @@ TMatrix LCamera::CreateLookAt(TVector3 vPosition, TVector3 vTarget, TVector3 vUp
     return m_matView;
 }
 
-TMatrix LCamera::CreatePerspectiveFov(float fovy, float Aspect, float fNearPlane, float fFarPlane)//추가 fovy:시야각,Aspect = 1.00 (width/height)종횡비
+TMatrix LCamera::CreatePerspectiveFov(float fovy, float Aspect, float fNearPlane, float fFarPlane)
 {
     float    h, w, Q;
     h = 1 / tan(fovy * 0.5f);

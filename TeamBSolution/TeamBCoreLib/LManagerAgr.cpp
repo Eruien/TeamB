@@ -1,11 +1,11 @@
 #include "LManagerAgr.h"
+#include "LGlobal.h"
 
 //Texture
 void LTexture::Apply()
 {
 	LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, &m_pTexSRV);
 }
-
 
 bool LTexture::Load(std::wstring fileName)
 {
@@ -296,6 +296,7 @@ bool LShader::LoadPixelShader(std::wstring fileName, const char* funcName)
 
 	return true;
 }
+
 bool LShader::Release()
 {
 	if (m_pVSBlob) m_pVSBlob->Release();

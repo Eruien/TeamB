@@ -283,16 +283,12 @@ bool LInput::Frame()
 
 bool LInput::Render()
 {
-
 #ifdef _DEBUG
- 
-    std::wstring mousePos = std::to_wstring(m_MousePos.x);
+    /*std::wstring mousePos = std::to_wstring(m_MousePos.x);
     mousePos += L",";
     mousePos += std::to_wstring(m_MousePos.y);
     mousePos += L"\n";
-    L_DebugString(mousePos.c_str());
-    LWrite::GetInstance().AddText(mousePos, 400.0f, 300.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
-
+    L_DebugString(mousePos.c_str());*/
 #endif
 	return true;
 }

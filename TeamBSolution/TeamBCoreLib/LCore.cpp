@@ -47,6 +47,31 @@ void LCore::CreateSamplerState()
     m_pDevice->CreateSamplerState(&descSampler, m_pSamplerState.GetAddressOf());
 }
 
+void LCore::CreateClampState()
+{
+    D3D11_SAMPLER_DESC descSampler;
+    descSampler.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+
+    descSampler.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    descSampler.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    descSampler.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+    descSampler.MipLODBias = 0;
+    descSampler.MaxAnisotropy = 16;
+
+    descSampler.ComparisonFunc = D3D11_COMPARISON_NEVER;
+
+    descSampler.BorderColor[0] = 1.0f;
+    descSampler.BorderColor[1] = 0.0f;
+    descSampler.BorderColor[2] = 0.0f;
+    descSampler.BorderColor[3] = 1.0f;
+
+    descSampler.MinLOD = 0;
+    descSampler.MaxLOD = D3D11_FLOAT32_MAX;
+
+    m_pDevice->CreateSamplerState(&descSampler, m_pClampState.GetAddressOf());
+}
+
 void LCore::CreateDepthStencilState()
 {
     HRESULT hr;
@@ -113,6 +138,7 @@ bool LCore::EngineInit()
 
     CreateBlendState();
     CreateSamplerState();
+    CreateClampState();
     CreateDepthStencilState();
     CreateRasterizerState();
 
@@ -126,16 +152,25 @@ bool LCore::EngineInit()
 
     LGlobal::g_pMainCamera = m_pDefaultCamera.get();
 
-    LEffect::GetInstance().Init();
+    m_pDefaultUICamera = std::make_shared<UICamera>();
+    m_pDefaultUICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
+    m_pDefaultUICamera->m_fCameraPitch = 0.0f;
+    m_pDefaultUICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, -1, 1);
+
+    LGlobal::g_pUICamera = m_pDefaultUICamera.get();
+
+
+    LGlobal::g_hInstance = m_hInstance;
 
     LInput::GetInstance().Init();
     LWrite::GetInstance().Init();
-    LWrite::GetInstance().Create(m_pSwapChain.Get(), m_hWnd);
+    LWrite::GetInstance().Create(m_pSwapChain.Get());
 
-	Init();
+    LGlobal::g_pDepthStencilState = m_pDepthStencilState;
+    LGlobal::g_pDepthStencilStateDisable = m_pDepthStencilStateDisable;
 
-
-	return true;
+    Init();
+    return true;
 }
 
 bool LCore::EngineFrame()
@@ -145,22 +180,21 @@ bool LCore::EngineFrame()
     LInput::GetInstance().Frame();
     LWrite::GetInstance().Frame();
     LGlobal::g_pMainCamera->Frame();
-    LEffect::GetInstance().Frame();
-
-
-
-	Frame();
-	return true;
+    LGlobal::g_pUICamera->Frame();
+    Frame();
+    return true;
 }
 
 bool LCore::EngineRender()
 {
+    m_pImmediateContext->OMSetBlendState(m_AlphaBlend.Get(), nullptr, 0xFFFFFFFF);
     LDevice::PreRender();
     m_pImmediateContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
+    m_pImmediateContext->PSSetSamplers(1, 1, m_pClampState.GetAddressOf());
     // 스탠실 스테이트 필요 1은 lessequal로 설정했기 때문에 1보다 같거나 작으면 그려지게 했다
     m_pImmediateContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 1);
 
-    if (LInput::GetInstance().m_dwKeyState[VK_F1] == DWORD(KeyState::KEY_PUSH))
+    if (g_InputData.bF1Key)
     {
         m_ISWireFrame = !m_ISWireFrame;
     }
@@ -175,22 +209,19 @@ bool LCore::EngineRender()
     {
         m_pImmediateContext->RSSetState(m_pRSSolid.Get());
     }
+
+    LWrite::GetInstance().PreRender();
+  
     Render();
-    LEffect::GetInstance().Render();
-
-    LWrite::GetInstance().PreRender();//임시
-
     LGlobal::g_pMainCamera->Render();
+    LGlobal::g_pUICamera->Render();
     m_Gametimer->Render();
+    LWrite::GetInstance().Render();
     LInput::GetInstance().Render();
-
-   LWrite::GetInstance().Render();
-
-   LWrite::GetInstance().PostRender();
-
+    LWrite::GetInstance().PostRender();
     LDevice::PostRender();
-
-	return true;
+    
+    return true;
 }
 
 bool LCore::EngineRelease()
@@ -203,7 +234,7 @@ bool LCore::EngineRelease()
     LInput::GetInstance().Release();
     LManager<LTexture>::GetInstance().Release();
     LManager<LShader>::GetInstance().Release();
-	return true;
+    return true;
 }
 
 bool LCore::Run()
@@ -228,6 +259,60 @@ bool LCore::Run()
 
     EngineRelease();
 
+    return true;
+}
+
+void LCore::ResizeDevice(UINT width, UINT height)
+{
+    HRESULT hr;
+    if (m_pDevice == nullptr) return;
+    DeleteDxResource();
+
+    m_pImmediateContext->OMSetRenderTargets(0, nullptr, nullptr);
+    m_pRenderTargetView.Reset();
+    m_pDepthStencilView.Reset();
+
+    hr = m_pSwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount,
+        width, height, m_SwapChainDesc.BufferDesc.Format, m_SwapChainDesc.Flags);
+
+    if (FAILED(hr))
+    {
+        MessageBoxA(NULL, "ResizeBuffer Error", "Error Box", MB_OK);
+        return;
+    }
+
+    m_pSwapChain->GetDesc(&m_SwapChainDesc);
+
+    SetRenderTargetView();
+    SetDepthTexture();
+    SetDepthStencilView();
+    SetViewPort();
+
+    GetClientRect(m_hWnd, &m_rcClient);
+    LGlobal::g_WindowWidth = m_WindowWidth = m_rcClient.right;
+    LGlobal::g_WindowHeight = m_WindowHeight = m_rcClient.bottom;
+
+    CreateDxResource();
+}
+
+bool LCore::DeleteDxResource()
+{
+    LWrite::GetInstance().DeleteDxResource();
+    return true;
+}
+
+bool LCore::CreateDxResource()
+{
+    if (m_pSwapChain)
+    {
+        IDXGISurface1* pBackBuffer;
+        HRESULT hr = m_pSwapChain->GetBuffer(0, __uuidof(IDXGISurface1), (LPVOID*)&pBackBuffer);
+
+        if (SUCCEEDED(hr))
+        {
+            LWrite::GetInstance().CreateDxResource(pBackBuffer);
+        }
+    }
     return true;
 }
 

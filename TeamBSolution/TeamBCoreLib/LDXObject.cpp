@@ -7,18 +7,15 @@ void LDXObject::Set()
 	m_pImmediateContext = LGlobal::g_pImmediateContext;
 }
 
-//비어있음
 bool LDXObject::CreateVertexData()
 {
 	return true;
 }
 
-//비어있음
 bool LDXObject::CreateIndexData()
 {
 	return true;
 }
-
 
 bool LDXObject::CreateVertexBuffer()
 {
@@ -45,7 +42,6 @@ bool LDXObject::CreateVertexBuffer()
 
 	return true;
 }
-
 
 bool LDXObject::CreateIndexBuffer()
 {
@@ -75,7 +71,6 @@ bool LDXObject::CreateIndexBuffer()
 
 	return true;
 }
-
 
 bool LDXObject::CreateConstantBuffer()
 {
@@ -107,43 +102,44 @@ bool LDXObject::CreateLayout()
 		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		//{ "POS",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		//{ "TEXTURE",  0, DXGI_FORMAT_R32G32_FLOAT, 0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-
 	};
 
+	HRESULT hr = m_pDevice->CreateInputLayout(
+		layout, sizeof(layout) / sizeof(layout[0]),
+		m_Shader->m_pVSBlob->GetBufferPointer(),
+		m_Shader->m_pVSBlob->GetBufferSize(),
+		m_pVertexLayout.GetAddressOf());
 
-	if (m_Shader)
+	if (FAILED(hr))
 	{
-		HRESULT hr = m_pDevice->CreateInputLayout(
-			layout, sizeof(layout) / sizeof(layout[0]),
-			m_Shader->m_pVSBlob->GetBufferPointer(),
-			m_Shader->m_pVSBlob->GetBufferSize(),
-			m_pVertexLayout.GetAddressOf());
-		
-
-		
-		if (FAILED(hr))
-		{
-			MessageBoxA(NULL, "Create Input Layout Error", "Error Box", MB_OK);
-			return false;
-		}
-	};
-
+		MessageBoxA(NULL, "Create Input Layout Error", "Error Box", MB_OK);
+		return false;
+	}
 
 	return true;
 }
 
+bool LDXObject::Create(std::wstring shaderFileName, std::wstring texFileName)
+{
+	CreateVertexData();
+	CreateIndexData();
+	CreateVertexBuffer();
+	CreateIndexBuffer();
+	CreateConstantBuffer();
+	// obj공용 // m_pVS, m_pPS 쉐이더 생성
+	m_Shader = LManager<LShader>::GetInstance().Load(shaderFileName);
+	CreateLayout();
+	// obj공용 // m_pTexSRV 생성
+	m_Tex = LManager<LTexture>::GetInstance().Load(texFileName);
 
+	return true;
+}
 
-//비어있음
 bool LDXObject::Init()
 {
 	return true;
 }
 
-//비어있음
 bool LDXObject::Frame()
 {
 	return true;
@@ -171,6 +167,7 @@ bool LDXObject::PreRender()
 	m_pImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+
 	return true;
 }
 
@@ -189,6 +186,7 @@ bool LDXObject::PostRender()
 	}
 	else
 	{
+		
 		m_pImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		m_pImmediateContext->DrawIndexed(m_IndexList.size(), 0, 0);
 	}
@@ -196,7 +194,6 @@ bool LDXObject::PostRender()
 	return true;
 }
 
-//비어있음
 bool LDXObject::Release()
 {
 	return true;

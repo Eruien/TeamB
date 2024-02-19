@@ -1,8 +1,6 @@
 #include "LTimer.h"
 #include "LGlobal.h"
 
-
-
 bool LTimer::Init()
 {
 	m_fGameTimer = 0.0f;
