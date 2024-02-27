@@ -31,6 +31,7 @@ public:
 	static LSound* g_IngameSound;
 	static LSound* g_EffectSound1;
 	static LSound* g_EffectSound2;
+	static LSound* g_SteamPackSound;
 };
 
 

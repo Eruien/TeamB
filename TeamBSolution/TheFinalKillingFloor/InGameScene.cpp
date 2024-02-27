@@ -12,6 +12,7 @@ bool InGameScene::Init()
     LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
     LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
+    LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
    
     
     m_DebugCamera = std::make_shared<LDebugCamera>();

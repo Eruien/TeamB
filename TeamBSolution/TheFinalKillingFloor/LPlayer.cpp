@@ -254,6 +254,24 @@ bool LPlayer::Frame()
 		IsReload = true;
 	}
 
+	if (LInput::GetInstance().m_KeyStateOld[DIK_F] == KEY_PUSH)
+	{
+		IsSteamPack = true;
+		m_HP -= 10;
+		LGlobal::g_SteamPackSound->Play(false);
+	}
+
+	if (IsSteamPack)
+	{
+		m_SteamPackStart += LGlobal::g_fSPF;
+	}
+
+	if (m_SteamPackEnd < m_SteamPackStart)
+	{
+		m_SteamPackStart = 0.0f;
+		IsSteamPack = false;
+	}
+
 	if (IsMove && IsMovable)
 	{
 		Move();

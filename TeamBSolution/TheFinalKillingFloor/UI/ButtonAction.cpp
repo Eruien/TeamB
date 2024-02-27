@@ -119,6 +119,7 @@ void ButtonAction::SoundToggle()
 	LGlobal::g_BackgroundSound->ToggleSound(_toggleSound);
 	LGlobal::g_EffectSound1->ToggleSound(_toggleSound);
 	LGlobal::g_EffectSound2->ToggleSound(_toggleSound);
+	LGlobal::g_SteamPackSound->ToggleSound(_toggleSound);
 	
 
 	
