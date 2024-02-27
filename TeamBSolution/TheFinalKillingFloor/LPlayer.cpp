@@ -89,7 +89,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = 50.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
@@ -101,7 +101,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = 50.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH
@@ -149,7 +149,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = 50.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
@@ -264,11 +264,15 @@ bool LPlayer::Frame()
 	if (IsSteamPack)
 	{
 		m_SteamPackStart += LGlobal::g_fSPF;
+		m_AnimationRate = 2.0f;
+		float excleSpeed = m_Speed * 2;
+		m_Speed = excleSpeed;
 	}
 
 	if (m_SteamPackEnd < m_SteamPackStart)
 	{
 		m_SteamPackStart = 0.0f;
+		m_AnimationRate = 1.0f;
 		IsSteamPack = false;
 	}
 
@@ -280,6 +284,10 @@ bool LPlayer::Frame()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
 	{
 		m_Speed = 200.0f;
+	}
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
+	{
+		m_Speed = 100.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
