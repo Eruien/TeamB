@@ -47,7 +47,7 @@ public:
     void RemoveObject(wstring name);
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
-        bool _debugMode = false;
+        bool _debugMode = true;
 
 private:
     vector<shared_ptr<KObject>> _objs;

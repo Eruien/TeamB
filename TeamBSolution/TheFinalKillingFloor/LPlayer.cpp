@@ -259,6 +259,7 @@ bool LPlayer::Frame()
 		IsSteamPack = true;
 		m_HP -= 10;
 		LGlobal::g_SteamPackSound->Play(false);
+		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 
 	if (IsSteamPack)
@@ -267,6 +268,8 @@ bool LPlayer::Frame()
 		m_AnimationRate = 2.0f;
 		float excleSpeed = m_Speed * 2;
 		m_Speed = excleSpeed;
+
+		
 	}
 
 	if (m_SteamPackEnd < m_SteamPackStart)

@@ -199,4 +199,35 @@
             </Script>
         </Scripts>
     </UIObject>
+    <UIObject Name="SteamPackDurationBar" isRender="true" Group="None">
+        <Position x="205" y="-294" z="0"/>
+        <Scale width="-12" height="80"/>
+        <Texture texPath="../../res/ui/SteamPackBar.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="UIEvent">
+                <args Function="SteamPack"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SteamPackBg" isRender="true" Group="None">
+        <Position x="190" y="-295" z="1"/>
+        <Scale width="166" height="90"/>
+        <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SteamPackUI" isRender="true" Group="None">
+        <Position x="162" y="-294" z="0"/>
+        <Scale width="-78" height="74"/>
+        <Texture texPath="../../res/ui/Hud_Syringe.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
 </UIScene>
