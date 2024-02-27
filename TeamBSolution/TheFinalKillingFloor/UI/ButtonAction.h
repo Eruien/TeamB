@@ -17,11 +17,13 @@ public:
 	void MainSceneOption();
 	void MainSceneOptionClose();
 	void RetryButton();
+	void SoundToggle();
 	std::unordered_map<wstring, void (ButtonAction::*)()> _functionMap;
 	wstring _function = L"None";
 private:
 	wstring _texXmlPath;
 	shared_ptr<TextureList> _texList;
+	bool _toggleSound = true;
 	
 	
 };

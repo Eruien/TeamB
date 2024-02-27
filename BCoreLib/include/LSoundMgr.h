@@ -11,6 +11,7 @@ class LSound
 public:
 	std::wstring m_csName = L"";
 	std::wstring m_csPath = L"";
+	float m_volume;
 public:
 	FMOD::System* m_pSystem = nullptr;
 	FMOD::Sound* m_pSound = nullptr;
@@ -26,6 +27,7 @@ public:
 	void Pause();
 	void VolumeUp();
 	void VolumeDown();
+	void ToggleSound(bool toggle);
 public:
 	bool Init();
 	bool Frame();

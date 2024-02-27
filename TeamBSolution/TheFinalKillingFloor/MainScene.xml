@@ -113,4 +113,28 @@
             </Script>
         </Scripts>
     </UIObject>
+    <UIObject Name="SoundToggleText" isRender="false" Group="MainOptionMenu">
+        <Position x="-74" y="65" z="0"/>
+        <Scale width="66" height="56"/>
+        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="Text">
+                <args Text="Sound On"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SoundToggleButton" isRender="false" Group="MainOptionMenu">
+        <Position x="-8" y="40" z="0"/>
+        <Scale width="230" height="62"/>
+        <Texture texPath="../../res/ui/button1.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="SoundToggle"/>
+            </Script>
+        </Scripts>
+    </UIObject>
 </UIScene>

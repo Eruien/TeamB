@@ -15,6 +15,8 @@ ButtonAction::ButtonAction(wstring texPaths, wstring bFuntion) : MonoBehaviour(L
 
 	_functionMap[L"MainSceneOption"] = &ButtonAction::MainSceneOption;
 	_functionMap[L"MainSceneOptionClose"] = &ButtonAction::MainSceneOptionClose;
+	_functionMap[L"RetryButton"] = &ButtonAction::RetryButton;
+	_functionMap[L"SoundToggle"] = &ButtonAction::SoundToggle;
 }
 ButtonAction::~ButtonAction()
 {
@@ -101,5 +103,23 @@ void ButtonAction::RetryButton()
 {
 	
 	UIManager::GetInstance().Load(L"MainScene.xml");
+	
+}
+
+void ButtonAction::SoundToggle()
+{
+	if (_toggleSound == false)
+		UIManager::GetInstance().GetUIObject(L"SoundToggleText")->GetScript<Text>(L"Text")->SetText(L"Sound Off");
+	else
+	{
+		UIManager::GetInstance().GetUIObject(L"SoundToggleText")->GetScript<Text>(L"Text")->SetText(L"Sound On");
+	}
+	_toggleSound = !_toggleSound;
+	LGlobal::g_IngameSound->ToggleSound(_toggleSound);
+	LGlobal::g_BackgroundSound->ToggleSound(_toggleSound);
+	LGlobal::g_EffectSound1->ToggleSound(_toggleSound);
+	LGlobal::g_EffectSound2->ToggleSound(_toggleSound);
+	
+
 	
 }

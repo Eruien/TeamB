@@ -1,191 +1,139 @@
 <UIScene SceneName="TestScene">
-    <UIObject Name="wp_background" isRender="true" Group="None">
-        <Position x="461" y="-293" z="0"/>
-        <Scale width="292" height="86"/>
-        <Texture texPath="../../res/ui/ui_weapon_bg.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="weaponUI" isRender="true" Group="None">
-        <Position x="367" y="-288" z="0"/>
-        <Scale width="94" height="58"/>
-        <Texture texPath="../../res/ui/Hud_Ammo_Clip.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="face" isRender="true" Group="None">
-        <Position x="-556" y="-293" z="-0.5"/>
-        <Scale width="58" height="56"/>
-        <Texture texPath="../../res/ui/face.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="HPbar" isRender="true" Group="None">
-        <Position x="-336" y="-310" z="-0.5"/>
-        <Scale width="362" height="25"/>
-        <Texture texPath="../../res/ui/FrontHP.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="HpBar"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="T_Ammo" isRender="true" Group="None">
-        <Position x="432" y="-289" z="0"/>
-        <Scale width="50" height="45"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="DigitDisplay">
-                <args DigitNumber="2" TexListXml="../../res/ui/xml/testNum.xml"/>
-            </Script>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="Wave_bg" isRender="true" Group="None">
-        <Position x="534" y="259" z="0"/>
-        <Scale width="200" height="200"/>
-        <Texture texPath="../../res/ui/Hud_Bio_Clock_Circle.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="C_Ammo" isRender="true" Group="None">
-        <Position x="529" y="-290" z="0"/>
-        <Scale width="42" height="45"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="DigitDisplay">
-                <args DigitNumber="2" TexListXml="../../res/ui/xml/testNum.xml"/>
-            </Script>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="AmmoSlash" isRender="true" Group="AmmoSlash">
-        <Position x="493" y="-289" z="0"/>
-        <Scale width="16" height="40"/>
-        <Texture texPath="../../res/ui/slash.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="WaveSlash" isRender="true" Group="None">
-        <Position x="536" y="249" z="0"/>
-        <Scale width="40" height="50"/>
-        <Texture texPath="../../res/ui/slash.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="crr_Wave" isRender="true" Group="None">
-        <Position x="443" y="248" z="0"/>
-        <Scale width="40" height="50"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="DigitDisplay">
-                <args DigitNumber="1" TexListXml="../../res/ui/xml/testNum.xml"/>
-            </Script>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="total_Wave" isRender="true" Group="None">
-        <Position x="544" y="250" z="0"/>
-        <Scale width="40" height="50"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="DigitDisplay">
-                <args DigitNumber="1" TexListXml="../../res/ui/xml/testNum.xml"/>
-            </Script>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="text_Wave" isRender="true" Group="None">
-        <Position x="533" y="303" z="0"/>
-        <Scale width="114" height="44"/>
-        <Texture texPath="../../res/ui/Wave.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="EnemyCountBg" isRender="true" Group="None">
-        <Position x="-374" y="-297" z="0.5"/>
-        <Scale width="480" height="100"/>
-        <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="Crosshair" isRender="true" Group="None">
+    <UIObject Name="BackGround" isRender="true" Group="None">
         <Position x="0" y="0" z="0"/>
-        <Scale width="40" height="40"/>
-        <Texture texPath="../../res/ui/CrossHair.png"/>
+        <Scale width="1280" height="720"/>
+        <Texture texPath="../../res/ui/ZombieInvasionBg1.png"/>
         <Scripts>
-            <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="MinimapBg" isRender="true" Group="None">
-        <Position x="-502" y="218" z="0"/>
-        <Scale width="270" height="270"/>
-        <Texture texPath="../../res/ui/Hud_Box_128x64.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="BackHP" isRender="true" Group="None">
-        <Position x="-371" y="-297" z="0"/>
-        <Scale width="437" height="75"/>
-        <Texture texPath="../../res/ui/BackHP2.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="EnemyCountBg" isRender="true" Group="None">
-        <Position x="-35" y="280" z="0"/>
-        <Scale width="200" height="110"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Box_128x64.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="EnemyCount" isRender="true" Group="None">
-        <Position x="-57" y="263" z="0"/>
-        <Scale width="88" height="-54"/>
+    <UIObject Name="T_start" isRender="true" Group="None">
+        <Position x="-465" y="153" z="0"/>
+        <Scale width="154" height="94"/>
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
-            <Script Type="DigitDisplay">
-                <args DigitNumber="2" TexListXml="../../res/ui/xml/testNum.xml"/>
+            <Script Type="Text">
+                <args Text="Start"/>
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_EnemyCount" isRender="true" Group="None">
-        <Position x="-124" y="337" z="0"/>
-        <Scale width="86" height="68"/>
+    <UIObject Name="B_start" isRender="true" Group="None">
+        <Position x="-433" y="128" z="0"/>
+        <Scale width="200" height="100"/>
+        <Texture texPath="../../res/ui/button1.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
+            </Script>
+            <Script Type="SceneChange">
+                <args SceneChange="6"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="B_Option" isRender="true" Group="None">
+        <Position x="-433" y="-9" z="0"/>
+        <Scale width="200" height="100"/>
+        <Texture texPath="../../res/ui/button1.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="MainSceneOption"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="B_exit" isRender="true" Group="None">
+        <Position x="-433" y="-152" z="0"/>
+        <Scale width="188" height="100"/>
+        <Texture texPath="../../res/ui/button1.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ExitWindow"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_Exit" isRender="true" Group="None">
+        <Position x="-456" y="-132" z="0"/>
+        <Scale width="156" height="98"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="Text">
+                <args Text="Exit"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_Option" isRender="true" Group="None">
+        <Position x="-474" y="16" z="0"/>
+        <Scale width="200" height="192"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="Text">
+                <args Text="Option"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="Logo" isRender="true" Group="None">
+        <Position x="92" y="218" z="0"/>
+        <Scale width="744" height="200"/>
+        <Texture texPath="../../res/ui/logo.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="OptionFrame" isRender="true" Group="MainOptionMenu">
+        <Position x="-5" y="-71" z="0"/>
+        <Scale width="286" height="394"/>
+        <Texture texPath="../../res\ui\Hud_Box_128x64.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="OptionEscape" isRender="true" Group="MainOptionMenu">
+        <Position x="117" y="97" z="0"/>
+        <Scale width="30" height="30"/>
+        <Texture texPath="../../res/ui/x.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/Xbutton.xml" Function="MainSceneOptionClose"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SoundToggleText" isRender="true" Group="MainOptionMenu">
+        <Position x="-74" y="65" z="0"/>
+        <Scale width="66" height="56"/>
         <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="Text">
-                <args Text="Enemy Count"/>
+                <args Text="Sound On"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SoundToggleButton" isRender="true" Group="MainOptionMenu">
+        <Position x="-8" y="40" z="0"/>
+        <Scale width="230" height="62"/>
+        <Texture texPath="../../res/ui/button1.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="SoundToggle"/>
             </Script>
         </Scripts>
     </UIObject>

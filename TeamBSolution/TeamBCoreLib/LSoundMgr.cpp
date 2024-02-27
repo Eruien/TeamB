@@ -20,7 +20,7 @@ bool LSound::Load(std::wstring filePath)
 		MessageBoxA(NULL, "Sound Load Error", "Error Box", MB_OK);
 		return false;
 	}
-
+	
 	return true;
 }
 
@@ -83,6 +83,20 @@ void LSound::VolumeDown()
 	volume = fmax(volume, 0.0f);
 	m_pChannel->setVolume(volume);
 }
+
+void LSound::ToggleSound(bool toggle)
+{
+
+	if (toggle == true)
+	{
+		m_pChannel->setVolume(0);
+	}
+	else
+	{
+		m_pChannel->setVolume(1);
+	}
+}
+
 
 
 bool LSound::Init()
