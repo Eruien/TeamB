@@ -48,9 +48,12 @@ public:
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
+	vector<shared_ptr<LModel>> m_WallList;
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
 	LFbxObj* bulletObj;
+	LFbxObj* wallObj = nullptr;
+
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;
 	int m_CurrentWave = 1;

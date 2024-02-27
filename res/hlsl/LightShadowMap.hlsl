@@ -109,7 +109,7 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     // light
     float4 vPointLightColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
     // 기본 텍스처의 색상을 샘플링
-    float4 FinalColor = vTexColor * (vPointLightColor + 0.2f);
+    float4 FinalColor = vTexColor * (vPointLightColor + 0.3f);
 
     
 

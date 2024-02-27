@@ -12,7 +12,7 @@ bool InGameScene::Init()
     LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
     LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
-   
+
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -21,7 +21,7 @@ bool InGameScene::Init()
     m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
     m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     m_ModelCamera->m_fRadius = 100.0f;
-    
+
     m_BackViewCamera = std::make_shared<LBackView>();
     m_BackViewCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_BackViewCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -151,13 +151,66 @@ bool InGameScene::Init()
     m_Tree = std::make_shared<LModel>();
     m_Tree->SetLFbxObj(treeObj);
     m_Tree->CreateBoneBuffer();
-    DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix;
-    rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
-    scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
-    worldMatrix = DirectX::XMMatrixIdentity();
-    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-    m_Tree->m_matControl = worldMatrix;
+    {
+        DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix;
+        rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
+        scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
+        worldMatrix = DirectX::XMMatrixIdentity();
+        worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+        worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+        m_Tree->m_matControl = worldMatrix;
+    }
+
+    //wall
+    m_WallList.resize(40);
+    wallObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/wall/Concrete wall.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            m_WallList[i * 10 + j] = std::make_shared<LModel>();
+            m_WallList[i * 10 + j]->SetLFbxObj(wallObj);
+            m_WallList[i * 10 + j]->CreateBoneBuffer();
+
+            DirectX::XMMATRIX rotationMatrix, translationMatrix, worldMatrix;
+            float rotationAngle;
+
+            // 위치에 따라 회전 각도를 설정
+            if (i == 0) // 북쪽 벽
+            {
+                rotationAngle = 90.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(-1000.0f, 0.0f, -1000.0f + 200.0f * j);
+            }
+            else if (i == 1) // 동쪽 벽
+            {
+                rotationAngle = 180.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(-1000.0f + 200.0f * j, 0.0f, 1000.0f);
+            }
+            else if (i == 2) // 남쪽 벽
+            {
+                rotationAngle = 270.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(1000.0f, 0.0f, 1000.0f - 200.0f * j);
+            }
+            else // 서쪽 벽
+            {
+                rotationAngle = 0.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(1000.0f - 200.0f * j, 0.0f, -1000.0f);
+            }
+
+            worldMatrix = DirectX::XMMatrixIdentity();
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+
+            m_WallList[i * 10 + j]->m_matControl = worldMatrix;
+        }
+    }
+
+
+
     
     //bullet
     bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
@@ -169,6 +222,7 @@ bool InGameScene::Init()
         m_BulletList[i] = std::make_shared<LModel>();
         m_BulletList[i]->SetLFbxObj(bulletObj);
         m_BulletList[i]->CreateBoneBuffer();
+        DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix;
         scalingMatrix = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
         worldMatrix = DirectX::XMMatrixIdentity();
         worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
@@ -323,6 +377,12 @@ void InGameScene::Process()
     // 맵 오브젝트 예시
     //m_MapModel->Frame();
     m_CustomMap->Frame();
+
+    //wall
+    for (int i = 0; i < m_WallList.size(); i++)
+	{
+		m_WallList[i]->Frame();
+	}
     //tree
     m_Tree->Frame();
     int index = LGlobal::g_BulletCount % m_BulletList.size();
@@ -334,7 +394,7 @@ void InGameScene::Process()
             TMatrix scale = TMatrix::CreateScale(0.03);
             m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
             
-            m_BulletList[index]->m_matControl._42 += 27.f;
+            m_BulletList[index]->m_matControl._42 += 33.f;
         }
     }
     for (int i = 0; i < m_BulletList.size(); i++)
@@ -505,10 +565,10 @@ void InGameScene::Process()
         LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
     }
     // Player 맵 바깥 이동 제한
-    if (LGlobal::g_PlayerModel->m_matControl._41 > 900.f) LGlobal::g_PlayerModel->m_matControl._41 = 900.f;
-    if (LGlobal::g_PlayerModel->m_matControl._41 < -900.f) LGlobal::g_PlayerModel->m_matControl._41 = -900.f;
-    if (LGlobal::g_PlayerModel->m_matControl._43 > 900.f) LGlobal::g_PlayerModel->m_matControl._43 = 900.f;
-    if (LGlobal::g_PlayerModel->m_matControl._43 < -900.f) LGlobal::g_PlayerModel->m_matControl._43 = -900.f;
+    if (LGlobal::g_PlayerModel->m_matControl._41 > 970.f) LGlobal::g_PlayerModel->m_matControl._41 = 970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._41 < -970.f) LGlobal::g_PlayerModel->m_matControl._41 = -970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._43 > 970.f) LGlobal::g_PlayerModel->m_matControl._43 = 970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._43 < -970.f) LGlobal::g_PlayerModel->m_matControl._43 = -970.f;
 
     
     if (m_GunModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
@@ -661,6 +721,13 @@ void InGameScene::Render()
     static float sTime;
     sTime += LGlobal::g_fSPF;
 
+
+    for (auto wall : m_WallList)
+    {
+        wall->Render();
+    }
+
+
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
         if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
@@ -677,6 +744,7 @@ void InGameScene::Render()
     }
     
     m_Tree->Render();
+
 
     for (int i = 0; i < m_BulletList.size(); i++)
     {
