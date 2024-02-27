@@ -404,7 +404,7 @@ bool LSkinningModel::Frame()
 		m_TimerStart = false;
 	}
 
-	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * 1.0f;
+	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * m_AnimationRate;
 
 	if (m_fCurrentAnimTime >= m_pActionModel->m_iEndFrame)
 	{
@@ -438,7 +438,7 @@ bool LSkinningModel::AniFrame()
 		m_TimerStart = false;
 	}
 
-	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * 1.0f;
+	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * m_AnimationRate;
 
 	if (m_fCurrentAnimTime >= m_pActionModel->m_iEndFrame)
 	{

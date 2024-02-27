@@ -265,6 +265,7 @@ bool LSelect::ChkOBBToRay(T_BOX* pBox, L_RAY* pRay)
 	}
 
 	m_vIntersection = pRay->vOrigin + pRay->vDirection * t_min;
+	
 	return true;
 }
 

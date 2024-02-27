@@ -217,6 +217,7 @@ bool LInput::Frame()
     GetKey(DIK_3);
     GetKey(DIK_F2);
     GetKey(DIK_R);
+    GetKey(DIK_F);
     
     if (GetKey(DIK_F5) == KEY_HOLD)
         g_InputData.bChangeFillMode = true;

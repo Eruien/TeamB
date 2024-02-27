@@ -110,6 +110,16 @@ int LNPC::GetRandomNumber()
 }
 bool LNPC::Frame()
 {
+	if (LGlobal::g_PlayerModel->IsSteamPack)
+	{
+		m_AnimationRate = 0.5f;
+		m_Speed = 25.0f;
+	}
+	else
+	{
+		m_AnimationRate = 1.0f;
+		m_Speed = 50.0f;
+	}
 
 	m_ZombieSound->Play();
 	// ºôº¸µå

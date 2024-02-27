@@ -12,7 +12,13 @@ bool InGameScene::Init()
     LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
     LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
+<<<<<<< HEAD
 
+=======
+    LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
+   
+    
+>>>>>>> 38fc3f9578dd7bef4d0fc21319afda46d58f4db3
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
@@ -50,6 +56,23 @@ bool InGameScene::Init()
     m_SkyBox = std::make_shared<LSkyBox>();
     m_SkyBox->Set();
     m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
+
+
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            shared_ptr<KObject> blood = make_shared<KObject>();
+            blood->Init();
+            blood->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+            blood->SetPos({0, 10000, 0});
+            blood->SetScale({ 10,10, 1 });
+            blood->AddScripts(std::make_shared<Animator>(L"Anim.xml"));
+            blood->SetIsRender(false);
+            m_bloodSplatter.push_back(blood);
+           
+        }
+    }
+
 
 
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin", L"../../res/hlsl/CharacterShaderInAnimationData.hlsl");
@@ -327,7 +350,8 @@ bool InGameScene::Init()
 
 void InGameScene::Process()
 {
-    //포워드 구하는법좀..
+
+    //muzzle Frame
     TMatrix matRotation, matTrans, matScale, worldMat;
     matScale = TMatrix::Identity;
     D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
@@ -353,6 +377,44 @@ void InGameScene::Process()
    // m_muzzleFlash->SetPos({ m_GunModel->m_matControl._41,m_GunModel->m_matControl._42 ,m_GunModel->m_matControl._43 });
    // m_muzzleFlash->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_muzzleFlash->Frame();
+
+
+    //blood frame
+    for (auto obj : m_bloodSplatter)
+    {
+        if (obj->GetIsRender())
+        {
+            TMatrix matRotation, matTrans, matScale, worldMat;
+            matScale = TMatrix::Identity;
+            D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
+            matRotation._41 = 0.0f;
+            matRotation._42 = 0.0f;
+            matRotation._43 = 0.0f;
+            matRotation._44 = 1.0f;
+            TVector3 foward;
+            foward = LGlobal::g_PlayerModel->m_matControl.Forward();
+            TVector3 vTrans = obj->m_vPosition;
+            vTrans = vTrans + (foward * -180);
+            D3DXMatrixTranslation(&matTrans, vTrans.x,
+                vTrans.y,
+                vTrans.z
+            );
+
+            D3DXMatrixScaling(&matScale, m_muzzleFlash->m_vScale.x,
+                m_muzzleFlash->m_vScale.y,
+                m_muzzleFlash->m_vScale.z
+            );
+            worldMat = matScale * matRotation * matTrans;
+
+            obj->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+            obj->Frame();
+            if (obj->GetScript<Animator>(L"Animator")->_currentKeyframeIndex == 16)
+            {
+                obj->SetIsRender(false);
+            }
+        }
+    }
+  
 
 
     if (LGlobal::g_PlayerModel->IsDeath)
@@ -742,7 +804,11 @@ void InGameScene::Render()
         }
         m_muzzleFlash->Render();
     }
-    
+
+    for (auto obj : m_bloodSplatter)
+    {
+        obj->Render();
+    }
     m_Tree->Render();
 
 
@@ -798,6 +864,13 @@ void InGameScene::Render()
                 if (LGlobal::g_PlayerModel->IsShoot)
                 {
                     m_ZombieModelList[i]->IsTakeDamage = true;
+
+                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
+                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                    m_crrBlood++;
+                    if (m_crrBlood == m_bloodSplatter.size())
+                        m_crrBlood = 0;
                 }
 
                 //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
@@ -836,6 +909,15 @@ void InGameScene::Render()
                 if (LGlobal::g_PlayerModel->IsShoot)
                 {
                     m_TankList[i]->IsTakeDamage = true;
+
+                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
+                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                    m_crrBlood++;
+                    if (m_crrBlood == m_bloodSplatter.size())
+                        m_crrBlood = 0;
+                    
+
                 }
 
                 //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";

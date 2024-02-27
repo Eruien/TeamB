@@ -38,6 +38,8 @@ public:
 	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 	vector<shared_ptr<KObject>> _EnemyMarks;
 	shared_ptr<KObject> m_muzzleFlash = nullptr;
+	vector<shared_ptr<KObject>> m_bloodSplatter;
+	int m_crrBlood = 0;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LModel> m_GunModel = nullptr;
