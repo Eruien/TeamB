@@ -51,6 +51,9 @@ public:
 	std::shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	vector<shared_ptr<LModel>> m_WallList;
+	vector<shared_ptr<LModel>> m_TreeList;
+
+
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
 	LFbxObj* bulletObj;
