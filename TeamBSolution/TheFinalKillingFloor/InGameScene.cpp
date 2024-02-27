@@ -191,7 +191,7 @@ bool InGameScene::Init()
             m_WallList[i * 10 + j]->SetLFbxObj(wallObj);
             m_WallList[i * 10 + j]->CreateBoneBuffer();
 
-            DirectX::XMMATRIX rotationMatrix, translationMatrix, worldMatrix;
+            DirectX::XMMATRIX rotationMatrix, translationMatrix, worldMatrix, scalingMatrix;
             float rotationAngle;
 
             // 위치에 따라 회전 각도를 설정
@@ -220,7 +220,9 @@ bool InGameScene::Init()
                 translationMatrix = DirectX::XMMatrixTranslation(1000.0f - 200.0f * j, 0.0f, -1000.0f);
             }
 
+            scalingMatrix = DirectX::XMMatrixScaling(1.0f, 2.0f, 1.0f);
             worldMatrix = DirectX::XMMatrixIdentity();
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
             worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
             worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
 
