@@ -166,7 +166,7 @@ bool InGameScene::Init()
     //m_CustomMap->Load(CMapDesc);
 
     //tree
-    m_TreeList.resize(10);
+    m_TreeList.resize(30);
     treeObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/tree/Tree.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
     //m_Tree = std::make_shared<LModel>();
     //m_Tree->SetLFbxObj(treeObj);
