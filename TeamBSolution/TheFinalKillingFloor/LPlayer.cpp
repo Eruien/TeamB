@@ -240,7 +240,6 @@ bool LPlayer::Frame()
 			
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
 		}
-
 	}
 
 	if (LInput::GetInstance().m_MouseState[0] == KEY_UP)
@@ -268,8 +267,6 @@ bool LPlayer::Frame()
 		m_AnimationRate = 2.0f;
 		float excleSpeed = m_Speed * 2;
 		m_Speed = excleSpeed;
-
-		
 	}
 
 	if (m_SteamPackEnd < m_SteamPackStart)
@@ -281,11 +278,9 @@ bool LPlayer::Frame()
 
 	if (m_ZedTimeCount % 10 == 0)
 	{
+		m_ZedTimeCount += 1;
 		IsZedTime = true;
-		LGlobal::g_ZedTimeStart->VolumeUp();
-		LGlobal::g_ZedTimeStart->VolumeUp();
-		LGlobal::g_ZedTimeStart->VolumeUp();
-		LGlobal::g_ZedTimeStart->Play(false);
+		LGlobal::g_ZedTimeStart->PlayEffect();
 	}
 
 	if (IsZedTime)
@@ -299,7 +294,6 @@ bool LPlayer::Frame()
 
 	if (m_ZedTimeEnd < m_ZedTimeStart)
 	{
-		LGlobal::g_ZedTimeEnd->Play(false);
 		m_ShotDelay = 0.1f;
 		m_ZedTimeStart = 0.0f;
 		m_AnimationRate = 1.0f;

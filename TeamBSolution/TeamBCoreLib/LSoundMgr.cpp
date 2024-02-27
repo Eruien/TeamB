@@ -51,6 +51,11 @@ void LSound::Play(bool bLoop)
 
 void LSound::PlayEffect()
 {
+	if (m_pChannel != nullptr)
+	{
+		m_pChannel->stop();
+	}
+
 	m_pSystem->playSound(m_pSound, NULL, false, &m_pChannel);
 }
 
@@ -200,7 +205,7 @@ bool LSoundMgr::Release()
 LSoundMgr::LSoundMgr()
 {
 	FMOD::System_Create(&m_pSystem);
-	m_pSystem->init(32, FMOD_INIT_NORMAL, 0);
+	m_pSystem->init(64, FMOD_INIT_NORMAL, 0);
 }
 
 LSoundMgr::~LSoundMgr() {}

@@ -20,4 +20,3 @@ LSound* LGlobal::g_EffectSound1 = nullptr;
 LSound* LGlobal::g_EffectSound2 = nullptr;
 LSound* LGlobal::g_SteamPackSound = nullptr;
 LSound* LGlobal::g_ZedTimeStart = nullptr;
-LSound* LGlobal::g_ZedTimeEnd =  nullptr;
