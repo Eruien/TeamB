@@ -39,6 +39,8 @@ public:
 	bool IsDeath = false;
 	bool IsTakeDammageAni = false;
 	bool IsSteamPack = false;
+	bool IsZedTime = false;
+	int m_ZedTimeCount = 1;
 	float m_Speed = 0.0f;
 	float m_ShotDelay = 0.1f;
 	float m_StartShoot = 0.0f;
@@ -46,6 +48,8 @@ public:
 	float m_EndTakeDamage = 1.0f;
 	float m_SteamPackStart = 0.0f;
 	float m_SteamPackEnd = 10.0f;
+	float m_ZedTimeStart = 0.0f;
+	float m_ZedTimeEnd = 5.0f;
 	TVector3 m_AddDirection;
 public:
 	void FSM(FSMType fsmType);

@@ -121,6 +121,17 @@ bool LNPC::Frame()
 		m_Speed = 50.0f;
 	}
 
+	if (LGlobal::g_PlayerModel->IsZedTime)
+	{
+		m_AnimationRate = 0.5f;
+		m_Speed = 25.0f;
+	}
+	else
+	{
+		m_AnimationRate = 1.0f;
+		m_Speed = 50.0f;
+	}
+
 	m_ZombieSound->Play();
 	// ºôº¸µå
 

@@ -279,6 +279,33 @@ bool LPlayer::Frame()
 		IsSteamPack = false;
 	}
 
+	if (m_ZedTimeCount % 10 == 0)
+	{
+		IsZedTime = true;
+		LGlobal::g_ZedTimeStart->VolumeUp();
+		LGlobal::g_ZedTimeStart->VolumeUp();
+		LGlobal::g_ZedTimeStart->VolumeUp();
+		LGlobal::g_ZedTimeStart->Play(false);
+	}
+
+	if (IsZedTime)
+	{
+		m_ZedTimeStart += LGlobal::g_fSPF;
+		m_ShotDelay = 0.05f;
+		m_AnimationRate = 2.0f;
+		float excleSpeed = m_Speed * 2;
+		m_Speed = excleSpeed;
+	}
+
+	if (m_ZedTimeEnd < m_ZedTimeStart)
+	{
+		LGlobal::g_ZedTimeEnd->Play(false);
+		m_ShotDelay = 0.1f;
+		m_ZedTimeStart = 0.0f;
+		m_AnimationRate = 1.0f;
+		IsZedTime = false;
+	}
+
 	if (IsMove && IsMovable)
 	{
 		Move();
