@@ -12,13 +12,9 @@ bool InGameScene::Init()
     LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
     LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
-<<<<<<< HEAD
-
-=======
     LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
    
     
->>>>>>> 38fc3f9578dd7bef4d0fc21319afda46d58f4db3
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
