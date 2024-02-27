@@ -18,7 +18,8 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
-	
+	if (_isRender)
+	{
 		TMatrix matScale, matRotation, matTranslation;
 		matScale = matScale.CreateScale(m_vScale);
 		matRotation = matRotation.CreateRotationX(m_vRotation.x);
@@ -33,7 +34,7 @@ bool KObject::Frame()
 		{
 			script->Frame();
 		}
-	
+	}
 	return true;
 }
 

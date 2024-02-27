@@ -25,11 +25,11 @@ public:
 	const Keyframe& GetCurrentKeyframe() { return _currentAnimation->GetKeyframe(_currentKeyframeIndex); }
 	void SetAnimation(shared_ptr<Animation> animation) { _currentAnimation = animation; }
 	void SetAnimationFromXml(wstring path);
-
+	INT32 _currentKeyframeIndex = 0;
 	//애니메이션
 protected:
 	float _sumTime = 0.f;
-	INT32 _currentKeyframeIndex = 0;
+
 	shared_ptr<Animation> _currentAnimation;
 };
 
