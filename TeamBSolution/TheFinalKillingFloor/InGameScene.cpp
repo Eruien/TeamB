@@ -188,9 +188,11 @@ bool InGameScene::Init()
 		{
 			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
 
-            // make translation matrix randomly
-            float x = (rand() % 1000) - 500;
-            float z = (rand() % 1000) - 500;
+            // make translation matrix randomly ( -1000 ~ 1000 )
+            float x = (rand() % 1800) - 900;
+            float z = (rand() % 1800) - 900;
+
+
             translationMatrix = DirectX::XMMatrixTranslation(x, 0.0f, z);
             
 			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
