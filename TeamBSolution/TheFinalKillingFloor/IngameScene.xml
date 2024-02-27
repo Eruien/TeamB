@@ -213,7 +213,7 @@
         </Scripts>
     </UIObject>
     <UIObject Name="SteamPackBg" isRender="true" Group="None">
-        <Position x="190" y="-295" z="1"/>
+        <Position x="190" y="-295" z="0.5"/>
         <Scale width="166" height="90"/>
         <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
         <Scripts>
