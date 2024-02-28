@@ -803,6 +803,11 @@ void InGameScene::Render()
     m_cbLight2.g_vLightDir[0] = TVector4(m_PointLight[0].m_vDirection.x,
         m_PointLight[0].m_vDirection.y,
         m_PointLight[0].m_vDirection.z, 1.0f);
+    m_cbLight1.g_bIsZedTime = LGlobal::g_PlayerModel->IsZedTime ? 1.0f : 0.0f;
+    //if (LGlobal::g_PlayerModel->IsZedTime == true)
+    //{
+    //    m_cbLight1.g_bIsZedTime = LGlobal::g_PlayerModel->IsZedTime;
+    //}
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[0].Get(), 0, NULL, &m_cbLight1, 0, 0);
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[1].Get(), 0, NULL, &m_cbLight2, 0, 0);
     
