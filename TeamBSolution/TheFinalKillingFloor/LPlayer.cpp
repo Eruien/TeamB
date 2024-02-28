@@ -200,6 +200,7 @@ bool LPlayer::Frame()
 		m_HP -= 20;
 		UIManager::GetInstance().GetUIObject(L"ScreenBlood")->SetIsRender(true);
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+		LGlobal::g_PlayerHitSound->PlayEffect();
 		if (m_HP <= 61.0f)
 		{
 			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face2.png");

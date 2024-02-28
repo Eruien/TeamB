@@ -14,6 +14,7 @@ bool InGameScene::Init()
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
     LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
     LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTime.mp3");
+    LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
     
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
