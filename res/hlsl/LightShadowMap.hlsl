@@ -34,6 +34,8 @@ cbuffer cb3: register(b3)
     float4				g_cAmbientLightColor[g_iNumLight];
     float4				g_cDiffuseLightColor[g_iNumLight];
     float4				g_cSpecularLightColor[g_iNumLight];
+    float                g_bIsZedTime;
+    float padding[3]; // add padding
 };
 //--------------------------------------------------------------------------------------
 //Lighting Variables
@@ -119,6 +121,10 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
         FinalColor = FinalColor * float4(0.5f, 0.5f, 0.5f, 1.0f);
         FinalColor.w = 1.0f;
     }
+
+    float grayScale = dot(FinalColor.rgb, float3(0.299, 0.587, 0.114));
+    float3 grayColor = float3(grayScale, grayScale, grayScale);
+    FinalColor.rgb = lerp(FinalColor.rgb, grayColor, g_bIsZedTime); // Update this line
 
     return FinalColor;
 }
