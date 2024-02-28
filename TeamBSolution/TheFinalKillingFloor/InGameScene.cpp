@@ -648,13 +648,13 @@ void InGameScene::Process()
             LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
         }
 
-        // zombie <-> tree
+        // tank <-> tree
         for (auto& tree : m_TreeList)
         {
             TVector3 length = { tree->m_matControl._41, tree->m_matControl._42, tree->m_matControl._43 };
 			length -= m_TankList[i]->m_OBBBox.m_Box.vCenter;
 			float distance = length.Length();
-			if (distance <= 27)
+			if (distance <= 33)
 			{
 				float offsetX = m_TankList[i]->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
 				float offsetZ = m_TankList[i]->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
