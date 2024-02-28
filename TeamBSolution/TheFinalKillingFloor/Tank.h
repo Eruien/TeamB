@@ -40,7 +40,7 @@ public:
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
 	float m_RushSpeed = 400.0f;
-	float m_ComboSpeed = 50.0f;
+	float m_ComboSpeed = 25.0f;
 	TVector3 m_Dir;
 	float m_ComboRange = 100.0f;
 	float m_RushRange = 400.0f;
