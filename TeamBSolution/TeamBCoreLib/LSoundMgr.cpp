@@ -205,7 +205,7 @@ bool LSoundMgr::Release()
 LSoundMgr::LSoundMgr()
 {
 	FMOD::System_Create(&m_pSystem);
-	m_pSystem->init(64, FMOD_INIT_NORMAL, 0);
+	m_pSystem->init(200, FMOD_INIT_NORMAL, 0);
 }
 
 LSoundMgr::~LSoundMgr() {}

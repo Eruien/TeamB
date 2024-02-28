@@ -59,7 +59,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -71,7 +71,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -83,7 +83,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -95,7 +95,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -107,7 +107,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward();
 		m_AddDirection.Normalize();
@@ -119,7 +119,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -131,7 +131,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -143,7 +143,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(false);
+		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward();
 		m_AddDirection.Normalize();
@@ -154,21 +154,25 @@ void LPlayer::Move()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
 	{
+		LGlobal::g_EffectSound2->Stop();
 		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] == KEY_UP)
 	{
+		LGlobal::g_EffectSound2->Stop();
 		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_UP)
 	{
+		LGlobal::g_EffectSound2->Stop();
 		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] == KEY_UP)
 	{
+		LGlobal::g_EffectSound2->Stop();
 		m_Speed = 0.0f;
 	}
 }
