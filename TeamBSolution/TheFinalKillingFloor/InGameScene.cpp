@@ -7,6 +7,8 @@
 #include "LAnimationIO.h"
 #include "LExportIO.h"
 static bool Init_2 = true;
+
+//////////////// Init ////////////////////
 bool InGameScene::Init()
 {
     LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
@@ -31,10 +33,11 @@ bool InGameScene::Init()
     return true;
 }
 
+///////////////////  프로세스  //////////////////
 void InGameScene::Process()
 {
     FrameMuzzleFlash();
- 
+
     if (LGlobal::g_PlayerModel->IsDeath)
     {
         IsEndGame = true;
@@ -92,6 +95,9 @@ void InGameScene::Process()
                         LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
 }
 
+
+/////////////////////////////////////////////
+///////////////   Render ////////////////////
 void InGameScene::Render()
 {
    
