@@ -1,4 +1,14 @@
 <UIScene SceneName="TestScene">
+<UIObject Name="ScreenBlood" isRender="false" Group="None">
+        <Position x="0" y="0" z="0.69999999"/>
+        <Scale width="1280" height="720"/>
+        <Texture texPath="../../res/ui/GoreSplash.png"/>
+        <Scripts>
+            <Script Type="UIEvent">
+                <args Function="HitPlayerEffect"/>
+            </Script>
+        </Scripts>
+    </UIObject>
     <UIObject Name="wp_background" isRender="true" Group="None">
         <Position x="461" y="-293" z="0"/>
         <Scale width="292" height="86"/>
@@ -189,14 +199,35 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="ScreenBlood" isRender="false" Group="None">
-        <Position x="0" y="0" z="0.69999999"/>
-        <Scale width="1280" height="720"/>
-        <Texture texPath="../../res/ui/GoreSplash.png"/>
+    <UIObject Name="SteamPackDurationBar" isRender="true" Group="None">
+        <Position x="205" y="-294" z="0"/>
+        <Scale width="-12" height="80"/>
+        <Texture texPath="../../res/ui/SteamPackBar.png"/>
         <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
             <Script Type="UIEvent">
-                <args Function="HitPlayerEffect"/>
+                <args Function="SteamPack"/>
             </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SteamPackBg" isRender="true" Group="None">
+        <Position x="190" y="-295" z="0.5"/>
+        <Scale width="166" height="90"/>
+        <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="SteamPackUI" isRender="true" Group="None">
+        <Position x="162" y="-294" z="0"/>
+        <Scale width="-78" height="74"/>
+        <Texture texPath="../../res/ui/Hud_Syringe.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
 </UIScene>

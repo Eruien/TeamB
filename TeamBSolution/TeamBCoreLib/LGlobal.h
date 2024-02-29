@@ -28,10 +28,12 @@ public:
 	static int g_BulletCount;
 	static LPlayer* g_PlayerModel;
 	static LSound* g_BackgroundSound;
+	static LSound* g_PlayerHitSound;
 	static LSound* g_IngameSound;
 	static LSound* g_EffectSound1;
 	static LSound* g_EffectSound2;
 	static LSound* g_SteamPackSound;
+	static LSound* g_ZedTimeStart;
 };
 
 

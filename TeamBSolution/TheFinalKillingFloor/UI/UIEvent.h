@@ -17,6 +17,7 @@ public:
 public :
 	void HitPlayerEffect();
 	void CreateConstantBuffer();
+	void SteamPack();
 	wstring _function = L"None";
 private:
 	bool _isHited = false;

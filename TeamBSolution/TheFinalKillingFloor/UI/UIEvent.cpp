@@ -1,11 +1,12 @@
 #include "UIEvent.h"
 #include "KObject.h"
 #include "LGlobal.h"
+#include "../LPlayer.h"
 UIEvent::UIEvent(wstring Function) : MonoBehaviour(L"UIEvent")
 {
 	_function = Function;
 	_functionMap[L"HitPlayerEffect"] = &UIEvent::HitPlayerEffect;
-
+	_functionMap[L"SteamPack"] = &UIEvent::SteamPack;
 }
 
 UIEvent::~UIEvent()
@@ -19,8 +20,11 @@ void UIEvent::Init()
 	//GetGameObject()->Create(L"../../res/hlsl/Fade.hlsl", L"../../res/ui/GoreSplash.png");
 	//CreateConstantBuffer();
 	//}
-	GetGameObject()->Create(L"../../res/hlsl/Fade.hlsl", L"../../res/ui/GoreSplash.png");
-	CreateConstantBuffer();
+	if (_function == L"HitPlayerEffect")
+	{
+		GetGameObject()->Create(L"../../res/hlsl/Fade.hlsl", L"../../res/ui/GoreSplash.png");
+		CreateConstantBuffer();
+	}
 }
 
 void UIEvent::Frame()
@@ -75,4 +79,39 @@ void UIEvent::CreateConstantBuffer()
 		nullptr,
 		_cBuff.GetAddressOf());
 
+}
+
+void UIEvent::SteamPack()
+{
+	
+	float duration = LGlobal::g_PlayerModel->m_SteamPackStart;
+	if (duration > 0.001f)
+	{
+		duration = 10 - duration;
+		duration *= 10;
+	}
+	
+
+	GetGameObject()->m_VertexList[0].p.y = 0.5f - (1 - duration / 100);
+	GetGameObject()->m_VertexList[1].p.y = 0.5f - (1 - duration / 100);
+	GetGameObject()->m_VertexList[4].p.y = 0.5f - (1 - duration / 100);
+
+	D3D11_BUFFER_DESC bufferDesc = { 0, };
+	bufferDesc.ByteWidth = sizeof(SimpleVertex) * GetGameObject()->m_VertexList.size();
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA initialData = { 0, };
+	initialData.pSysMem = &GetGameObject()->m_VertexList.at(0);
+
+	HRESULT hr = GetGameObject()->m_pDevice->CreateBuffer(
+		&bufferDesc,
+		&initialData,
+		&GetGameObject()->m_pVertexBuffer);
+
+	if (FAILED(hr))
+	{
+		MessageBoxA(NULL, "Create Buffer Error", "Error Box", MB_OK);
+		return;
+	}
 }

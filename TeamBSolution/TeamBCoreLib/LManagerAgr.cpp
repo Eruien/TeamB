@@ -172,6 +172,9 @@ bool LShader::LoadVertexShader(std::wstring fileName)
 	ID3DBlob* ErrorCode;
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+#ifdef _DEBUG
+	dwShaderFlags |= D3DCOMPILE_DEBUG;
+#endif
 
 	hr = D3DCompileFromFile(
 		fileName.c_str(),
@@ -219,6 +222,9 @@ bool LShader::LoadPixelShader(std::wstring fileName)
 	HRESULT hr;
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+#ifdef _DEBUG
+	dwShaderFlags |= D3DCOMPILE_DEBUG;
+#endif
 
 	hr = D3DCompileFromFile(
 		fileName.c_str(),

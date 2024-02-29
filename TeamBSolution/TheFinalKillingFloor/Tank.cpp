@@ -96,7 +96,6 @@ int Tank::GetRandomNumber()
 
 bool Tank::Frame()
 {
-
 	if (LGlobal::g_PlayerModel->IsSteamPack)
 	{
 		m_AnimationRate = 0.5f;
@@ -110,6 +109,21 @@ bool Tank::Frame()
 		m_Speed = 50.0f;
 		m_RushSpeed = 400.0f;
 		m_ComboSpeed = 50.0f;
+	}
+
+	if (LGlobal::g_PlayerModel->IsZedTime)
+	{
+		m_AnimationRate = 0.5f;
+		m_Speed = 25.0f;
+		m_RushSpeed = 200.0f;
+		m_ComboSpeed = 12.5f;
+	}
+	else
+	{
+		m_AnimationRate = 1.0f;
+		m_Speed = 50.0f;
+		m_RushSpeed = 400.0f;
+		m_ComboSpeed = 25.0f;
 	}
 
 	m_ZombieSound->Play();

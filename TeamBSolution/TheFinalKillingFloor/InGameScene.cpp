@@ -13,7 +13,8 @@ bool InGameScene::Init()
     LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
     LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
-   
+    LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTime.mp3");
+    LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
     
     m_DebugCamera = std::make_shared<LDebugCamera>();
     m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
@@ -677,13 +678,13 @@ void InGameScene::Process()
             LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
         }
 
-        // zombie <-> tree
+        // tank <-> tree
         for (auto& tree : m_TreeList)
         {
             TVector3 length = { tree->m_matControl._41, tree->m_matControl._42, tree->m_matControl._43 };
 			length -= m_TankList[i]->m_OBBBox.m_Box.vCenter;
 			float distance = length.Length();
-			if (distance <= 27)
+			if (distance <= 33)
 			{
 				float offsetX = m_TankList[i]->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
 				float offsetZ = m_TankList[i]->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
@@ -832,6 +833,11 @@ void InGameScene::Render()
     m_cbLight2.g_vLightDir[0] = TVector4(m_PointLight[0].m_vDirection.x,
         m_PointLight[0].m_vDirection.y,
         m_PointLight[0].m_vDirection.z, 1.0f);
+    m_cbLight1.g_bIsZedTime = LGlobal::g_PlayerModel->IsZedTime ? 1.0f : 0.0f;
+    //if (LGlobal::g_PlayerModel->IsZedTime == true)
+    //{
+    //    m_cbLight1.g_bIsZedTime = LGlobal::g_PlayerModel->IsZedTime;
+    //}
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[0].Get(), 0, NULL, &m_cbLight1, 0, 0);
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[1].Get(), 0, NULL, &m_cbLight2, 0, 0);
     
@@ -894,6 +900,10 @@ void InGameScene::Render()
         wall->Render();
     }
 
+    for (auto tree : m_TreeList)
+    {
+        tree->Render();
+    }
 
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
@@ -1136,6 +1146,7 @@ void InGameScene::Release()
         {
             iter = m_ZombieModelList.erase(iter);
             UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
+            LGlobal::g_PlayerModel->m_ZedTimeCount += 1;
         }
         else
         {
@@ -1153,6 +1164,7 @@ void InGameScene::Release()
         if ((*iter)->IsDead)
         {
             iter = m_TankList.erase(iter);
+            LGlobal::g_PlayerModel->m_ZedTimeCount += 1;
         }
         else
         {

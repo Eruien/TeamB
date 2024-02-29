@@ -13,6 +13,8 @@ struct LIGHT_CONSTANT_BUFFER1
 	TVector4			g_cAmbientLightColor[g_iNumLight];
 	TVector4			g_cDiffuseLightColor[g_iNumLight];
 	TVector4			g_cSpecularLightColor[g_iNumLight];
+	float               g_bIsZedTime;
+	float               padding[3]; // add padding
 };
 struct LIGHT_CONSTANT_BUFFER2
 {

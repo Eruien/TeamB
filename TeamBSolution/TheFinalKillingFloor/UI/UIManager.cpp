@@ -8,7 +8,7 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
     _DepthStencilState = Depth;
     _DepthStencilStateDisable = Disable;
 
-    if (_debugMode)
+    if (_editMode)
     {
         _imGuiManager = make_shared< ImGuiManager>();
         _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
@@ -22,7 +22,7 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
 
 void UIManager::Frame()
 {
-    if (_debugMode)
+    if (_editMode)
     {
         _imGuiManager->Frame();
         _imGuiObjDetail->Frame();
@@ -35,7 +35,7 @@ void UIManager::Frame()
 
 	for (auto obj : _objsTemp)
 	{
-        if (obj->GetIsRender() || _debugMode)
+        if (obj->GetIsRender() || _editMode)
         {
             obj->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
             obj->Frame();
@@ -55,11 +55,11 @@ void UIManager::Render()
         }*/
 
        // LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilStateDisable.Get(), 1);
-        if(obj->GetIsRender()|| _debugMode)
+        if(obj->GetIsRender()|| _editMode)
 		obj->Render();
       //  LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilState.Get(), 1);
 	}
-    if (_debugMode)
+    if (_editMode)
     {
         _imGuiObjDetail->Render();
         _imgui_menuBar->Render();

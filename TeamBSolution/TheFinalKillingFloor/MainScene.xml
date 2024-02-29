@@ -116,7 +116,7 @@
     <UIObject Name="SoundToggleText" isRender="false" Group="MainOptionMenu">
         <Position x="-74" y="65" z="0"/>
         <Scale width="66" height="56"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
