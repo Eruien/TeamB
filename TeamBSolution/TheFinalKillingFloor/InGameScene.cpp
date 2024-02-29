@@ -871,6 +871,10 @@ void InGameScene::Render()
         wall->Render();
     }
 
+    for (auto tree : m_TreeList)
+    {
+        tree->Render();
+    }
 
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
@@ -894,11 +898,7 @@ void InGameScene::Render()
 
 
     //m_Tree->Render();
-    for (auto tree : m_TreeList)
-	{
-		tree->Render();
-	}
-
+   
     for (int i = 0; i < m_BulletList.size(); i++)
     {
         if (m_VisibleBulletList[i])
