@@ -1138,6 +1138,11 @@ void InGameScene::Render()
    
 }
 
+void InGameScene::Retry()
+{
+
+}
+
 void InGameScene::Release()
 {
     for (auto iter = m_ZombieModelList.begin(); iter != m_ZombieModelList.end();)
