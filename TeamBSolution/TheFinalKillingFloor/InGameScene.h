@@ -52,12 +52,14 @@ public:
 	std::shared_ptr<LModel> m_MapModel = nullptr;
 	vector<shared_ptr<LModel>> m_WallList;
 	vector<shared_ptr<LModel>> m_TreeList;
+	vector<shared_ptr<LModel>> m_GrassList;
 
 
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
 	LFbxObj* bulletObj;
 	LFbxObj* wallObj = nullptr;
+	LFbxObj* grassObj = nullptr;
 
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 	int m_WaveCount = 5;

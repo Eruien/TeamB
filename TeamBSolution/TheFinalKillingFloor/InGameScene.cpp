@@ -206,6 +206,7 @@ bool InGameScene::Init()
 	}
 
 
+
     //wall
     m_WallList.resize(40);
     wallObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/wall/Concrete wall.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
@@ -323,6 +324,34 @@ bool InGameScene::Init()
     MapDesc.ShaderFilePath = L"../../res/hlsl/LightShadowMap.hlsl";
     MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
+
+
+    // grass
+    m_GrassList.resize(110);
+    grassObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/grass/Grass_green.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    for (auto& grass : m_GrassList)
+    {
+        grass = std::make_shared<LModel>();
+        grass->SetLFbxObj(grassObj);
+        grass->CreateBoneBuffer();
+        {
+            DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+
+            // make translation matrix randomly ( -1000 ~ 1000 )
+            float x = (rand() % 1800) - 900;
+            float z = (rand() % 1800) - 900;
+            float y = m_CustomMap->GetHeight(x, z) + ((rand() % 5) + 5);
+
+            translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+            rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
+            scalingMatrix = DirectX::XMMatrixScaling(20.0f, 20.0f, 20.0f);
+            worldMatrix = DirectX::XMMatrixIdentity();
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+            grass->m_matControl = worldMatrix;
+        }
+    }
 
     // Collision
     std::wstring head = L"Head";
@@ -860,7 +889,7 @@ void InGameScene::Render()
     sTime += LGlobal::g_fSPF;
 
 
-    for (auto wall : m_WallList)
+    for (auto& wall : m_WallList)
     {
         wall->Render();
     }
@@ -881,18 +910,24 @@ void InGameScene::Render()
         m_muzzleFlash->Render();
     }
 
-    for (auto obj : m_bloodSplatter)
+    for (auto& obj : m_bloodSplatter)
     {
         obj->Render();
     }
 
 
     //m_Tree->Render();
-    for (auto tree : m_TreeList)
+    for (auto& tree : m_TreeList)
 	{
 		tree->Render();
 	}
+    // grass
+    for (auto& grass : m_GrassList)
+    {
+        grass->Render();
+    }
 
+    // bullet
     for (int i = 0; i < m_BulletList.size(); i++)
     {
         if (m_VisibleBulletList[i])
