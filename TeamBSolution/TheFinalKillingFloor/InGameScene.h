@@ -99,6 +99,26 @@ public:
 	void SoundInit();
 	void CameraInit();
 	void CharacterInit();
+
+public:
+	void InitializeObjects();
+	void InitializeSkyBox();
+	void InitializePlayerIcon();
+	void InitializeBloodSplatters();
+	void InitializeCustomMap();
+	void InitializeTrees();
+	void InitializeWalls();
+	void InitializeBullets();
+	void InitializeLighting();
+	void InitializeShadow();
+	void InitializeMap();
+	void InitializeGrasses();
+	void InitializeMinimap();
+	void InitializeMuzzleFlash();
+	void UpdateTreeHeights();
+	void InitializeTreePosition(std::shared_ptr<LModel>& tree);
+	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
+	void InitializeBulletPosition(std::shared_ptr<LModel>& bullet);
 public:
 	void NextWave();
 	void RenderObject();

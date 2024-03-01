@@ -8,268 +8,22 @@
 #include "LExportIO.h"
 static bool Init_2 = true;
 bool InGameScene::Init()
-{ 
-    SoundInit();
-    CameraInit();
-    CharacterInit();
-    CreateShadowConstantBuffer();
-
-    m_SkyBox = std::make_shared<LSkyBox>();
-    m_SkyBox->Set();
-    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
-
-    m_playerIcon = make_shared<KObject>();
-    m_playerIcon->Init();
-    m_playerIcon->SetPos({ 0, 0, -1 });
-    m_playerIcon->SetScale({ 10,10, 1 });
-
-    m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/PlayerIcon.png");
-
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            shared_ptr<KObject> blood = make_shared<KObject>();
-            blood->Init();
-            blood->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
-            blood->SetPos({0, 10000, 0});
-            blood->SetScale({ 10,10, 1 });
-            blood->AddScripts(std::make_shared<Animator>(L"Anim.xml"));
-            blood->SetIsRender(false);
-            m_bloodSplatter.push_back(blood);
-     
-        }
-    }
-
-    // 맵 오브젝트 예시
-    //mapObj = LFbxMgr::GetInstance().Load(L"../../res/map/Mountain.fbx", L"../../res/hlsl/ShadowMap.hlsl");
-    //m_MapModel = std::make_shared<LModel>();
-    //m_MapModel->SetLFbxObj(mapObj);
-    //m_MapModel->CreateBoneBuffer();
-    //m_MapModel->m_matControl._11 = 500.f;
-    //m_MapModel->m_matControl._22 = 0.f;
-    //m_MapModel->m_matControl._33 = 500.f;
-    //m_MapModel->m_matControl._42 = -0.f;
-    m_CustomMap = std::make_shared<LHeightMap>();
-    m_CustomMap->Set();
-    m_CustomMap->CreateHeightMap(L"../../res/Heightmap/heightMap513.bmp");
-    //m_CustomMap->CreateHeightMap(L"../../res/Heightmap/Heightmap_04_Plains.png");
-    //LMapDesc CMapDesc = {};
-    //CMapDesc.iNumCols = 513;
-    //CMapDesc.iNumRows = 513;
-    //CMapDesc.fCellDistance = 1.0f;
-    //CMapDesc.ShaderFilePath = L"../../res/hlsl/ShadowMap.hlsl";
-    //CMapDesc.TextureFilePath = L"../../res/map/baseColor.jpg";
-    //m_CustomMap->Load(CMapDesc);
-
-    //tree
-    m_TreeList.resize(30);
-    treeObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/tree/Tree.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
-    //m_Tree = std::make_shared<LModel>();
-    //m_Tree->SetLFbxObj(treeObj);
-    //m_Tree->CreateBoneBuffer();
-    //{
-    //    DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
-    //    rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
-    //    scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
-    //    worldMatrix = DirectX::XMMatrixIdentity();
-    //    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-    //    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-    //    m_Tree->m_matControl = worldMatrix;
-    //}
-    for (auto& tree : m_TreeList)
-	{
-		tree = std::make_shared<LModel>();
-        tree->SetLFbxObj(treeObj);
-        tree->CreateBoneBuffer();
-		{
-			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
-
-            // make translation matrix randomly ( -1000 ~ 1000 )
-            float x = (rand() % 1800) - 900;
-            float z = (rand() % 1800) - 900;
-
-
-            translationMatrix = DirectX::XMMatrixTranslation(x, 0.0f, z);
-            
-			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
-			scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
-			worldMatrix = DirectX::XMMatrixIdentity();
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
-			tree->m_matControl = worldMatrix;
-		}
-	}
-
-    //wall
-    m_WallList.resize(40);
-    wallObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/wall/Concrete wall.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            m_WallList[i * 10 + j] = std::make_shared<LModel>();
-            m_WallList[i * 10 + j]->SetLFbxObj(wallObj);
-            m_WallList[i * 10 + j]->CreateBoneBuffer();
-
-            DirectX::XMMATRIX rotationMatrix, translationMatrix, worldMatrix, scalingMatrix;
-            float rotationAngle;
-
-            // 위치에 따라 회전 각도를 설정
-            if (i == 0) // 북쪽 벽
-            {
-                rotationAngle = 90.0f;
-                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
-                translationMatrix = DirectX::XMMatrixTranslation(-1000.0f, 0.0f, -1000.0f + 200.0f * j);
-            }
-            else if (i == 1) // 동쪽 벽
-            {
-                rotationAngle = 180.0f;
-                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
-                translationMatrix = DirectX::XMMatrixTranslation(-1000.0f + 200.0f * j, 0.0f, 1000.0f);
-            }
-            else if (i == 2) // 남쪽 벽
-            {
-                rotationAngle = 270.0f;
-                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
-                translationMatrix = DirectX::XMMatrixTranslation(1000.0f, 0.0f, 1000.0f - 200.0f * j);
-            }
-            else // 서쪽 벽
-            {
-                rotationAngle = 0.0f;
-                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
-                translationMatrix = DirectX::XMMatrixTranslation(1000.0f - 200.0f * j, 0.0f, -1000.0f);
-            }
-
-            scalingMatrix = DirectX::XMMatrixScaling(1.0f, 2.0f, 1.0f);
-            worldMatrix = DirectX::XMMatrixIdentity();
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
-
-            m_WallList[i * 10 + j]->m_matControl = worldMatrix;
-        }
-    }
-
-
-
-    
-    //bullet
-    bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
-    m_BulletList.resize(31);
-    m_VisibleBulletList.resize(m_BulletList.size());
-    for (int i = 0; i < m_BulletList.size(); ++i)
-    {
-        m_VisibleBulletList[i] = false;
-        m_BulletList[i] = std::make_shared<LModel>();
-        m_BulletList[i]->SetLFbxObj(bulletObj);
-        m_BulletList[i]->CreateBoneBuffer();
-        DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix;
-        scalingMatrix = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
-        worldMatrix = DirectX::XMMatrixIdentity();
-        worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-        m_BulletList[i]->m_matControl = worldMatrix;
-        //m_BulletList[i]->m_matControl = worldMatrix;
-    }
-
-
-
-
-
-    // light
-    m_pConstantBufferLight[0].Attach(CreateConstantBuffer(
-        LGlobal::g_pDevice.Get(), &m_cbLight1, 1, sizeof(LIGHT_CONSTANT_BUFFER1)));
-    m_pConstantBufferLight[1].Attach(CreateConstantBuffer(
-        LGlobal::g_pDevice.Get(), &m_cbLight2, 1, sizeof(LIGHT_CONSTANT_BUFFER2)));
-    float fLightRange = 50.0f;
-    TVector3 vRotation = TVector3(0.f, 0.0f, 0.0f); //TVector3(-(XM_PI * 0.2f), 0.0f, 0.0f);
-    TVector3 vDir = TVector3(0.0f, -1.0f, 0.0f);
-    TVector3 v0 = TVector3(0.0f, 10.0f, 0.0f);
-    TVector4 v1 = TVector4(1.0f, 1.0f, 1.0f, 1.0f); // color
-    TVector3 v2 = TVector3(10.0f, 10.0f, 10.0f);    // scale
-    m_PointLight[0].SetValue(&v0,
-                             &vDir,
-                             &fLightRange,
-                             &v1,
-                             &v2,
-                             &vRotation,
-                             90.0f, // 내부
-                             120.0f);//외부
-
-
-    // Shadow
-    m_pQuad.Set();
-    m_pQuad.SetScreenVertex(0, 0, 250, 250, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
-    m_pQuad.Create(L"../../res/hlsl/ShadowMap.hlsl", L"../../res/map/castle.jpg");
-
-    m_RT.Create(1024, 1024);
-
-    m_matTexture = TMatrix(0.5f, 0.0f, 0.0f, 0.0f
-        , 0.0f, -0.5f, 0.0f, 0.0f
-        , 0.0f, 0.0f, 1.0f, 0.0f
-        , 0.5f, 0.5f, 0.0f, 1.0f);
-
-    //map
-    LMapDesc MapDesc = {};
-    MapDesc.iNumCols = m_CustomMap->m_iNumCols;
-    MapDesc.iNumRows = m_CustomMap->m_iNumRows;
-    MapDesc.fCellDistance = 4.0f;
-    MapDesc.fScaleHeight = 0.4f;
-    MapDesc.ShaderFilePath = L"../../res/hlsl/LightShadowMap.hlsl";
-    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
-    m_CustomMap->Load(MapDesc);
-
-
-    // grass
-    m_GrassList.resize(110);
-    grassObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/grass/Grass_green.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
-    for (auto& grass : m_GrassList)
-    {
-        grass = std::make_shared<LModel>();
-        grass->SetLFbxObj(grassObj);
-        grass->CreateBoneBuffer();
-        {
-            DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
-
-            // make translation matrix randomly ( -1000 ~ 1000 )
-            float x = (rand() % 1800) - 900;
-            float z = (rand() % 1800) - 900;
-            float y = m_CustomMap->GetHeight(x, z) + ((rand() % 5) + 5);
-
-            translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
-            rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
-            scalingMatrix = DirectX::XMMatrixScaling(20.0f, 20.0f, 20.0f);
-            worldMatrix = DirectX::XMMatrixIdentity();
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
-            grass->m_matControl = worldMatrix;
-        }
-    }
-
-    //Minimap
-    m_ShapeMinimap.Set();
-    m_ShapeMinimap.SetScreenVertex(10, 10, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
-    m_ShapeMinimap.Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Box_128x64.png");
-    m_rtMinimap.Create(256, 256);
-    //muzzleflash
-    m_muzzleFlash = make_shared<KObject>();
-    m_muzzleFlash->Init();
-    m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
-    m_muzzleFlash->SetScale({ 10,10,1.f });
-    m_muzzleFlash->SetPos({0,30,0});
-   // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
-  
-
-
-    // tree height calc
-    for (auto& tree : m_TreeList)
-	{
-		float fHeight = m_CustomMap->GetHeight(tree->m_matControl._41, tree->m_matControl._43);
-		tree->m_matControl._42 = fHeight - 5.0f;
-	}
-    //float fHeight = m_CustomMap->GetHeight(m_Tree->m_matControl._41, m_Tree->m_matControl._43);
-    //m_Tree->m_matControl._42 = fHeight - 5.0f;
+{
+    InitializeObjects();
+    InitializeSkyBox();
+    InitializePlayerIcon();
+    InitializeBloodSplatters();
+    InitializeCustomMap();
+    InitializeTrees();
+    InitializeWalls();
+    InitializeBullets();
+    InitializeLighting();
+    InitializeShadow();
+    InitializeMap();
+    InitializeGrasses();
+    InitializeMinimap();
+    InitializeMuzzleFlash();
+    UpdateTreeHeights();
 
     m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
 
@@ -1201,5 +955,282 @@ ID3D11Buffer* InGameScene::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* 
         }
     }
     return pBuffer;
+}
+
+
+void InGameScene::InitializeObjects()
+{
+    SoundInit();
+    CameraInit();
+    CharacterInit();
+    CreateShadowConstantBuffer();
+}
+
+void InGameScene::InitializeSkyBox()
+{
+    m_SkyBox = std::make_shared<LSkyBox>();
+    m_SkyBox->Set();
+    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
+}
+
+void InGameScene::InitializePlayerIcon()
+{
+    m_playerIcon = std::make_shared<KObject>();
+    m_playerIcon->Init();
+    m_playerIcon->SetPos({ 0, 0, -1 });
+    m_playerIcon->SetScale({ 10,10, 1 });
+    m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/PlayerIcon.png");
+}
+
+void InGameScene::InitializeBloodSplatters()
+{
+    m_bloodSplatter.resize(10);
+    for (auto& blood : m_bloodSplatter)
+    {
+        blood = std::make_shared<KObject>();
+        blood->Init();
+        blood->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
+        blood->SetPos({ 0, 10000, 0 });
+        blood->SetScale({ 10,10, 1 });
+        blood->AddScripts(std::make_shared<Animator>(L"Anim.xml"));
+        blood->SetIsRender(false);
+    }
+}
+
+void InGameScene::InitializeCustomMap()
+{
+    m_CustomMap = std::make_shared<LHeightMap>();
+    m_CustomMap->Set();
+    m_CustomMap->CreateHeightMap(L"../../res/Heightmap/heightMap513.bmp");
+}
+
+void InGameScene::InitializeTrees()
+{
+    m_TreeList.resize(30);
+    auto treeObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/tree/Tree.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    for (auto& tree : m_TreeList)
+    {
+        tree = std::make_shared<LModel>();
+        tree->SetLFbxObj(treeObj);
+        tree->CreateBoneBuffer();
+        InitializeTreePosition(tree);
+    }
+}
+
+void InGameScene::InitializeTreePosition(std::shared_ptr<LModel>& tree)
+{
+    DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+    float x = (rand() % 1800) - 900;
+    float z = (rand() % 1800) - 900;
+    translationMatrix = DirectX::XMMatrixTranslation(x, 0.0f, z);
+    rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
+    scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
+    worldMatrix = DirectX::XMMatrixIdentity();
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+    tree->m_matControl = worldMatrix;
+}
+
+void InGameScene::InitializeWalls()
+{
+    m_WallList.resize(40);
+    wallObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/wall/Concrete wall.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            m_WallList[i * 10 + j] = std::make_shared<LModel>();
+            m_WallList[i * 10 + j]->SetLFbxObj(wallObj);
+            m_WallList[i * 10 + j]->CreateBoneBuffer();
+
+            DirectX::XMMATRIX rotationMatrix, translationMatrix, worldMatrix, scalingMatrix;
+            float rotationAngle;
+
+            // 위치에 따라 회전 각도를 설정
+            if (i == 0) // 북쪽 벽
+            {
+                rotationAngle = 90.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(-1000.0f, 0.0f, -1000.0f + 200.0f * j);
+            }
+            else if (i == 1) // 동쪽 벽
+            {
+                rotationAngle = 180.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(-1000.0f + 200.0f * j, 0.0f, 1000.0f);
+            }
+            else if (i == 2) // 남쪽 벽
+            {
+                rotationAngle = 270.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(1000.0f, 0.0f, 1000.0f - 200.0f * j);
+            }
+            else // 서쪽 벽
+            {
+                rotationAngle = 0.0f;
+                rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+                translationMatrix = DirectX::XMMatrixTranslation(1000.0f - 200.0f * j, 0.0f, -1000.0f);
+            }
+
+            scalingMatrix = DirectX::XMMatrixScaling(1.0f, 2.0f, 1.0f);
+            worldMatrix = DirectX::XMMatrixIdentity();
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+
+            m_WallList[i * 10 + j]->m_matControl = worldMatrix;
+        }
+    }
+}
+
+void InGameScene::InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j)
+{
+    DirectX::XMMATRIX rotationMatrix, translationMatrix, worldMatrix, scalingMatrix;
+    float rotationAngle;
+    if (i == 0) rotationAngle = 90.0f;
+    else if (i == 1) rotationAngle = 180.0f;
+    else if (i == 2) rotationAngle = 270.0f;
+    else rotationAngle = 0.0f;
+
+    rotationMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotationAngle));
+    translationMatrix = DirectX::XMMatrixTranslation(-1000.0f + 200.0f * j, 0.0f, 1000.0f - 200.0f * i);
+    scalingMatrix = DirectX::XMMatrixScaling(1.0f, 2.0f, 1.0f);
+    worldMatrix = DirectX::XMMatrixIdentity();
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+    wall->m_matControl = worldMatrix;
+}
+
+void InGameScene::InitializeBullets()
+{
+    auto bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
+    m_BulletList.resize(31);
+    m_VisibleBulletList.resize(31);
+    for (int i = 0; i < m_BulletList.size(); ++i)
+    {
+        m_VisibleBulletList[i] = false;
+        m_BulletList[i] = std::make_shared<LModel>();
+        m_BulletList[i]->SetLFbxObj(bulletObj);
+        m_BulletList[i]->CreateBoneBuffer();
+        InitializeBulletPosition(m_BulletList[i]);
+    }
+}
+
+void InGameScene::InitializeBulletPosition(std::shared_ptr<LModel>& bullet)
+{
+    DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
+    DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
+    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+    bullet->m_matControl = worldMatrix;
+}
+
+void InGameScene::InitializeLighting()
+{
+    m_pConstantBufferLight[0].Attach(CreateConstantBuffer(
+        LGlobal::g_pDevice.Get(), &m_cbLight1, 1, sizeof(LIGHT_CONSTANT_BUFFER1)));
+    m_pConstantBufferLight[1].Attach(CreateConstantBuffer(
+        LGlobal::g_pDevice.Get(), &m_cbLight2, 1, sizeof(LIGHT_CONSTANT_BUFFER2)));
+    float fLightRange = 50.0f;
+    TVector3 vRotation = TVector3(0.f, 0.0f, 0.0f); //TVector3(-(XM_PI * 0.2f), 0.0f, 0.0f);
+    TVector3 vDir = TVector3(0.0f, -1.0f, 0.0f);
+    TVector3 v0 = TVector3(0.0f, 10.0f, 0.0f);
+    TVector4 v1 = TVector4(1.0f, 1.0f, 1.0f, 1.0f); // color
+    TVector3 v2 = TVector3(10.0f, 10.0f, 10.0f);    // scale
+    m_PointLight[0].SetValue(&v0,
+        &vDir,
+        &fLightRange,
+        &v1,
+        &v2,
+        &vRotation,
+        90.0f, // 내부
+        120.0f);//외부
+}
+
+void InGameScene::InitializeShadow()
+{
+    m_pQuad.Set();
+    m_pQuad.SetScreenVertex(0, 0, 250, 250, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
+    m_pQuad.Create(L"../../res/hlsl/ShadowMap.hlsl", L"../../res/map/castle.jpg");
+
+    m_RT.Create(1024, 1024);
+
+    m_matTexture = TMatrix(0.5f, 0.0f, 0.0f, 0.0f
+        , 0.0f, -0.5f, 0.0f, 0.0f
+        , 0.0f, 0.0f, 1.0f, 0.0f
+        , 0.5f, 0.5f, 0.0f, 1.0f);
+
+
+}
+
+void InGameScene::InitializeMap()
+{
+    //map
+    LMapDesc MapDesc = {};
+    MapDesc.iNumCols = m_CustomMap->m_iNumCols;
+    MapDesc.iNumRows = m_CustomMap->m_iNumRows;
+    MapDesc.fCellDistance = 4.0f;
+    MapDesc.fScaleHeight = 0.4f;
+    MapDesc.ShaderFilePath = L"../../res/hlsl/LightShadowMap.hlsl";
+    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
+    m_CustomMap->Load(MapDesc);
+}
+
+void InGameScene::InitializeGrasses()
+{
+    m_GrassList.resize(110);
+    grassObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/grass/Grass_green.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    for (auto& grass : m_GrassList)
+    {
+        grass = std::make_shared<LModel>();
+        grass->SetLFbxObj(grassObj);
+        grass->CreateBoneBuffer();
+        {
+            DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+
+            // make translation matrix randomly ( -1000 ~ 1000 )
+            float x = (rand() % 1800) - 900;
+            float z = (rand() % 1800) - 900;
+            float y = m_CustomMap->GetHeight(x, z) + ((rand() % 5) + 5);
+
+            translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+            rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
+            scalingMatrix = DirectX::XMMatrixScaling(20.0f, 20.0f, 20.0f);
+            worldMatrix = DirectX::XMMatrixIdentity();
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+            worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+            grass->m_matControl = worldMatrix;
+        }
+    }
+}
+
+void InGameScene::InitializeMinimap()
+{
+    m_ShapeMinimap.Set();
+    m_ShapeMinimap.SetScreenVertex(10, 10, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
+    m_ShapeMinimap.Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Box_128x64.png");
+    m_rtMinimap.Create(256, 256);
+}
+
+void InGameScene::InitializeMuzzleFlash()
+{
+    //muzzleflash
+    m_muzzleFlash = make_shared<KObject>();
+    m_muzzleFlash->Init();
+    m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
+    m_muzzleFlash->SetScale({ 10,10,1.f });
+    m_muzzleFlash->SetPos({ 0,30,0 });
+    // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
+}
+
+void InGameScene::UpdateTreeHeights()
+{
+    for (auto& tree : m_TreeList)
+    {
+        float fHeight = m_CustomMap->GetHeight(tree->m_matControl._41, tree->m_matControl._43);
+        tree->m_matControl._42 = fHeight - 5.0f;
+    }
 }
 
