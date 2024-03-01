@@ -101,6 +101,7 @@ public:
 	void CharacterInit();
 
 public:
+	//Initialize Functions
 	void InitializeObjects();
 	void InitializeSkyBox();
 	void InitializePlayerIcon();
@@ -119,6 +120,30 @@ public:
 	void InitializeTreePosition(std::shared_ptr<LModel>& tree);
 	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
 	void InitializeBulletPosition(std::shared_ptr<LModel>& bullet);
+
+	//Process Functions
+	void ProcessMuzzleFlash();
+	void ProcessBloodSplatter();
+	void CheckPlayerDeath();
+	void PlayInGameSound();
+	void UpdateUI();
+	void ProcessWaveTransition();
+	void UpdateMapObjects();
+	void UpdateWallModels();
+	void UpdateTreeModels();
+	void UpdateBulletModels();
+	void AdjustPlayerHeight();
+	void SwitchCameraView();
+	void UpdateCameraTargetPosition();
+	void FramePlayerModel();
+	void FrameGunModel();
+	void UpdateZombieAndTankModels();
+	void HandlePlayerTreeCollisions();
+	void LimitPlayerMovement();
+	void UpdateGunModelPosition();
+	void FrameCollisionDetection();
+	void FrameUI();
+	void FramePointLight();
 public:
 	void NextWave();
 	void RenderObject();
