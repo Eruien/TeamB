@@ -1,6 +1,7 @@
 #include "ZombieWave.h"
 #include "LFbxMgr.h"
 #include "LPlayer.h"
+#include "LGlobal.h"
 
 void ZombieWave::SetZombie()
 {
@@ -15,6 +16,168 @@ void ZombieWave::SpawnZombieWave(LPlayer* player)
 float ZombieWave::GetRandomNumber()
 {
 	return m_Distribution(m_Generator);
+}
+
+void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList)
+{
+    for (int i = 0; i < zombieModelList.size(); i++)
+    {
+        // collision check
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox)
+            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBoxRightHand))
+        {
+            LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
+
+        for (int j = i + 1; j < zombieModelList.size(); j++)
+        {
+            if (zombieModelList[i]->m_OBBBox.CollisionCheck(&zombieModelList[j]->m_OBBBox))
+            {
+                float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
+                float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
+
+                zombieModelList[i]->m_matControl._41 += offsetX * 0.1;
+                zombieModelList[i]->m_matControl._43 += offsetZ * 0.1;
+            }
+
+        }
+
+        // Player <-> zombie
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox))
+        {
+            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
+            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
+
+            LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
+            LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
+        }
+
+        // zombie <-> tree
+        for (auto& tree : collisionObject)
+        {
+            TVector3 length = { tree->m_matControl._41, tree->m_matControl._42, tree->m_matControl._43 };
+            length -= zombieModelList[i]->m_OBBBox.m_Box.vCenter;
+            float distance = length.Length();
+            if (distance <= 27)
+            {
+                float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
+                float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
+
+                zombieModelList[i]->m_matControl._41 += offsetX * 0.1;
+                zombieModelList[i]->m_matControl._43 += offsetZ * 0.1;
+            }
+        }
+    }
+
+    for (int i = 0; i < zombieModelList.size(); i++)
+    {
+        zombieModelList[i]->m_OBBBox.Frame();
+        zombieModelList[i]->m_OBBBox.CreateOBBBox(zombieModelList[i]->m_SettingBox.fExtent[0], zombieModelList[i]->m_SettingBox.fExtent[1], zombieModelList[i]->m_SettingBox.fExtent[2],
+            { zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 },
+            zombieModelList[i]->m_SettingBox.vAxis[0], zombieModelList[i]->m_SettingBox.vAxis[1], zombieModelList[i]->m_SettingBox.vAxis[2]);
+
+        zombieModelList[i]->m_OBBBoxRightHand.Frame();
+        zombieModelList[i]->m_OBBBoxRightHand.CreateOBBBox(zombieModelList[i]->m_SettingBoxRightHand.fExtent[0], zombieModelList[i]->m_SettingBoxRightHand.fExtent[1], zombieModelList[i]->m_SettingBoxRightHand.fExtent[2],
+            { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
+            zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
+    }
+}
+
+void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList)
+{
+    for (int i = 0; i < zombieModelList.size(); i++)
+    {
+        // collision check
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox)
+            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBoxRightHand))
+        {
+            LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
+
+        for (int j = i + 1; j < zombieModelList.size(); j++)
+        {
+            if (zombieModelList[i]->m_OBBBox.CollisionCheck(&zombieModelList[j]->m_OBBBox))
+            {
+                float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
+                float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
+
+                zombieModelList[i]->m_matControl._41 += offsetX * 0.1;
+                zombieModelList[i]->m_matControl._43 += offsetZ * 0.1;
+            }
+
+        }
+
+        // Player <-> zombie
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox))
+        {
+            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
+            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
+
+            LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
+            LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
+        }
+
+        // zombie <-> tree
+        for (auto& tree : collisionObject)
+        {
+            TVector3 length = { tree->m_matControl._41, tree->m_matControl._42, tree->m_matControl._43 };
+            length -= zombieModelList[i]->m_OBBBox.m_Box.vCenter;
+            float distance = length.Length();
+            if (distance <= 27)
+            {
+                float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
+                float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
+
+                zombieModelList[i]->m_matControl._41 += offsetX * 0.1;
+                zombieModelList[i]->m_matControl._43 += offsetZ * 0.1;
+            }
+        }
+    }
+
+    for (int i = 0; i < zombieModelList.size(); i++)
+    {
+        zombieModelList[i]->m_OBBBox.Frame();
+        zombieModelList[i]->m_OBBBox.CreateOBBBox(zombieModelList[i]->m_SettingBox.fExtent[0], zombieModelList[i]->m_SettingBox.fExtent[1], zombieModelList[i]->m_SettingBox.fExtent[2],
+            { zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 },
+            zombieModelList[i]->m_SettingBox.vAxis[0], zombieModelList[i]->m_SettingBox.vAxis[1], zombieModelList[i]->m_SettingBox.vAxis[2]);
+
+        zombieModelList[i]->m_OBBBoxRightHand.Frame();
+        zombieModelList[i]->m_OBBBoxRightHand.CreateOBBBox(zombieModelList[i]->m_SettingBoxRightHand.fExtent[0], zombieModelList[i]->m_SettingBoxRightHand.fExtent[1], zombieModelList[i]->m_SettingBoxRightHand.fExtent[2],
+            { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
+            zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
+    }
+}
+
+bool ZombieWave::Init()
+{
+    return true;
+}
+
+bool ZombieWave::Frame()
+{
+    for (int i = 0; i < m_ZombieModelList.size(); i++)
+    {
+        m_ZombieModelList[i]->Process();
+        m_ZombieModelList[i]->Frame();
+    }
+
+    for (int i = 0; i < m_TankList.size(); i++)
+    {
+        m_TankList[i]->Process();
+        m_TankList[i]->Frame();
+    }
+
+    return true;
+}
+
+bool ZombieWave::Render()
+{
+    return true;
+}
+
+bool ZombieWave::Release()
+{
+    return true;
 }
 
 ZombieWave::ZombieWave()

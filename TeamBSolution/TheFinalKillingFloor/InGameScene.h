@@ -21,7 +21,6 @@
 
 const int g_iMaxLight = 1;
 
-
 struct SHADOW_CONSTANT_BUFFER
 {
 	TMatrix	g_matShadow;
@@ -43,8 +42,6 @@ public:
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LModel> m_GunModel = nullptr;
-	std::vector<LNPC*> m_ZombieModelList;
-	std::vector<Tank*> m_TankList;
 	std::vector<shared_ptr<LModel>> m_BulletList;
 	std::vector<bool> m_VisibleBulletList;
 	int BulletIndex = 0;
@@ -53,7 +50,6 @@ public:
 	vector<shared_ptr<LModel>> m_WallList;
 	vector<shared_ptr<LModel>> m_TreeList;
 	vector<shared_ptr<LModel>> m_GrassList;
-
 
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
@@ -67,7 +63,6 @@ public: // light
 	LIGHT_CONSTANT_BUFFER2	m_cbLight2;
 	ComPtr<ID3D11Buffer>	m_pConstantBufferLight[2];
 	Light					m_PointLight[1];
-	
 public:
 	// Shadow
 	LDxRT m_RT;
@@ -109,8 +104,5 @@ public:
 public:
 	InGameScene(LScene* parent);
 	virtual ~InGameScene();
-
-
-
 	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic = false);
 };
