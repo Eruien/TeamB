@@ -8,38 +8,15 @@
 #include "LExportIO.h"
 static bool Init_2 = true;
 bool InGameScene::Init()
-{
-    LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
-    LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
-    LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
-    LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
-    LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTime.mp3");
-    LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
-    
-    m_DebugCamera = std::make_shared<LDebugCamera>();
-    m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
-    m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+{ 
+    SoundInit();
+    CameraInit();
+    CharacterInit();
+    CreateShadowConstantBuffer();
 
-    m_ModelCamera = std::make_shared<LModelCamera>();
-    m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
-    m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-    m_ModelCamera->m_fRadius = 100.0f;
-
-    m_BackViewCamera = std::make_shared<LBackView>();
-    m_BackViewCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
-    m_BackViewCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
-    LGlobal::g_pMainCamera = m_BackViewCamera.get();
-
-    m_MinimapCamera = std::make_shared<LCamera>();
-    m_MinimapCamera->CreateLookAt({ 0.0f, 6000.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
-    m_MinimapCamera->m_fCameraPitch = 0.f;
-    m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.1f, 1.0f, -1.0f, 10000.0f);
-    //m_MinimapCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
-
-    m_MinimapPosCamera = std::make_shared<LCamera>();
-    m_MinimapPosCamera->CreateLookAt({ 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
-    m_MinimapPosCamera->m_fCameraPitch = 0.f;
-    m_MinimapPosCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
+    m_SkyBox = std::make_shared<LSkyBox>();
+    m_SkyBox->Set();
+    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
 
     m_playerIcon = make_shared<KObject>();
     m_playerIcon->Init();
@@ -47,13 +24,6 @@ bool InGameScene::Init()
     m_playerIcon->SetScale({ 10,10, 1 });
 
     m_playerIcon->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/PlayerIcon.png");
-
-    CreateShadowConstantBuffer();
-
-    m_SkyBox = std::make_shared<LSkyBox>();
-    m_SkyBox->Set();
-    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
-
 
     {
         for (int i = 0; i < 10; i++)
@@ -69,81 +39,6 @@ bool InGameScene::Init()
            
         }
     }
-
-
-
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin", L"../../res/hlsl/CharacterShaderInAnimationData.hlsl");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
-    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Attack_Anim.fbx"));
-    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Death.fbx"));
-    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx"));
-    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx"));
-
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Tank.bin", L"../../res/hlsl/CharacterShader.hlsl");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Combo.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Death.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_TakeDamage.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Walk.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
-
-    m_ZombieWave = std::make_shared<ZombieWave>();
-    m_ZombieModelList.resize(m_WaveCount);
-    for (int i = 0; i < m_WaveCount; i++)
-    {
-        m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
-        m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
-        m_ZombieModelList[i]->CreateBoneBuffer();
-        m_ZombieModelList[i]->FSM(FSMType::ENEMY);
-
-        m_ZombieModelList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
-        m_ZombieModelList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
-    }
-    m_ZombieModelList[0]->ComputeOffset();
-
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_Ironsights.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Reload_Rifle_Ironsights.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Sprint_Fwd_Rifle.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Walk_Fwd_Rifle_Ironsights.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_Ironsights.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Player_TakeDamage.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Player_Death.bin");
-
-    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
-
-    LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
-
-    LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
-    LGlobal::g_PlayerModel->CreateBoneBuffer();
-    LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-
-    TMatrix matScale;
-    TMatrix matRot;
-    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
-    LGlobal::g_PlayerModel->m_matControl *= matScale;
-    D3DXMatrixRotationY(&matRot, 3.14159);
-    LGlobal::g_PlayerModel->m_matControl *= matRot;
-
-    m_GunModel = std::make_shared<LModel>();
-    m_GunModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
-
-    m_GunModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
-    m_GunModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
-    m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
-    m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
-
-    for (int i = 0; i < m_WaveCount; i++)
-    {
-        m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
-        m_ZombieModelList[i]->SetAnimationArrayTexture();
-        m_ZombieModelList[i]->SetAnimationArraySRV();
-        m_ZombieModelList[i]->CreateCurrentFrameBuffer();
-    }
-    m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
 
     // 맵 오브젝트 예시
     //mapObj = LFbxMgr::GetInstance().Load(L"../../res/map/Mountain.fbx", L"../../res/hlsl/ShadowMap.hlsl");
@@ -354,30 +249,6 @@ bool InGameScene::Init()
         }
     }
 
-    // Collision
-    std::wstring head = L"Head";
-    std::wstring root = L"root";
-    std::wstring shoulder = L"RightShoulder";
-    std::wstring hand = L"RightHand";
-
-    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
-
-    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
-
-    Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
-    Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix RightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix RightHand = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
-
-    m_Select = new LSelect;
-
-    for (int i = 0; i < m_WaveCount; i++)
-    {
-        m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
-    }
-
     //Minimap
     m_ShapeMinimap.Set();
     m_ShapeMinimap.SetScreenVertex(10, 10, 256, 256, TVector2(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight));
@@ -483,8 +354,8 @@ void InGameScene::Process()
     LGlobal::g_IngameSound->Play();
     if(Init_2)
     {
-        UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveCountList.size());
-        UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_CurrentWave);
+        UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveZombieCountList.size());
+        UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
         UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
         Init_2 = false;
     }
@@ -1183,23 +1054,170 @@ void InGameScene::Release()
     }
 }
 
+void InGameScene::SoundInit()
+{
+    LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
+    LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
+    LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
+    LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
+    LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTime.mp3");
+    LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
+}
+
+void InGameScene::CameraInit()
+{
+    m_DebugCamera = std::make_shared<LDebugCamera>();
+    m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
+    m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+
+    m_ModelCamera = std::make_shared<LModelCamera>();
+    m_ModelCamera->SetTargetPos(TVector3(0.0f, 0.0f, 0.0f));
+    m_ModelCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+    m_ModelCamera->m_fRadius = 100.0f;
+
+    m_BackViewCamera = std::make_shared<LBackView>();
+    m_BackViewCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
+    m_BackViewCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+    LGlobal::g_pMainCamera = m_BackViewCamera.get();
+
+    m_MinimapCamera = std::make_shared<LCamera>();
+    m_MinimapCamera->CreateLookAt({ 0.0f, 6000.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
+    m_MinimapCamera->m_fCameraPitch = 0.f;
+    m_MinimapCamera->CreatePerspectiveFov(L_PI * 0.1f, 1.0f, -1.0f, 10000.0f);
+    //m_MinimapCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
+
+    m_MinimapPosCamera = std::make_shared<LCamera>();
+    m_MinimapPosCamera->CreateLookAt({ 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f });
+    m_MinimapPosCamera->m_fCameraPitch = 0.f;
+    m_MinimapPosCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
+}
+
+void InGameScene::CharacterInit()
+{
+    // Zombie
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Zombie.bin", L"../../res/hlsl/CharacterShaderInAnimationData.hlsl");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Attack_Anim.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Death.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Zombie_Walk_Lock.bin");
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Attack_Anim.fbx"));
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Death.fbx"));
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx"));
+    LFbxMgr::GetInstance().m_ZombieMap.push_back(LFbxMgr::GetInstance().GetPtr(L"Zombie_Walk_Lock.fbx"));
+
+    // Tank
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Tank.bin", L"../../res/hlsl/CharacterShader.hlsl");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Combo.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Death.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Walk.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
+
+    // ZombieWaveSetting
+    m_ZombieWave = std::make_shared<ZombieWave>();
+    int initWaveCount = m_ZombieWave->m_WaveZombieCountList[m_ZombieWave->m_CurrentWave];
+    m_ZombieModelList.resize(initWaveCount);
+    for (int i = 0; i < initWaveCount; i++)
+    {
+        m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
+        m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
+        m_ZombieModelList[i]->CreateBoneBuffer();
+        m_ZombieModelList[i]->FSM(FSMType::ENEMY);
+
+        m_ZombieModelList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_ZombieModelList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+    }
+    m_ZombieModelList[0]->ComputeOffset();
+
+    // Character
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Reload_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Sprint_Fwd_Rifle.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Walk_Fwd_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Idle_Rifle_Ironsights.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Player_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Player_Death.bin");
+
+    // Item
+    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
+    // form
+    LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
+
+    // PlayerSetting
+    LGlobal::g_PlayerModel = new LPlayer;
+    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+    LGlobal::g_PlayerModel->CreateBoneBuffer();
+    LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
+
+    TMatrix matScale;
+    TMatrix matRot;
+    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
+    LGlobal::g_PlayerModel->m_matControl *= matScale;
+    D3DXMatrixRotationY(&matRot, 3.14159);
+    LGlobal::g_PlayerModel->m_matControl *= matRot;
+
+    // ItemSetting
+    m_GunModel = std::make_shared<LModel>();
+    m_GunModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
+
+    m_GunModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
+    m_GunModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
+    m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
+    m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
+
+    for (int i = 0; i < initWaveCount; i++)
+    {
+        m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
+        m_ZombieModelList[i]->SetAnimationArrayTexture();
+        m_ZombieModelList[i]->SetAnimationArraySRV();
+        m_ZombieModelList[i]->CreateCurrentFrameBuffer();
+    }
+    m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
+
+    // Collision
+    std::wstring head = L"Head";
+    std::wstring root = L"root";
+    std::wstring shoulder = L"RightShoulder";
+    std::wstring hand = L"RightHand";
+
+    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
+
+    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
+
+    Head = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
+    Root = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix RightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    TMatrix RightHand = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
+
+    m_Select = new LSelect;
+
+    for (int i = 0; i < initWaveCount; i++)
+    {
+        m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+        m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+    }
+
+}
+
 void InGameScene::NextWave()
 {
-    m_CurrentWave++;
+    m_ZombieWave->m_CurrentWave++;
 
-    if (m_CurrentWave > 3)
+    if (m_ZombieWave->m_CurrentWave > 3)
     {
         IsEndGame = true;
         return;
     }
 
-    int currentWaveCount = m_ZombieWave->m_WaveCountList[m_CurrentWave];
-    m_ZombieModelList.resize(currentWaveCount);
+    int zombieCount = m_ZombieWave->m_WaveZombieCountList[m_ZombieWave->m_CurrentWave];
+    m_ZombieModelList.resize(zombieCount);
 
-    int tankCount = m_ZombieWave->m_TankCountList[m_CurrentWave];
+    int tankCount = m_ZombieWave->m_WaveTankCountList[m_ZombieWave->m_CurrentWave];
     m_TankList.resize(tankCount);
     
-    for (int i = 0; i < currentWaveCount; i++)
+    for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
         m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
@@ -1222,7 +1240,7 @@ void InGameScene::NextWave()
         m_TankList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
     }
 
-    for (int i = 0; i < currentWaveCount; i++)
+    for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
         m_ZombieModelList[i]->SetAnimationArrayTexture();
@@ -1246,7 +1264,7 @@ void InGameScene::NextWave()
     TMatrix TankRightShoulder = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
     TMatrix TankRightHand = m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
 
-    for (int i = 0; i < currentWaveCount; i++)
+    for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
         m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
@@ -1258,9 +1276,9 @@ void InGameScene::NextWave()
         m_TankList[i]->SetOBBBoxRightHand({ TankRightHand._41 - 40.0f, TankRightHand._42 - 40.0f, -40.0f }, { TankRightShoulder._41 + 40.0f, TankRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
     }
 
-    if (m_CurrentWave > 3) return;
+    if (m_ZombieWave->m_CurrentWave > 3) return;
      UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieModelList.size());
-    UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_CurrentWave);
+    UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
 }
 
 void InGameScene::RenderObject()
