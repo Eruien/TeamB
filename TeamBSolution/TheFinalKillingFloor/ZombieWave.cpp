@@ -353,7 +353,7 @@ void ZombieWave::CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& colli
 
                 TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
                 vNormal.Normalize();
-                vNormal *= (33 - distance);
+                vNormal *= (30 - distance);
                 zombieModelList[i]->m_matControl._41 += vNormal.x;
                 zombieModelList[i]->m_matControl._43 += vNormal.z;
             }

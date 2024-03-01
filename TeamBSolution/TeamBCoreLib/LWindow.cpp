@@ -93,7 +93,9 @@ bool LWindow::SetCreateWindow(LPCWSTR lpWindowName, int WindowWidth, int WindowH
     GetClientRect(m_hWnd, &m_rcClient);
     LGlobal::g_WindowWidth = m_WindowWidth = m_rcClient.right;
     LGlobal::g_WindowHeight = m_WindowHeight = m_rcClient.bottom;
-
+    int x = 100;
+    int y = 100;
+    SetWindowPos(m_hWnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
     ShowWindow(m_hWnd, SW_SHOW);
 
     return true;

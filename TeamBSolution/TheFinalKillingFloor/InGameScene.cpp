@@ -9,6 +9,7 @@
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
+
     InitializeObjects();
     InitializeSkyBox();
     InitializePlayerIcon();
@@ -340,6 +341,7 @@ void InGameScene::Render()
 
    if (IsEndGame)
    {
+       LInput::GetInstance().CursorChange();
        UIManager::GetInstance().Load(L"EndScene.xml");
        m_pOwner->SetTransition(Event::GOENDSCENE);
    }
@@ -1080,6 +1082,7 @@ void InGameScene::CheckPlayerDeath()
     if (LGlobal::g_PlayerModel->IsDeath)
     {
         IsEndGame = true;
+
     }
 }
 

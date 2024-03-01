@@ -91,9 +91,11 @@ private:
 	BYTE	m_KeyState[256];
 	BYTE GetKey(BYTE dwKey);
 	
+
 public:
 	bool InitDirectInput();
 	bool ShutDownDirectInput();
+	void CursorChange();
 public:
 	TVector3 m_vOffset = { 0,0,0 };
 	POINT m_MousePos;

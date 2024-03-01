@@ -1,6 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
 #include "../LScene.h"
+#include "LInput.h"
 class SceneChange : public MonoBehaviour
 {
 public:

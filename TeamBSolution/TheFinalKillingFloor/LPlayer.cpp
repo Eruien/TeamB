@@ -267,6 +267,15 @@ bool LPlayer::Frame()
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 
+
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_Q] == KEY_PUSH)
+	{
+		m_HP = min(100, m_HP + 30);
+		
+		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+	}
+
 	if (IsSteamPack)
 	{
 		m_SteamPackStart += LGlobal::g_fSPF;
@@ -288,6 +297,13 @@ bool LPlayer::Frame()
 		IsZedTime = true;
 		LGlobal::g_ZedTimeStart->PlayEffect();
 	}
+	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH)
+	{
+		m_ZedTimeCount = 1;
+		IsZedTime = true;
+		LGlobal::g_ZedTimeStart->PlayEffect();
+	}
+
 
 	if (IsZedTime)
 	{
@@ -311,14 +327,14 @@ bool LPlayer::Frame()
 		Move();
 	}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
+	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 	{
-		m_Speed = 200.0f;
+		m_Speed = 160.0f;
 	}
-	else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
-	{
-		m_Speed = 100.0f;
-	}
+	//else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
+	//{
+	//	m_Speed = 100.0f;
+	//}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
 	{

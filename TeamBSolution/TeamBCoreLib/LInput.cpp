@@ -3,6 +3,7 @@
 
 INPUT_MAP g_InputData;
 
+
 bool LInput::InitDirectInput()
 {
     HRESULT hr = S_OK;
@@ -201,6 +202,7 @@ bool LInput::Frame()
     g_InputData.bDKey = GetKey(DIK_D);
     g_InputData.bQKey = GetKey(DIK_Q);
     g_InputData.bEKey = GetKey(DIK_E);
+    g_InputData.bEKey = GetKey(DIK_Z);
    
     g_InputData.bLShift = GetKey(DIK_LSHIFT);
 
@@ -264,8 +266,7 @@ bool LInput::Frame()
 
     if (m_KeyStateOld[DIK_F2] == KEY_PUSH)
     {
-        ShowCursor(IsHideCursor);
-        IsHideCursor = !IsHideCursor;
+        CursorChange();
     }
 
     if (IsHideCursor)
@@ -281,6 +282,13 @@ bool LInput::Frame()
     m_BeforeMousePos = m_MousePos;
 	return true;
 }
+
+void LInput::CursorChange()
+{
+    ShowCursor(IsHideCursor);
+    IsHideCursor = !IsHideCursor;
+}
+
 
 bool LInput::Render()
 {

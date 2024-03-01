@@ -33,12 +33,14 @@ void SceneChange::Frame()
 		if (_sceneEvent == Event::GOMAINSCENE)
 		{
 			//수정해야함
+			//LInput::GetInstance().CursorChange();
 			LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Init();
 			UIManager::GetInstance().Load(L"MainScene.xml");
 			LScene::GetInstance().SetTransition(_sceneEvent);
 		}
 		else if (_sceneEvent == Event::GOINGAMESCENE)
 		{
+			LInput::GetInstance().CursorChange();
 			LGlobal::g_BackgroundSound->Stop();
 			UIManager::GetInstance().Load(L"IngameScene.xml");
 			LScene::GetInstance().SetTransition(_sceneEvent);
@@ -47,6 +49,7 @@ void SceneChange::Frame()
 		}
 		else if (_sceneEvent == Event::GOENDSCENE)
 		{
+			LInput::GetInstance().CursorChange();
 			UIManager::GetInstance().Load(L"EndScene.xml");
 			LScene::GetInstance().SetTransition(_sceneEvent);
 		}
