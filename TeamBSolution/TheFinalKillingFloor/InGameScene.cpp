@@ -153,11 +153,26 @@ void InGameScene::Render()
         wall->Render();
     }
 
-    for (auto tree : m_TreeList)
+    for (auto& tree : m_TreeList)
     {
         tree->Render();
     }
+    // grass
+    for (auto& grass : m_GrassList)
+    {
+        grass->Render();
+    }
 
+    // bullet
+    for (int i = 0; i < m_BulletList.size(); i++)
+    {
+        if (m_VisibleBulletList[i])
+        {
+            m_BulletList[i]->Render();
+        }
+    }
+
+    //muzzleFlash
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
         if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
@@ -173,31 +188,13 @@ void InGameScene::Render()
         m_muzzleFlash->Render();
     }
 
+    //blood
     for (auto& obj : m_bloodSplatter)
     {
         obj->Render();
     }
 
 
-    //m_Tree->Render();
-    for (auto& tree : m_TreeList)
-	{
-		tree->Render();
-	}
-    // grass
-    for (auto& grass : m_GrassList)
-    {
-        grass->Render();
-    }
-
-    // bullet
-    for (int i = 0; i < m_BulletList.size(); i++)
-    {
-        if (m_VisibleBulletList[i])
-        {
-            m_BulletList[i]->Render();
-        }
-    }
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
     m_pQuad.PreRender();
@@ -1007,6 +1004,8 @@ void InGameScene::InitializeMuzzleFlash()
     // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
 }
 
+
+///////////////////process/////////////////////
 
 void InGameScene::ProcessMuzzleFlash()
 {
