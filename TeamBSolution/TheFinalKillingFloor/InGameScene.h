@@ -58,6 +58,9 @@ public:
 	LFbxObj* grassObj = nullptr;
 
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
+public:
+	// pos
+	TVector3 m_PlayerFirstSpawnPos;
 public: // light
 	LIGHT_CONSTANT_BUFFER1	m_cbLight1;
 	LIGHT_CONSTANT_BUFFER2	m_cbLight2;
@@ -90,6 +93,7 @@ public:
 	void Render() override;
 	void Process() override;
 	void Retry();
+	void DeleteCurrentObject();
 	void Release();
 public:
 	void SoundInit();

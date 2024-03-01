@@ -155,7 +155,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_ZombieModelList[i]->m_SettingBox.vCenter.y, m_ZombieModelList[i]->m_matControl._43));
         m_ZombieModelList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_ZombieModelList[i]->m_OBBBox.Render();
+        //m_ZombieModelList[i]->m_OBBBox.Render();
         m_ZombieModelList[i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -171,7 +171,7 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_ZombieModelList[i]->m_matControl;
         m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
+        //m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
     }
 
     for (int i = 0; i < m_TankList.size(); i++)
@@ -179,7 +179,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_TankList[i]->m_matControl._41, m_TankList[i]->m_matControl._42 + m_TankList[i]->m_SettingBox.vCenter.y, m_TankList[i]->m_matControl._43));
         m_TankList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_TankList[i]->m_OBBBox.Render();
+        //m_TankList[i]->m_OBBBox.Render();
         m_TankList[i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -195,7 +195,7 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_TankList[i]->m_matControl;
         m_TankList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_TankList[i]->m_OBBBoxRightHand.Render();
+        //m_TankList[i]->m_OBBBoxRightHand.Render();
     }
 }
 

@@ -36,7 +36,7 @@ bool InGameScene::Init()
             blood->AddScripts(std::make_shared<Animator>(L"Anim.xml"));
             blood->SetIsRender(false);
             m_bloodSplatter.push_back(blood);
-           
+     
         }
     }
 
@@ -100,8 +100,6 @@ bool InGameScene::Init()
 			tree->m_matControl = worldMatrix;
 		}
 	}
-
-
 
     //wall
     m_WallList.resize(40);
@@ -274,6 +272,8 @@ bool InGameScene::Init()
     //m_Tree->m_matControl._42 = fHeight - 5.0f;
 
     m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
+
+    m_PlayerFirstSpawnPos = { LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43 };
 
     return true;
 }
@@ -807,12 +807,36 @@ void InGameScene::Render()
        UIManager::GetInstance().Load(L"EndScene.xml");
        m_pOwner->SetTransition(Event::GOENDSCENE);
    }
-   
+
+   if (LInput::GetInstance().m_MouseState[1] == KEY_PUSH)
+   {
+       Retry();
+   }
 }
 
 void InGameScene::Retry()
 {
+    DeleteCurrentObject();
+    LGlobal::g_PlayerModel->m_matControl.Translation(m_PlayerFirstSpawnPos);
+    LGlobal::g_PlayerModel->m_HP = 100;
+    LGlobal::g_PlayerModel->IsSteamPack = false;
+    LGlobal::g_PlayerModel->IsZedTime = false;
+    LGlobal::g_PlayerModel->m_ZedTimeCount = 1;
+    m_ZombieWave->m_CurrentWave = 0;
+    NextWave();
+}
 
+void InGameScene::DeleteCurrentObject()
+{
+    for (auto iter = m_ZombieWave->m_ZombieModelList.begin(); iter != m_ZombieWave->m_ZombieModelList.end();)
+    {
+        iter = m_ZombieWave->m_ZombieModelList.erase(iter);
+    }
+
+    for (auto iter = m_ZombieWave->m_TankList.begin(); iter != m_ZombieWave->m_TankList.end();)
+    {
+        iter = m_ZombieWave->m_TankList.erase(iter);
+    }
 }
 
 void InGameScene::Release()
