@@ -1230,8 +1230,11 @@ void InGameScene::UpdateZombieAndTankModels()
         tank->m_matControl._42 = fHeight + 1.0f;
     }
 
-    m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
-    m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
+    //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
+    //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
+
+    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_ZombieModelList);
+    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_TankList);
 
     m_ZombieWave->Frame();
 }
@@ -1257,6 +1260,24 @@ void InGameScene::HandlePlayerTreeCollisions()
             LGlobal::g_PlayerModel->m_matControl._43 = LGlobal::g_PlayerModel->m_PrevPosition.z + offsetZ * 0.005f;*/
         }
     }
+
+    for (auto& zombie : m_ZombieWave->m_ZombieModelList)
+    {
+		TVector3 length = { zombie->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, zombie->m_matControl._43 };
+		length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
+		float distance = length.Length();
+        if (distance <= 27)
+        {
+			float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
+			float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
+
+			TVector3 vNormal = { offsetX, LGlobal::g_PlayerModel->m_matControl._42, offsetZ };
+			vNormal.Normalize();
+			vNormal *= (27 - distance);
+			LGlobal::g_PlayerModel->m_matControl._41 += vNormal.x;
+			LGlobal::g_PlayerModel->m_matControl._43 += vNormal.z;
+		}
+	}
 }
 
 void InGameScene::LimitPlayerMovement()
