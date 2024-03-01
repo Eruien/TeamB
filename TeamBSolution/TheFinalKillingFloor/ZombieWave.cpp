@@ -123,7 +123,7 @@ void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject
             TVector3 length = { tree->m_matControl._41, tree->m_matControl._42, tree->m_matControl._43 };
             length -= zombieModelList[i]->m_OBBBox.m_Box.vCenter;
             float distance = length.Length();
-            if (distance <= 27)
+            if (distance <= 33)
             {
                 float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
                 float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
@@ -145,6 +145,57 @@ void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject
         zombieModelList[i]->m_OBBBoxRightHand.CreateOBBBox(zombieModelList[i]->m_SettingBoxRightHand.fExtent[0], zombieModelList[i]->m_SettingBoxRightHand.fExtent[1], zombieModelList[i]->m_SettingBoxRightHand.fExtent[2],
             { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
             zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
+    }
+}
+
+void ZombieWave::CollisionBoxRender()
+{
+    for (int i = 0; i < m_ZombieModelList.size(); i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_ZombieModelList[i]->m_SettingBox.vCenter.y, m_ZombieModelList[i]->m_matControl._43));
+        m_ZombieModelList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_ZombieModelList[i]->m_OBBBox.Render();
+        m_ZombieModelList[i]->Render();
+
+        TMatrix zombieRightHandSocket;
+        TMatrix matRightHand;
+        if (m_ZombieModelList[i]->m_pActionModel != nullptr)
+        {
+            if (m_ZombieModelList[i]->m_pActionModel->m_iEndFrame >= int(m_ZombieModelList[i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_ZombieModelList[i]->m_fCurrentAnimTime - m_ZombieModelList[i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_ZombieModelList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+            }
+        }
+
+        matRightHand = zombieRightHandSocket * m_ZombieModelList[i]->m_matControl;
+        m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
+    }
+
+    for (int i = 0; i < m_TankList.size(); i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_TankList[i]->m_matControl._41, m_TankList[i]->m_matControl._42 + m_TankList[i]->m_SettingBox.vCenter.y, m_TankList[i]->m_matControl._43));
+        m_TankList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_TankList[i]->m_OBBBox.Render();
+        m_TankList[i]->Render();
+
+        TMatrix zombieRightHandSocket;
+        TMatrix matRightHand;
+        if (m_TankList[i]->m_pActionModel != nullptr)
+        {
+            if (m_TankList[i]->m_pActionModel->m_iEndFrame >= int(m_TankList[i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_TankList[i]->m_fCurrentAnimTime - m_TankList[i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_TankList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+            }
+        }
+
+        matRightHand = zombieRightHandSocket * m_TankList[i]->m_matControl;
+        m_TankList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_TankList[i]->m_OBBBoxRightHand.Render();
     }
 }
 
@@ -172,6 +223,16 @@ bool ZombieWave::Frame()
 
 bool ZombieWave::Render()
 {
+    for (auto& zombie : m_ZombieModelList)
+    {
+        zombie->AniRender();
+    }
+
+    for (auto& tank : m_TankList)
+    {
+        tank->Render();
+    }
+
     return true;
 }
 

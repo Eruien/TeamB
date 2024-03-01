@@ -589,17 +589,8 @@ void InGameScene::Render()
 
     RenderObject();
     m_GunModel->Render();
-   
     
-    for (auto& zombie : m_ZombieWave->m_ZombieModelList)
-    {
-        zombie->AniRender();
-    }
-
-    for (auto& tank : m_ZombieWave->m_TankList)
-    {
-        tank->Render();
-    }
+    m_ZombieWave->Render();
 
     // map
     //m_MapModel->m_pModel->m_DrawList[0]->SetMatrix(&m_MapModel->m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
@@ -683,36 +674,17 @@ void InGameScene::Render()
     LGlobal::g_PlayerModel->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     LGlobal::g_PlayerModel->m_OBBBox.Render();
 
-    for (int i = 0; i < m_ZombieWave->m_ZombieModelList.size(); i++)
+    m_ZombieWave->CollisionBoxRender();
+
+    if (LInput::GetInstance().m_MouseState[0])
     {
-        TMatrix zombieTranslation;
-        zombieTranslation.Translation(TVector3(m_ZombieWave->m_ZombieModelList[i]->m_matControl._41, m_ZombieWave->m_ZombieModelList[i]->m_matControl._42 + m_ZombieWave->m_ZombieModelList[i]->m_SettingBox.vCenter.y, m_ZombieWave->m_ZombieModelList[i]->m_matControl._43));
-        m_ZombieWave->m_ZombieModelList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_ZombieWave->m_ZombieModelList[i]->m_OBBBox.Render();
-        m_ZombieWave->m_ZombieModelList[i]->Render();
-
-        TMatrix zombieRightHandSocket;
-        TMatrix matRightHand;
-        if (m_ZombieWave->m_ZombieModelList[i]->m_pActionModel != nullptr)
+        for (auto& zombie : m_ZombieWave->m_ZombieModelList)
         {
-            if (m_ZombieWave->m_ZombieModelList[i]->m_pActionModel->m_iEndFrame >= int(m_ZombieWave->m_ZombieModelList[i]->m_fCurrentAnimTime))
-            {
-                int currentFrame = max(m_ZombieWave->m_ZombieModelList[i]->m_fCurrentAnimTime - m_ZombieWave->m_ZombieModelList[i]->m_pActionModel->m_iStartFrame, 0);
-                zombieRightHandSocket = m_ZombieWave->m_ZombieModelList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
-            }
-        }
-
-        matRightHand = zombieRightHandSocket * m_ZombieWave->m_ZombieModelList[i]->m_matControl;
-        m_ZombieWave->m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_ZombieWave->m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
-
-        if (LInput::GetInstance().m_MouseState[0])
-        {
-            if (m_Select->ChkOBBToRay(&m_ZombieWave->m_ZombieModelList[i]->m_OBBBox.m_Box))
+            if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
             {
                 if (LGlobal::g_PlayerModel->IsShoot)
                 {
-                    m_ZombieWave->m_ZombieModelList[i]->IsTakeDamage = true;
+                    zombie->IsTakeDamage = true;
 
                     m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
                     m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
@@ -728,36 +700,15 @@ void InGameScene::Render()
         }
     }
 
-    for (int i = 0; i < m_ZombieWave->m_TankList.size(); i++)
+    if (LInput::GetInstance().m_MouseState[0])
     {
-        TMatrix zombieTranslation;
-        zombieTranslation.Translation(TVector3(m_ZombieWave->m_TankList[i]->m_matControl._41, m_ZombieWave->m_TankList[i]->m_matControl._42 + m_ZombieWave->m_TankList[i]->m_SettingBox.vCenter.y, m_ZombieWave->m_TankList[i]->m_matControl._43));
-        m_ZombieWave->m_TankList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_ZombieWave->m_TankList[i]->m_OBBBox.Render();
-        m_ZombieWave->m_TankList[i]->Render();
-
-        TMatrix zombieRightHandSocket;
-        TMatrix matRightHand;
-        if (m_ZombieWave->m_TankList[i]->m_pActionModel != nullptr)
+        for (auto& tank : m_ZombieWave->m_TankList)
         {
-            if (m_ZombieWave->m_TankList[i]->m_pActionModel->m_iEndFrame >= int(m_ZombieWave->m_TankList[i]->m_fCurrentAnimTime))
-            {
-                int currentFrame = max(m_ZombieWave->m_TankList[i]->m_fCurrentAnimTime - m_ZombieWave->m_TankList[i]->m_pActionModel->m_iStartFrame, 0);
-                zombieRightHandSocket = m_ZombieWave->m_TankList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
-            }
-        }
-
-        matRightHand = zombieRightHandSocket * m_ZombieWave->m_TankList[i]->m_matControl;
-        m_ZombieWave->m_TankList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_ZombieWave->m_TankList[i]->m_OBBBoxRightHand.Render();
-     
-        if (LInput::GetInstance().m_MouseState[0])
-        {
-            if (m_Select->ChkOBBToRay(&m_ZombieWave->m_TankList[i]->m_OBBBox.m_Box))
+            if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
             {
                 if (LGlobal::g_PlayerModel->IsShoot)
                 {
-                    m_ZombieWave->m_TankList[i]->IsTakeDamage = true;
+                    tank->IsTakeDamage = true;
 
                     m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
                     m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
@@ -765,8 +716,6 @@ void InGameScene::Render()
                     m_crrBlood++;
                     if (m_crrBlood == m_bloodSplatter.size())
                         m_crrBlood = 0;
-                    
-
                 }
 
                 //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";

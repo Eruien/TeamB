@@ -26,6 +26,7 @@ public:
 	float GetRandomNumber();
 	void CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList);
 	void CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList);
+	void CollisionBoxRender();
 public:
 	bool Init();
 	bool Frame();
