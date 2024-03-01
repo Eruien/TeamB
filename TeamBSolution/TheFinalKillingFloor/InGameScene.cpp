@@ -817,11 +817,15 @@ void InGameScene::Render()
 void InGameScene::Retry()
 {
     DeleteCurrentObject();
+    LGlobal::g_PlayerModel->IsInvincibility = true;
+    LGlobal::g_PlayerModel->IsTakeDamage = false;
+    LGlobal::g_PlayerModel->m_StartTakeDamage = 0.0f;
     LGlobal::g_PlayerModel->m_matControl.Translation(m_PlayerFirstSpawnPos);
     LGlobal::g_PlayerModel->m_HP = 100;
     LGlobal::g_PlayerModel->IsSteamPack = false;
     LGlobal::g_PlayerModel->IsZedTime = false;
     LGlobal::g_PlayerModel->m_ZedTimeCount = 1;
+
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
 }
@@ -830,11 +834,13 @@ void InGameScene::DeleteCurrentObject()
 {
     for (auto iter = m_ZombieWave->m_ZombieModelList.begin(); iter != m_ZombieWave->m_ZombieModelList.end();)
     {
+        delete* iter;
         iter = m_ZombieWave->m_ZombieModelList.erase(iter);
     }
 
     for (auto iter = m_ZombieWave->m_TankList.begin(); iter != m_ZombieWave->m_TankList.end();)
     {
+        delete* iter;
         iter = m_ZombieWave->m_TankList.erase(iter);
     }
 }
