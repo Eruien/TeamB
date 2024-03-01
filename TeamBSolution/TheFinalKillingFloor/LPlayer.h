@@ -51,6 +51,9 @@ public:
 	float m_ZedTimeStart = 0.0f;
 	float m_ZedTimeEnd = 5.0f;
 	TVector3 m_AddDirection;
+
+	// 충돌 처리를 위한 직전 위치. 시진 추가
+	TVector3 m_PrevPosition;
 public:
 	void FSM(FSMType fsmType);
 	void SetTransition(Event inputEvent);

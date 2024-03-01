@@ -55,10 +55,11 @@ void LPlayer::Process()
 void LPlayer::Move()
 {
 	IsMoveOneDir = false;
-
+	m_PrevPosition = { m_matControl._41, m_matControl._42, m_matControl._43 };
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
+		
 		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();

@@ -18,20 +18,20 @@ float ZombieWave::GetRandomNumber()
 	return m_Distribution(m_Generator);
 }
 
-void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList)
+void ZombieWave::CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList)
 {
     for (int i = 0; i < zombieModelList.size(); i++)
     {
         // collision check
-        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox)
-            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBoxRightHand))
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox)
+            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand))
         {
             LGlobal::g_PlayerModel->IsTakeDamage = true;
         }
 
         for (int j = i + 1; j < zombieModelList.size(); j++)
         {
-            if (zombieModelList[i]->m_OBBBox.CollisionCheck(&zombieModelList[j]->m_OBBBox))
+            if (zombieModelList[i]->m_OBBBox.CollisionCheckOBB(&zombieModelList[j]->m_OBBBox))
             {
                 float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
                 float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
@@ -43,7 +43,7 @@ void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject
         }
 
         // Player <-> zombie
-        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox))
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox))
         {
             float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
             float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
@@ -83,20 +83,20 @@ void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject
     }
 }
 
-void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList)
+void ZombieWave::CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList)
 {
     for (int i = 0; i < zombieModelList.size(); i++)
     {
         // collision check
-        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox)
-            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBoxRightHand))
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox)
+            || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand))
         {
             LGlobal::g_PlayerModel->IsTakeDamage = true;
         }
 
         for (int j = i + 1; j < zombieModelList.size(); j++)
         {
-            if (zombieModelList[i]->m_OBBBox.CollisionCheck(&zombieModelList[j]->m_OBBBox))
+            if (zombieModelList[i]->m_OBBBox.CollisionCheckOBB(&zombieModelList[j]->m_OBBBox))
             {
                 float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
                 float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;
@@ -108,7 +108,7 @@ void ZombieWave::CollisionCheck(std::vector<shared_ptr<LModel>>& collisionObject
         }
 
         // Player <-> zombie
-        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheck(&zombieModelList[i]->m_OBBBox))
+        if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox))
         {
             float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombieModelList[i]->m_OBBBox.m_Box.vCenter.x;
             float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombieModelList[i]->m_OBBBox.m_Box.vCenter.z;

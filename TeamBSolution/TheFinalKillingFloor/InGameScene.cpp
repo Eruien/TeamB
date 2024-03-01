@@ -13,17 +13,16 @@ bool InGameScene::Init()
     InitializeSkyBox();
     InitializePlayerIcon();
     InitializeBloodSplatters();
-    InitializeCustomMap();
-    InitializeTrees();
+    InitializeMap();
     InitializeWalls();
     InitializeBullets();
     InitializeLighting();
     InitializeShadow();
-    InitializeMap();
+    InitializeTrees();
     InitializeGrasses();
     InitializeMinimap();
     InitializeMuzzleFlash();
-    UpdateTreeHeights();
+
 
     m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
 
@@ -783,12 +782,6 @@ void InGameScene::InitializeBloodSplatters()
     }
 }
 
-void InGameScene::InitializeCustomMap()
-{
-    m_CustomMap = std::make_shared<LHeightMap>();
-    m_CustomMap->Set();
-    m_CustomMap->CreateHeightMap(L"../../res/Heightmap/heightMap513.bmp");
-}
 
 void InGameScene::InitializeTrees()
 {
@@ -808,7 +801,7 @@ void InGameScene::InitializeTreePosition(std::shared_ptr<LModel>& tree)
     DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
     float x = (rand() % 1800) - 900;
     float z = (rand() % 1800) - 900;
-    translationMatrix = DirectX::XMMatrixTranslation(x, 0.0f, z);
+    translationMatrix = DirectX::XMMatrixTranslation(x, m_CustomMap->GetHeight(x, z), z);
     rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
     scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
     worldMatrix = DirectX::XMMatrixIdentity();
@@ -952,6 +945,9 @@ void InGameScene::InitializeShadow()
 
 void InGameScene::InitializeMap()
 {
+    m_CustomMap = std::make_shared<LHeightMap>();
+    m_CustomMap->Set();
+    m_CustomMap->CreateHeightMap(L"../../res/Heightmap/heightMap513.bmp");
     //map
     LMapDesc MapDesc = {};
     MapDesc.iNumCols = m_CustomMap->m_iNumCols;
@@ -1009,15 +1005,6 @@ void InGameScene::InitializeMuzzleFlash()
     m_muzzleFlash->SetScale({ 10,10,1.f });
     m_muzzleFlash->SetPos({ 0,30,0 });
     // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
-}
-
-void InGameScene::UpdateTreeHeights()
-{
-    for (auto& tree : m_TreeList)
-    {
-        float fHeight = m_CustomMap->GetHeight(tree->m_matControl._41, tree->m_matControl._43);
-        tree->m_matControl._42 = fHeight - 5.0f;
-    }
 }
 
 
@@ -1243,8 +1230,8 @@ void InGameScene::UpdateZombieAndTankModels()
         tank->m_matControl._42 = fHeight + 1.0f;
     }
 
-    m_ZombieWave->CollisionCheck(m_TreeList, m_ZombieWave->m_ZombieModelList);
-    m_ZombieWave->CollisionCheck(m_TreeList, m_ZombieWave->m_TankList);
+    m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
+    m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
 
     m_ZombieWave->Frame();
 }
@@ -1253,16 +1240,21 @@ void InGameScene::HandlePlayerTreeCollisions()
 {
     for (auto& tree : m_TreeList)
     {
-        TVector3 length = { tree->m_matControl._41, tree->m_matControl._42, tree->m_matControl._43 };
+        TVector3 length = { tree->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, tree->m_matControl._43 };
         length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
         float distance = length.Length();
-        if (distance <= 30)
+        if (distance <= 33)
         {
             float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
             float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
-
-            LGlobal::g_PlayerModel->m_matControl._41 += offsetX * 0.1;
-            LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
+            
+            TVector3 vNormal = { offsetX, LGlobal::g_PlayerModel->m_matControl._42, offsetZ };
+            vNormal.Normalize();
+            vNormal *= (33 - distance);
+            LGlobal::g_PlayerModel->m_matControl._41 += vNormal.x;
+            LGlobal::g_PlayerModel->m_matControl._43 += vNormal.z;
+            /*LGlobal::g_PlayerModel->m_matControl._41 = LGlobal::g_PlayerModel->m_PrevPosition.x + offsetX * 0.005f;
+            LGlobal::g_PlayerModel->m_matControl._43 = LGlobal::g_PlayerModel->m_PrevPosition.z + offsetZ * 0.005f;*/
         }
     }
 }
@@ -1295,7 +1287,7 @@ void InGameScene::FrameCollisionDetection()
     LGlobal::g_PlayerModel->m_OBBBox.Frame();
     LGlobal::g_PlayerModel->m_OBBBox.CreateOBBBox(LGlobal::g_PlayerModel->m_SettingBox.fExtent[0], LGlobal::g_PlayerModel->m_SettingBox.fExtent[1], LGlobal::g_PlayerModel->m_SettingBox.fExtent[2],
         { LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41, LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42, LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 },
-        LGlobal::g_PlayerModel->m_SettingBox.vAxis[0], LGlobal::g_PlayerModel->m_SettingBox.vAxis[1], LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
+    LGlobal::g_PlayerModel->m_SettingBox.vAxis[0], LGlobal::g_PlayerModel->m_SettingBox.vAxis[1], LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
 
 
 }

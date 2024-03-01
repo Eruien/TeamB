@@ -114,7 +114,7 @@ bool LBox::CreateIndexData()
 	return true;
 }
 
-bool LBox::CollisionCheck(LBox* other)
+bool LBox::CollisionCheckAABB(LBox* other)
 {
 	// 각 축에서 겹치지 않는 경우가 있다면 충돌이 없음
 	if (m_Box.vMax.x < other->m_Box.vMin.x || m_Box.vMin.x > other->m_Box.vMax.x) return false;
@@ -124,6 +124,49 @@ bool LBox::CollisionCheck(LBox* other)
 	// 모든 축에서 겹치는 경우만 충돌이 있음
 	return true;
 }
+
+float LBox::DotProduct(const TVector3& vec1, const TVector3& vec2)
+{
+	return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
+}
+
+bool LBox::CollisionCheckOBB(LBox* other)
+{
+	// 이 박스의 각 축에 대해 투영된 두 박스가 겹치는지 확인
+	for (int i = 0; i < 3; i++)
+	{
+		if (!OverlapOnAxis(this->m_Box, other->m_Box, this->m_Box.vAxis[i]))
+			return false; // 축을 따라 투영했을 때 겹치지 않으면, 두 박스는 겹치지 않음
+	}
+
+	// 다른 박스의 각 축에 대해 투영된 두 박스가 겹치는지 확인
+	for (int i = 0; i < 3; i++)
+	{
+		if (!OverlapOnAxis(this->m_Box, other->m_Box, other->m_Box.vAxis[i]))
+			return false; // 축을 따라 투영했을 때 겹치지 않으면, 두 박스는 겹치지 않음
+	}
+
+	// 모든 축에 대해 투영된 두 박스가 겹치면, 두 박스는 겹침
+	return true;
+}
+
+bool LBox::OverlapOnAxis(const T_BOX& box1, const T_BOX& box2, const TVector3& axis)
+{
+	// 두 박스를 축에 투영한 후의 반경을 구함
+	float box1Project = box1.fExtent[0] * abs(DotProduct(axis, box1.vAxis[0])) +
+		box1.fExtent[1] * abs(DotProduct(axis, box1.vAxis[1])) +
+		box1.fExtent[2] * abs(DotProduct(axis, box1.vAxis[2]));
+	float box2Project = box2.fExtent[0] * abs(DotProduct(axis, box2.vAxis[0])) +
+		box2.fExtent[1] * abs(DotProduct(axis, box2.vAxis[1])) +
+		box2.fExtent[2] * abs(DotProduct(axis, box2.vAxis[2]));
+
+	// 두 박스의 중심 사이의 거리를 축에 투영
+	float distance = abs(DotProduct(axis, box2.vCenter - box1.vCenter));
+
+	// 두 박스가 축을 따라 겹치는지 확인
+	return distance < box1Project + box2Project;
+}
+
 
 void LBox::SetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
 {
@@ -149,3 +192,4 @@ void LBox::SetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
 	m_cbData.matProj = m_matProj.Transpose();
 	m_pImmediateContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, nullptr, &m_cbData, 0, 0);
 }
+
