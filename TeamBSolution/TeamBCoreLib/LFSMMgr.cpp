@@ -153,7 +153,6 @@ bool LFSMMgr::Init()
 	TankFSM->AddStateTransition(State::TANKCOMBO, Event::FATALDAMAGE, State::TANKDEATH);
 	TankFSM->AddStateTransition(State::TANKCOMBO, Event::ENDATTACK, State::TANKTRACE);
 
-	TankFSM->AddStateTransition(State::TANKRUSH, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
 	TankFSM->AddStateTransition(State::TANKRUSH, Event::FATALDAMAGE, State::TANKDEATH);
 	TankFSM->AddStateTransition(State::TANKRUSH, Event::ENDATTACK, State::TANKTRACE);
 
