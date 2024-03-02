@@ -92,7 +92,7 @@ public:
 	bool Init() override;
 	void Render() override;
 	void Process() override;
-	void Retry();
+	void Retry() override;
 	void DeleteCurrentObject();
 	void Release();
 public:

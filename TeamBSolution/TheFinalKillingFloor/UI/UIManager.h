@@ -48,8 +48,8 @@ public:
         bool _editMode = true;
         int _beforeHeight= LGlobal::g_WindowHeight;
         int _beforeWidth= LGlobal::g_WindowWidth;
-        float _resolutionOffsetX;
-        float _resolutionOffsetY;
+        float _resolutionOffsetX =1;
+        float _resolutionOffsetY=1;
 private:
     vector<shared_ptr<KObject>> _objs;
     vector<shared_ptr<KObject>> _objsTemp;

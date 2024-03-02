@@ -10,6 +10,7 @@ public:
 	virtual bool Init() { return true; }
 	virtual	void Process() = 0;
 	virtual	void Render() = 0;
+	virtual void Retry() {};
 public:
 	SceneState(LScene* parent) : m_pOwner(parent) {}
 	virtual ~SceneState() {}

@@ -410,8 +410,8 @@ void UIManager::UpdateResolution(int width, int height)
     _beforeWidth = width;
     _beforeHeight = height;
        
-    _resolutionOffsetX = float(width) / 1280;
-    _resolutionOffsetY = float(height) / 720;
+    _resolutionOffsetX *= float(width) / 1280;
+    _resolutionOffsetY *= float(height) / 720;
 }
 
 void UIManager::AdjustRes()
