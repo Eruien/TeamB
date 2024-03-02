@@ -373,22 +373,15 @@ void InGameScene::Render()
 
 void InGameScene::Retry()
 {
+    LGlobal::g_IngameSound->Play(true);
     IsEndGame = false;
-    LGlobal::g_PlayerModel->IsDeath = false;
     DeleteCurrentObject();
-    LGlobal::g_PlayerModel->IsInvincibility = true;
-    LGlobal::g_PlayerModel->IsTakeDamage = false;
-    LGlobal::g_PlayerModel->m_StartTakeDamage = 0.0f;
-    LGlobal::g_PlayerModel->m_matControl.Translation(m_PlayerFirstSpawnPos);
-    LGlobal::g_PlayerModel->m_HP = 100;
-    LGlobal::g_PlayerModel->IsSteamPack = false;
-    LGlobal::g_PlayerModel->IsZedTime = false;
-    LGlobal::g_PlayerModel->m_ZedTimeCount = 1;
+    PlayerInit();
     LGlobal::g_BulletCount = 30;
-  //  LGlobal::g_PlayerModel->m_CurrentState = State::CHARACTERIDLE;
- 
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
+    Init_2 = true;
+    UpdateUI();
     UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 }
 
@@ -403,6 +396,9 @@ void InGameScene::DeleteCurrentObject()
     {
         iter = m_ZombieWave->m_EnemyMap["Tank"].erase(iter);
     }
+
+    delete LGlobal::g_PlayerModel;
+    LGlobal::g_PlayerModel = nullptr;
 }
 
 void InGameScene::Release()
@@ -486,6 +482,32 @@ void InGameScene::CameraInit()
     m_MinimapPosCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
 }
 
+void InGameScene::PlayerInit()
+{
+    // PlayerSetting
+    LGlobal::g_PlayerModel = new LPlayer;
+    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+    LGlobal::g_PlayerModel->CreateBoneBuffer();
+    LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
+
+    TMatrix matScale;
+    TMatrix matRot;
+    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
+    LGlobal::g_PlayerModel->m_matControl *= matScale;
+    D3DXMatrixRotationY(&matRot, 3.14159);
+    LGlobal::g_PlayerModel->m_matControl *= matRot;
+
+    m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
+
+    std::wstring head = L"Head";
+    std::wstring root = L"root";
+  
+    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
+
+    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
+}
+
 void InGameScene::CharacterInit()
 {
     // Zombie
@@ -539,17 +561,7 @@ void InGameScene::CharacterInit()
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
 
     // PlayerSetting
-    LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
-    LGlobal::g_PlayerModel->CreateBoneBuffer();
-    LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-
-    TMatrix matScale;
-    TMatrix matRot;
-    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
-    LGlobal::g_PlayerModel->m_matControl *= matScale;
-    D3DXMatrixRotationY(&matRot, 3.14159);
-    LGlobal::g_PlayerModel->m_matControl *= matRot;
+    PlayerInit();
 
     // ItemSetting
     m_GunModel = std::make_shared<LModel>();
@@ -567,23 +579,24 @@ void InGameScene::CharacterInit()
         m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArraySRV();
         m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateCurrentFrameBuffer();
     }
-    m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
-
+   
     // Collision
     std::wstring head = L"Head";
     std::wstring root = L"root";
     std::wstring shoulder = L"RightShoulder";
     std::wstring hand = L"RightHand";
 
-    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix Head;
+    TMatrix Root;
+    TMatrix RightShoulder;
+    TMatrix RightHand;
 
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
 
     Head = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
     Root = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix RightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix RightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
+    RightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    RightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
 
     m_Select = new LSelect;
 

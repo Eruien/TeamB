@@ -34,7 +34,8 @@ void SceneChange::Frame()
 		{
 			//수정해야함
 			//LInput::GetInstance().CursorChange();
-			
+			LGlobal::g_IngameSound->Stop();
+			LGlobal::g_BackgroundSound->Play();
 			UIManager::GetInstance().Load(L"MainScene.xml");
 			
 			LScene::GetInstance().SetTransition(_sceneEvent);
