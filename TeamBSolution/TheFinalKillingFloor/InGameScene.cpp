@@ -231,7 +231,7 @@ void InGameScene::Render()
         {
             if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
             {
-                if (LGlobal::g_PlayerModel->IsShoot)
+                if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
                 {
                     if (abs(m_Select->m_vIntersection.y - tank->m_OBBBox.m_Box.vMax.y) < 7.f)
                     {
