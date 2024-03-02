@@ -87,8 +87,8 @@ void UIEvent::SteamPack()
 	float duration = LGlobal::g_PlayerModel->m_SteamPackStart;
 	if (duration > 0.001f)
 	{
-		duration = 10 - duration;
-		duration *= 10;
+		duration = LGlobal::g_PlayerModel->m_SteamPackEnd - duration;
+		duration *= (100 / LGlobal::g_PlayerModel->m_SteamPackEnd);
 	}
 	
 

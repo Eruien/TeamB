@@ -1246,39 +1246,57 @@ void InGameScene::HandlePlayerTreeCollisions()
 {
     for (auto& tree : m_TreeList)
     {
-        TVector3 length = { tree->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, tree->m_matControl._43 };
-        length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
-        float distance = length.Length();
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
+        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tree->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
+
+        TVector3 dir = { offsetX, offsetY, offsetZ };
+        float distance = dir.Length();
         if (distance <= 33)
         {
-            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
-            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
             
-            TVector3 vNormal = { offsetX, LGlobal::g_PlayerModel->m_matControl._42, offsetZ };
-            vNormal.Normalize();
-            vNormal *= (33 - distance);
-            LGlobal::g_PlayerModel->m_matControl._41 += vNormal.x;
-            LGlobal::g_PlayerModel->m_matControl._43 += vNormal.z;
-            /*LGlobal::g_PlayerModel->m_matControl._41 = LGlobal::g_PlayerModel->m_PrevPosition.x + offsetX * 0.005f;
-            LGlobal::g_PlayerModel->m_matControl._43 = LGlobal::g_PlayerModel->m_PrevPosition.z + offsetZ * 0.005f;*/
+            dir.Normalize();
+            dir *= (33 - distance);
+            LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+            LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
         }
     }
 
     for (auto& zombie : m_ZombieWave->m_ZombieModelList)
     {
-		TVector3 length = { zombie->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, zombie->m_matControl._43 };
-		length -= LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter;
-		float distance = length.Length();
-        if (distance <= 27)
-        {
-			float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
-			float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
+        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - zombie->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
 
-			TVector3 vNormal = { offsetX, LGlobal::g_PlayerModel->m_matControl._42, offsetZ };
-			vNormal.Normalize();
-			vNormal *= (27 - distance);
-			LGlobal::g_PlayerModel->m_matControl._41 += vNormal.x;
-			LGlobal::g_PlayerModel->m_matControl._43 += vNormal.z;
+		TVector3 dir = { offsetX, offsetY, offsetZ };
+		float distance = dir.Length();
+        TVector3 range = zombie->m_OBBBox.m_Box.vMax - zombie->m_OBBBox.m_Box.vMin;
+        float r = range.Length() * 0.7f;
+        if (distance <= r)
+        {
+            dir.Normalize();
+            dir *= (r - distance);
+			LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+			LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+		}
+	}
+
+	for (auto& tank : m_ZombieWave->m_TankList)
+	{
+		float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tank->m_matControl._41;
+		float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tank->m_matControl._42;
+		float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tank->m_matControl._43;
+		
+        TVector3 dir = { offsetX, offsetY, offsetZ };
+        float distance = dir.Length();
+        TVector3 range = tank->m_OBBBox.m_Box.vMax - tank->m_OBBBox.m_Box.vMin;
+        float r = range.Length() * 0.7f;
+        if (distance <= r)
+        {
+			dir.Normalize();
+			dir *= (r - distance);
+			LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+			LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
 		}
 	}
 }

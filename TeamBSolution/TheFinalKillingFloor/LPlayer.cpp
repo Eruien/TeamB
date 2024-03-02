@@ -279,8 +279,9 @@ bool LPlayer::Frame()
 	if (IsSteamPack)
 	{
 		m_SteamPackStart += LGlobal::g_fSPF;
-		m_AnimationRate = 2.0f;
-		float excleSpeed = m_Speed * 2;
+		m_ShotDelay = 0.05f;
+		m_AnimationRate = 1.5f;
+		float excleSpeed = m_Speed * 1.5;
 		m_Speed = excleSpeed;
 	}
 
@@ -308,10 +309,10 @@ bool LPlayer::Frame()
 	if (IsZedTime)
 	{
 		m_ZedTimeStart += LGlobal::g_fSPF;
-		m_ShotDelay = 0.05f;
+		/*m_ShotDelay = 0.05f;
 		m_AnimationRate = 2.0f;
 		float excleSpeed = m_Speed * 2;
-		m_Speed = excleSpeed;
+		m_Speed = excleSpeed;*/
 	}
 
 	if (m_ZedTimeEnd < m_ZedTimeStart)
@@ -329,7 +330,7 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 	{
-		m_Speed = 160.0f;
+		m_Speed = 140.0f;
 	}
 	//else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 	//{
@@ -341,7 +342,7 @@ bool LPlayer::Frame()
 		m_Speed = 0.0f;
 	}
 
-	if (m_Speed > 150.0f)
+	if (m_Speed > 100.0f)
 	{
 		IsRun = true;
 		IsWalk = true;

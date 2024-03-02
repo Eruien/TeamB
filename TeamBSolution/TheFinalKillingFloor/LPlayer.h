@@ -47,7 +47,7 @@ public:
 	float m_StartTakeDamage = 0.0f;
 	float m_EndTakeDamage = 1.0f;
 	float m_SteamPackStart = 0.0f;
-	float m_SteamPackEnd = 10.0f;
+	float m_SteamPackEnd = 5.0f;
 	float m_ZedTimeStart = 0.0f;
 	float m_ZedTimeEnd = 5.0f;
 	TVector3 m_AddDirection;
