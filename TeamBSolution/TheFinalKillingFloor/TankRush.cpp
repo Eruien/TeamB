@@ -18,6 +18,12 @@ void TankRush::Process()
         m_pOwner->IsTakeDamage = false;
     }
 
+    if (m_pOwner->IsDead)
+    {
+        m_pOwner->SetTransition(Event::FATALDAMAGE);
+        return;
+    }
+
     if (!m_pOwner->IsRush)
     {
         m_pOwner->SetTransition(Event::ENDATTACK);

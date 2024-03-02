@@ -381,6 +381,7 @@ void InGameScene::Retry()
     LGlobal::g_PlayerModel->IsSteamPack = false;
     LGlobal::g_PlayerModel->IsZedTime = false;
     LGlobal::g_PlayerModel->m_ZedTimeCount = 1;
+    LGlobal::g_BulletCount = 30;
 
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();

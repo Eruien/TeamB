@@ -19,12 +19,6 @@ void PlayerReload::Process()
         return;
     }
 
-    if (m_pOwner->IsTakeDammageAni)
-    {
-        m_pOwner->SetTransition(Event::TAKEDAMAGE);
-        return;
-    }
-
     if (m_pOwner->m_TimerEnd)
     {
         m_pOwner->IsMove = true;

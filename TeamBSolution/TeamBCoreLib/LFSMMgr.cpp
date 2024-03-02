@@ -111,7 +111,6 @@ bool LFSMMgr::Init()
 	PlayerFSM->AddStateTransition(State::CHARACTERSHOOT, Event::ENDATTACK, State::CHARACTERIDLE);
 	PlayerFSM->AddStateTransition(State::CHARACTERSHOOT, Event::STARTRELOAD, State::CHARACTERRELOAD);
 
-	PlayerFSM->AddStateTransition(State::CHARACTERRELOAD, Event::TAKEDAMAGE, State::CHARACTERTAKEDAMAGE);
 	PlayerFSM->AddStateTransition(State::CHARACTERRELOAD, Event::FATALDAMAGE, State::CHARACTERDEATH);
 	PlayerFSM->AddStateTransition(State::CHARACTERRELOAD, Event::ENDRELOAD, State::CHARACTERIDLE);
 
