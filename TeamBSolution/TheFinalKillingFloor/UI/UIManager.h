@@ -45,7 +45,7 @@ public:
     void AdjustRes();
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
-        bool _editMode = true;
+        bool _editMode = false;
         int _beforeHeight= LGlobal::g_WindowHeight;
         int _beforeWidth= LGlobal::g_WindowWidth;
         float _resolutionOffsetX =1;

@@ -24,8 +24,8 @@ bool InGameScene::Init()
     InitializeMinimap();
     InitializeMuzzleFlash();
 
+    InitializeOBBBox();
 
-    m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
 
     m_PlayerFirstSpawnPos = { LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43 };
 
@@ -1350,18 +1350,10 @@ void InGameScene::UpdateGunModelPosition()
 void InGameScene::FrameCollisionDetection()
 {
     m_Select->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-
-    LGlobal::g_PlayerModel->m_OBBBox.Frame();
-    LGlobal::g_PlayerModel->m_OBBBox.CreateOBBBox(
-        LGlobal::g_PlayerModel->m_SettingBox.fExtent[0],
-        LGlobal::g_PlayerModel->m_SettingBox.fExtent[1],
-        LGlobal::g_PlayerModel->m_SettingBox.fExtent[2],
-        {   LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41,
+    LGlobal::g_PlayerModel->m_OBBBox.UpdateOBBBoxPosition(
+        { LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41,
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42,
-            LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43    },
-        LGlobal::g_PlayerModel->m_SettingBox.vAxis[0],
-        LGlobal::g_PlayerModel->m_SettingBox.vAxis[1],
-        LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
+            LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 });
 
 
 }
@@ -1379,3 +1371,19 @@ void InGameScene::FramePointLight()
         LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
 }
 
+void InGameScene::InitializeOBBBox()
+{
+
+    LGlobal::g_PlayerModel->m_OBBBox.Frame();
+    LGlobal::g_PlayerModel->m_OBBBox.CreateOBBBox(
+        LGlobal::g_PlayerModel->m_SettingBox.fExtent[0],
+        LGlobal::g_PlayerModel->m_SettingBox.fExtent[1],
+        LGlobal::g_PlayerModel->m_SettingBox.fExtent[2],
+        { LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41,
+            LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42,
+            LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 },
+        LGlobal::g_PlayerModel->m_SettingBox.vAxis[0],
+        LGlobal::g_PlayerModel->m_SettingBox.vAxis[1],
+        LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
+    m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
+}

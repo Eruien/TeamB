@@ -12,6 +12,7 @@ public:
 		TVector3 vDirX = TVector3(1.0f, 0.0f, 0.0f),
 		TVector3 vDirY = TVector3(0.0f, 1.0f, 0.0f),
 		TVector3 vDirZ = TVector3(0.0f, 0.0f, 1.0f));
+	void UpdateOBBBoxPosition(TVector3 vCenter);
 	bool CreateVertexData() override;
 	bool CreateIndexData() override;
 	bool CollisionCheckAABB(LBox* other);
