@@ -17,8 +17,7 @@ public:
 	const int TankWave2 = 1;
 	const int TankWave3 = 2;
 public:
-	std::vector<std::shared_ptr<LNPC>> m_ZombieModelList;
-	std::vector<std::shared_ptr<LNPC>> m_TankList;
+    std::map<std::string, std::vector<std::shared_ptr<LNPC>>> m_EnemyMap;
 	int m_CurrentWave = 1;
 public:
 	void SetZombie();

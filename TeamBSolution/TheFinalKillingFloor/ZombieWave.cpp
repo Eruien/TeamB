@@ -86,51 +86,52 @@ void ZombieWave::CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObj
 
 void ZombieWave::CollisionBoxRender()
 {
-    for (int i = 0; i < m_ZombieModelList.size(); i++)
+    
+    for (int i = 0; i < m_EnemyMap["Zombie"].size(); i++)
     {
         TMatrix zombieTranslation;
-        zombieTranslation.Translation(TVector3(m_ZombieModelList[i]->m_matControl._41, m_ZombieModelList[i]->m_matControl._42 + m_ZombieModelList[i]->m_SettingBox.vCenter.y, m_ZombieModelList[i]->m_matControl._43));
-        m_ZombieModelList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        zombieTranslation.Translation(TVector3(m_EnemyMap["Zombie"][i]->m_matControl._41, m_EnemyMap["Zombie"][i]->m_matControl._42 + m_EnemyMap["Zombie"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Zombie"][i]->m_matControl._43));
+        m_EnemyMap["Zombie"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_ZombieModelList[i]->m_OBBBox.Render();
-        m_ZombieModelList[i]->Render();
+        m_EnemyMap["Zombie"][i]->Render();
 
         TMatrix zombieRightHandSocket;
         TMatrix matRightHand;
-        if (m_ZombieModelList[i]->m_pActionModel != nullptr)
+        if (m_EnemyMap["Zombie"][i]->m_pActionModel != nullptr)
         {
-            if (m_ZombieModelList[i]->m_pActionModel->m_iEndFrame >= int(m_ZombieModelList[i]->m_fCurrentAnimTime))
+            if (m_EnemyMap["Zombie"][i]->m_pActionModel->m_iEndFrame >= int(m_EnemyMap["Zombie"][i]->m_fCurrentAnimTime))
             {
-                int currentFrame = max(m_ZombieModelList[i]->m_fCurrentAnimTime - m_ZombieModelList[i]->m_pActionModel->m_iStartFrame, 0);
-                zombieRightHandSocket = m_ZombieModelList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+                int currentFrame = max(m_EnemyMap["Zombie"][i]->m_fCurrentAnimTime - m_EnemyMap["Zombie"][i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_EnemyMap["Zombie"][i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
             }
         }
 
-        matRightHand = zombieRightHandSocket * m_ZombieModelList[i]->m_matControl;
-        m_ZombieModelList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        matRightHand = zombieRightHandSocket * m_EnemyMap["Zombie"][i]->m_matControl;
+        m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
     }
 
-    for (int i = 0; i < m_TankList.size(); i++)
+    for (int i = 0; i < m_EnemyMap["Tank"].size(); i++)
     {
         TMatrix zombieTranslation;
-        zombieTranslation.Translation(TVector3(m_TankList[i]->m_matControl._41, m_TankList[i]->m_matControl._42 + m_TankList[i]->m_SettingBox.vCenter.y, m_TankList[i]->m_matControl._43));
-        m_TankList[i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        zombieTranslation.Translation(TVector3(m_EnemyMap["Tank"][i]->m_matControl._41, m_EnemyMap["Tank"][i]->m_matControl._42 + m_EnemyMap["Tank"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Tank"][i]->m_matControl._43));
+        m_EnemyMap["Tank"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_TankList[i]->m_OBBBox.Render();
-        m_TankList[i]->Render();
+        m_EnemyMap["Tank"][i]->Render();
 
         TMatrix zombieRightHandSocket;
         TMatrix matRightHand;
-        if (m_TankList[i]->m_pActionModel != nullptr)
+        if (m_EnemyMap["Tank"][i]->m_pActionModel != nullptr)
         {
-            if (m_TankList[i]->m_pActionModel->m_iEndFrame >= int(m_TankList[i]->m_fCurrentAnimTime))
+            if (m_EnemyMap["Tank"][i]->m_pActionModel->m_iEndFrame >= int(m_EnemyMap["Tank"][i]->m_fCurrentAnimTime))
             {
-                int currentFrame = max(m_TankList[i]->m_fCurrentAnimTime - m_TankList[i]->m_pActionModel->m_iStartFrame, 0);
-                zombieRightHandSocket = m_TankList[i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+                int currentFrame = max(m_EnemyMap["Tank"][i]->m_fCurrentAnimTime - m_EnemyMap["Tank"][i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_EnemyMap["Tank"][i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
             }
         }
 
-        matRightHand = zombieRightHandSocket * m_TankList[i]->m_matControl;
-        m_TankList[i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        matRightHand = zombieRightHandSocket * m_EnemyMap["Tank"][i]->m_matControl;
+        m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_TankList[i]->m_OBBBoxRightHand.Render();
     }
 }
@@ -143,16 +144,16 @@ bool ZombieWave::Init()
 
 bool ZombieWave::Frame()
 {
-    for (int i = 0; i < m_ZombieModelList.size(); i++)
+    for (int i = 0; i < m_EnemyMap["Zombie"].size(); i++)
     {
-        m_ZombieModelList[i]->Process();
-        m_ZombieModelList[i]->Frame();
+        m_EnemyMap["Zombie"][i]->Process();
+        m_EnemyMap["Zombie"][i]->Frame();
     }
 
-    for (int i = 0; i < m_TankList.size(); i++)
+    for (int i = 0; i < m_EnemyMap["Tank"].size(); i++)
     {
-        m_TankList[i]->Process();
-        m_TankList[i]->Frame();
+        m_EnemyMap["Tank"][i]->Process();
+        m_EnemyMap["Tank"][i]->Frame();
     }
 
     return true;
@@ -160,12 +161,12 @@ bool ZombieWave::Frame()
 
 bool ZombieWave::Render()
 {
-    for (auto& zombie : m_ZombieModelList)
+    for (auto& zombie : m_EnemyMap["Zombie"])
     {
         zombie->AniRender();
     }
 
-    for (auto& tank : m_TankList)
+    for (auto& tank : m_EnemyMap["Tank"])
     {
         tank->Render();
     }
