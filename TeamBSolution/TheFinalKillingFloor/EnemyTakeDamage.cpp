@@ -19,7 +19,16 @@ void EnemyTakeDamage::Process()
 
     if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
-        m_pOwner->m_HP -= 20.0f;
+        if (m_pOwner->IsHeadShot)
+        {
+            LGlobal::g_HeadShotSound->PlayEffect();
+            m_pOwner->m_HP -= 30.0f;
+        }
+        else
+        {
+            m_pOwner->m_HP -= 10.0f;
+        }
+
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;
     }
