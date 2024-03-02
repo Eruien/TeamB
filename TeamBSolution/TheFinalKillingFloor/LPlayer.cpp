@@ -287,6 +287,7 @@ bool LPlayer::Frame()
 
 	if (m_SteamPackEnd < m_SteamPackStart)
 	{
+		m_ShotDelay = 0.1f;
 		m_SteamPackStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsSteamPack = false;
@@ -317,7 +318,6 @@ bool LPlayer::Frame()
 
 	if (m_ZedTimeEnd < m_ZedTimeStart)
 	{
-		m_ShotDelay = 0.1f;
 		m_ZedTimeStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsZedTime = false;

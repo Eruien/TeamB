@@ -174,7 +174,27 @@ void InGameScene::Render()
         }
     }
 
+    //muzzleFlash
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
+    {
+        if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
+        {
+            m_muzzleFlash->SetIsRender(true);
 
+            sTime = 0;
+        }
+        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_ShotDelay)
+        {
+            m_muzzleFlash->SetIsRender(false);
+        }
+        m_muzzleFlash->Render();
+    }
+
+    //blood
+    for (auto& obj : m_bloodSplatter)
+    {
+        obj->Render();
+    }
 
 
     // Shadow
@@ -211,7 +231,7 @@ void InGameScene::Render()
                         zombie->IsHeadShot = false;
                     }
                     zombie->IsTakeDamage = true;
-                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
+                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
                     m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
                     m_bloodSplatter[m_crrBlood]->SetIsRender(true);
                     m_crrBlood++;
@@ -273,27 +293,7 @@ void InGameScene::Render()
         m_pOwner->SetTransition(Event::GOMAINSCENE);
         return;
     }
-    //muzzleFlash
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
-    {
-        if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
-        {
-            m_muzzleFlash->SetIsRender(true);
-
-            sTime = 0;
-        }
-        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_ShotDelay)
-        {
-            m_muzzleFlash->SetIsRender(false);
-        }
-        m_muzzleFlash->Render();
-    }
-
-    //blood
-    for (auto& obj : m_bloodSplatter)
-    {
-        obj->Render();
-    }
+    
 
     //UI
     UIManager::GetInstance().Render();
@@ -452,7 +452,6 @@ void InGameScene::SoundInit()
     LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
     LGlobal::g_HeadShotSound = LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
     LGlobal::g_KillSound = LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");
-    
 }
 
 void InGameScene::CameraInit()
