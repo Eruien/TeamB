@@ -35,7 +35,6 @@ void PickingUI::Frame()
 	POINT mouse ;
 	mouse.x = LINPUT.GetMousePos().x - LGlobal::g_WindowWidth/2;
 	mouse.y = -(LINPUT.GetMousePos().y - LGlobal::g_WindowHeight / 2);
-	
 	/*LWrite::GetInstance().AddText(to_wstring(mouse.x), 100, 400);
 	LWrite::GetInstance().AddText(to_wstring(mouse.y), 300, 400);*/
 	

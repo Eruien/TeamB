@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnchorUI.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="EnemyAttack.cpp" />
     <ClCompile Include="EnemyDeath.cpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="ZombieWave.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnchorUI.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="EnemyAttack.h" />
     <ClInclude Include="EnemyDeath.h" />

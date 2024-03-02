@@ -1,6 +1,6 @@
 #include "LCore.h"
 #include "LGlobal.h"
-
+#include "../TheFinalKillingFloor/UI/UIManager.h"
 bool LCore::Init() { return true; }
 bool LCore::Frame() { return true; }
 bool LCore::Render() { return true; }
@@ -264,7 +264,7 @@ bool LCore::Run()
 }
 
 void LCore::ResizeDevice(UINT width, UINT height)
-{
+ {
     HRESULT hr;
     if (m_pDevice == nullptr) return;
     DeleteDxResource();
@@ -272,7 +272,7 @@ void LCore::ResizeDevice(UINT width, UINT height)
     m_pImmediateContext->OMSetRenderTargets(0, nullptr, nullptr);
     m_pRenderTargetView.Reset();
     m_pDepthStencilView.Reset();
-
+    if (m_pSwapChain == nullptr) return;
     hr = m_pSwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount,
         width, height, m_SwapChainDesc.BufferDesc.Format, m_SwapChainDesc.Flags);
 
@@ -292,8 +292,11 @@ void LCore::ResizeDevice(UINT width, UINT height)
     GetClientRect(m_hWnd, &m_rcClient);
     LGlobal::g_WindowWidth = m_WindowWidth = m_rcClient.right;
     LGlobal::g_WindowHeight = m_WindowHeight = m_rcClient.bottom;
-
+    LGlobal::g_pUICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, -1, 1);
     CreateDxResource();
+
+    UIManager::GetInstance().UpdateResolution(LGlobal::g_WindowWidth, LGlobal::g_WindowHeight);
+
 }
 
 bool LCore::DeleteDxResource()

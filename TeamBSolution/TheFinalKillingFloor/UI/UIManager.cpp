@@ -1,6 +1,5 @@
 #include "UIManager.h"
 #include "tinyxml2.h"
-#include "LGlobal.h"
 shared_ptr<KObject> UIManager::s_selectedObject = nullptr;
 bool UIManager::s_isMouseInImGuiWindow = false;
 void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthStencilState> Disable)
@@ -396,6 +395,35 @@ void UIManager::RemoveObject(wstring name)
         ),
         _objs.end()
     );
+}
+
+void UIManager::UpdateResolution(int width, int height)
+{
+   
+    for (auto obj : _objs)
+    {
+        obj->m_vPosition.x *= float(width) / _beforeWidth;
+        obj->m_vPosition.y *= float(height) / _beforeHeight;
+        obj->m_vScale.x *= float(width) / _beforeWidth;
+        obj->m_vScale.y *= float(height) / _beforeHeight;
+    }   
+    _beforeWidth = width;
+    _beforeHeight = height;
+       
+    _resolutionOffsetX = float(width) / 1280;
+    _resolutionOffsetY = float(height) / 720;
+}
+
+void UIManager::AdjustRes()
+{
+    for (auto obj : _objs)
+    {
+        obj->m_vPosition.x *= _resolutionOffsetX;
+        obj->m_vPosition.y *= _resolutionOffsetY;
+        obj->m_vScale.x *= _resolutionOffsetX;
+        obj->m_vScale.y *= _resolutionOffsetY;
+    }
+
 }
 
 UIManager::UIManager()

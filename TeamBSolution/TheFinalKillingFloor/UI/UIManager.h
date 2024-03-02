@@ -1,6 +1,7 @@
 #pragma once
 #include "LStd.h"
 #include "KObject.h"
+#include "LGlobal.h"
 //
 #include "DigitDisplay.h"
 #include "PickingUI.h"
@@ -29,11 +30,6 @@ public:
         static UIManager instance;
         return instance;
     }
-
-    // 프라이빗 생성자
-
-
-
     void Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthStencilState> Disable);
     void Frame();
     void Render();
@@ -45,10 +41,15 @@ public:
     shared_ptr<KObject> GetUIObject(wstring name);
     vector<shared_ptr<KObject>> GetGroup(wstring groupName);
     void RemoveObject(wstring name);
+    void UpdateResolution(int width, int height);
+    void AdjustRes();
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
-        bool _editMode = false;
-
+        bool _editMode = true;
+        int _beforeHeight= LGlobal::g_WindowHeight;
+        int _beforeWidth= LGlobal::g_WindowWidth;
+        float _resolutionOffsetX;
+        float _resolutionOffsetY;
 private:
     vector<shared_ptr<KObject>> _objs;
     vector<shared_ptr<KObject>> _objsTemp;
@@ -59,6 +60,7 @@ private:
     shared_ptr<ImGuiManager> _imGuiManager;
     ComPtr<ID3D11DepthStencilState> _DepthStencilState;
     ComPtr<ID3D11DepthStencilState> _DepthStencilStateDisable;
+ 
 
 };
 

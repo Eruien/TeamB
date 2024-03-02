@@ -1,5 +1,7 @@
 #include "KObject.h"
 #include "Animator.h"
+#include "LGlobal.h"
+#include "LInput.h"
 bool KObject::Init()
 {
 	for (shared_ptr<MonoBehaviour>& script : _scripts)
@@ -18,6 +20,10 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
+
+	
+
+	
 	if (_isRender)
 	{
 		TMatrix matScale, matRotation, matTranslation;

@@ -25,7 +25,8 @@ bool Sample::Init()
 bool Sample::Frame()
 {
 	LScene::GetInstance().Process();
-
+	
+	
 	return true;
 }
 
@@ -45,10 +46,12 @@ Sample::~Sample() {}
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR IpCmdLine, int nCmdShow)
 {
-	Sample win;
-	win.SetRegisterWindowClass(hInstance);
-	win.SetCreateWindow(L"TeamBProject", LGlobal::g_WindowWidth, LGlobal::g_WindowHeight);
-	win.Run();
+	shared_ptr<Sample> win;
+	win = make_shared<Sample>();
+	win->_win = win;
+	win->SetRegisterWindowClass(hInstance);
+	win->SetCreateWindow(L"TeamBProject", LGlobal::g_WindowWidth, LGlobal::g_WindowHeight);
+	win->Run();
 }
 
 

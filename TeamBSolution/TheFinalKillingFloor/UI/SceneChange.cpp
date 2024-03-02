@@ -36,6 +36,7 @@ void SceneChange::Frame()
 			//LInput::GetInstance().CursorChange();
 			LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Init();
 			UIManager::GetInstance().Load(L"MainScene.xml");
+			
 			LScene::GetInstance().SetTransition(_sceneEvent);
 		}
 		else if (_sceneEvent == Event::GOINGAMESCENE)
@@ -43,6 +44,7 @@ void SceneChange::Frame()
 			LInput::GetInstance().CursorChange();
 			LGlobal::g_BackgroundSound->Stop();
 			UIManager::GetInstance().Load(L"IngameScene.xml");
+			UIManager::GetInstance().AdjustRes();
 			LScene::GetInstance().SetTransition(_sceneEvent);
 			UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(30);
@@ -51,6 +53,7 @@ void SceneChange::Frame()
 		{
 			LInput::GetInstance().CursorChange();
 			UIManager::GetInstance().Load(L"EndScene.xml");
+			UIManager::GetInstance().AdjustRes();
 			LScene::GetInstance().SetTransition(_sceneEvent);
 		}
 
