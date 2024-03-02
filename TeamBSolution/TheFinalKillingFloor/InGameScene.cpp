@@ -196,7 +196,7 @@ void InGameScene::Render()
 
     if (LInput::GetInstance().m_MouseState[0])
     {
-        for (auto& zombie : m_ZombieWave->m_ZombieModelList)
+        for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
         {
             if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
             {
@@ -227,7 +227,7 @@ void InGameScene::Render()
 
     if (LInput::GetInstance().m_MouseState[0])
     {
-        for (auto& tank : m_ZombieWave->m_TankList)
+        for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
         {
             if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
             {
@@ -324,7 +324,7 @@ void InGameScene::Render()
         m_playerIcon->Frame();
         m_playerIcon->Render();
 
-        for (auto obj : m_ZombieWave->m_ZombieModelList)
+        for (auto obj : m_ZombieWave->m_EnemyMap["Zombie"])
         {
             obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
             //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
@@ -333,7 +333,7 @@ void InGameScene::Render()
             obj->RenderMark();
         }
 
-        for (auto obj : m_ZombieWave->m_TankList)
+        for (auto obj : m_ZombieWave->m_EnemyMap["Tank"])
         {
             obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
             //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
@@ -390,25 +390,25 @@ void InGameScene::Retry()
 
 void InGameScene::DeleteCurrentObject()
 {
-    for (auto iter = m_ZombieWave->m_ZombieModelList.begin(); iter != m_ZombieWave->m_ZombieModelList.end();)
+    for (auto iter = m_ZombieWave->m_EnemyMap["Zombie"].begin(); iter != m_ZombieWave->m_EnemyMap["Zombie"].end();)
     {
-        iter = m_ZombieWave->m_ZombieModelList.erase(iter);
+        iter = m_ZombieWave->m_EnemyMap["Zombie"].erase(iter);
     }
 
-    for (auto iter = m_ZombieWave->m_TankList.begin(); iter != m_ZombieWave->m_TankList.end();)
+    for (auto iter = m_ZombieWave->m_EnemyMap["Tank"].begin(); iter != m_ZombieWave->m_EnemyMap["Tank"].end();)
     {
-        iter = m_ZombieWave->m_TankList.erase(iter);
+        iter = m_ZombieWave->m_EnemyMap["Tank"].erase(iter);
     }
 }
 
 void InGameScene::Release()
 {
-    for (auto iter = m_ZombieWave->m_ZombieModelList.begin(); iter != m_ZombieWave->m_ZombieModelList.end();)
+    for (auto iter = m_ZombieWave->m_EnemyMap["Zombie"].begin(); iter != m_ZombieWave->m_EnemyMap["Zombie"].end();)
     {
         if ((*iter)->IsDead)
         {
-            iter = m_ZombieWave->m_ZombieModelList.erase(iter);
-            UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_ZombieModelList.size());
+            iter = m_ZombieWave->m_EnemyMap["Zombie"].erase(iter);
+            UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
             LGlobal::g_PlayerModel->m_ZedTimeCount += 1;
         }
         else
@@ -416,17 +416,17 @@ void InGameScene::Release()
             iter++;
         }
 
-        if (m_ZombieWave->m_ZombieModelList.size() <= 0)
+        if (m_ZombieWave->m_EnemyMap["Zombie"].size() <= 0)
         {
             IsNextWave = true;
         }
     }
 
-    for (auto iter = m_ZombieWave->m_TankList.begin(); iter != m_ZombieWave->m_TankList.end();)
+    for (auto iter = m_ZombieWave->m_EnemyMap["Tank"].begin(); iter != m_ZombieWave->m_EnemyMap["Tank"].end();)
     {
         if ((*iter)->IsDead)
         {
-            iter = m_ZombieWave->m_TankList.erase(iter);
+            iter = m_ZombieWave->m_EnemyMap["Tank"].erase(iter);
             LGlobal::g_PlayerModel->m_ZedTimeCount += 1;
         }
         else
@@ -435,7 +435,7 @@ void InGameScene::Release()
         }
     }
 
-    if (m_ZombieWave->m_TankList.size() <= 0)
+    if (m_ZombieWave->m_EnemyMap["Tank"].size() <= 0)
     {
         IsReleaseTank = true;
     }
@@ -506,18 +506,18 @@ void InGameScene::CharacterInit()
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
     int initWaveCount = m_ZombieWave->m_WaveZombieCountList[m_ZombieWave->m_CurrentWave];
-    m_ZombieWave->m_ZombieModelList.resize(initWaveCount);
+    m_ZombieWave->m_EnemyMap["Zombie"].resize(initWaveCount);
     for (int i = 0; i < initWaveCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
-        m_ZombieWave->m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
-        m_ZombieWave->m_ZombieModelList[i]->CreateBoneBuffer();
-        m_ZombieWave->m_ZombieModelList[i]->FSM(FSMType::ENEMY);
+        m_ZombieWave->m_EnemyMap["Zombie"][i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateBoneBuffer();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->FSM(FSMType::ENEMY);
 
-        m_ZombieWave->m_ZombieModelList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
-        m_ZombieWave->m_ZombieModelList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
     }
-    m_ZombieWave->m_ZombieModelList[0]->ComputeOffset();
+    m_ZombieWave->m_EnemyMap["Zombie"][0]->ComputeOffset();
 
     // Character
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
@@ -558,10 +558,10 @@ void InGameScene::CharacterInit()
 
     for (int i = 0; i < initWaveCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
-        m_ZombieWave->m_ZombieModelList[i]->SetAnimationArrayTexture();
-        m_ZombieWave->m_ZombieModelList[i]->SetAnimationArraySRV();
-        m_ZombieWave->m_ZombieModelList[i]->CreateCurrentFrameBuffer();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_Player = LGlobal::g_PlayerModel;
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArrayTexture();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArraySRV();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateCurrentFrameBuffer();
     }
     m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
 
@@ -576,17 +576,17 @@ void InGameScene::CharacterInit()
 
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
 
-    Head = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
-    Root = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix RightShoulder = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix RightHand = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
+    Head = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
+    Root = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix RightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    TMatrix RightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
 
     m_Select = new LSelect;
 
     for (int i = 0; i < initWaveCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieWave->m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
     }
 
 }
@@ -602,40 +602,40 @@ void InGameScene::NextWave()
     }
 
     int zombieCount = m_ZombieWave->m_WaveZombieCountList[m_ZombieWave->m_CurrentWave];
-    m_ZombieWave->m_ZombieModelList.resize(zombieCount);
+    m_ZombieWave->m_EnemyMap["Zombie"].resize(zombieCount);
 
     int tankCount = m_ZombieWave->m_WaveTankCountList[m_ZombieWave->m_CurrentWave];
-    m_ZombieWave->m_TankList.resize(tankCount);
+    m_ZombieWave->m_EnemyMap["Tank"].resize(tankCount);
     
     for (int i = 0; i < zombieCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
-        m_ZombieWave->m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
-        m_ZombieWave->m_ZombieModelList[i]->CreateBoneBuffer();
-        m_ZombieWave->m_ZombieModelList[i]->FSM(FSMType::ENEMY);
+        m_ZombieWave->m_EnemyMap["Zombie"][i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateBoneBuffer();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->FSM(FSMType::ENEMY);
         
-        m_ZombieWave->m_ZombieModelList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
-        m_ZombieWave->m_ZombieModelList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
        
     }
 
     for (int i = 0; i < tankCount; i++)
     {
-        m_ZombieWave->m_TankList[i] = std::make_shared<Tank>(LGlobal::g_PlayerModel);
-        m_ZombieWave->m_TankList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Tank.fbx");
-        m_ZombieWave->m_TankList[i]->CreateBoneBuffer();
-        m_ZombieWave->m_TankList[i]->FSM(FSMType::TANK);
+        m_ZombieWave->m_EnemyMap["Tank"][i] = std::make_shared<Tank>(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_EnemyMap["Tank"][i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Tank.fbx");
+        m_ZombieWave->m_EnemyMap["Tank"][i]->CreateBoneBuffer();
+        m_ZombieWave->m_EnemyMap["Tank"][i]->FSM(FSMType::TANK);
 
-        m_ZombieWave->m_TankList[i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
-        m_ZombieWave->m_TankList[i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Tank"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Tank"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
     }
 
     for (int i = 0; i < zombieCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i]->m_Player = LGlobal::g_PlayerModel;
-        m_ZombieWave->m_ZombieModelList[i]->SetAnimationArrayTexture();
-        m_ZombieWave->m_ZombieModelList[i]->SetAnimationArraySRV();
-        m_ZombieWave->m_ZombieModelList[i]->CreateCurrentFrameBuffer();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_Player = LGlobal::g_PlayerModel;
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArrayTexture();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArraySRV();
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateCurrentFrameBuffer();
     }
 
     // Collision
@@ -644,30 +644,30 @@ void InGameScene::NextWave()
     std::wstring shoulder = L"RightShoulder";
     std::wstring hand = L"RightHand";
 
-    TMatrix Head = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix Root = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix RightShoulder = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix RightHand = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
+    TMatrix Head = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix RightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    TMatrix RightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
 
-    TMatrix TankHead = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix TankRoot = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix TankRightShoulder = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix TankRightHand = m_ZombieWave->m_ZombieModelList[0]->m_pModel->m_NameMatrixMap[0][hand];
+    TMatrix TankHead = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix TankRoot = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix TankRightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
+    TMatrix TankRightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
 
     for (int i = 0; i < zombieCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieWave->m_ZombieModelList[i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
     }
 
     for (int i = 0; i < tankCount; i++)
     {
-        m_ZombieWave->m_TankList[i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42 + 60.0f, 30.0f }, 0.2f);
-        m_ZombieWave->m_TankList[i]->SetOBBBoxRightHand({ TankRightHand._41 - 40.0f, TankRightHand._42 - 40.0f, -40.0f }, { TankRightShoulder._41 + 40.0f, TankRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42 + 60.0f, 30.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBoxRightHand({ TankRightHand._41 - 40.0f, TankRightHand._42 - 40.0f, -40.0f }, { TankRightShoulder._41 + 40.0f, TankRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
     }
 
     if (m_ZombieWave->m_CurrentWave > 3) return;
-     UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_ZombieModelList.size());
+     UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
     UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
 }
 
@@ -1118,7 +1118,7 @@ void InGameScene::UpdateUI()
     {
         UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveZombieCountList.size());
         UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
-        UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_ZombieModelList.size());
+        UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
         Init_2 = false;
     }
 }
@@ -1241,13 +1241,13 @@ void InGameScene::FrameGunModel()
 
 void InGameScene::UpdateZombieAndTankModels()
 {
-    for (auto& zombie : m_ZombieWave->m_ZombieModelList)
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
     {
         float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
         zombie->m_matControl._42 = fHeight + 1.0f;
     }
 
-    for (auto& tank : m_ZombieWave->m_TankList)
+    for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
     {
         float fHeight = m_CustomMap->GetHeight(tank->m_matControl._41, tank->m_matControl._43);
         tank->m_matControl._42 = fHeight + 1.0f;
@@ -1256,8 +1256,8 @@ void InGameScene::UpdateZombieAndTankModels()
     //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
     //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
 
-    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_ZombieModelList);
-    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_TankList);
+    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Zombie"]);
+    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Tank"]);
 
 
     m_ZombieWave->Frame();
@@ -1283,7 +1283,7 @@ void InGameScene::HandlePlayerTreeCollisions()
         }
     }
 
-    for (auto& zombie : m_ZombieWave->m_ZombieModelList)
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
     {
         float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
         float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - zombie->m_matControl._42;
@@ -1302,7 +1302,7 @@ void InGameScene::HandlePlayerTreeCollisions()
 		}
 	}
 
-	for (auto& tank : m_ZombieWave->m_TankList)
+	for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
 	{
 		float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tank->m_matControl._41;
 		float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tank->m_matControl._42;
