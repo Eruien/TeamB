@@ -372,13 +372,11 @@ void InGameScene::DeleteCurrentObject()
 {
     for (auto iter = m_ZombieWave->m_ZombieModelList.begin(); iter != m_ZombieWave->m_ZombieModelList.end();)
     {
-        delete* iter;
         iter = m_ZombieWave->m_ZombieModelList.erase(iter);
     }
 
     for (auto iter = m_ZombieWave->m_TankList.begin(); iter != m_ZombieWave->m_TankList.end();)
     {
-        delete* iter;
         iter = m_ZombieWave->m_TankList.erase(iter);
     }
 }
@@ -488,7 +486,7 @@ void InGameScene::CharacterInit()
     m_ZombieWave->m_ZombieModelList.resize(initWaveCount);
     for (int i = 0; i < initWaveCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<LNPC>(LGlobal::g_PlayerModel);
         m_ZombieWave->m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
         m_ZombieWave->m_ZombieModelList[i]->CreateBoneBuffer();
         m_ZombieWave->m_ZombieModelList[i]->FSM(FSMType::ENEMY);
@@ -588,7 +586,7 @@ void InGameScene::NextWave()
     
     for (int i = 0; i < zombieCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i] = new LNPC(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<LNPC>(LGlobal::g_PlayerModel);
         m_ZombieWave->m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
         m_ZombieWave->m_ZombieModelList[i]->CreateBoneBuffer();
         m_ZombieWave->m_ZombieModelList[i]->FSM(FSMType::ENEMY);
@@ -600,7 +598,7 @@ void InGameScene::NextWave()
 
     for (int i = 0; i < tankCount; i++)
     {
-        m_ZombieWave->m_TankList[i] = new Tank(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_TankList[i] = std::make_shared<Tank>(LGlobal::g_PlayerModel);
         m_ZombieWave->m_TankList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Tank.fbx");
         m_ZombieWave->m_TankList[i]->CreateBoneBuffer();
         m_ZombieWave->m_TankList[i]->FSM(FSMType::TANK);

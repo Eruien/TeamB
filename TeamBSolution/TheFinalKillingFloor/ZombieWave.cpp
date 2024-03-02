@@ -199,7 +199,7 @@ void ZombieWave::CollisionBoxRender()
     }
 }
 
-void ZombieWave::CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList)
+void ZombieWave::CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<shared_ptr<LNPC>>& zombieModelList)
 {
     for (int i = 0; i < zombieModelList.size(); i++)
     {
@@ -287,7 +287,7 @@ void ZombieWave::CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& colli
     }
 }
 
-void ZombieWave::CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList)
+void ZombieWave::CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<shared_ptr<Tank>>& zombieModelList)
 {
     for (int i = 0; i < zombieModelList.size(); i++)
     {

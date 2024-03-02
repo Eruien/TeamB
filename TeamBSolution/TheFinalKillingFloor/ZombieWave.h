@@ -17,8 +17,8 @@ public:
 	const int TankWave2 = 1;
 	const int TankWave3 = 2;
 public:
-	std::vector<LNPC*> m_ZombieModelList;
-	std::vector<Tank*> m_TankList;
+	std::vector<std::shared_ptr<LNPC>> m_ZombieModelList;
+	std::vector<std::shared_ptr<Tank>> m_TankList;
 	int m_CurrentWave = 1;
 public:
 	void SetZombie();
@@ -26,8 +26,8 @@ public:
 	float GetRandomNumber();
 	void CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList);
 	void CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList);
-	void CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList);
-	void CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList);
+	void CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<shared_ptr<LNPC>>& zombieModelList);
+	void CollisionCheckByDistance(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<shared_ptr<Tank>>& zombieModelList);
 	void CollisionBoxRender();
 public:
 	bool Init();
