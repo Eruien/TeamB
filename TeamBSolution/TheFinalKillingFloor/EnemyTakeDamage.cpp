@@ -9,15 +9,13 @@ bool EnemyTakeDamage::Init()
 
 void EnemyTakeDamage::Process()
 {
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx");
-
-    if (!m_Timer && LGlobal::g_BulletCount > 0)
+  /*  if (!m_Timer && LGlobal::g_BulletCount > 0)
     {
         m_pOwner->m_HP -= 20.0f;
         m_pOwner->IsTakeDamage = false;
         m_pOwner->m_TimerStart = true;
         m_Timer = true;
-    }
+    }*/
 
     if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
@@ -26,15 +24,33 @@ void EnemyTakeDamage::Process()
         m_pOwner->IsTakeDamage = false;
     }
 
+    if (m_pOwner->m_HP < m_AnimationHP)
+    {
+        IsTakeDamageAnimation = true;
+        m_AnimationHP -= m_MinusHP;
+    }
+
     if (m_pOwner->IsDead)
     {
         m_pOwner->SetTransition(Event::FATALDAMAGE);
         return;
     }
 
-    if (m_pOwner->m_TimerEnd)
+    if (IsTakeDamageAnimation)
     {
-        m_Timer = false;
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_TakeDamage.fbx");
+       
+        if (m_pOwner->m_TimerEnd)
+        {
+            IsTakeDamageAnimation = false;
+            m_pOwner->IsTakeDamage = false;
+            m_pOwner->SetTransition(Event::RECOVERYDAMAGE);
+            return;
+        }
+    }
+    else
+    {
+        m_pOwner->IsTakeDamage = false;
         m_pOwner->SetTransition(Event::RECOVERYDAMAGE);
         return;
     }
