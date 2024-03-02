@@ -18,7 +18,8 @@ public:
 	const int TankWave3 = 2;
 public:
     std::map<std::string, std::vector<std::shared_ptr<LNPC>>> m_EnemyMap;
-	int m_CurrentWave = 1;
+	int m_CurrentWave = 0;
+    bool IsFirstCreate = true;
 public:
 	void SetZombie();
 	void SpawnZombieWave(LPlayer* player);
