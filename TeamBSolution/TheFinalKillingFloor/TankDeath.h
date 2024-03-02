@@ -1,7 +1,7 @@
 #pragma once
 #include "Tank.h"
 
-class TankDeath : public TankState
+class TankDeath : public NPCState
 {
 public:
 	bool Init() override;

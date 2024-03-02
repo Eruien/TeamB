@@ -1,5 +1,5 @@
 #pragma once
-#include "LNPC.h"
+#include "Zombie.h"
 
 class EnemyTakeDamage : public NPCState
 {
@@ -13,7 +13,7 @@ public:
 	float m_AnimationHP = 50.0f;
 	float m_MinusHP = 50.0f;
 public:
-	EnemyTakeDamage(LNPC* parent);
+	EnemyTakeDamage(Zombie* parent);
 	virtual ~EnemyTakeDamage();
 };
 

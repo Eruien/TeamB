@@ -1,6 +1,5 @@
 #pragma once
 #include "LNPC.h"
-#include "Tank.h"
 #include "LGlobal.h"
 #include <random>
 #include <chrono>
@@ -19,14 +18,13 @@ public:
 	const int TankWave3 = 2;
 public:
 	std::vector<std::shared_ptr<LNPC>> m_ZombieModelList;
-	std::vector<std::shared_ptr<Tank>> m_TankList;
+	std::vector<std::shared_ptr<LNPC>> m_TankList;
 	int m_CurrentWave = 1;
 public:
 	void SetZombie();
 	void SpawnZombieWave(LPlayer* player);
 	float GetRandomNumber();
 	void CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList);
-	void CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<Tank*>& zombieModelList);
 
 	template <typename T, typename U>
 	void CollisionCheckByDistance(std::vector<std::shared_ptr<T>>& collisionObject, std::vector<std::shared_ptr<U>>& zombieModelList)

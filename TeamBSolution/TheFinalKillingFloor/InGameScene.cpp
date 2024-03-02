@@ -509,7 +509,7 @@ void InGameScene::CharacterInit()
     m_ZombieWave->m_ZombieModelList.resize(initWaveCount);
     for (int i = 0; i < initWaveCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<LNPC>(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
         m_ZombieWave->m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
         m_ZombieWave->m_ZombieModelList[i]->CreateBoneBuffer();
         m_ZombieWave->m_ZombieModelList[i]->FSM(FSMType::ENEMY);
@@ -609,7 +609,7 @@ void InGameScene::NextWave()
     
     for (int i = 0; i < zombieCount; i++)
     {
-        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<LNPC>(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_ZombieModelList[i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
         m_ZombieWave->m_ZombieModelList[i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
         m_ZombieWave->m_ZombieModelList[i]->CreateBoneBuffer();
         m_ZombieWave->m_ZombieModelList[i]->FSM(FSMType::ENEMY);

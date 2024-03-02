@@ -30,7 +30,7 @@ void EnemyPatrol::Release()
 
 }
 
-EnemyPatrol::EnemyPatrol(LNPC* parent) : NPCState(parent)
+EnemyPatrol::EnemyPatrol(Zombie* parent) : NPCState(parent)
 {
 
 }

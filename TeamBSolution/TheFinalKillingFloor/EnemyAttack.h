@@ -1,4 +1,4 @@
-#include "LNPC.h"
+#include "Zombie.h"
 
 class EnemyAttack : public NPCState
 {
@@ -9,7 +9,7 @@ public:
 public:
 	bool m_Timer = false;
 public:
-	EnemyAttack(LNPC* parent);
+	EnemyAttack(Zombie* parent);
 	virtual ~EnemyAttack();
 };
 

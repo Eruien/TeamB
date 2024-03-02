@@ -35,7 +35,7 @@ void TankCombo::Release()
 
 }
 
-TankCombo::TankCombo(Tank* parent) : TankState(parent)
+TankCombo::TankCombo(Tank* parent) : NPCState(parent)
 {
 
 }

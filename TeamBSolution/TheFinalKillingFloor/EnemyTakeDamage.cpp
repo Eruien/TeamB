@@ -102,7 +102,7 @@ void EnemyTakeDamage::UpdateHPbar()
     
 }
 
-EnemyTakeDamage::EnemyTakeDamage(LNPC* parent) : NPCState(parent)
+EnemyTakeDamage::EnemyTakeDamage(Zombie* parent) : NPCState(parent)
 {
 
 }

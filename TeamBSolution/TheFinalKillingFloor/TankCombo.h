@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-class TankCombo : public TankState
+class TankCombo : public NPCState
 {
 public:
 	bool Init() override;

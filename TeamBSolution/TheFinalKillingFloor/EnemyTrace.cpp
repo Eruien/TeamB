@@ -32,7 +32,7 @@ void EnemyTrace::Release()
 
 }
 
-EnemyTrace::EnemyTrace(LNPC* parent) : NPCState(parent)
+EnemyTrace::EnemyTrace(Zombie* parent) : NPCState(parent)
 {
 
 }

@@ -221,7 +221,7 @@ bool Tank::RenderMark()
 	return false;
 }
 
-Tank::Tank(LPlayer* player) : m_Distribution(-3000, 3000)
+Tank::Tank(LPlayer* player)
 {
 	m_Player = player;
 	m_ZombieSound = LSoundMgr::GetInstance().Load(L"../../res/sound/zombieSound.mp3");

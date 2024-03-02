@@ -98,7 +98,7 @@ void TankTakeDamage::UpdateHPbar()
     }
 }
 
-TankTakeDamage::TankTakeDamage(Tank* parent) : TankState(parent)
+TankTakeDamage::TankTakeDamage(Tank* parent) : NPCState(parent)
 {
 
 }

@@ -18,7 +18,7 @@ void EnemyDeath::Release()
 
 }
 
-EnemyDeath::EnemyDeath(LNPC* parent) : NPCState(parent)
+EnemyDeath::EnemyDeath(Zombie* parent) : NPCState(parent)
 {
 
 }

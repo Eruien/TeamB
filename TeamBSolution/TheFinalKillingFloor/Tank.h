@@ -1,76 +1,23 @@
 #pragma once
-#include "LModel.h"
-#include "LInput.h"
-#include "LFSMMgr.h"
-#include "LPlayer.h"
-#include "LSoundMgr.h"
-#include <random>
-#include <chrono>
+#include "LNPC.h"
 
-class Tank;
 class KObject;
 
-class TankState
+class Tank : public LNPC
 {
 public:
-	Tank* m_pOwner = nullptr;
+	State GetState() override;
+	void FSM(FSMType fsmType) override;
+	void SetTransition(Event inputEvent) override;
+	void Move(TVector3 target) override;
+	void RushMove() override;
+	void ComboMove() override;
+	int GetRandomNumber() override;
 public:
-	virtual bool Init() { return true; }
-	virtual	void Process() = 0;
-public:
-	TankState(Tank* parent) : m_pOwner(parent) {}
-	virtual ~TankState() {}
-};
-
-class Tank : public LSkinningModel
-{
-public:
-	State m_CurrentState = State::NONE;
-	LFiniteStateMachine* m_pFsm = nullptr;
-	TankState* m_pAction = nullptr;
-	std::map<State, std::unique_ptr<TankState>> m_pActionList;
-public:
-	bool IsDead = false;
-	bool IsTakeDamage = false;
-	bool IsComboRange = false;
-	bool IsMovable = true;
-	bool IsRush = false;
-	bool IsRushDir = true;
-	bool IsUseRush = true;
-	bool IsHeadShot = false;
-	LSound* m_ZombieSound = nullptr;
-	float m_Speed = 50.0f;
-	float m_RushSpeed = 400.0f;
-	float m_ComboSpeed = 25.0f;
-	TVector3 m_Dir;
-	float m_ComboRange = 100.0f;
-	float m_RushRange = 400.0f;
-	float m_RushStart = 0.0f;
-	float m_RushEnd = 1.0f;
-	float m_RushCoolTimeStart = 0.0f;
-	float m_RushCoolTimeEnd = 30.0f;
-	TVector3 m_RandomPos;
-	LPlayer* m_Player;
-	TVector3 m_PlayerPos;
-	TVector3 m_NPCPos;
-	TVector3 m_RushPos;
-	std::default_random_engine m_Generator;
-	std::uniform_int_distribution<int> m_Distribution;
-	shared_ptr<KObject> m_enemyHp;
-	shared_ptr<KObject> m_minimapMarker;
-public:
-	State GetState();
-	void FSM(FSMType fsmType);
-	void SetTransition(Event inputEvent);
-	void Move(TVector3 target);
-	void RushMove();
-	void ComboMove();
-	int GetRandomNumber();
-public:
-	virtual	void Process();
+	virtual	void Process() override;
 	bool Frame() override;
 	bool Render() override;
-	bool RenderMark();
+	bool RenderMark() override;
 public:
 	Tank() {};
 	Tank(LPlayer* player);

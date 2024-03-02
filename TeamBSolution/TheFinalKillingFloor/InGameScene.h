@@ -9,7 +9,7 @@
 #include "LBackView.h"
 #include "LDxRT.h"
 #include "LPlaneShape.h"
-#include "LNPC.h"
+#include "Zombie.h"
 #include "Tank.h"
 #include "LSkyBox.h"
 #include "LSelect.h"

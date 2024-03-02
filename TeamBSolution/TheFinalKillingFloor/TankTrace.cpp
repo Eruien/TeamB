@@ -41,7 +41,7 @@ void TankTrace::Release()
 
 }
 
-TankTrace::TankTrace(Tank* parent) : TankState(parent)
+TankTrace::TankTrace(Tank* parent) : NPCState(parent)
 {
 
 }

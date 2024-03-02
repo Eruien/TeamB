@@ -71,7 +71,7 @@ void TankRush::UpdateHPbar()
     }
 }
 
-TankRush::TankRush(Tank* parent) : TankState(parent)
+TankRush::TankRush(Tank* parent) : NPCState(parent)
 {
 
 }

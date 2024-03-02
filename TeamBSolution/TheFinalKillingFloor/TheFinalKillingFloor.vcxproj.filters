@@ -60,21 +60,6 @@
     <ClCompile Include="UI\DragUI.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAttack.cpp">
-      <Filter>NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyDeath.cpp">
-      <Filter>NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyPatrol.cpp">
-      <Filter>NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyTakeDamage.cpp">
-      <Filter>NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyTrace.cpp">
-      <Filter>NPC</Filter>
-    </ClCompile>
     <ClCompile Include="UI\ExitWindow.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -168,6 +153,24 @@
     <ClCompile Include="LSelect.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyDeath.cpp">
+      <Filter>Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPatrol.cpp">
+      <Filter>Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTakeDamage.cpp">
+      <Filter>Zombie</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTrace.cpp">
+      <Filter>Zombie</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h" />
@@ -229,21 +232,6 @@
     <ClInclude Include="UI\DragUI.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAttack.h">
-      <Filter>NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyDeath.h">
-      <Filter>NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyPatrol.h">
-      <Filter>NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTakeDamage.h">
-      <Filter>NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTrace.h">
-      <Filter>NPC</Filter>
-    </ClInclude>
     <ClInclude Include="UI\ExitWindow.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -267,9 +255,6 @@
     </ClInclude>
     <ClInclude Include="LMainScene.h">
       <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="LNPC.h">
-      <Filter>NPC</Filter>
     </ClInclude>
     <ClInclude Include="LScene.h">
       <Filter>Scene</Filter>
@@ -337,6 +322,27 @@
     <ClInclude Include="LPlayer.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyDeath.h">
+      <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPatrol.h">
+      <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTakeDamage.h">
+      <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTrace.h">
+      <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="LNPC.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim.xml" />
@@ -395,6 +401,9 @@
     </Filter>
     <Filter Include="Collision">
       <UniqueIdentifier>{1a7a0127-c31c-4d29-868b-3413fdce8342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Zombie">
+      <UniqueIdentifier>{2623aec5-b561-4a84-bd70-bff509435713}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

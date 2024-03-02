@@ -1,5 +1,5 @@
 #pragma once
-#include "LNPC.h"
+#include "Zombie.h"
 
 class EnemyDeath : public NPCState
 {
@@ -8,7 +8,7 @@ public:
 	void Process() override;
 	void Release();
 public:
-	EnemyDeath(LNPC* parent);
+	EnemyDeath(Zombie* parent);
 	virtual ~EnemyDeath();
 };
 

@@ -37,7 +37,7 @@ void EnemyAttack::Release()
 
 }
 
-EnemyAttack::EnemyAttack(LNPC* parent) : NPCState(parent)
+EnemyAttack::EnemyAttack(Zombie* parent) : NPCState(parent)
 {
 
 }

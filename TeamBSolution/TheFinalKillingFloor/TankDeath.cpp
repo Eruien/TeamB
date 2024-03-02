@@ -22,7 +22,7 @@ void TankDeath::Release()
 
 }
 
-TankDeath::TankDeath(Tank* parent) : TankState(parent)
+TankDeath::TankDeath(Tank* parent) : NPCState(parent)
 {
 
 }
