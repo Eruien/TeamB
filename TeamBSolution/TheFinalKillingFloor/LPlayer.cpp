@@ -321,6 +321,7 @@ bool LPlayer::Frame()
 		m_ZedTimeStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsZedTime = false;
+		LGlobal::g_ZedTimeEnd->PlayEffect();
 	}
 
 	if (IsMove && IsMovable)
