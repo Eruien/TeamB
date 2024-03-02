@@ -34,6 +34,9 @@ public:
 	static LSound* g_EffectSound2;
 	static LSound* g_SteamPackSound;
 	static LSound* g_ZedTimeStart;
+	static LSound* g_HeadShotSound;
+	static LSound* g_KillSound;
+
 };
 
 

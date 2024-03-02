@@ -154,6 +154,7 @@ bool Tank::Frame()
 
 	if (m_HP <= 0)
 	{
+		LGlobal::g_KillSound->PlayEffect();
 		IsDead = true;
 	}
 

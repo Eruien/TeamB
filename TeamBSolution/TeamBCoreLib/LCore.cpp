@@ -181,6 +181,7 @@ bool LCore::EngineFrame()
     LWrite::GetInstance().Frame();
     LGlobal::g_pMainCamera->Frame();
     LGlobal::g_pUICamera->Frame();
+    LSoundMgr::GetInstance().Frame();
     Frame();
     return true;
 }

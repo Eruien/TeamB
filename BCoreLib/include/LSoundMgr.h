@@ -16,6 +16,8 @@ public:
 	FMOD::System* m_pSystem = nullptr;
 	FMOD::Sound* m_pSound = nullptr;
 	FMOD::Channel* m_pChannel = nullptr;
+
+	std::vector<FMOD::Channel*> m_channels;
 public:
 	void Set(FMOD::System* system);
 	void SetName(std::wstring key);
@@ -27,6 +29,7 @@ public:
 	void Pause();
 	void VolumeUp();
 	void VolumeDown();
+	void SetVolume(float volume);
 	void ToggleSound(bool toggle);
 public:
 	bool Init();

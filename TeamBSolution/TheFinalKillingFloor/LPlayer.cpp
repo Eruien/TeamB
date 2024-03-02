@@ -263,7 +263,7 @@ bool LPlayer::Frame()
 	{
 		IsSteamPack = true;
 		m_HP -= 10;
-		LGlobal::g_SteamPackSound->Play(false);
+		LGlobal::g_SteamPackSound->PlayEffect();
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 

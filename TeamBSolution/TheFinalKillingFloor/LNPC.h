@@ -36,6 +36,7 @@ public:
 	bool IsTakeDamage = false;
 	bool IsAttackRange = false;
 	bool IsMovable = true;
+	bool IsHeadShot = false;
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
 	TVector3 m_Dir;

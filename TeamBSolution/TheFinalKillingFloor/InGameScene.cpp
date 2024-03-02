@@ -59,7 +59,8 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
-   
+    LGlobal::g_PlayerModel->m_HP = 100.f;
+
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
         m_PointLight[0].m_vPosition.y = -1000.f;
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
@@ -173,27 +174,7 @@ void InGameScene::Render()
         }
     }
 
-    //muzzleFlash
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
-    {
-        if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
-        {
-            m_muzzleFlash->SetIsRender(true);
 
-            sTime = 0;
-        }
-        else if(sTime +0.05f>= LGlobal::g_PlayerModel->m_ShotDelay)
-        {
-            m_muzzleFlash->SetIsRender(false);
-        }
-        m_muzzleFlash->Render();
-    }
-
-    //blood
-    for (auto& obj : m_bloodSplatter)
-    {
-        obj->Render();
-    }
 
 
     // Shadow
@@ -219,10 +200,17 @@ void InGameScene::Render()
         {
             if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
             {
-                if (LGlobal::g_PlayerModel->IsShoot)
+                if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
                 {
+                    if (abs(m_Select->m_vIntersection.y - zombie->m_OBBBox.m_Box.vMax.y) < 5.f)
+                    {
+                        zombie->IsHeadShot = true;
+                    }
+                    else
+                    {
+                        zombie->IsHeadShot = false;
+                    }
                     zombie->IsTakeDamage = true;
-
                     m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
                     m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
                     m_bloodSplatter[m_crrBlood]->SetIsRender(true);
@@ -245,6 +233,14 @@ void InGameScene::Render()
             {
                 if (LGlobal::g_PlayerModel->IsShoot)
                 {
+                    if (abs(m_Select->m_vIntersection.y - tank->m_OBBBox.m_Box.vMax.y) < 7.f)
+                    {
+                        tank->IsHeadShot = true;
+                    }
+                    else
+                    {
+                        tank->IsHeadShot = false;
+                    }
                     tank->IsTakeDamage = true;
 
                     m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
@@ -277,11 +273,32 @@ void InGameScene::Render()
         m_pOwner->SetTransition(Event::GOMAINSCENE);
         return;
     }
+    //muzzleFlash
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
+    {
+        if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
+        {
+            m_muzzleFlash->SetIsRender(true);
+
+            sTime = 0;
+        }
+        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_ShotDelay)
+        {
+            m_muzzleFlash->SetIsRender(false);
+        }
+        m_muzzleFlash->Render();
+    }
+
+    //blood
+    for (auto& obj : m_bloodSplatter)
+    {
+        obj->Render();
+    }
+
     //UI
     UIManager::GetInstance().Render();
  
     m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
-
 
 
     //¹Ì´Ï¸Ê
@@ -431,6 +448,9 @@ void InGameScene::SoundInit()
     LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
     LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTime.mp3");
     LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
+    LGlobal::g_HeadShotSound = LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
+    LGlobal::g_KillSound = LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");
+    
 }
 
 void InGameScene::CameraInit()
@@ -1327,9 +1347,16 @@ void InGameScene::FrameCollisionDetection()
     m_Select->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 
     LGlobal::g_PlayerModel->m_OBBBox.Frame();
-    LGlobal::g_PlayerModel->m_OBBBox.CreateOBBBox(LGlobal::g_PlayerModel->m_SettingBox.fExtent[0], LGlobal::g_PlayerModel->m_SettingBox.fExtent[1], LGlobal::g_PlayerModel->m_SettingBox.fExtent[2],
-        { LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41, LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42, LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 },
-    LGlobal::g_PlayerModel->m_SettingBox.vAxis[0], LGlobal::g_PlayerModel->m_SettingBox.vAxis[1], LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
+    LGlobal::g_PlayerModel->m_OBBBox.CreateOBBBox(
+        LGlobal::g_PlayerModel->m_SettingBox.fExtent[0],
+        LGlobal::g_PlayerModel->m_SettingBox.fExtent[1],
+        LGlobal::g_PlayerModel->m_SettingBox.fExtent[2],
+        {   LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41,
+            LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42,
+            LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43    },
+        LGlobal::g_PlayerModel->m_SettingBox.vAxis[0],
+        LGlobal::g_PlayerModel->m_SettingBox.vAxis[1],
+        LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
 
 
 }

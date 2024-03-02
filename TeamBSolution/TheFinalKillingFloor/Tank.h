@@ -37,6 +37,7 @@ public:
 	bool IsRush = false;
 	bool IsRushDir = true;
 	bool IsUseRush = true;
+	bool IsHeadShot = false;
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
 	float m_RushSpeed = 400.0f;

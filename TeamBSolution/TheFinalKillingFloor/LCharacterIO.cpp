@@ -40,7 +40,7 @@ int LCharacterIO::ComputeVertexFormSize(int vertexListSize, int formSize)
 bool LCharacterIO::ItemWrite(std::wstring fbxFilePath)
 {
     LFbxObj* fbxObj = nullptr;
-    fbxObj = LFbxMgr::GetInstance().Load(fbxFilePath, L"../../res/hlsl/CustomizeMap.hlsl");
+    fbxObj = LFbxMgr::GetInstance().Load(fbxFilePath, L"../../res/hlsl/LightShadowMap.hlsl");
 
     CharacterReset();
 
@@ -313,7 +313,7 @@ bool LCharacterIO::ItemRead(std::wstring filePath)
     }
 
     managerObj->m_DrawList[0]->Set();
-    managerObj->m_DrawList[0]->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/map/topdownmap.jpg");
+    managerObj->m_DrawList[0]->Create(L"../../res/hlsl/LightShadowMap.hlsl", L"../../res/map/topdownmap.jpg");
 
     LFbxMgr::GetInstance().m_map.insert(std::make_pair(key, managerObj));
 

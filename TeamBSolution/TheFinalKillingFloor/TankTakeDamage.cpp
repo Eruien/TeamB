@@ -12,17 +12,33 @@ void TankTakeDamage::Process()
 {
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Tank_TakeDamage.fbx");
 
-   /* if (!m_Timer && LGlobal::g_BulletCount > 0)
+    if (!m_Timer && LGlobal::g_BulletCount > 0)
     {
-        m_pOwner->m_HP -= 5.0f;
+        if (m_pOwner->IsHeadShot)
+        {
+            m_pOwner->m_HP -= 10.0f;
+            LGlobal::g_HeadShotSound->PlayEffect();
+        }
+        else
+        {
+            m_pOwner->m_HP -= 3.0f;
+        }
         m_pOwner->IsTakeDamage = false;
         m_pOwner->m_TimerStart = true;
         m_Timer = true;
-    }*/
+    }
 
     if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
     {
-        m_pOwner->m_HP -= 3.0f;
+        if (m_pOwner->IsHeadShot)
+        {
+            LGlobal::g_HeadShotSound->PlayEffect();
+			m_pOwner->m_HP -= 10.0f;
+		}
+        else
+        {
+			m_pOwner->m_HP -= 3.0f;
+		}
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;
     }
