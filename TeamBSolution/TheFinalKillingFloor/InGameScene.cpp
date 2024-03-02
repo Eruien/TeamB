@@ -59,7 +59,7 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
-    LGlobal::g_PlayerModel->m_HP = 100.f;
+    //LGlobal::g_PlayerModel->m_HP = 100.f;
 
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
         m_PointLight[0].m_vPosition.y = -1000.f;
@@ -365,13 +365,16 @@ void InGameScene::Render()
 
    if (LInput::GetInstance().m_MouseState[1] == KEY_PUSH)
    {
-       Retry();
+       LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
+     //  Retry();
        
    }
 }
 
 void InGameScene::Retry()
 {
+    IsEndGame = false;
+    LGlobal::g_PlayerModel->IsDeath = false;
     DeleteCurrentObject();
     LGlobal::g_PlayerModel->IsInvincibility = true;
     LGlobal::g_PlayerModel->IsTakeDamage = false;
@@ -382,7 +385,8 @@ void InGameScene::Retry()
     LGlobal::g_PlayerModel->IsZedTime = false;
     LGlobal::g_PlayerModel->m_ZedTimeCount = 1;
     LGlobal::g_BulletCount = 30;
-
+  //  LGlobal::g_PlayerModel->m_CurrentState = State::CHARACTERIDLE;
+ 
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
