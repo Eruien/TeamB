@@ -446,7 +446,8 @@ void InGameScene::SoundInit()
     LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
     LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
     LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
-    LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTime.mp3");
+    LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTimeFirst.mp3");
+    LGlobal::g_ZedTimeEnd = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTimeLast.mp3");
     LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
     LGlobal::g_HeadShotSound = LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
     LGlobal::g_KillSound = LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");

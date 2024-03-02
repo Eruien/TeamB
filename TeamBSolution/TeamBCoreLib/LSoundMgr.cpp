@@ -58,16 +58,20 @@ void LSound::PlayEffect()
 
 	//m_pSystem->playSound(m_pSound, NULL, false, &m_pChannel);
 
-	if (m_channels.size() >= 200)  // 최대 채널 수 제한
+	if (m_pSystem == nullptr)
+	{
+		return;
+	}
+	FMOD::Channel* channel = nullptr;
+	m_pSystem->playSound(m_pSound, NULL, false, &channel);
+	m_channels.push_back(channel);  // 채널을 벡터에 저장
+	
+	if (m_channels.size() >= 100)  // 최대 채널 수 제한
 	{
 		// 가장 오래된 채널부터 제거
 		m_channels.front()->stop();
 		m_channels.erase(m_channels.begin());
 	}
-
-	FMOD::Channel* channel = nullptr;
-	m_pSystem->playSound(m_pSound, NULL, false, &channel);
-	m_channels.push_back(channel);  // 채널을 벡터에 저장
 }
 
 void LSound::Stop()
@@ -122,13 +126,16 @@ void LSound::ToggleSound(bool toggle)
 
 bool LSound::Init()
 {
-	m_pSystem->init(1000, FMOD_INIT_NORMAL, 0);
-
+	
 	return true;
 }
 
 bool LSound::Frame()
 {
+	if (m_pChannel == nullptr)
+	{
+		return true;
+	}
 	for (auto it = m_channels.begin(); it != m_channels.end(); )
 	{
 		FMOD::Channel* channel = *it;

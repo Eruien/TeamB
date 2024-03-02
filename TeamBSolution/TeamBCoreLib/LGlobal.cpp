@@ -20,6 +20,7 @@ LSound* LGlobal::g_EffectSound1 = nullptr;
 LSound* LGlobal::g_EffectSound2 = nullptr;
 LSound* LGlobal::g_SteamPackSound = nullptr;
 LSound* LGlobal::g_ZedTimeStart = nullptr;
+LSound* LGlobal::g_ZedTimeEnd = nullptr;
 LSound* LGlobal::g_PlayerHitSound = nullptr;;
 LSound* LGlobal::g_HeadShotSound = nullptr;
 LSound* LGlobal::g_KillSound = nullptr;
