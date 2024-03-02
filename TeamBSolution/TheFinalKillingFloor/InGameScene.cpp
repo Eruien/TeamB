@@ -349,6 +349,7 @@ void InGameScene::Render()
    if (LInput::GetInstance().m_MouseState[1] == KEY_PUSH)
    {
        Retry();
+       
    }
 }
 
@@ -366,6 +367,7 @@ void InGameScene::Retry()
 
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
+    UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 }
 
 void InGameScene::DeleteCurrentObject()
@@ -1235,6 +1237,7 @@ void InGameScene::UpdateZombieAndTankModels()
 
     m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_ZombieModelList);
     m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_TankList);
+
 
     m_ZombieWave->Frame();
 }
