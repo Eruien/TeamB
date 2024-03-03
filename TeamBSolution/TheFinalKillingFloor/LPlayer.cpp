@@ -384,7 +384,7 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 	{
-		m_Speed = 140.0f;
+		m_Speed = 180.0f;
 	}
 	//else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 	//{

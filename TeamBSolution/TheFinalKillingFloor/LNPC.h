@@ -55,7 +55,7 @@ public:
 	float m_RushStart = 0.0f;
 	float m_RushEnd = 2.0f;
 	float m_RushCoolTimeStart = 0.0f;
-	float m_RushCoolTimeEnd = 30.0f;
+	float m_RushCoolTimeEnd = 6.0f;
 	
 	TVector3 m_Velocity;
 	TVector3 m_RandomPos;
