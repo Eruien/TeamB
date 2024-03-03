@@ -49,6 +49,10 @@ void Tank::Process()
 
 void Tank::Move(TVector3 target)
 {
+	if (IsOnAir)
+	{
+		return;
+	}
 	m_Dir = target - TVector3(m_matControl._41, m_matControl._42, m_matControl._43);
 	m_Dir.Normalize();
 	TVector3 forward = m_matControl.Forward();

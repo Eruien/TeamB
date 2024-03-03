@@ -4,6 +4,8 @@
 #define DegreeToRadian(radian) ( radian * (L_PI / 180.0f ))
 #define L_PI (3.141592f)
 #define L_EPSILON (0.0001f)
+#define GRAVITY (9.8f)
+#define AIR_RESISTANCE (0.1f)
 // Sub texture types
 #define ID_TBASIS_AM 0   // ambient
 #define ID_TBASIS_DI 1   // diffuse

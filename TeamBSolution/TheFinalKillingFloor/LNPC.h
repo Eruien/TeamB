@@ -41,6 +41,7 @@ public:
 	bool IsUseRush = true;
 	bool IsHeadShot = false;
 	bool IsComboRange = false;
+	bool IsOnAir = false;
 	
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
@@ -55,6 +56,8 @@ public:
 	float m_RushEnd = 1.0f;
 	float m_RushCoolTimeStart = 0.0f;
 	float m_RushCoolTimeEnd = 30.0f;
+	
+	TVector3 m_Velocity;
 	TVector3 m_RandomPos;
 	LPlayer* m_Player;
 	TVector3 m_PlayerPos;

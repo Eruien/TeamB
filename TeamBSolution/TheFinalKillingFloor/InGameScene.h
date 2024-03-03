@@ -146,6 +146,9 @@ public:
 	void FrameCollisionDetection();
 	void FrameUI();
 	void FramePointLight();
+	void CheckOnAir();
+	void UpdatePlayerPhysics();
+	
 public:
 	void NextWave();
 	void RenderObject();

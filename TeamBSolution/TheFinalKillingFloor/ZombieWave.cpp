@@ -118,8 +118,8 @@ void ZombieWave::CollisionCheckInNpc()
         auto& zombieModelList = npcPair.second;
         for (int i = 0; i < zombieModelList.size(); ++i)
         {
-            if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox)
-                || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand))
+            if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand)
+                && zombieModelList[i]->m_CurrentState == State::ENEMYATTACK)
             {
                 LGlobal::g_PlayerModel->IsTakeDamage = true;
             }
@@ -175,19 +175,15 @@ void ZombieWave::CollisionCheckInNpc()
                     {
                         if (zombieModelList[i]->IsRush)
                         {
-							TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
+							TVector3 vNormal = { offsetX, 10.f, offsetZ };
 							vNormal.Normalize();
-							vNormal *= (r - distance);
-							zombieModelList[j]->m_matControl._41 -= vNormal.x;
-							zombieModelList[j]->m_matControl._43 -= vNormal.z;
+							zombieModelList[j]->m_Velocity += vNormal* 10;
 						}
                         else
                         {
-                            TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
+                            TVector3 vNormal = { -offsetX, 10.f, -offsetZ };
                             vNormal.Normalize();
-                            vNormal *= (r - distance);
-                            zombieModelList[i]->m_matControl._41 += vNormal.x;
-                            zombieModelList[i]->m_matControl._43 += vNormal.z;
+                            zombieModelList[j]->m_Velocity += vNormal * 10;
                         }
                     }
                 }

@@ -56,6 +56,10 @@ void LPlayer::Process()
 
 void LPlayer::Move()
 {
+	if (IsOnAir)
+	{
+		return;
+	}
 	IsMoveOneDir = false;
 	m_PrevPosition = { m_matControl._41, m_matControl._42, m_matControl._43 };
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
@@ -177,6 +181,31 @@ void LPlayer::Move()
 	{
 		LGlobal::g_EffectSound2->Stop();
 		m_Speed = 0.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_SPACE] == KEY_PUSH
+		&& IsOnAir == false)
+	{
+		m_Velocity = { 0.0f, 140.0f, 0.0f };
+		if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
+		{
+			if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
+			{
+				m_Velocity.x = m_matControl.Forward().x * 1000.0f;
+				m_Velocity.z = m_matControl.Forward().z * 1000.0f;
+			}
+			else
+			{
+				m_Velocity.x = m_matControl.Forward().x * 500.0f;
+				m_Velocity.z = m_matControl.Forward().z * 500.0f;
+			}
+		}
+		if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
+		{
+			m_Velocity.x = m_matControl.Forward().x * -300.0f;
+			m_Velocity.z = m_matControl.Forward().z * -300.0f;
+		}
+		IsOnAir = true;
 	}
 }
 

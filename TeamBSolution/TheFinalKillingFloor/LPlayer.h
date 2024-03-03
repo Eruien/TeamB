@@ -43,6 +43,8 @@ public:
 	bool IsTakeDammageAni = false;
 	bool IsSteamPack = false;
 	bool IsZedTime = false;
+	bool IsOnAir = false;
+
 	int m_ZedTimeCount = 1;
 	float m_Speed = 0.0f;
 	float m_ShotDelay = 0.1f;
@@ -54,6 +56,7 @@ public:
 	float m_ZedTimeStart = 0.0f;
 	float m_ZedTimeEnd = 5.0f;
 	TVector3 m_AddDirection;
+	TVector3 m_Velocity;
 
 	// 충돌 처리를 위한 직전 위치. 시진 추가
 	TVector3 m_PrevPosition;

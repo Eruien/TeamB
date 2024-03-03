@@ -55,6 +55,8 @@ void InGameScene::Process()
     FrameCollisionDetection();
     FrameUI();
     FramePointLight();
+    UpdatePlayerPhysics();
+    CheckOnAir();
 }
 
 void InGameScene::Render()
@@ -1198,7 +1200,11 @@ void InGameScene::UpdateBulletModels()
 void InGameScene::AdjustPlayerHeight()
 {
     float fHeight = m_CustomMap->GetHeight(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._43);
-    LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
+    if (LGlobal::g_PlayerModel->m_matControl._42 < fHeight + 1.0f)
+    {
+		LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
+        LGlobal::g_PlayerModel->IsOnAir = false;
+	}
 }
 
 void InGameScene::SwitchCameraView()
@@ -1368,6 +1374,43 @@ void InGameScene::FramePointLight()
     m_PointLight[0].Frame(LGlobal::g_PlayerModel->m_matControl._41 + LGlobal::g_PlayerModel->m_matControl.Forward().x * 150,
         LGlobal::g_PlayerModel->m_matControl._42,
         LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
+}
+
+void InGameScene::CheckOnAir()
+{
+ //   if (LGlobal::g_PlayerModel->IsOnAir == false)
+ //       return;
+
+ //   LGlobal::g_PlayerModel->IsOnAir = false;
+ //   LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.f;
+ //   LGlobal::g_PlayerModel->m_Velocity = {0.f, 0.f, 0.f };
+
+ //   for (auto& zombie : m_ZombieWave->m_EnemyMap["LNpc"])
+ //   {
+
+ //       if (zombie->m_matControl._42 > m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43) + 3.f)
+ //       {
+	//		zombie->IsOnAir = true;
+	//	}
+ //       else
+ //       {
+	//		zombie->IsOnAir = false;
+	//	}
+	//}
+
+}
+void InGameScene::UpdatePlayerPhysics()
+{
+    if (LGlobal::g_PlayerModel->IsOnAir == false)
+        return;
+
+    LGlobal::g_PlayerModel->m_matControl._41 += LGlobal::g_PlayerModel->m_Velocity.x * LGlobal::g_fSPF;
+    LGlobal::g_PlayerModel->m_matControl._42 += LGlobal::g_PlayerModel->m_Velocity.y * LGlobal::g_fSPF;
+    LGlobal::g_PlayerModel->m_matControl._43 += LGlobal::g_PlayerModel->m_Velocity.z * LGlobal::g_fSPF;
+
+    LGlobal::g_PlayerModel->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 30;
+
+    AdjustPlayerHeight();
 }
 
 void InGameScene::InitializeOBBBox()
