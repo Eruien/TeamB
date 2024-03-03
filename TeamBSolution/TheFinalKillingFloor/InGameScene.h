@@ -122,6 +122,8 @@ public:
 	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
 	void InitializeBulletPosition(std::shared_ptr<LModel>& bullet);
 
+	void InitializeOBBBox();
+
 	//Process Functions
 	void ProcessMuzzleFlash();
 	void ProcessBloodSplatter();

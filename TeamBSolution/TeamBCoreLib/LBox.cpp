@@ -60,6 +60,11 @@ void LBox::CreateOBBBox(float fExtentX, float fExtentY, float fExtentZ,
 	D3DXVec3Normalize(&m_Box.vAxis[2], &m_Box.vAxis[2]);
 }
 
+void LBox::UpdateOBBBoxPosition(TVector3 vCenter)
+{
+	m_Box.vCenter = vCenter;
+}
+
 bool LBox::CreateVertexData()
 {
 	m_VertexList.resize(24);
