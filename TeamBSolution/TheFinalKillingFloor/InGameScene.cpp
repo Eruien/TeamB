@@ -70,6 +70,9 @@ void InGameScene::Render()
     std::wstring fpsText = std::to_wstring(int(averageFPS));
     LWrite::GetInstance().AddText(fpsText, 10.0f, 10.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
+    //
+    //LGlobal::g_PlayerModel->m_HP = 100.f;
+
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
         m_PointLight[0].m_vPosition.y = -1000.f;
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
