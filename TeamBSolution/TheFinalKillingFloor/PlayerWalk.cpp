@@ -45,7 +45,15 @@ void PlayerWalk::Process()
         return;
     }
 
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Walk_Fwd_Rifle_Ironsights.fbx");
+    if (m_pOwner->m_CurrentGun == GunState::PISTOL)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Psitol_Walk.fbx");
+    }
+    else if (m_pOwner->m_CurrentGun == GunState::ASSAULTRIFLE)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Walk_Fwd_Rifle_Ironsights.fbx");
+    }
+    
 }
 
 void PlayerWalk::Release()

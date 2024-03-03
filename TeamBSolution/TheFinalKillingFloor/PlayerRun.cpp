@@ -45,7 +45,14 @@ void PlayerRun::Process()
         return;
     }
   
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Sprint_Fwd_Rifle.fbx");
+    if (m_pOwner->m_CurrentGun == GunState::PISTOL)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Run.fbx");
+    }
+    else if (m_pOwner->m_CurrentGun == GunState::ASSAULTRIFLE)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Sprint_Fwd_Rifle.fbx");
+    }
 }
 
 void PlayerRun::Release()

@@ -1,4 +1,5 @@
 #pragma once
+#include "LStd.h"
 #include "LModel.h"
 #include "LInput.h"
 #include "LFSMMgr.h"
@@ -21,8 +22,10 @@ class LPlayer : public LSkinningModel
 {
 public:
 	State m_CurrentState = State::NONE;
+	GunState m_CurrentGun = GunState::PISTOL;
 	LFiniteStateMachine* m_pFsm = nullptr;
 	PlayerState* m_pAction = nullptr;
+	LModel* m_GunModel;
 	std::map<State, std::unique_ptr<PlayerState>> m_pActionList;
 public:
 	bool IsWalk = false;
@@ -59,8 +62,11 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move();
+	void ItemChnge(GunState gun, std::wstring gunName, int gunIndex);
 public:
 	virtual	void Process();
 	bool Frame() override;
+public:
+	//LPlayer();
 };
 

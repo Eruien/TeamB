@@ -44,7 +44,6 @@ public:
 	int m_crrBlood = 0;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
-	std::shared_ptr<LModel> m_GunModel = nullptr;
 	std::vector<shared_ptr<LModel>> m_BulletList;
 	std::vector<bool> m_VisibleBulletList;
 	int BulletIndex = 0;

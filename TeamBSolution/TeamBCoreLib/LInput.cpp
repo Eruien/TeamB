@@ -217,6 +217,8 @@ bool LInput::Frame()
     GetKey(DIK_1);
     GetKey(DIK_2);
     GetKey(DIK_3);
+    GetKey(DIK_4);
+    GetKey(DIK_5);
     GetKey(DIK_F2);
     GetKey(DIK_R);
     GetKey(DIK_F);
@@ -271,8 +273,8 @@ bool LInput::Frame()
 
     if (IsHideCursor)
     {
-        if (m_MousePos.x <= clientRect.left || m_MousePos.x >= clientRect.right ||
-            m_MousePos.y <= clientRect.top || m_MousePos.y >= clientRect.bottom)
+        if (m_MousePos.x <= clientRect.left + m_MouseOffset || m_MousePos.x >= clientRect.right - m_MouseOffset ||
+            m_MousePos.y <= clientRect.top + m_MouseOffset || m_MousePos.y >= clientRect.bottom - m_MouseOffset)
         {
             SetCursorPos(point.x, point.y);
             ISEndPoint = true;

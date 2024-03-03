@@ -87,6 +87,7 @@ public:
 	bool m_StartClick = false;
 	bool IsHideCursor = false;
 	bool ISEndPoint = false;
+	float m_MouseOffset = 10.0f;
 private:
 	BYTE	m_KeyState[256];
 	BYTE GetKey(BYTE dwKey);

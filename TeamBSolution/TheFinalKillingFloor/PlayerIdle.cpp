@@ -45,7 +45,14 @@ void PlayerIdle::Process()
         return;
     }
 
-   m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+   if (m_pOwner->m_CurrentGun == GunState::PISTOL)
+   {
+       m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Idle.fbx");
+   }
+   else if (m_pOwner->m_CurrentGun == GunState::ASSAULTRIFLE)
+   {
+       m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+   }
 }
 
 void PlayerIdle::Release()

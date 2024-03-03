@@ -2,6 +2,8 @@
 #include "string"
 #include "LWrite.h"
 #include "LGlobal.h"
+#include "LFbxMgr.h"
+#include "LExportIO.h"
 #include "PlayerIdle.h"
 #include "PlayerWalk.h"
 #include "PlayerRun.h"
@@ -178,6 +180,19 @@ void LPlayer::Move()
 	}
 }
 
+void LPlayer::ItemChnge(GunState gun, std::wstring gunName, int gunIndex)
+{
+	m_CurrentGun = gun;
+	m_GunModel->m_pModel = LFbxMgr::GetInstance().GetPtr(gunName);
+
+	if (m_GunModel->m_pModel == nullptr) return;
+
+	m_GunModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[gunIndex];
+	m_GunModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[gunIndex];
+	m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[gunIndex];
+	m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[gunIndex];
+}
+
 bool LPlayer::Frame()
 {
 	if (m_HP <= 0)
@@ -216,6 +231,15 @@ bool LPlayer::Frame()
 		}
 	}
 
+	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
+	{
+		ItemChnge(GunState::PISTOL, L"Pistols_A.fbx", 0);
+	}
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
+	{
+		ItemChnge(GunState::ASSAULTRIFLE, L"Assault_Rifle_A.fbx", 1);
+	}
+	
 	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;
 	IsReload = false;
@@ -368,3 +392,8 @@ bool LPlayer::Frame()
 	LSkinningModel::Frame();
 	return true;
 }
+
+//LPlayer::LPlayer()
+//{
+//	m_GunModel = std::make_shared<LModel>();
+//}
