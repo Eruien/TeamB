@@ -73,7 +73,7 @@ void UIManager::Save(const wstring filePath)
 {
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLElement* root = doc.NewElement("UIScene");
-    root->SetAttribute("SceneName", "TestScene");
+    root->SetAttribute("SceneName", wtm(filePath).c_str());
     doc.LinkEndChild(root);
 
     for (auto obj : _objs)
@@ -86,7 +86,7 @@ void UIManager::Save(const wstring filePath)
         objRoot->SetAttribute("Name", wtm(obj->GetName()).c_str());
         objRoot->SetAttribute("isRender", obj->GetIsRender());
         objRoot->SetAttribute("Group", wtm(obj->_group).c_str());
-
+        objRoot->SetAttribute("Scene", wtm(filePath).c_str());
         // 자식 엘리먼트들 추가
         // Pos
         tinyxml2::XMLElement* posNode = doc.NewElement("Position");
@@ -165,7 +165,7 @@ void UIManager::Save(const wstring filePath)
 
 void UIManager::Load(const wstring filePath)
 {
-    _objs.clear();
+    //_objs.clear();
     s_selectedObject = nullptr;
 
     tinyxml2::XMLDocument doc;
@@ -207,7 +207,7 @@ void UIManager::Load(const wstring filePath)
         }
         //Group
         obj->_group = mtw(objElement->Attribute("Group"));
-
+        obj->_scene = mtw(objElement->Attribute("Scene"));
 
         // Position
         tinyxml2::XMLElement* posElement = objElement->FirstChildElement("Position");
@@ -409,22 +409,9 @@ void UIManager::UpdateResolution(int width, int height)
     }   
     _beforeWidth = width;
     _beforeHeight = height;
-       
-    _resolutionOffsetX *= float(width) / 1280;
-    _resolutionOffsetY *= float(height) / 720;
 }
 
-void UIManager::AdjustRes()
-{
-    for (auto obj : _objs)
-    {
-        obj->m_vPosition.x *= _resolutionOffsetX;
-        obj->m_vPosition.y *= _resolutionOffsetY;
-        obj->m_vScale.x *= _resolutionOffsetX;
-        obj->m_vScale.y *= _resolutionOffsetY;
-    }
 
-}
 
 UIManager::UIManager()
 {

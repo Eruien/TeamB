@@ -36,6 +36,7 @@ public:
 public:
 	TRectangle _rect;
 	wstring _group = L"None";
+	wstring _scene = L"None";
 
 protected:
 	wstring _name;

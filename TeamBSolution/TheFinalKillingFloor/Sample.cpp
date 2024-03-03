@@ -14,6 +14,7 @@ bool Sample::Init()
 	m_UICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, -1, 1);
 	LGlobal::g_pUICamera = m_UICamera.get();
 
+
 	UIManager::GetInstance().Init(m_pDepthStencilState,m_pDepthStencilStateDisable);
 
 
