@@ -11,11 +11,12 @@ public:
 	std::uniform_int_distribution<int> m_Distribution{ -1020, 1020 };
 	std::map<int, int> m_WaveZombieCountList;
 	std::map<int, int> m_WaveTankCountList;
-	const int ZombieWave1 = 5;
-	const int ZombieWave2 = 10;
-	const int ZombieWave3 = 15;
-	const int TankWave2 = 1;
-	const int TankWave3 = 2;
+	const int ZombieWave1 = 10;
+	const int ZombieWave2 = 15;
+	const int ZombieWave3 = 20;
+	const int TankWave1 = 2;
+	const int TankWave2 = 3;
+	const int TankWave3 = 3;
 public:
     std::map<std::string, std::vector<std::shared_ptr<LNPC>>> m_EnemyMap;
 	int m_CurrentWave = 0;

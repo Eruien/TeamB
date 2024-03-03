@@ -139,8 +139,6 @@ void ZombieWave::CollisionCheckInNpc()
 
             for (int j = i + 1; j < zombieModelList.size(); ++j)
             {
-
-
                 float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - zombieModelList[j]->m_OBBBox.m_Box.vCenter.x;
                 float offsetY = zombieModelList[i]->m_OBBBox.m_Box.vCenter.y - zombieModelList[j]->m_OBBBox.m_Box.vCenter.y;
                 float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[j]->m_OBBBox.m_Box.vCenter.z;
@@ -175,15 +173,19 @@ void ZombieWave::CollisionCheckInNpc()
                     {
                         if (zombieModelList[i]->IsRush)
                         {
-							TVector3 vNormal = { offsetX, 10.f, offsetZ };
-							vNormal.Normalize();
-							zombieModelList[j]->m_Velocity += vNormal* 10;
-						}
-                        else
-                        {
-                            TVector3 vNormal = { -offsetX, 10.f, -offsetZ };
+                            TVector3 vNormal = { offsetX, 0.f, offsetZ };
                             vNormal.Normalize();
-                            zombieModelList[j]->m_Velocity += vNormal * 10;
+                            vNormal.y = 0.5f;
+                            zombieModelList[j]->m_Velocity = vNormal * 400;
+                            zombieModelList[j]->IsOnAir = true;
+						}
+                        if (zombieModelList[j]->IsRush)
+                        {
+                            TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                            vNormal.Normalize();
+                            vNormal.y = 0.5f;
+                            zombieModelList[i]->m_Velocity = vNormal * 400;
+                            zombieModelList[i]->IsOnAir = true;
                         }
                     }
                 }
@@ -296,7 +298,7 @@ ZombieWave::ZombieWave()
     m_WaveZombieCountList.insert(std::make_pair(2, ZombieWave2));
     m_WaveZombieCountList.insert(std::make_pair(3, ZombieWave3));
 
-    m_WaveTankCountList.insert(std::make_pair(1, 0));
+    m_WaveTankCountList.insert(std::make_pair(1, TankWave1));
     m_WaveTankCountList.insert(std::make_pair(2, TankWave2));
     m_WaveTankCountList.insert(std::make_pair(3, TankWave3));
 }

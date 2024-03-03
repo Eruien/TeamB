@@ -51,9 +51,9 @@ public:
 	float m_PatrolRange = 10000.0f;
 	float m_AttackRange = 25.0f;
 	float m_ComboRange = 100.0f;
-	float m_RushRange = 400.0f;
+	float m_RushRange = 600.0f;
 	float m_RushStart = 0.0f;
-	float m_RushEnd = 1.0f;
+	float m_RushEnd = 2.0f;
 	float m_RushCoolTimeStart = 0.0f;
 	float m_RushCoolTimeEnd = 30.0f;
 	

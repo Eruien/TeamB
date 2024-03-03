@@ -43,7 +43,6 @@ void InGameScene::Process()
     UpdateWallModels();
     UpdateTreeModels();
     UpdateBulletModels();
-    AdjustPlayerHeight();
     SwitchCameraView();
     UpdateCameraTargetPosition();
     FramePlayerModel();
@@ -51,12 +50,16 @@ void InGameScene::Process()
     UpdateZombieAndTankModels();
     HandlePlayerTreeCollisions();
     LimitPlayerMovement();
+    LimitNpcMovement();
     UpdateGunModelPosition();
     FrameCollisionDetection();
     FrameUI();
     FramePointLight();
     UpdatePlayerPhysics();
-    CheckOnAir();
+    AdjustPlayerHeight();
+
+    UpdateNpcPhysics();
+    AdjustNpcHeight();
 }
 
 void InGameScene::Render()
@@ -1197,11 +1200,44 @@ void InGameScene::UpdateBulletModels()
 
 void InGameScene::AdjustPlayerHeight()
 {
+
     float fHeight = m_CustomMap->GetHeight(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._43);
-    if (LGlobal::g_PlayerModel->m_matControl._42 < fHeight + 1.0f)
+    if (LGlobal::g_PlayerModel->IsOnAir == false)
+    {
+        LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
+    }
+    if (LGlobal::g_PlayerModel->m_matControl._42 < fHeight)
     {
 		LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
         LGlobal::g_PlayerModel->IsOnAir = false;
+	}
+}
+
+void InGameScene::AdjustNpcHeight()
+{
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
+    {
+		float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
+        if (zombie->IsOnAir == false)
+        {
+			zombie->m_matControl._42 = fHeight + 1.0f;
+		}
+        if (zombie->m_matControl._42 < fHeight)
+        {
+			zombie->m_matControl._42 = fHeight + 1.0f;
+			zombie->IsOnAir = false;
+		}
+        //for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+        //{
+        //    float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
+        //    zombie->m_matControl._42 = fHeight + 1.0f;
+        //}
+
+        //for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
+        //{
+        //    float fHeight = m_CustomMap->GetHeight(tank->m_matControl._41, tank->m_matControl._43);
+        //    tank->m_matControl._42 = fHeight + 1.0f;
+        //}
 	}
 }
 
@@ -1249,17 +1285,17 @@ void InGameScene::FrameGunModel()
 
 void InGameScene::UpdateZombieAndTankModels()
 {
-    for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
-    {
-        float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
-        zombie->m_matControl._42 = fHeight + 1.0f;
-    }
+    //for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+    //{
+    //    float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
+    //    zombie->m_matControl._42 = fHeight + 1.0f;
+    //}
 
-    for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
-    {
-        float fHeight = m_CustomMap->GetHeight(tank->m_matControl._41, tank->m_matControl._43);
-        tank->m_matControl._42 = fHeight + 1.0f;
-    }
+    //for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
+    //{
+    //    float fHeight = m_CustomMap->GetHeight(tank->m_matControl._41, tank->m_matControl._43);
+    //    tank->m_matControl._42 = fHeight + 1.0f;
+    //}
 
     //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
     //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
@@ -1313,21 +1349,32 @@ void InGameScene::HandlePlayerTreeCollisions()
 
 	for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
 	{
-		float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tank->m_matControl._41;
-		float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tank->m_matControl._42;
-		float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tank->m_matControl._43;
-		
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tank->m_matControl._41;
+        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tank->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tank->m_matControl._43;
+
         TVector3 dir = { offsetX, offsetY, offsetZ };
         float distance = dir.Length();
         TVector3 range = tank->m_OBBBox.m_Box.vMax - tank->m_OBBBox.m_Box.vMin;
         float r = range.Length() * 0.7f;
         if (distance <= r)
         {
-			dir.Normalize();
-			dir *= (r - distance);
-			LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
-			LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
-		}
+            if (tank->IsRush)
+            {
+                TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                vNormal.Normalize();
+                vNormal.y = 0.5f;
+                LGlobal::g_PlayerModel->m_Velocity = vNormal * 400;
+                LGlobal::g_PlayerModel->IsOnAir = true;
+            }
+            else
+            {
+                dir.Normalize();
+                dir *= (r - distance);
+                LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+                LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+            }
+        }
 	}
 }
 
@@ -1337,6 +1384,17 @@ void InGameScene::LimitPlayerMovement()
     if (LGlobal::g_PlayerModel->m_matControl._41 < -970.f) LGlobal::g_PlayerModel->m_matControl._41 = -970.f;
     if (LGlobal::g_PlayerModel->m_matControl._43 > 970.f) LGlobal::g_PlayerModel->m_matControl._43 = 970.f;
     if (LGlobal::g_PlayerModel->m_matControl._43 < -970.f) LGlobal::g_PlayerModel->m_matControl._43 = -970.f;
+}
+
+void InGameScene::LimitNpcMovement()
+{
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
+    {
+		if (zombie->m_matControl._41 > 970.f) zombie->m_matControl._41 = 970.f;
+		if (zombie->m_matControl._41 < -970.f) zombie->m_matControl._41 = -970.f;
+		if (zombie->m_matControl._43 > 970.f) zombie->m_matControl._43 = 970.f;
+		if (zombie->m_matControl._43 < -970.f) zombie->m_matControl._43 = -970.f;
+	}
 }
 
 void InGameScene::UpdateGunModelPosition()
@@ -1374,29 +1432,6 @@ void InGameScene::FramePointLight()
         LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
 }
 
-void InGameScene::CheckOnAir()
-{
- //   if (LGlobal::g_PlayerModel->IsOnAir == false)
- //       return;
-
- //   LGlobal::g_PlayerModel->IsOnAir = false;
- //   LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.f;
- //   LGlobal::g_PlayerModel->m_Velocity = {0.f, 0.f, 0.f };
-
- //   for (auto& zombie : m_ZombieWave->m_EnemyMap["LNpc"])
- //   {
-
- //       if (zombie->m_matControl._42 > m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43) + 3.f)
- //       {
-	//		zombie->IsOnAir = true;
-	//	}
- //       else
- //       {
-	//		zombie->IsOnAir = false;
-	//	}
-	//}
-
-}
 void InGameScene::UpdatePlayerPhysics()
 {
     if (LGlobal::g_PlayerModel->IsOnAir == false)
@@ -1408,7 +1443,21 @@ void InGameScene::UpdatePlayerPhysics()
 
     LGlobal::g_PlayerModel->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 30;
 
-    AdjustPlayerHeight();
+}
+
+void InGameScene::UpdateNpcPhysics()
+{
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
+    {
+		if (zombie->IsOnAir == false)
+			continue;
+
+		zombie->m_matControl._41 += zombie->m_Velocity.x * LGlobal::g_fSPF;
+		zombie->m_matControl._42 += zombie->m_Velocity.y * LGlobal::g_fSPF;
+		zombie->m_matControl._43 += zombie->m_Velocity.z * LGlobal::g_fSPF;
+
+		zombie->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 30;
+	}
 }
 
 void InGameScene::InitializeOBBBox()

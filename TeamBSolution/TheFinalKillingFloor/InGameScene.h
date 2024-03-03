@@ -134,7 +134,7 @@ public:
 	void UpdateWallModels();
 	void UpdateTreeModels();
 	void UpdateBulletModels();
-	void AdjustPlayerHeight();
+	
 	void SwitchCameraView();
 	void UpdateCameraTargetPosition();
 	void FramePlayerModel();
@@ -142,12 +142,15 @@ public:
 	void UpdateZombieAndTankModels();
 	void HandlePlayerTreeCollisions();
 	void LimitPlayerMovement();
+	void LimitNpcMovement();
 	void UpdateGunModelPosition();
 	void FrameCollisionDetection();
 	void FrameUI();
 	void FramePointLight();
-	void CheckOnAir();
 	void UpdatePlayerPhysics();
+	void UpdateNpcPhysics();
+	void AdjustPlayerHeight();
+	void AdjustNpcHeight();
 	
 public:
 	void NextWave();
