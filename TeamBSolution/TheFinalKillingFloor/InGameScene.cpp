@@ -372,9 +372,7 @@ void InGameScene::Render()
 
    if (IsEndGame)
    {
-       LInput::GetInstance().CursorChange();
-       UIManager::GetInstance().Load(L"EndScene.xml");
-       m_pOwner->SetTransition(Event::GOENDSCENE);
+       UIManager::GetInstance().ChangeScene(Event::GOENDSCENE);
    }
 
    if (LInput::GetInstance().m_MouseState[1] == KEY_PUSH)

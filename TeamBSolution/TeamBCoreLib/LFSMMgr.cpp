@@ -145,12 +145,12 @@ bool LFSMMgr::Init()
 
 	TankFSM->AddStateTransition(State::TANKTRACE, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
 	TankFSM->AddStateTransition(State::TANKTRACE, Event::FATALDAMAGE, State::TANKDEATH);
-	TankFSM->AddStateTransition(State::TANKTRACE, Event::TANKCOMBOATTACK, State::TANKCOMBO);
 	TankFSM->AddStateTransition(State::TANKTRACE, Event::TANKRUSHATTACK, State::TANKRUSH);
+	//TankFSM->AddStateTransition(State::TANKTRACE, Event::TANKCOMBOATTACK, State::TANKCOMBO);
 
-	TankFSM->AddStateTransition(State::TANKCOMBO, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
+	/*TankFSM->AddStateTransition(State::TANKCOMBO, Event::TAKEDAMAGE, State::TANKTAKEDAMAGE);
 	TankFSM->AddStateTransition(State::TANKCOMBO, Event::FATALDAMAGE, State::TANKDEATH);
-	TankFSM->AddStateTransition(State::TANKCOMBO, Event::ENDATTACK, State::TANKTRACE);
+	TankFSM->AddStateTransition(State::TANKCOMBO, Event::ENDATTACK, State::TANKTRACE);*/
 
 	TankFSM->AddStateTransition(State::TANKRUSH, Event::FATALDAMAGE, State::TANKDEATH);
 	TankFSM->AddStateTransition(State::TANKRUSH, Event::ENDATTACK, State::TANKTRACE);

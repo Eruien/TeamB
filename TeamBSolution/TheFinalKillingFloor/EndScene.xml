@@ -1,5 +1,5 @@
-<UIScene SceneName="TestScene">
-    <UIObject Name="Bg" isRender="true" Group="None">
+<UIScene SceneName="EndScene.xml">
+    <UIObject Name="Bg" isRender="true" Group="None" Scene="EndScene.xml">
         <Position x="0" y="0" z="0"/>
         <Scale width="1280" height="720"/>
         <Texture texPath="../../res\ui\End.png"/>
@@ -7,7 +7,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Button_Retry" isRender="true" Group="None">
+    <UIObject Name="Button_Retry" isRender="true" Group="None" Scene="EndScene.xml">
         <Position x="-210" y="200" z="0"/>
         <Scale width="200" height="100"/>
         <Texture texPath="../../res/ui/button1.png"/>
@@ -15,14 +15,11 @@
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
-                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
-            </Script>
-            <Script Type="SceneChange">
-                <args SceneChange="5"/>
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="GoMainScene"/>
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Button_Exit" isRender="true" Group="None">
+    <UIObject Name="Button_Exit" isRender="true" Group="None" Scene="EndScene.xml">
         <Position x="130" y="200" z="0"/>
         <Scale width="200" height="100"/>
         <Texture texPath="../../res/ui/button1.png"/>
@@ -35,7 +32,7 @@
             <Script Type="ExitWindow"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_Retry" isRender="true" Group="None">
+    <UIObject Name="Text_Retry" isRender="true" Group="None" Scene="EndScene.xml">
         <Position x="-236" y="224" z="0"/>
         <Scale width="50" height="50"/>
         <Texture texPath="../../res\ui\Empty.png"/>
@@ -47,7 +44,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_Exit" isRender="true" Group="None">
+    <UIObject Name="Text_Exit" isRender="true" Group="None" Scene="EndScene.xml">
         <Position x="111" y="224" z="0"/>
         <Scale width="50" height="50"/>
         <Texture texPath="../../res\ui\Empty.png"/>

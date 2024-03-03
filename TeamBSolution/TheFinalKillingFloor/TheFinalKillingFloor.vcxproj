@@ -196,7 +196,6 @@
     <ClCompile Include="UI\PickingUI.cpp" />
     <ClCompile Include="UI\Resize2D.cpp" />
     <ClCompile Include="UI\ResourceBase.cpp" />
-    <ClCompile Include="UI\SceneChange.cpp" />
     <ClCompile Include="UI\Text.cpp" />
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIEvent.cpp" />
@@ -257,7 +256,6 @@
     <ClInclude Include="UI\PickingUI.h" />
     <ClInclude Include="UI\Resize2D.h" />
     <ClInclude Include="UI\ResourceBase.h" />
-    <ClInclude Include="UI\SceneChange.h" />
     <ClInclude Include="UI\Text.h" />
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIEvent.h" />

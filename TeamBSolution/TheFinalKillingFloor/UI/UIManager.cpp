@@ -21,6 +21,7 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
 
 void UIManager::Frame()
 {
+    
     if (_editMode)
     {
         _imGuiManager->Frame();
@@ -73,7 +74,7 @@ void UIManager::Save(const wstring filePath)
 {
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLElement* root = doc.NewElement("UIScene");
-    root->SetAttribute("SceneName", "TestScene");
+    root->SetAttribute("SceneName", wtm(filePath).c_str());
     doc.LinkEndChild(root);
 
     for (auto obj : _objs)
@@ -86,7 +87,7 @@ void UIManager::Save(const wstring filePath)
         objRoot->SetAttribute("Name", wtm(obj->GetName()).c_str());
         objRoot->SetAttribute("isRender", obj->GetIsRender());
         objRoot->SetAttribute("Group", wtm(obj->_group).c_str());
-
+        objRoot->SetAttribute("Scene", wtm(filePath).c_str());
         // 자식 엘리먼트들 추가
         // Pos
         tinyxml2::XMLElement* posNode = doc.NewElement("Position");
@@ -144,12 +145,6 @@ void UIManager::Save(const wstring filePath)
                 scriptNode->LinkEndChild(argsNode);
                 argsNode->SetAttribute("Text", wtm(obj->GetScript<Text>(L"Text")->GetText()).c_str());
             }
-            if (script->GetName() == L"SceneChange")
-            {
-                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
-                scriptNode->LinkEndChild(argsNode);
-                argsNode->SetAttribute("SceneChange", static_cast<int>(obj->GetScript<SceneChange>(L"SceneChange")->GetEvent()));
-            }
             if (script->GetName() == L"UIEvent")
             {
                 tinyxml2::XMLElement* argsNode = doc.NewElement("args");
@@ -165,7 +160,7 @@ void UIManager::Save(const wstring filePath)
 
 void UIManager::Load(const wstring filePath)
 {
-    _objs.clear();
+    //_objs.clear();
     s_selectedObject = nullptr;
 
     tinyxml2::XMLDocument doc;
@@ -207,7 +202,7 @@ void UIManager::Load(const wstring filePath)
         }
         //Group
         obj->_group = mtw(objElement->Attribute("Group"));
-
+        obj->_scene = mtw(objElement->Attribute("Scene"));
 
         // Position
         tinyxml2::XMLElement* posElement = objElement->FirstChildElement("Position");
@@ -324,19 +319,6 @@ void UIManager::Load(const wstring filePath)
                             }
                         }
                     }
-                    if (mtw(scriptTypeAttr) == L"SceneChange")
-                    {
-                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
-                        if (argsElement)
-                        {
-                            const char* textAttr = argsElement->Attribute("SceneChange");
-                            if (textAttr)
-                            {
-                               int num = atoi(textAttr);
-                                obj->AddScripts(std::make_shared<SceneChange>(static_cast<Event>(num)));
-                            }
-                        }
-                    }
                     if (mtw(scriptTypeAttr) == L"HpBar")
                     {
                         obj->AddScripts(std::make_shared<HpBar>());
@@ -385,6 +367,89 @@ vector<shared_ptr<KObject>> UIManager::GetGroup(wstring groupName)
 
 }
 
+vector<shared_ptr<KObject>> UIManager::GetSceneObj(wstring sceneName)
+{
+    vector<shared_ptr<KObject>> sceneObj;
+    for (auto obj : _objs)
+    {
+        if (obj->_scene == sceneName)
+            sceneObj.push_back(obj);
+    }
+    return sceneObj;
+}
+
+void UIManager::ChangeScene(Event Scene)
+{
+    if (Scene == Event::GOMAINSCENE)
+    {
+    
+        LInput::GetInstance().CursorChange();
+
+        //UIManager::GetInstance().Load(L"MainScene.xml");
+
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+
+            obj->SetIsRender(true);
+            auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
+            for (auto obj : group)
+            {
+                obj->SetIsRender(false);
+            }
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+    }
+    else if (Scene == Event::GOINGAMESCENE)
+    {
+
+        LInput::GetInstance().CursorChange();
+        LGlobal::g_BackgroundSound->Stop();
+        //UIManager::GetInstance().Load(L"IngameScene.xml");
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(true);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+        LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
+        UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(30);
+    }
+    else if (Scene == Event::GOENDSCENE)
+    {
+        LInput::GetInstance().CursorChange();
+        //UIManager::GetInstance().Load(L"EndScene.xml");
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(true);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+    }
+}
+
 void UIManager::RemoveObject(wstring name)
 {
     _objs.erase(
@@ -409,22 +474,9 @@ void UIManager::UpdateResolution(int width, int height)
     }   
     _beforeWidth = width;
     _beforeHeight = height;
-       
-    _resolutionOffsetX *= float(width) / 1280;
-    _resolutionOffsetY *= float(height) / 720;
 }
 
-void UIManager::AdjustRes()
-{
-    for (auto obj : _objs)
-    {
-        obj->m_vPosition.x *= _resolutionOffsetX;
-        obj->m_vPosition.y *= _resolutionOffsetY;
-        obj->m_vScale.x *= _resolutionOffsetX;
-        obj->m_vScale.y *= _resolutionOffsetY;
-    }
 
-}
 
 UIManager::UIManager()
 {

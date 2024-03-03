@@ -17,6 +17,11 @@ ButtonAction::ButtonAction(wstring texPaths, wstring bFuntion) : MonoBehaviour(L
 	_functionMap[L"MainSceneOptionClose"] = &ButtonAction::MainSceneOptionClose;
 	_functionMap[L"RetryButton"] = &ButtonAction::RetryButton;
 	_functionMap[L"SoundToggle"] = &ButtonAction::SoundToggle;
+
+	_functionMap[L"GoInGameScene"] = &ButtonAction::GoInGameScene;
+	_functionMap[L"GoMainScene"] = &ButtonAction::GoMainScene;
+	_functionMap[L"GoEndScene"] = &ButtonAction::GoEndScene;
+
 }
 ButtonAction::~ButtonAction()
 {
@@ -123,4 +128,19 @@ void ButtonAction::SoundToggle()
 	
 
 	
+}
+
+void ButtonAction::GoInGameScene()
+{
+	UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
+}
+
+void ButtonAction::GoMainScene()
+{
+	UIManager::GetInstance().ChangeScene(Event::GOMAINSCENE);
+}
+
+void ButtonAction::GoEndScene()
+{
+	UIManager::GetInstance().ChangeScene(Event::GOENDSCENE);
 }

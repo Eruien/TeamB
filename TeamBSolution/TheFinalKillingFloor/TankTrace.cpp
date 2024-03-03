@@ -22,11 +22,11 @@ void TankTrace::Process()
         return;
     }
 
-    if (m_pOwner->IsComboRange)
+   /* if (m_pOwner->IsComboRange)
     {
         m_pOwner->SetTransition(Event::TANKCOMBOATTACK);
         return;
-    }
+    }*/
 
     if (m_pOwner->IsMovable)
     {

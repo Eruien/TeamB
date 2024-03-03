@@ -132,9 +132,6 @@
     <ClCompile Include="TankTrace.cpp">
       <Filter>Tank</Filter>
     </ClCompile>
-    <ClCompile Include="UI\SceneChange.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Text.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -171,6 +168,7 @@
     <ClCompile Include="EnemyTrace.cpp">
       <Filter>Zombie</Filter>
     </ClCompile>
+    <ClCompile Include="AnchorUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h" />
@@ -298,9 +296,6 @@
     <ClInclude Include="TankTrace.h">
       <Filter>Tank</Filter>
     </ClInclude>
-    <ClInclude Include="UI\SceneChange.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Text.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -343,6 +338,7 @@
     <ClInclude Include="LNPC.h">
       <Filter>NPC</Filter>
     </ClInclude>
+    <ClInclude Include="AnchorUI.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim.xml" />
