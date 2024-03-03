@@ -54,7 +54,7 @@ public:
 	float m_RushStart = 0.0f;
 	float m_RushEnd = 1.0f;
 	float m_RushCoolTimeStart = 0.0f;
-	float m_RushCoolTimeEnd = 30.0f;
+	float m_RushCoolTimeEnd = 10.0f;
 	TVector3 m_RandomPos;
 	LPlayer* m_Player;
 	TVector3 m_PlayerPos;
