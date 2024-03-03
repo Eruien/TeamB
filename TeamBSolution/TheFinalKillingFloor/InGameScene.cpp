@@ -59,6 +59,13 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
+    
+    // Print FPS to screen
+    std::wstring fpsText = std::to_wstring(1.0f / LGlobal::g_fSPF);
+    LWrite::GetInstance().AddText(fpsText, 10, 10, { 1.0f, 1.0f, 1.0f, 1.0f });
+    
+
+    // ...
     //LGlobal::g_PlayerModel->m_HP = 100.f;
 
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
