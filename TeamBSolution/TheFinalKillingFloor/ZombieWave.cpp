@@ -82,7 +82,119 @@ void ZombieWave::CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObj
             zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
     }
 }
+void ZombieWave::CollisionCheckWithObstacle(std::vector<std::shared_ptr<LModel>>& collisionObject)
+{
+    // npc <-> tree
+    for (auto& tree : collisionObject)
+    {
+        // 모든 키에 대해 충돌 체크
+        for (auto& npcPair : m_EnemyMap)
+        {
+            for (auto& npc : npcPair.second)  // npcPair.second는 해당 키의 값을 가져옵니다.
+            {
+                TVector3 length = { tree->m_matControl._41, npc->m_matControl._42, tree->m_matControl._43 };
+                length -= npc->m_OBBBox.m_Box.vCenter;
+                float distance = length.Length();
 
+                if (distance <= 30)
+                {
+                    float offsetX = npc->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
+                    float offsetZ = npc->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
+
+                    TVector3 vNormal = { offsetX, npc->m_matControl._42, offsetZ };
+                    vNormal.Normalize();
+                    vNormal *= (30 - distance);
+                    npc->m_matControl._41 += vNormal.x;
+                    npc->m_matControl._43 += vNormal.z;
+                }
+            }
+        }
+    }
+}
+void ZombieWave::CollisionCheckInNpc()
+{
+    for (auto& npcPair : m_EnemyMap)
+    {
+        auto& zombieModelList = npcPair.second;
+        for (int i = 0; i < zombieModelList.size(); ++i)
+        {
+            if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox)
+                || LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand))
+            {
+                LGlobal::g_PlayerModel->IsTakeDamage = true;
+            }
+
+            for (int i = 0; i < zombieModelList.size(); i++)
+            {
+                zombieModelList[i]->m_OBBBox.Frame();
+                zombieModelList[i]->m_OBBBox.CreateOBBBox(zombieModelList[i]->m_SettingBox.fExtent[0], zombieModelList[i]->m_SettingBox.fExtent[1], zombieModelList[i]->m_SettingBox.fExtent[2],
+                    { zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 },
+                    zombieModelList[i]->m_SettingBox.vAxis[0], zombieModelList[i]->m_SettingBox.vAxis[1], zombieModelList[i]->m_SettingBox.vAxis[2]);
+
+                zombieModelList[i]->m_OBBBoxRightHand.Frame();
+                zombieModelList[i]->m_OBBBoxRightHand.CreateOBBBox(zombieModelList[i]->m_SettingBoxRightHand.fExtent[0], zombieModelList[i]->m_SettingBoxRightHand.fExtent[1], zombieModelList[i]->m_SettingBoxRightHand.fExtent[2],
+                    { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
+                    zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
+            }
+
+            for (int j = i + 1; j < zombieModelList.size(); ++j)
+            {
+
+
+                float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - zombieModelList[j]->m_OBBBox.m_Box.vCenter.x;
+                float offsetY = zombieModelList[i]->m_OBBBox.m_Box.vCenter.y - zombieModelList[j]->m_OBBBox.m_Box.vCenter.y;
+                float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[j]->m_OBBBox.m_Box.vCenter.z;
+                TVector3 length = { offsetX, offsetY, offsetZ };
+                float distance = length.Length();
+                TVector3 range = zombieModelList[i]->m_OBBBox.m_Box.vMax - zombieModelList[i]->m_OBBBox.m_Box.vMin;
+                float r = range.Length();
+                r *= 0.7f; // 좀비끼리는 더 가까워도 괜찮음
+                if (distance <= r)
+                {
+                    if (!zombieModelList[i]->IsRush &&
+                        !zombieModelList[j]->IsRush)
+                    {
+                        if (zombieModelList[i]->m_CurrentState != State::ENEMYATTACK)
+                        {
+                            TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
+                            vNormal.Normalize();
+                            vNormal *= (r - distance);
+                            zombieModelList[i]->m_matControl._41 += vNormal.x;
+                            zombieModelList[i]->m_matControl._43 += vNormal.z;
+                        }
+                        else
+                        {
+                            TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
+                            vNormal.Normalize();
+                            vNormal *= (r - distance);
+                            zombieModelList[j]->m_matControl._41 -= vNormal.x;
+                            zombieModelList[j]->m_matControl._43 -= vNormal.z;
+                        }
+                    }
+                    else
+                    {
+                        if (zombieModelList[i]->IsRush)
+                        {
+							TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
+							vNormal.Normalize();
+							vNormal *= (r - distance);
+							zombieModelList[j]->m_matControl._41 -= vNormal.x;
+							zombieModelList[j]->m_matControl._43 -= vNormal.z;
+						}
+                        else
+                        {
+                            TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
+                            vNormal.Normalize();
+                            vNormal *= (r - distance);
+                            zombieModelList[i]->m_matControl._41 += vNormal.x;
+                            zombieModelList[i]->m_matControl._43 += vNormal.z;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 void ZombieWave::CollisionBoxRender()
 {
@@ -108,7 +220,7 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_EnemyMap["Zombie"][i]->m_matControl;
         m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_ZombieModelList[i]->m_OBBBoxRightHand.Render();
+        //m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.Render();
     }
 
     for (int i = 0; i < m_EnemyMap["Tank"].size(); i++)

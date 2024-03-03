@@ -71,7 +71,7 @@ void InGameScene::Render()
     LWrite::GetInstance().AddText(fpsText, 10.0f, 10.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     //
-    //LGlobal::g_PlayerModel->m_HP = 100.f;
+    LGlobal::g_PlayerModel->m_HP = 100.f;
 
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
         m_PointLight[0].m_vPosition.y = -1000.f;
@@ -1259,9 +1259,10 @@ void InGameScene::UpdateZombieAndTankModels()
     //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
     //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
 
-    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Zombie"]);
-    m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Tank"]);
-
+    //m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Zombie"]);
+    //m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Tank"]);
+    m_ZombieWave->CollisionCheckWithObstacle(m_TreeList);
+    m_ZombieWave->CollisionCheckInNpc();
 
     m_ZombieWave->Frame();
 }
@@ -1353,8 +1354,6 @@ void InGameScene::FrameCollisionDetection()
         { LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41,
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42,
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 });
-
-
 }
 
 void InGameScene::FrameUI()

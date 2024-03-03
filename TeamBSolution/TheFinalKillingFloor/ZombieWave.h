@@ -25,6 +25,7 @@ public:
 	void SpawnZombieWave(LPlayer* player);
 	float GetRandomNumber();
 	void CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObject, std::vector<LNPC*>& zombieModelList);
+    void CollisionCheckInNpc();
 
 	template <typename T, typename U>
 	void CollisionCheckByDistance(std::vector<std::shared_ptr<T>>& collisionObject, std::vector<std::shared_ptr<U>>& zombieModelList)
@@ -80,24 +81,7 @@ public:
             //    LGlobal::g_PlayerModel->m_matControl._43 += offsetZ * 0.1;
             //}
 
-            // zombie <-> tree
-            for (auto& tree : collisionObject)
-            {
-                TVector3 length = { tree->m_matControl._41, zombieModelList[i]->m_matControl._42, tree->m_matControl._43 };
-                length -= zombieModelList[i]->m_OBBBox.m_Box.vCenter;
-                float distance = length.Length();
-                if (distance <= 30)
-                {
-                    float offsetX = zombieModelList[i]->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
-                    float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
-
-                    TVector3 vNormal = { offsetX, zombieModelList[i]->m_matControl._42, offsetZ };
-                    vNormal.Normalize();
-                    vNormal *= (30 - distance);
-                    zombieModelList[i]->m_matControl._41 += vNormal.x;
-                    zombieModelList[i]->m_matControl._43 += vNormal.z;
-                }
-            }
+  
         }
 
         for (int i = 0; i < zombieModelList.size(); i++)
@@ -113,7 +97,7 @@ public:
                 zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
         }
 	}
-
+    void CollisionCheckWithObstacle(std::vector<std::shared_ptr<LModel>>& collisionObject);
 	void CollisionBoxRender();
 public:
 	bool Init();
