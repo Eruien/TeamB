@@ -61,12 +61,10 @@ void InGameScene::Render()
 {
     // 새로운 FPS 값을 큐에 추가
     fpsValues.push_back(1.0f / LGlobal::g_fSPF);
-
     // 큐의 크기가 일정 크기를 넘으면 가장 오래된 값을 제거
     if (fpsValues.size() > 100) {
         fpsValues.pop_front();
     }
-
     // FPS 값을 평균내어 텍스트로 변환
     float averageFPS = std::accumulate(fpsValues.begin(), fpsValues.end(), 0.0f) / fpsValues.size();
     std::wstring fpsText = std::to_wstring(int(averageFPS));
