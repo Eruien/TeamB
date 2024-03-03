@@ -384,22 +384,15 @@ void InGameScene::Render()
 
 void InGameScene::Retry()
 {
+    LGlobal::g_IngameSound->Play(true);
     IsEndGame = false;
-    LGlobal::g_PlayerModel->IsDeath = false;
     DeleteCurrentObject();
-    LGlobal::g_PlayerModel->IsInvincibility = true;
-    LGlobal::g_PlayerModel->IsTakeDamage = false;
-    LGlobal::g_PlayerModel->m_StartTakeDamage = 0.0f;
-    LGlobal::g_PlayerModel->m_matControl.Translation(m_PlayerFirstSpawnPos);
-    LGlobal::g_PlayerModel->m_HP = 100;
-    LGlobal::g_PlayerModel->IsSteamPack = false;
-    LGlobal::g_PlayerModel->IsZedTime = false;
-    LGlobal::g_PlayerModel->m_ZedTimeCount = 1;
+    PlayerInit();
     LGlobal::g_BulletCount = 30;
-  //  LGlobal::g_PlayerModel->m_CurrentState = State::CHARACTERIDLE;
- 
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
+    Init_2 = true;
+    UpdateUI();
     UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 }
 
@@ -414,6 +407,11 @@ void InGameScene::DeleteCurrentObject()
     {
         iter = m_ZombieWave->m_EnemyMap["Tank"].erase(iter);
     }
+
+    m_ZombieWave->m_EnemyMap["LNPC"].clear();
+
+    delete LGlobal::g_PlayerModel;
+    LGlobal::g_PlayerModel = nullptr;
 }
 
 void InGameScene::Release()
@@ -497,6 +495,32 @@ void InGameScene::CameraInit()
     m_MinimapPosCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
 }
 
+void InGameScene::PlayerInit()
+{
+    // PlayerSetting
+    LGlobal::g_PlayerModel = new LPlayer;
+    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+    LGlobal::g_PlayerModel->CreateBoneBuffer();
+    LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
+
+    TMatrix matScale;
+    TMatrix matRot;
+    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
+    LGlobal::g_PlayerModel->m_matControl *= matScale;
+    D3DXMatrixRotationY(&matRot, 3.14159);
+    LGlobal::g_PlayerModel->m_matControl *= matRot;
+
+    m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
+
+    std::wstring head = L"Head";
+    std::wstring root = L"root";
+  
+    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
+
+    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
+}
+
 void InGameScene::CharacterInit()
 {
     // Zombie
@@ -520,19 +544,8 @@ void InGameScene::CharacterInit()
 
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
-    int initWaveCount = m_ZombieWave->m_WaveZombieCountList[m_ZombieWave->m_CurrentWave];
-    m_ZombieWave->m_EnemyMap["Zombie"].resize(initWaveCount);
-    for (int i = 0; i < initWaveCount; i++)
-    {
-        m_ZombieWave->m_EnemyMap["Zombie"][i] = std::make_shared<Zombie>(LGlobal::g_PlayerModel);
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Zombie.fbx");
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateBoneBuffer();
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->FSM(FSMType::ENEMY);
-
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
-    }
-    m_ZombieWave->m_EnemyMap["Zombie"][0]->ComputeOffset();
+    m_ZombieWave->m_CurrentWave = 0;
+    NextWave();
 
     // Character
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
@@ -550,17 +563,7 @@ void InGameScene::CharacterInit()
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
 
     // PlayerSetting
-    LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
-    LGlobal::g_PlayerModel->CreateBoneBuffer();
-    LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-
-    TMatrix matScale;
-    TMatrix matRot;
-    D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
-    LGlobal::g_PlayerModel->m_matControl *= matScale;
-    D3DXMatrixRotationY(&matRot, 3.14159);
-    LGlobal::g_PlayerModel->m_matControl *= matRot;
+    PlayerInit();
 
     // ItemSetting
     m_GunModel = std::make_shared<LModel>();
@@ -571,39 +574,7 @@ void InGameScene::CharacterInit()
     m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
     m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
 
-    for (int i = 0; i < initWaveCount; i++)
-    {
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->m_Player = LGlobal::g_PlayerModel;
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArrayTexture();
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetAnimationArraySRV();
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->CreateCurrentFrameBuffer();
-    }
-    m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
-
-    // Collision
-    std::wstring head = L"Head";
-    std::wstring root = L"root";
-    std::wstring shoulder = L"RightShoulder";
-    std::wstring hand = L"RightHand";
-
-    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
-
-    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
-
-    Head = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
-    Root = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix RightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix RightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
-
     m_Select = new LSelect;
-
-    for (int i = 0; i < initWaveCount; i++)
-    {
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
-    }
-
 }
 
 void InGameScene::NextWave()
@@ -621,6 +592,8 @@ void InGameScene::NextWave()
 
     int tankCount = m_ZombieWave->m_WaveTankCountList[m_ZombieWave->m_CurrentWave];
     m_ZombieWave->m_EnemyMap["Tank"].resize(tankCount);
+
+    m_ZombieWave->m_EnemyMap["LNPC"].resize(zombieCount + tankCount);
     
     for (int i = 0; i < zombieCount; i++)
     {
@@ -631,9 +604,15 @@ void InGameScene::NextWave()
         
         m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
         m_ZombieWave->m_EnemyMap["Zombie"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
-       
+
+        m_ZombieWave->m_EnemyMap["LNPC"][i] = m_ZombieWave->m_EnemyMap["Zombie"][i];
     }
 
+    if (m_ZombieWave->IsFirstCreate)
+    {
+        m_ZombieWave->m_EnemyMap["Zombie"][0]->ComputeOffset();
+    }
+   
     for (int i = 0; i < tankCount; i++)
     {
         m_ZombieWave->m_EnemyMap["Tank"][i] = std::make_shared<Tank>(LGlobal::g_PlayerModel);
@@ -643,6 +622,8 @@ void InGameScene::NextWave()
 
         m_ZombieWave->m_EnemyMap["Tank"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
         m_ZombieWave->m_EnemyMap["Tank"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+
+        m_ZombieWave->m_EnemyMap["LNPC"][zombieCount + i] = m_ZombieWave->m_EnemyMap["Tank"][i];
     }
 
     for (int i = 0; i < zombieCount; i++)
@@ -682,8 +663,14 @@ void InGameScene::NextWave()
     }
 
     if (m_ZombieWave->m_CurrentWave > 3) return;
-     UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
-    UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
+
+    if (!m_ZombieWave->IsFirstCreate)
+    {
+        UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
+        UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
+    }
+
+    m_ZombieWave->IsFirstCreate = false;
 }
 
 void InGameScene::RenderObject()

@@ -101,8 +101,8 @@ public:
 public:
 	void SoundInit();
 	void CameraInit();
+	void PlayerInit();
 	void CharacterInit();
-
 public:
 	//Initialize Functions
 	void InitializeObjects();
