@@ -558,10 +558,18 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Player_TakeDamage.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Player_Death.bin");
 
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Pistol_Idle.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Pistol_Run.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Pistol_Shoot.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Pistol_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Psitol_Walk.bin");
+
     // Item
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
+    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Pistols_A.bin");
     // form
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
+    LExportIO::GetInstance().ExportRead(L"PistolPos.bin");
 
     // PlayerSetting
     PlayerInit();
