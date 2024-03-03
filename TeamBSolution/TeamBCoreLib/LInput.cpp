@@ -217,6 +217,8 @@ bool LInput::Frame()
     GetKey(DIK_1);
     GetKey(DIK_2);
     GetKey(DIK_3);
+    GetKey(DIK_4);
+    GetKey(DIK_5);
     GetKey(DIK_F2);
     GetKey(DIK_R);
     GetKey(DIK_F);

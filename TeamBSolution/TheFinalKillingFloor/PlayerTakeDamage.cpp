@@ -26,7 +26,14 @@ void PlayerTakeDamage::Process()
         return;
     }
 
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_TakeDamage.fbx");
+    if (m_pOwner->m_CurrentGun == GunState::PISTOL)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_TakeDamage.fbx");
+    }
+    else if (m_pOwner->m_CurrentGun == GunState::ASSAULTRIFLE)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_TakeDamage.fbx");
+    }
 }
 
 void PlayerTakeDamage::Release()
