@@ -35,9 +35,7 @@ void DragUI::Frame()
    // LWrite::GetInstance().AddText(to_wstring(MOUSEsX), 500, 300, { 1,1,1,1 });
    // LWrite::GetInstance().AddText(to_wstring(MOUSEsY), 500, 400, { 1,1,1,1 });
 
-    LWrite::GetInstance().AddText(to_wstring(GetGameObject()->m_matWorld._41), 500, 300, { 1,1,1,1 });
-    LWrite::GetInstance().AddText(to_wstring(GetGameObject()->m_matWorld._42), 500, 400, { 1,1,1,1 });
-
+    
 	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !UIManager::s_isMouseInImGuiWindow )
 	{
 

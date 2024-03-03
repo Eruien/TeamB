@@ -1,5 +1,5 @@
-<UIScene SceneName="TestScene">
-<UIObject Name="ScreenBlood" isRender="false" Group="None">
+<UIScene SceneName="IngameScene.xml">
+    <UIObject Name="ScreenBlood" isRender="false" Group="None" Scene="IngameScene.xml">
         <Position x="0" y="0" z="0.69999999"/>
         <Scale width="1280" height="720"/>
         <Texture texPath="../../res/ui/GoreSplash.png"/>
@@ -9,7 +9,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="wp_background" isRender="true" Group="None">
+    <UIObject Name="wp_background" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="461" y="-293" z="0"/>
         <Scale width="292" height="86"/>
         <Texture texPath="../../res/ui/ui_weapon_bg.png"/>
@@ -18,7 +18,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="weaponUI" isRender="true" Group="None">
+    <UIObject Name="weaponUI" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="367" y="-288" z="0"/>
         <Scale width="94" height="58"/>
         <Texture texPath="../../res/ui/Hud_Ammo_Clip.png"/>
@@ -27,7 +27,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="face" isRender="true" Group="None">
+    <UIObject Name="face" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-556" y="-293" z="-0.5"/>
         <Scale width="58" height="56"/>
         <Texture texPath="../../res/ui/face.png"/>
@@ -36,7 +36,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="HPbar" isRender="true" Group="None">
+    <UIObject Name="HPbar" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-336" y="-310" z="-0.5"/>
         <Scale width="362" height="25"/>
         <Texture texPath="../../res/ui/FrontHP.png"/>
@@ -46,7 +46,7 @@
             <Script Type="HpBar"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Ammo" isRender="true" Group="None">
+    <UIObject Name="T_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="432" y="-289" z="0"/>
         <Scale width="50" height="45"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -58,7 +58,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Wave_bg" isRender="true" Group="None">
+    <UIObject Name="Wave_bg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="534" y="259" z="0"/>
         <Scale width="200" height="200"/>
         <Texture texPath="../../res/ui/Hud_Bio_Clock_Circle.png"/>
@@ -67,7 +67,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="C_Ammo" isRender="true" Group="None">
+    <UIObject Name="C_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="529" y="-290" z="0"/>
         <Scale width="42" height="45"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -79,7 +79,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="AmmoSlash" isRender="true" Group="AmmoSlash">
+    <UIObject Name="AmmoSlash" isRender="true" Group="AmmoSlash" Scene="IngameScene.xml">
         <Position x="493" y="-289" z="0"/>
         <Scale width="16" height="40"/>
         <Texture texPath="../../res/ui/slash.png"/>
@@ -88,7 +88,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="WaveSlash" isRender="true" Group="None">
+    <UIObject Name="WaveSlash" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="536" y="249" z="0"/>
         <Scale width="40" height="50"/>
         <Texture texPath="../../res/ui/slash.png"/>
@@ -97,7 +97,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="crr_Wave" isRender="true" Group="None">
+    <UIObject Name="crr_Wave" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="443" y="248" z="0"/>
         <Scale width="40" height="50"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -109,7 +109,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="total_Wave" isRender="true" Group="None">
+    <UIObject Name="total_Wave" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="544" y="250" z="0"/>
         <Scale width="40" height="50"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -121,7 +121,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="text_Wave" isRender="true" Group="None">
+    <UIObject Name="text_Wave" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="533" y="303" z="0"/>
         <Scale width="114" height="44"/>
         <Texture texPath="../../res/ui/Wave.png"/>
@@ -130,7 +130,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="EnemyCountBg" isRender="true" Group="None">
+    <UIObject Name="EnemyCountBg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-374" y="-297" z="0.5"/>
         <Scale width="480" height="100"/>
         <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
@@ -139,7 +139,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Crosshair" isRender="true" Group="None">
+    <UIObject Name="Crosshair" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="0" y="0" z="0"/>
         <Scale width="40" height="40"/>
         <Texture texPath="../../res/ui/CrossHair.png"/>
@@ -148,7 +148,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="MinimapBg" isRender="true" Group="None">
+    <UIObject Name="MinimapBg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-502" y="218" z="0"/>
         <Scale width="270" height="270"/>
         <Texture texPath="../../res/ui/Hud_Box_128x64.png"/>
@@ -157,7 +157,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="BackHP" isRender="true" Group="None">
+    <UIObject Name="BackHP" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-371" y="-297" z="0"/>
         <Scale width="437" height="75"/>
         <Texture texPath="../../res/ui/BackHP2.png"/>
@@ -166,7 +166,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="EnemyCountBg" isRender="true" Group="None">
+    <UIObject Name="EnemyCountBg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-35" y="300" z="0"/>
         <Scale width="200" height="110"/>
         <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Box_128x64.png"/>
@@ -175,7 +175,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="EnemyCount" isRender="true" Group="None">
+    <UIObject Name="EnemyCount" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-57" y="283" z="0"/>
         <Scale width="88" height="54"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -187,7 +187,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_EnemyCount" isRender="true" Group="None">
+    <UIObject Name="Text_EnemyCount" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-124" y="357" z="0"/>
         <Scale width="86" height="68"/>
         <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
@@ -199,7 +199,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="SteamPackDurationBar" isRender="true" Group="None">
+    <UIObject Name="SteamPackDurationBar" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="205" y="-294" z="0"/>
         <Scale width="-12" height="80"/>
         <Texture texPath="../../res/ui/SteamPackBar.png"/>
@@ -212,7 +212,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="SteamPackBg" isRender="true" Group="None">
+    <UIObject Name="SteamPackBg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="190" y="-295" z="0.5"/>
         <Scale width="166" height="90"/>
         <Texture texPath="../../res/ui/Hud_Rectangel_selected.png"/>
@@ -221,7 +221,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="SteamPackUI" isRender="true" Group="None">
+    <UIObject Name="SteamPackUI" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="162" y="-294" z="0"/>
         <Scale width="-78" height="74"/>
         <Texture texPath="../../res/ui/Hud_Syringe.png"/>

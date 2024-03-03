@@ -157,10 +157,11 @@ void LWrite::AddText(std::wstring text, float x = 0.0f, float y = 0.0f, D2D1::Co
 {
     LTextData textData;
     textData.text = text;
-    textData.layout = { x, y, 2560.0f, 1440.0f };
+    textData.layout = { x, y, float(LGlobal::g_WindowWidth), float(LGlobal::g_WindowHeight) };
     textData.color = color;
     m_TextList.push_back(textData);
 }
+
 
 bool LWrite::Init()
 {

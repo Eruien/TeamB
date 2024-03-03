@@ -21,6 +21,7 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
 
 void UIManager::Frame()
 {
+    
     if (_editMode)
     {
         _imGuiManager->Frame();
@@ -143,12 +144,6 @@ void UIManager::Save(const wstring filePath)
                 tinyxml2::XMLElement* argsNode = doc.NewElement("args");
                 scriptNode->LinkEndChild(argsNode);
                 argsNode->SetAttribute("Text", wtm(obj->GetScript<Text>(L"Text")->GetText()).c_str());
-            }
-            if (script->GetName() == L"SceneChange")
-            {
-                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
-                scriptNode->LinkEndChild(argsNode);
-                argsNode->SetAttribute("SceneChange", static_cast<int>(obj->GetScript<SceneChange>(L"SceneChange")->GetEvent()));
             }
             if (script->GetName() == L"UIEvent")
             {
@@ -324,19 +319,6 @@ void UIManager::Load(const wstring filePath)
                             }
                         }
                     }
-                    if (mtw(scriptTypeAttr) == L"SceneChange")
-                    {
-                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
-                        if (argsElement)
-                        {
-                            const char* textAttr = argsElement->Attribute("SceneChange");
-                            if (textAttr)
-                            {
-                               int num = atoi(textAttr);
-                                obj->AddScripts(std::make_shared<SceneChange>(static_cast<Event>(num)));
-                            }
-                        }
-                    }
                     if (mtw(scriptTypeAttr) == L"HpBar")
                     {
                         obj->AddScripts(std::make_shared<HpBar>());
@@ -383,6 +365,89 @@ vector<shared_ptr<KObject>> UIManager::GetGroup(wstring groupName)
 
      return group;
 
+}
+
+vector<shared_ptr<KObject>> UIManager::GetSceneObj(wstring sceneName)
+{
+    vector<shared_ptr<KObject>> sceneObj;
+    for (auto obj : _objs)
+    {
+        if (obj->_scene == sceneName)
+            sceneObj.push_back(obj);
+    }
+    return sceneObj;
+}
+
+void UIManager::ChangeScene(Event Scene)
+{
+    if (Scene == Event::GOMAINSCENE)
+    {
+    
+        LInput::GetInstance().CursorChange();
+
+        //UIManager::GetInstance().Load(L"MainScene.xml");
+
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+
+            obj->SetIsRender(true);
+            auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
+            for (auto obj : group)
+            {
+                obj->SetIsRender(false);
+            }
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+    }
+    else if (Scene == Event::GOINGAMESCENE)
+    {
+
+        LInput::GetInstance().CursorChange();
+        LGlobal::g_BackgroundSound->Stop();
+        //UIManager::GetInstance().Load(L"IngameScene.xml");
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(true);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+        LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
+        UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(30);
+    }
+    else if (Scene == Event::GOENDSCENE)
+    {
+        LInput::GetInstance().CursorChange();
+        //UIManager::GetInstance().Load(L"EndScene.xml");
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(true);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+    }
 }
 
 void UIManager::RemoveObject(wstring name)

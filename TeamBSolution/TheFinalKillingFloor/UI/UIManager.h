@@ -2,6 +2,8 @@
 #include "LStd.h"
 #include "KObject.h"
 #include "LGlobal.h"
+#include "../LScene.h"
+#include "LInput.h"
 //
 #include "DigitDisplay.h"
 #include "PickingUI.h"
@@ -14,7 +16,6 @@
 #include "BillBoard.h"
 #include "ButtonAction.h"
 #include "Text.h"
-#include "SceneChange.h"
 #include "HpBar.h"
 #include "UIEvent.h"
 //
@@ -40,12 +41,13 @@ public:
     void AddUIObject(shared_ptr<KObject> obj) { _objs.push_back(obj); };
     shared_ptr<KObject> GetUIObject(wstring name);
     vector<shared_ptr<KObject>> GetGroup(wstring groupName);
+    vector<shared_ptr<KObject>> GetSceneObj(wstring sceneName);
+    void ChangeScene(Event Scene);
     void RemoveObject(wstring name);
     void UpdateResolution(int width, int height);
-    void AdjustRes();
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
-        bool _editMode = false;
+        bool _editMode = true;
         int _beforeHeight= LGlobal::g_WindowHeight;
         int _beforeWidth= LGlobal::g_WindowWidth;
 private:

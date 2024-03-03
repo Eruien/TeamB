@@ -18,6 +18,10 @@ public:
 	void MainSceneOptionClose();
 	void RetryButton();
 	void SoundToggle();
+	void GoInGameScene();
+	void GoMainScene();
+	void GoEndScene();
+
 	std::unordered_map<wstring, void (ButtonAction::*)()> _functionMap;
 	wstring _function = L"None";
 private:

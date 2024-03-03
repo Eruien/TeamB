@@ -1,5 +1,5 @@
-<UIScene SceneName="TestScene">
-    <UIObject Name="BackGround" isRender="true" Group="None">
+<UIScene SceneName="MainScene.xml">
+    <UIObject Name="BackGround" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="0" y="0" z="0"/>
         <Scale width="1280" height="720"/>
         <Texture texPath="../../res/ui/ZombieInvasionBg1.png"/>
@@ -7,7 +7,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_start" isRender="true" Group="None">
+    <UIObject Name="T_start" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-465" y="153" z="0"/>
         <Scale width="154" height="94"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -19,7 +19,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="B_start" isRender="true" Group="None">
+    <UIObject Name="B_start" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-433" y="128" z="0"/>
         <Scale width="200" height="100"/>
         <Texture texPath="../../res/ui/button1.png"/>
@@ -27,14 +27,11 @@
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
-                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
-            </Script>
-            <Script Type="SceneChange">
-                <args SceneChange="6"/>
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="GoInGameScene"/>
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="B_Option" isRender="true" Group="None">
+    <UIObject Name="B_Option" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-433" y="-9" z="0"/>
         <Scale width="200" height="100"/>
         <Texture texPath="../../res/ui/button1.png"/>
@@ -46,7 +43,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="B_exit" isRender="true" Group="None">
+    <UIObject Name="B_exit" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-433" y="-152" z="0"/>
         <Scale width="188" height="100"/>
         <Texture texPath="../../res/ui/button1.png"/>
@@ -59,7 +56,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Exit" isRender="true" Group="None">
+    <UIObject Name="T_Exit" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-456" y="-132" z="0"/>
         <Scale width="156" height="98"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -71,7 +68,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Option" isRender="true" Group="None">
+    <UIObject Name="T_Option" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-474" y="16" z="0"/>
         <Scale width="200" height="192"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -83,7 +80,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Logo" isRender="true" Group="None">
+    <UIObject Name="Logo" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="92" y="218" z="0"/>
         <Scale width="744" height="200"/>
         <Texture texPath="../../res/ui/logo.png"/>
@@ -92,7 +89,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="OptionFrame" isRender="false" Group="MainOptionMenu">
+    <UIObject Name="OptionFrame" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
         <Position x="-5" y="-71" z="0"/>
         <Scale width="286" height="394"/>
         <Texture texPath="../../res\ui\Hud_Box_128x64.png"/>
@@ -101,7 +98,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="OptionEscape" isRender="false" Group="MainOptionMenu">
+    <UIObject Name="OptionEscape" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
         <Position x="117" y="97" z="0"/>
         <Scale width="30" height="30"/>
         <Texture texPath="../../res/ui/x.png"/>
@@ -113,7 +110,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="SoundToggleText" isRender="false" Group="MainOptionMenu">
+    <UIObject Name="SoundToggleText" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
         <Position x="-74" y="65" z="0"/>
         <Scale width="66" height="56"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -125,7 +122,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="SoundToggleButton" isRender="false" Group="MainOptionMenu">
+    <UIObject Name="SoundToggleButton" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
         <Position x="-8" y="40" z="0"/>
         <Scale width="230" height="62"/>
         <Texture texPath="../../res/ui/button1.png"/>
