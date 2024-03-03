@@ -1,4 +1,5 @@
 #pragma once
+#include <numeric> // for accumulate
 #include "LScene.h"
 #include "LMap.h"
 #include "LHeightMap.h"
@@ -38,6 +39,8 @@ public:
 	vector<shared_ptr<KObject>> _EnemyMarks;
 	shared_ptr<KObject> m_muzzleFlash = nullptr;
 	vector<shared_ptr<KObject>> m_bloodSplatter;
+
+	std::deque<float> fpsValues;
 	int m_crrBlood = 0;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
