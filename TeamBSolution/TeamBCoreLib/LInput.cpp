@@ -271,8 +271,8 @@ bool LInput::Frame()
 
     if (IsHideCursor)
     {
-        if (m_MousePos.x <= clientRect.left || m_MousePos.x >= clientRect.right ||
-            m_MousePos.y <= clientRect.top || m_MousePos.y >= clientRect.bottom)
+        if (m_MousePos.x <= clientRect.left + m_MouseOffset || m_MousePos.x >= clientRect.right - m_MouseOffset ||
+            m_MousePos.y <= clientRect.top + m_MouseOffset || m_MousePos.y >= clientRect.bottom - m_MouseOffset)
         {
             SetCursorPos(point.x, point.y);
             ISEndPoint = true;
