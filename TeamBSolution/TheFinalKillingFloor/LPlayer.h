@@ -44,6 +44,18 @@ public:
 	bool IsSteamPack = false;
 	bool IsZedTime = false;
 	bool IsOnAir = false;
+	
+
+public:
+	enum BACKMOVESPEED {
+		BACKMOVESPEED = 80
+	};
+	enum FRONTMOVESPEED {
+		FRONTMOVESPEED = 100
+	};
+	enum RUNMOVESPEED {
+		RUNMOVESPEED = 150
+	};
 
 	int m_ZedTimeCount = 1;
 	float m_Speed = 0.0f;

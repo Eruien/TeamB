@@ -72,7 +72,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = FRONTMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
@@ -96,7 +96,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 50.0f;
+		m_Speed = BACKMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
@@ -108,7 +108,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 50.0f;
+		m_Speed = BACKMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH
@@ -120,7 +120,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = FRONTMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
@@ -132,7 +132,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = FRONTMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
@@ -144,7 +144,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 100.0f;
+		m_Speed = FRONTMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH
@@ -156,7 +156,7 @@ void LPlayer::Move()
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
-		m_Speed = 50.0f;
+		m_Speed = BACKMOVESPEED;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
@@ -186,24 +186,41 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_SPACE] == KEY_PUSH
 		&& IsOnAir == false)
 	{
-		m_Velocity = { 0.0f, 140.0f, 0.0f };
+		m_Velocity = { 0.0f, 100.0f, 0.0f };
 		if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 		{
 			if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
 			{
-				m_Velocity.x = m_matControl.Forward().x * 1000.0f;
-				m_Velocity.z = m_matControl.Forward().z * 1000.0f;
+				if (IsSteamPack)
+				{
+					m_Velocity.x = m_matControl.Forward().x * 2000.0f;
+					m_Velocity.z = m_matControl.Forward().z * 2000.0f;
+
+				}
+				else
+				{
+					m_Velocity.x = m_matControl.Forward().x * 1500.0f;
+					m_Velocity.z = m_matControl.Forward().z * 1500.0f;
+				}
 			}
 			else
 			{
-				m_Velocity.x = m_matControl.Forward().x * 500.0f;
-				m_Velocity.z = m_matControl.Forward().z * 500.0f;
+				if (IsSteamPack)
+				{
+					m_Velocity.x = m_matControl.Forward().x * 1500.0f;
+					m_Velocity.z = m_matControl.Forward().z * 1500.0f;
+				}
+				else
+				{
+					m_Velocity.x = m_matControl.Forward().x * 1000.0f;
+					m_Velocity.z = m_matControl.Forward().z * 1000.0f;
+				}
 			}
 		}
 		if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 		{
-			m_Velocity.x = m_matControl.Forward().x * -300.0f;
-			m_Velocity.z = m_matControl.Forward().z * -300.0f;
+			m_Velocity.x = m_matControl.Forward().x * -600.0f;
+			m_Velocity.z = m_matControl.Forward().z * -600.0f;
 		}
 		IsOnAir = true;
 	}
@@ -384,7 +401,7 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 	{
-		m_Speed = 180.0f;
+		m_Speed = RUNMOVESPEED;
 	}
 	//else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 	//{
