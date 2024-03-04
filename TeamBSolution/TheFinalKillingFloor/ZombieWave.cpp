@@ -147,9 +147,9 @@ void ZombieWave::CollisionCheckInNpc()
                 float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[j]->m_OBBBox.m_Box.vCenter.z;
                 TVector3 length = { offsetX, offsetY, offsetZ };
                 float distance = length.Length();
-                TVector3 range = zombieModelList[i]->m_OBBBox.m_Box.vMax - zombieModelList[i]->m_OBBBox.m_Box.vMin;
-                float r = range.Length();
-                r *= 0.7f; // Á»ºñ³¢¸®´Â ´õ °¡±î¿öµµ ±¦ÂúÀ½
+                //TVector3 range = zombieModelList[i]->m_OBBBox.m_Box.vMax - zombieModelList[i]->m_OBBBox.m_Box.vMin;
+                //float r = range.Length();
+                float r = zombieModelList[i]->m_fRadius + zombieModelList[j]->m_fRadius;
                 if (distance <= r)
                 {
                     if (!zombieModelList[i]->IsRush &&

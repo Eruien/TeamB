@@ -152,6 +152,7 @@
     <ClCompile Include="EnemyTakeDamage.cpp" />
     <ClCompile Include="EnemyTrace.cpp" />
     <ClCompile Include="InGameScene.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="LAnimationIO.cpp" />
     <ClCompile Include="LCharacterIO.cpp" />
     <ClCompile Include="LExportIO.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="EnemyTakeDamage.h" />
     <ClInclude Include="EnemyTrace.h" />
     <ClInclude Include="InGameScene.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="LAnimationIO.h" />
     <ClInclude Include="LCharacterIO.h" />
     <ClInclude Include="LExportIO.h" />

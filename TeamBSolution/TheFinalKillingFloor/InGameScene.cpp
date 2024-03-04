@@ -1364,8 +1364,9 @@ void InGameScene::HandlePlayerTreeCollisions()
 
         TVector3 dir = { offsetX, offsetY, offsetZ };
         float distance = dir.Length();
-        TVector3 range = tank->m_OBBBox.m_Box.vMax - tank->m_OBBBox.m_Box.vMin;
-        float r = range.Length() * 0.7f;
+        //TVector3 range = tank->m_OBBBox.m_Box.vMax - tank->m_OBBBox.m_Box.vMin;
+        //float r = range.Length() * 0.7f;
+        float r = LGlobal::g_PlayerModel->m_fRadius + tank->m_fRadius;
         if (distance <= r)
         {
             if (tank->IsRush)

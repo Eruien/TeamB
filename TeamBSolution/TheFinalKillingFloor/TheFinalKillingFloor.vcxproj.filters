@@ -169,6 +169,7 @@
       <Filter>Zombie</Filter>
     </ClCompile>
     <ClCompile Include="AnchorUI.cpp" />
+    <ClCompile Include="Item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h" />
@@ -339,6 +340,7 @@
       <Filter>NPC</Filter>
     </ClInclude>
     <ClInclude Include="AnchorUI.h" />
+    <ClInclude Include="Item.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim.xml" />
@@ -400,6 +402,9 @@
     </Filter>
     <Filter Include="Zombie">
       <UniqueIdentifier>{2623aec5-b561-4a84-bd70-bff509435713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{46f057eb-5a39-444f-baf0-99d1dc53571e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
