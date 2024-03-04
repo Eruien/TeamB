@@ -51,7 +51,6 @@ void InGameScene::Process()
     HandlePlayerTreeCollisions();
     LimitPlayerMovement();
     LimitNpcMovement();
-    UpdateGunModelPosition();
     FrameCollisionDetection();
     FrameUI();
     FramePointLight();
@@ -60,6 +59,7 @@ void InGameScene::Process()
 
     UpdateNpcPhysics();
     AdjustNpcHeight();
+    UpdateGunModelPosition();
 }
 
 void InGameScene::Render()
@@ -658,7 +658,7 @@ void InGameScene::NextWave()
     for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -20.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
     }
 
     for (int i = 0; i < tankCount; i++)
