@@ -227,7 +227,7 @@ void InGameScene::Render()
     TMatrix playerTranslation;
     playerTranslation.Translation(TVector3(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42 + LGlobal::g_PlayerModel->m_SettingBox.vCenter.y, LGlobal::g_PlayerModel->m_matControl._43));
     LGlobal::g_PlayerModel->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    LGlobal::g_PlayerModel->m_OBBBox.Render();
+    //LGlobal::g_PlayerModel->m_OBBBox.Render();
 
     m_ZombieWave->CollisionBoxRender();
 
