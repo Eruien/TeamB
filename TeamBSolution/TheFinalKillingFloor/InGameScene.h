@@ -49,15 +49,18 @@ public:
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
+	
 	vector<shared_ptr<LModel>> m_WallList;
 	vector<shared_ptr<LModel>> m_TreeList;
 	vector<shared_ptr<LModel>> m_GrassList;
+	vector<shared_ptr<LModel>> m_ItemList;
 
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
 	LFbxObj* bulletObj;
 	LFbxObj* wallObj = nullptr;
 	LFbxObj* grassObj = nullptr;
+	LFbxObj* kitObj = nullptr;
 
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 public:
@@ -120,8 +123,8 @@ public:
 	void InitializeTreePosition(std::shared_ptr<LModel>& tree);
 	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
 	void InitializeBulletPosition(std::shared_ptr<LModel>& bullet);
-
 	void InitializeOBBBox();
+	void InitializeItem();
 
 	//Process Functions
 	void ProcessMuzzleFlash();

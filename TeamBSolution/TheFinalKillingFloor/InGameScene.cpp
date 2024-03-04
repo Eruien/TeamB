@@ -23,7 +23,6 @@ bool InGameScene::Init()
     InitializeGrasses();
     InitializeMinimap();
     InitializeMuzzleFlash();
-
     InitializeOBBBox();
 
 
@@ -1074,6 +1073,36 @@ void InGameScene::ProcessMuzzleFlash()
     // m_muzzleFlash->SetPos({ m_GunModel->m_matControl._41,m_GunModel->m_matControl._42 ,m_GunModel->m_matControl._43 });
     // m_muzzleFlash->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_muzzleFlash->Frame();
+}
+
+void InGameScene::InitializeItem()
+{
+    m_ItemList.resize(10);
+    kitObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Item/Medkit.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    
+    for (auto& kit : m_ItemList)
+    {
+		kit = std::make_shared<LModel>();
+		kit->SetLFbxObj(kitObj);
+		kit->CreateBoneBuffer();
+        {
+			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+
+			// make translation matrix randomly ( -1000 ~ 1000 )
+			float x = (rand() % 1800) - 900;
+			float z = (rand() % 1800) - 900;
+			float y = m_CustomMap->GetHeight(x, z) + 5;
+
+			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
+			scalingMatrix = DirectX::XMMatrixScaling(20.0f, 20.0f, 20.0f);
+			worldMatrix = DirectX::XMMatrixIdentity();
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+			kit->m_matControl = worldMatrix;
+		}
+	}
 }
 
 void InGameScene::ProcessBloodSplatter()
