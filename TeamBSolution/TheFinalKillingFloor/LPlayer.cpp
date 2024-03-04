@@ -68,7 +68,6 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		
 		LGlobal::g_EffectSound2->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
@@ -295,8 +294,7 @@ bool LPlayer::Frame()
 
 	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH) && IsEndReload)
 	{
-		m_Speed = 0.0f;
-		IsMove = false;
+		IsMove = true;
 		IsAttack = true;
 
 		if (m_StartShoot > m_ShotDelay)
@@ -397,7 +395,7 @@ bool LPlayer::Frame()
 		LGlobal::g_ZedTimeEnd->PlayEffect();
 	}
 
-	if (IsMove && IsMovable)
+	if (IsMove)
 	{
 		Move();
 	}

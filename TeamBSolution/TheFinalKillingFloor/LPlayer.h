@@ -32,7 +32,6 @@ public:
 	bool IsRun = false;
 	bool IsAttack = false;
 	bool IsMove = true;
-	bool IsMovable = true;
 	bool IsReload = false;
 	bool IsEndReload = true;
 	bool IsShoot = false;
