@@ -44,6 +44,7 @@ public:
 	bool IsSteamPack = false;
 	bool IsZedTime = false;
 	bool IsOnAir = false;
+	bool IsKillable = true;
 	
 
 public:

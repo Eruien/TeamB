@@ -51,6 +51,9 @@ State LPlayer::GetState()
 
 void LPlayer::Process()
 {
+	if (!IsKillable) m_HP = 100.f;
+	if (LInput::GetInstance().m_KeyStateOld[DIK_Q] > KEY_PUSH)
+		IsKillable = !IsKillable;
 	m_pAction->Process();
 }
 
