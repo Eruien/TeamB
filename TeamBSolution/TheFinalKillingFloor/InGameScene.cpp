@@ -233,66 +233,72 @@ void InGameScene::Render()
 
     if (LInput::GetInstance().m_MouseState[0])
     {
-        float fHeight = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMin.y;
-        for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+        if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
         {
-
-            if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
+            float fHeight = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMin.y;
+            for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
             {
-                if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
-                {
-                    if ((zombie->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.2))
-                    {
-                        zombie->IsHeadShot = true;
-                    }
-                    else
-                    {
-                        zombie->IsHeadShot = false;
-                    }
-                    zombie->IsTakeDamage = true;
-                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
-                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                    m_crrBlood++;
-                    if (m_crrBlood == m_bloodSplatter.size())
-                        m_crrBlood = 0;
-                }
 
-                //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+                if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
+                {
+                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
+                    {
+                        if ((zombie->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.15))
+                        {
+                            zombie->IsHeadShot = true;
+                        }
+                        else
+                        {
+                            zombie->IsHeadShot = false;
+                        }
+                        zombie->IsTakeDamage = true;
+                        m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
+                        m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                        m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                        m_crrBlood++;
+                        if (m_crrBlood == m_bloodSplatter.size())
+                            m_crrBlood = 0;
+                    }
+
+                    //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                    //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+                }
             }
         }
     }
 
     if (LInput::GetInstance().m_MouseState[0])
     {
-        float fHeight = m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMin.y;
-        for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
+        if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
         {
-            if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
+            float fHeight = m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMin.y;
+            for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
             {
-                if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
+                if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
                 {
-                    if ((tank->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.2))
+                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
                     {
-                        tank->IsHeadShot = true;
-                    }
-                    else
-                    {
-                        tank->IsHeadShot = false;
-                    }
-                    tank->IsTakeDamage = true;
+                        if ((tank->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.15))
+                        {
+                            tank->IsHeadShot = true;
+                        }
+                        else
+                        {
+                            tank->IsHeadShot = false;
+                        }
+                        tank->IsTakeDamage = true;
 
-                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
-                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                    m_crrBlood++;
-                    if (m_crrBlood == m_bloodSplatter.size())
-                        m_crrBlood = 0;
+                        m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
+                        m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                        m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                        m_crrBlood++;
+                        if (m_crrBlood == m_bloodSplatter.size())
+                            m_crrBlood = 0;
+                    }
+
+                    //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                    //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
                 }
-
-                //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
             }
         }
     }
