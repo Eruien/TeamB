@@ -233,10 +233,10 @@ void LPlayer::ItemChnge(GunState gun, std::wstring gunName, int gunIndex)
 
 	if (m_GunModel->m_pModel == nullptr) return;
 
-	m_GunModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[gunIndex];
-	m_GunModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[gunIndex];
-	m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[gunIndex];
-	m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[gunIndex];
+	m_GunModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
+	m_GunModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
+	m_GunModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
+	m_GunModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
 }
 
 bool LPlayer::Frame()
