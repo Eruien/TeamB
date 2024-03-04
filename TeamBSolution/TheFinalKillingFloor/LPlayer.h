@@ -3,6 +3,7 @@
 #include "LModel.h"
 #include "LInput.h"
 #include "LFSMMgr.h"
+#include "LGun.h"
 
 class LPlayer;
 
@@ -25,7 +26,7 @@ public:
 	GunState m_CurrentGun = GunState::PISTOL;
 	LFiniteStateMachine* m_pFsm = nullptr;
 	PlayerState* m_pAction = nullptr;
-	LModel* m_GunModel;
+	LGun* m_Gun;
 	std::map<State, std::unique_ptr<PlayerState>> m_pActionList;
 public:
 	bool IsWalk = false;
@@ -59,8 +60,6 @@ public:
 
 	int m_ZedTimeCount = 1;
 	float m_Speed = 0.0f;
-	float m_ShotDelay = 0.1f;
-	float m_StartShoot = 0.0f;
 	float m_StartTakeDamage = 0.0f;
 	float m_EndTakeDamage = 1.0f;
 	float m_SteamPackStart = 0.0f;
