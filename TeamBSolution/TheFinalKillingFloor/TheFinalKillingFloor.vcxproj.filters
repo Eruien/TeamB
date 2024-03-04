@@ -169,7 +169,9 @@
       <Filter>Zombie</Filter>
     </ClCompile>
     <ClCompile Include="AnchorUI.cpp" />
-    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Item.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h" />
@@ -340,7 +342,9 @@
       <Filter>NPC</Filter>
     </ClInclude>
     <ClInclude Include="AnchorUI.h" />
-    <ClInclude Include="Item.h" />
+    <ClInclude Include="Item.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim.xml" />

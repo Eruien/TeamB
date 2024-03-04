@@ -24,7 +24,7 @@ bool InGameScene::Init()
     InitializeMinimap();
     InitializeMuzzleFlash();
     InitializeOBBBox();
-
+    InitializeItem();
 
     m_PlayerFirstSpawnPos = { LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43 };
 
@@ -47,7 +47,7 @@ void InGameScene::Process()
     FramePlayerModel();
     FrameGunModel();
     UpdateZombieAndTankModels();
-    HandlePlayerTreeCollisions();
+    HandlePlayerCollisions();
     LimitPlayerMovement();
     LimitNpcMovement();
     FrameCollisionDetection();
@@ -59,6 +59,8 @@ void InGameScene::Process()
     UpdateNpcPhysics();
     AdjustNpcHeight();
     UpdateGunModelPosition();
+
+    ProcessItem();
 }
 
 void InGameScene::Render()
@@ -190,6 +192,8 @@ void InGameScene::Render()
         }
     }
 
+    RenderItem();
+
     //muzzleFlash
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
@@ -212,6 +216,7 @@ void InGameScene::Render()
         obj->Render();
     }
 
+    
 
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
@@ -827,6 +832,7 @@ void InGameScene::InitializeTrees()
         tree = std::make_shared<LModel>();
         tree->SetLFbxObj(treeObj);
         tree->CreateBoneBuffer();
+        tree->m_fRadius = 23.f;
         InitializeTreePosition(tree);
     }
 }
@@ -1077,10 +1083,9 @@ void InGameScene::ProcessMuzzleFlash()
 
 void InGameScene::InitializeItem()
 {
-    m_ItemList.resize(10);
-    kitObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/Item/Medkit.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
-    
-    for (auto& kit : m_ItemList)
+    m_KitList.resize(5);
+    kitObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/medkit.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    for (auto& kit : m_KitList)
     {
 		kit = std::make_shared<LModel>();
 		kit->SetLFbxObj(kitObj);
@@ -1091,18 +1096,47 @@ void InGameScene::InitializeItem()
 			// make translation matrix randomly ( -1000 ~ 1000 )
 			float x = (rand() % 1800) - 900;
 			float z = (rand() % 1800) - 900;
-			float y = m_CustomMap->GetHeight(x, z) + 5;
+			float y = m_CustomMap->GetHeight(x, z) + 5.f;
 
 			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
-			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
-			scalingMatrix = DirectX::XMMatrixScaling(20.0f, 20.0f, 20.0f);
+			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(0.0f));
+			scalingMatrix = DirectX::XMMatrixScaling(40.0f, 40.0f, 40.0f);
 			worldMatrix = DirectX::XMMatrixIdentity();
 			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
 			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
 			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
 			kit->m_matControl = worldMatrix;
+            kit->m_fRadius = 40.f;
 		}
 	}
+
+    // ammo
+    m_AmmoList.resize(5);
+    ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    for (auto& ammo : m_AmmoList)
+    {
+        ammo = std::make_shared<LModel>();
+        ammo->SetLFbxObj(ammoObj);
+        ammo->CreateBoneBuffer();
+        {
+			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+
+			// make translation matrix randomly ( -1000 ~ 1000 )
+			float x = (rand() % 1800) - 900;
+			float z = (rand() % 1800) - 900;
+			float y = m_CustomMap->GetHeight(x, z) + 5.f;
+
+			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(90.0f));
+			scalingMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			worldMatrix = DirectX::XMMatrixIdentity();
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+			ammo->m_matControl = worldMatrix;
+			ammo->m_fRadius = 30.f;
+		}
+    }
 }
 
 void InGameScene::ProcessBloodSplatter()
@@ -1279,6 +1313,19 @@ void InGameScene::AdjustNpcHeight()
 	}
 }
 
+void InGameScene::RenderItem()
+{
+    for (auto& item : m_KitList)
+    {
+        item->Render();
+    }
+
+    for (auto& item : m_AmmoList)
+    {
+		item->Render();
+	}
+}
+
 void InGameScene::SwitchCameraView()
 {
     if (LInput::GetInstance().m_KeyStateOld[DIK_1] > KEY_PUSH)
@@ -1308,6 +1355,19 @@ void InGameScene::FramePlayerModel()
     LGlobal::g_PlayerModel->Process();
 }
 
+void InGameScene::ProcessItem()
+{
+    for (auto& kit : m_KitList)
+    {
+        kit->Frame();
+    }
+    
+    for (auto& ammo : m_AmmoList)
+    {
+		ammo->Frame();
+	}
+}
+
 void InGameScene::FrameGunModel()
 {
     if (LGlobal::g_PlayerModel->m_GunModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
@@ -1319,6 +1379,11 @@ void InGameScene::FrameGunModel()
         LGlobal::g_PlayerModel->m_GunModel->m_matControl = LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matSocket
             * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
     }
+}
+
+void InGameScene::GetItem()
+{
+    
 }
 
 void InGameScene::UpdateZombieAndTankModels()
@@ -1346,7 +1411,7 @@ void InGameScene::UpdateZombieAndTankModels()
     m_ZombieWave->Frame();
 }
 
-void InGameScene::HandlePlayerTreeCollisions()
+void InGameScene::HandlePlayerCollisions()
 {
     for (auto& tree : m_TreeList)
     {
@@ -1356,11 +1421,12 @@ void InGameScene::HandlePlayerTreeCollisions()
 
         TVector3 dir = { offsetX, offsetY, offsetZ };
         float distance = dir.Length();
-        if (distance <= 33)
+        float r = LGlobal::g_PlayerModel->m_fRadius + tree->m_fRadius;
+        if (distance <= r)
         {
             
             dir.Normalize();
-            dir *= (33 - distance);
+            dir *= (r - distance);
             LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
             LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
         }
@@ -1374,8 +1440,7 @@ void InGameScene::HandlePlayerTreeCollisions()
 
 		TVector3 dir = { offsetX, offsetY, offsetZ };
 		float distance = dir.Length();
-        TVector3 range = zombie->m_OBBBox.m_Box.vMax - zombie->m_OBBBox.m_Box.vMin;
-        float r = range.Length() * 0.7f;
+        float r = LGlobal::g_PlayerModel->m_fRadius + zombie->m_fRadius;
         if (distance <= r)
         {
             dir.Normalize();
@@ -1414,6 +1479,56 @@ void InGameScene::HandlePlayerTreeCollisions()
                 LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
             }
         }
+	}
+
+    std::vector<std::shared_ptr<LModel>>::iterator it = m_KitList.begin();
+    while (it != m_KitList.end())
+    {
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - (*it)->m_matControl._41;
+        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - (*it)->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - (*it)->m_matControl._43;
+
+        TVector3 dir = { offsetX, offsetY, offsetZ };
+        float distance = dir.Length();
+        float r = LGlobal::g_PlayerModel->m_fRadius + (*it)->m_fRadius;
+
+        if (distance <= r)
+        {
+            LGlobal::g_PlayerModel->m_HP += 20;
+            if (LGlobal::g_PlayerModel->m_HP > 100)
+				LGlobal::g_PlayerModel->m_HP = 100;
+            it = m_KitList.erase(it);
+            UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    //ammo
+
+    std::vector<std::shared_ptr<LModel>>::iterator it2 = m_AmmoList.begin();
+    while (it2 != m_AmmoList.end())
+    {
+		float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - (*it2)->m_matControl._41;
+		float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - (*it2)->m_matControl._42;
+		float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - (*it2)->m_matControl._43;
+
+		TVector3 dir = { offsetX, offsetY, offsetZ };
+		float distance = dir.Length();
+		float r = LGlobal::g_PlayerModel->m_fRadius + (*it2)->m_fRadius;
+
+        if (distance <= r && LGlobal::g_BulletCount != MAX_AMMO::RIFLE)
+        {
+			LGlobal::g_BulletCount = MAX_AMMO::RIFLE;
+			it2 = m_AmmoList.erase(it2);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+		}
+        else
+        {
+			++it2;
+		}
 	}
 }
 
