@@ -1182,9 +1182,9 @@ void InGameScene::UpdateBulletModels()
         {
             m_BulletList[i]->Frame();
 
-            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 5000;
-            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 5000;
-            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 5000;
+            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 20000;
+            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 20000;
+            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 20000;
             if (m_BulletList[i]->m_matControl._41 > 1000.f
                 || m_BulletList[i]->m_matControl._41 < -1000.f
                 || m_BulletList[i]->m_matControl._43 > 1000.f
@@ -1430,6 +1430,7 @@ void InGameScene::FramePointLight()
     m_PointLight[0].Frame(LGlobal::g_PlayerModel->m_matControl._41 + LGlobal::g_PlayerModel->m_matControl.Forward().x * 150,
         LGlobal::g_PlayerModel->m_matControl._42,
         LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
+    //m_PointLight[0].m_vDirection = LGlobal::g_PlayerModel->m_matControl.Forward();
 }
 
 void InGameScene::UpdatePlayerPhysics()
