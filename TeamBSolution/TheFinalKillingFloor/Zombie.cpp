@@ -128,12 +128,12 @@ bool Zombie::Frame()
 	if (LGlobal::g_PlayerModel->IsZedTime)
 	{
 		m_AnimationRate = 1.f;
-		m_Speed = 50.0f;
+		m_Speed = 30.0f;
 	}
 	else
 	{
 		m_AnimationRate = 2.0f;
-		m_Speed = 100.0f;
+		m_Speed = 60.0f;
 	}
 
 	m_ZombieSound->Play();

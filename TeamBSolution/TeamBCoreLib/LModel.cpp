@@ -92,6 +92,9 @@ void LModel::SetOBBBox(TVector3 min, TVector3 max, float boxScale)
 	m_SettingBox.vCenter.y /= 2.0f;
 	m_SettingBox.vCenter.z /= 2.0f;
 
+	TVector3 length = m_SettingBox.vMax - m_SettingBox.vMin;
+	m_fRadius = length.Length() * 0.3f;
+
 	m_SettingBox.fExtent[0] = fabs(m_SettingBox.vCenter.x - m_SettingBox.vMax.x);
 	m_SettingBox.fExtent[1] = fabs(m_SettingBox.vCenter.y - m_SettingBox.vMax.y);
 	m_SettingBox.fExtent[2] = fabs(m_SettingBox.vCenter.z - m_SettingBox.vMax.z);

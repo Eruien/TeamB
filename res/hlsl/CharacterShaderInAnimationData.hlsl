@@ -152,7 +152,7 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     //            r,g,b,a(1)=불투명, a(0)=완전투명, a(0.0< 1.0f)= 반투명
     float4 vTexColor = g_txDiffuse1.Sample(sample0, vIn.t);
     float4 vPointLightColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
-    float4 FinalColor = vTexColor * (vPointLightColor + 0.1f);
+    float4 FinalColor = vTexColor * (vPointLightColor + 0.2f);
     
     float grayScale = dot(FinalColor.rgb, float3(0.299, 0.587, 0.114));
     float3 grayColor = float3(grayScale, grayScale, grayScale);

@@ -6,6 +6,8 @@
 #include "LCharacterIO.h"
 #include "LAnimationIO.h"
 #include "LExportIO.h"
+#include "LGun.h"
+
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
@@ -23,9 +25,8 @@ bool InGameScene::Init()
     InitializeGrasses();
     InitializeMinimap();
     InitializeMuzzleFlash();
-
     InitializeOBBBox();
-
+    InitializeItem();
 
     m_PlayerFirstSpawnPos = { LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43 };
 
@@ -48,10 +49,9 @@ void InGameScene::Process()
     FramePlayerModel();
     FrameGunModel();
     UpdateZombieAndTankModels();
-    HandlePlayerTreeCollisions();
+    HandlePlayerCollisions();
     LimitPlayerMovement();
     LimitNpcMovement();
-    UpdateGunModelPosition();
     FrameCollisionDetection();
     FrameUI();
     FramePointLight();
@@ -60,6 +60,9 @@ void InGameScene::Process()
 
     UpdateNpcPhysics();
     AdjustNpcHeight();
+    UpdateGunModelPosition();
+
+    ProcessItem();
 }
 
 void InGameScene::Render()
@@ -76,7 +79,7 @@ void InGameScene::Render()
     LWrite::GetInstance().AddText(fpsText, 10.0f, 10.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     //
-    LGlobal::g_PlayerModel->m_HP = 100.f;
+    
 
     if (!m_VisibleBulletList[LGlobal::g_BulletCount])
         m_PointLight[0].m_vPosition.y = -1000.f;
@@ -146,7 +149,7 @@ void InGameScene::Render()
     }
 
     RenderObject();
-    LGlobal::g_PlayerModel->m_GunModel->Render();
+    LGlobal::g_PlayerModel->m_Gun->Render();
     
     m_ZombieWave->Render();
 
@@ -191,16 +194,18 @@ void InGameScene::Render()
         }
     }
 
+    RenderItem();
+
     //muzzleFlash
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
-        if (sTime >= LGlobal::g_PlayerModel->m_ShotDelay)
+        if (sTime >= LGlobal::g_PlayerModel->m_Gun->m_ShotDelay)
         {
             m_muzzleFlash->SetIsRender(true);
 
             sTime = 0;
         }
-        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_ShotDelay)
+        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_Gun->m_ShotDelay)
         {
             m_muzzleFlash->SetIsRender(false);
         }
@@ -213,6 +218,7 @@ void InGameScene::Render()
         obj->Render();
     }
 
+    
 
     // Shadow
    /* m_pQuad.SetMatrix(NULL, NULL, NULL);
@@ -227,69 +233,78 @@ void InGameScene::Render()
     TMatrix playerTranslation;
     playerTranslation.Translation(TVector3(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42 + LGlobal::g_PlayerModel->m_SettingBox.vCenter.y, LGlobal::g_PlayerModel->m_matControl._43));
     LGlobal::g_PlayerModel->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    LGlobal::g_PlayerModel->m_OBBBox.Render();
+    //LGlobal::g_PlayerModel->m_OBBBox.Render();
 
     m_ZombieWave->CollisionBoxRender();
 
     if (LInput::GetInstance().m_MouseState[0])
     {
-        for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+        if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
         {
-            if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
+            float fHeight = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMin.y;
+            for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
             {
-                if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
-                {
-                    if (abs(m_Select->m_vIntersection.y - zombie->m_OBBBox.m_Box.vMax.y) < 5.f)
-                    {
-                        zombie->IsHeadShot = true;
-                    }
-                    else
-                    {
-                        zombie->IsHeadShot = false;
-                    }
-                    zombie->IsTakeDamage = true;
-                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
-                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                    m_crrBlood++;
-                    if (m_crrBlood == m_bloodSplatter.size())
-                        m_crrBlood = 0;
-                }
 
-                //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+                if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
+                {
+                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
+                    {
+                        if ((zombie->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.15))
+                        {
+                            zombie->IsHeadShot = true;
+                        }
+                        else
+                        {
+                            zombie->IsHeadShot = false;
+                        }
+                        zombie->IsTakeDamage = true;
+                        m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
+                        m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                        m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                        m_crrBlood++;
+                        if (m_crrBlood == m_bloodSplatter.size())
+                            m_crrBlood = 0;
+                    }
+
+                    //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                    //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+                }
             }
         }
     }
 
     if (LInput::GetInstance().m_MouseState[0])
     {
-        for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
+        if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
         {
-            if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
+            float fHeight = m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMin.y;
+            for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
             {
-                if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
+                if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
                 {
-                    if (abs(m_Select->m_vIntersection.y - tank->m_OBBBox.m_Box.vMax.y) < 7.f)
+                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
                     {
-                        tank->IsHeadShot = true;
-                    }
-                    else
-                    {
-                        tank->IsHeadShot = false;
-                    }
-                    tank->IsTakeDamage = true;
+                        if ((tank->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.15))
+                        {
+                            tank->IsHeadShot = true;
+                        }
+                        else
+                        {
+                            tank->IsHeadShot = false;
+                        }
+                        tank->IsTakeDamage = true;
 
-                    m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
-                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                    m_crrBlood++;
-                    if (m_crrBlood == m_bloodSplatter.size())
-                        m_crrBlood = 0;
+                        m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
+                        m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                        m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                        m_crrBlood++;
+                        if (m_crrBlood == m_bloodSplatter.size())
+                            m_crrBlood = 0;
+                    }
+
+                    //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                    //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
                 }
-
-                //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
             }
         }
     }
@@ -503,7 +518,7 @@ void InGameScene::PlayerInit()
 {
     // PlayerSetting
     LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_GunModel = new LModel;
+    LGlobal::g_PlayerModel->m_Gun = new LGun;
     LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
@@ -658,7 +673,7 @@ void InGameScene::NextWave()
     for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
-        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -40.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBoxRightHand({ RightHand._41, RightHand._42, -20.0f }, { RightShoulder._41, RightShoulder._42, 40.0f }, 0.2f);
     }
 
     for (int i = 0; i < tankCount; i++)
@@ -819,6 +834,7 @@ void InGameScene::InitializeTrees()
         tree = std::make_shared<LModel>();
         tree->SetLFbxObj(treeObj);
         tree->CreateBoneBuffer();
+        tree->m_fRadius = 23.f;
         InitializeTreePosition(tree);
     }
 }
@@ -1049,7 +1065,7 @@ void InGameScene::ProcessMuzzleFlash()
     matRotation._44 = 1.0f;
     TVector3 foward;
     foward = LGlobal::g_PlayerModel->m_matControl.Forward();
-    TVector3 vTrans = { LGlobal::g_PlayerModel->m_GunModel->m_matControl._41 ,LGlobal::g_PlayerModel->m_GunModel->m_matControl._42 ,LGlobal::g_PlayerModel->m_GunModel->m_matControl._43 };
+    TVector3 vTrans = { LGlobal::g_PlayerModel->m_Gun->m_matControl._41 ,LGlobal::g_PlayerModel->m_Gun->m_matControl._42 ,LGlobal::g_PlayerModel->m_Gun->m_matControl._43 };
     vTrans = vTrans + (foward * 180);
     D3DXMatrixTranslation(&matTrans, vTrans.x,
         vTrans.y,
@@ -1065,6 +1081,64 @@ void InGameScene::ProcessMuzzleFlash()
     // m_muzzleFlash->SetPos({ m_GunModel->m_matControl._41,m_GunModel->m_matControl._42 ,m_GunModel->m_matControl._43 });
     // m_muzzleFlash->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_muzzleFlash->Frame();
+}
+
+void InGameScene::InitializeItem()
+{
+    m_KitList.resize(5);
+    kitObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/medkit.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    for (auto& kit : m_KitList)
+    {
+		kit = std::make_shared<LModel>();
+		kit->SetLFbxObj(kitObj);
+		kit->CreateBoneBuffer();
+        {
+			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+
+			// make translation matrix randomly ( -1000 ~ 1000 )
+			float x = (rand() % 1800) - 900;
+			float z = (rand() % 1800) - 900;
+			float y = m_CustomMap->GetHeight(x, z) + 5.f;
+
+			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(0.0f));
+			scalingMatrix = DirectX::XMMatrixScaling(40.0f, 40.0f, 40.0f);
+			worldMatrix = DirectX::XMMatrixIdentity();
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+			kit->m_matControl = worldMatrix;
+            kit->m_fRadius = 40.f;
+		}
+	}
+
+    // ammo
+    m_AmmoList.resize(5);
+    ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+    for (auto& ammo : m_AmmoList)
+    {
+        ammo = std::make_shared<LModel>();
+        ammo->SetLFbxObj(ammoObj);
+        ammo->CreateBoneBuffer();
+        {
+			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+
+			// make translation matrix randomly ( -1000 ~ 1000 )
+			float x = (rand() % 1800) - 900;
+			float z = (rand() % 1800) - 900;
+			float y = m_CustomMap->GetHeight(x, z) + 5.f;
+
+			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(90.0f));
+			scalingMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			worldMatrix = DirectX::XMMatrixIdentity();
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+			ammo->m_matControl = worldMatrix;
+			ammo->m_fRadius = 30.f;
+		}
+    }
 }
 
 void InGameScene::ProcessBloodSplatter()
@@ -1182,9 +1256,9 @@ void InGameScene::UpdateBulletModels()
         {
             m_BulletList[i]->Frame();
 
-            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 5000;
-            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 5000;
-            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 5000;
+            m_BulletList[i]->m_matControl._41 += m_BulletList[i]->m_matControl.Forward().x * 20000;
+            m_BulletList[i]->m_matControl._42 += m_BulletList[i]->m_matControl.Forward().y * 20000;
+            m_BulletList[i]->m_matControl._43 += m_BulletList[i]->m_matControl.Forward().z * 20000;
             if (m_BulletList[i]->m_matControl._41 > 1000.f
                 || m_BulletList[i]->m_matControl._41 < -1000.f
                 || m_BulletList[i]->m_matControl._43 > 1000.f
@@ -1241,6 +1315,19 @@ void InGameScene::AdjustNpcHeight()
 	}
 }
 
+void InGameScene::RenderItem()
+{
+    for (auto& item : m_KitList)
+    {
+        item->Render();
+    }
+
+    for (auto& item : m_AmmoList)
+    {
+		item->Render();
+	}
+}
+
 void InGameScene::SwitchCameraView()
 {
     if (LInput::GetInstance().m_KeyStateOld[DIK_1] > KEY_PUSH)
@@ -1270,17 +1357,35 @@ void InGameScene::FramePlayerModel()
     LGlobal::g_PlayerModel->Process();
 }
 
+void InGameScene::ProcessItem()
+{
+    for (auto& kit : m_KitList)
+    {
+        kit->Frame();
+    }
+    
+    for (auto& ammo : m_AmmoList)
+    {
+		ammo->Frame();
+	}
+}
+
 void InGameScene::FrameGunModel()
 {
-    if (LGlobal::g_PlayerModel->m_GunModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
+    if (LGlobal::g_PlayerModel->m_Gun->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
     {
         if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
 
-        LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_GunModel->m_ParentBoneName];
+        LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_GunModel->m_matControl = LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket
+            * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
     }
+}
+
+void InGameScene::GetItem()
+{
+    
 }
 
 void InGameScene::UpdateZombieAndTankModels()
@@ -1308,7 +1413,7 @@ void InGameScene::UpdateZombieAndTankModels()
     m_ZombieWave->Frame();
 }
 
-void InGameScene::HandlePlayerTreeCollisions()
+void InGameScene::HandlePlayerCollisions()
 {
     for (auto& tree : m_TreeList)
     {
@@ -1318,11 +1423,12 @@ void InGameScene::HandlePlayerTreeCollisions()
 
         TVector3 dir = { offsetX, offsetY, offsetZ };
         float distance = dir.Length();
-        if (distance <= 33)
+        float r = LGlobal::g_PlayerModel->m_fRadius + tree->m_fRadius;
+        if (distance <= r)
         {
             
             dir.Normalize();
-            dir *= (33 - distance);
+            dir *= (r - distance);
             LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
             LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
         }
@@ -1336,8 +1442,7 @@ void InGameScene::HandlePlayerTreeCollisions()
 
 		TVector3 dir = { offsetX, offsetY, offsetZ };
 		float distance = dir.Length();
-        TVector3 range = zombie->m_OBBBox.m_Box.vMax - zombie->m_OBBBox.m_Box.vMin;
-        float r = range.Length() * 0.7f;
+        float r = LGlobal::g_PlayerModel->m_fRadius + zombie->m_fRadius;
         if (distance <= r)
         {
             dir.Normalize();
@@ -1355,8 +1460,9 @@ void InGameScene::HandlePlayerTreeCollisions()
 
         TVector3 dir = { offsetX, offsetY, offsetZ };
         float distance = dir.Length();
-        TVector3 range = tank->m_OBBBox.m_Box.vMax - tank->m_OBBBox.m_Box.vMin;
-        float r = range.Length() * 0.7f;
+        //TVector3 range = tank->m_OBBBox.m_Box.vMax - tank->m_OBBBox.m_Box.vMin;
+        //float r = range.Length() * 0.7f;
+        float r = LGlobal::g_PlayerModel->m_fRadius + tank->m_fRadius;
         if (distance <= r)
         {
             if (tank->IsRush)
@@ -1375,6 +1481,56 @@ void InGameScene::HandlePlayerTreeCollisions()
                 LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
             }
         }
+	}
+
+    std::vector<std::shared_ptr<LModel>>::iterator it = m_KitList.begin();
+    while (it != m_KitList.end())
+    {
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - (*it)->m_matControl._41;
+        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - (*it)->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - (*it)->m_matControl._43;
+
+        TVector3 dir = { offsetX, offsetY, offsetZ };
+        float distance = dir.Length();
+        float r = LGlobal::g_PlayerModel->m_fRadius + (*it)->m_fRadius;
+
+        if (distance <= r)
+        {
+            LGlobal::g_PlayerModel->m_HP += 20;
+            if (LGlobal::g_PlayerModel->m_HP > 100)
+				LGlobal::g_PlayerModel->m_HP = 100;
+            it = m_KitList.erase(it);
+            UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    //ammo
+
+    std::vector<std::shared_ptr<LModel>>::iterator it2 = m_AmmoList.begin();
+    while (it2 != m_AmmoList.end())
+    {
+		float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - (*it2)->m_matControl._41;
+		float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - (*it2)->m_matControl._42;
+		float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - (*it2)->m_matControl._43;
+
+		TVector3 dir = { offsetX, offsetY, offsetZ };
+		float distance = dir.Length();
+		float r = LGlobal::g_PlayerModel->m_fRadius + (*it2)->m_fRadius;
+
+        if (distance <= r && LGlobal::g_BulletCount != MAX_AMMO::RIFLE)
+        {
+			LGlobal::g_BulletCount = MAX_AMMO::RIFLE;
+			it2 = m_AmmoList.erase(it2);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+		}
+        else
+        {
+			++it2;
+		}
 	}
 }
 
@@ -1399,14 +1555,14 @@ void InGameScene::LimitNpcMovement()
 
 void InGameScene::UpdateGunModelPosition()
 {
-    if (LGlobal::g_PlayerModel->m_GunModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
+    if (LGlobal::g_PlayerModel->m_Gun->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
     {
         if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
 
-        LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_GunModel->m_ParentBoneName];
+        LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_GunModel->m_matControl = LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_GunModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket
+            * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
     }
 }
 
@@ -1430,6 +1586,7 @@ void InGameScene::FramePointLight()
     m_PointLight[0].Frame(LGlobal::g_PlayerModel->m_matControl._41 + LGlobal::g_PlayerModel->m_matControl.Forward().x * 150,
         LGlobal::g_PlayerModel->m_matControl._42,
         LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
+    //m_PointLight[0].m_vDirection = LGlobal::g_PlayerModel->m_matControl.Forward();
 }
 
 void InGameScene::UpdatePlayerPhysics()

@@ -126,7 +126,7 @@ void ZombieWave::CollisionCheckInNpc()
 
             for (int i = 0; i < zombieModelList.size(); i++)
             {
-                zombieModelList[i]->m_OBBBox.Frame();
+                /*zombieModelList[i]->m_OBBBox.Frame();
                 zombieModelList[i]->m_OBBBox.CreateOBBBox(zombieModelList[i]->m_SettingBox.fExtent[0], zombieModelList[i]->m_SettingBox.fExtent[1], zombieModelList[i]->m_SettingBox.fExtent[2],
                     { zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 },
                     zombieModelList[i]->m_SettingBox.vAxis[0], zombieModelList[i]->m_SettingBox.vAxis[1], zombieModelList[i]->m_SettingBox.vAxis[2]);
@@ -134,7 +134,10 @@ void ZombieWave::CollisionCheckInNpc()
                 zombieModelList[i]->m_OBBBoxRightHand.Frame();
                 zombieModelList[i]->m_OBBBoxRightHand.CreateOBBBox(zombieModelList[i]->m_SettingBoxRightHand.fExtent[0], zombieModelList[i]->m_SettingBoxRightHand.fExtent[1], zombieModelList[i]->m_SettingBoxRightHand.fExtent[2],
                     { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
-                    zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
+                    zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);*/
+                zombieModelList[i]->m_OBBBox.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 });
+                zombieModelList[i]->m_OBBBoxRightHand.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 });
+
             }
 
             for (int j = i + 1; j < zombieModelList.size(); ++j)
@@ -144,9 +147,9 @@ void ZombieWave::CollisionCheckInNpc()
                 float offsetZ = zombieModelList[i]->m_OBBBox.m_Box.vCenter.z - zombieModelList[j]->m_OBBBox.m_Box.vCenter.z;
                 TVector3 length = { offsetX, offsetY, offsetZ };
                 float distance = length.Length();
-                TVector3 range = zombieModelList[i]->m_OBBBox.m_Box.vMax - zombieModelList[i]->m_OBBBox.m_Box.vMin;
-                float r = range.Length();
-                r *= 0.7f; // Á»ºñ³¢¸®´Â ´õ °¡±î¿öµµ ±¦ÂúÀ½
+                //TVector3 range = zombieModelList[i]->m_OBBBox.m_Box.vMax - zombieModelList[i]->m_OBBBox.m_Box.vMin;
+                //float r = range.Length();
+                float r = zombieModelList[i]->m_fRadius + zombieModelList[j]->m_fRadius;
                 if (distance <= r)
                 {
                     if (!zombieModelList[i]->IsRush &&

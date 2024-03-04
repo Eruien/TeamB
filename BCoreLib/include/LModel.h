@@ -20,6 +20,7 @@ public:
 	LBox m_OBBBox;
 	T_BOX m_SettingBoxRightHand;
 	LBox m_OBBBoxRightHand;
+	float m_fRadius = 0.0f;
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;

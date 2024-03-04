@@ -22,6 +22,14 @@
 
 const int g_iMaxLight = 1;
 
+enum MAX_AMMO
+{
+	PISTOL = 15,
+	RIFLE = 30,
+	SHOTGUN = 10,
+	SNIPER = 5,
+};
+
 struct SHADOW_CONSTANT_BUFFER
 {
 	TMatrix	g_matShadow;
@@ -49,15 +57,20 @@ public:
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
+	
 	vector<shared_ptr<LModel>> m_WallList;
 	vector<shared_ptr<LModel>> m_TreeList;
 	vector<shared_ptr<LModel>> m_GrassList;
+	vector<shared_ptr<LModel>> m_KitList;
+	vector<shared_ptr<LModel>> m_AmmoList;
 
 	LFbxObj* mapObj = nullptr;
 	LFbxObj* treeObj = nullptr;
 	LFbxObj* bulletObj;
 	LFbxObj* wallObj = nullptr;
 	LFbxObj* grassObj = nullptr;
+	LFbxObj* kitObj = nullptr;
+	LFbxObj* ammoObj = nullptr;
 
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 public:
@@ -120,8 +133,8 @@ public:
 	void InitializeTreePosition(std::shared_ptr<LModel>& tree);
 	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
 	void InitializeBulletPosition(std::shared_ptr<LModel>& bullet);
-
 	void InitializeOBBBox();
+	void InitializeItem();
 
 	//Process Functions
 	void ProcessMuzzleFlash();
@@ -134,13 +147,15 @@ public:
 	void UpdateWallModels();
 	void UpdateTreeModels();
 	void UpdateBulletModels();
+	void ProcessItem();
+	void GetItem();
 	
 	void SwitchCameraView();
 	void UpdateCameraTargetPosition();
 	void FramePlayerModel();
 	void FrameGunModel();
 	void UpdateZombieAndTankModels();
-	void HandlePlayerTreeCollisions();
+	void HandlePlayerCollisions();
 	void LimitPlayerMovement();
 	void LimitNpcMovement();
 	void UpdateGunModelPosition();
@@ -151,6 +166,7 @@ public:
 	void UpdateNpcPhysics();
 	void AdjustPlayerHeight();
 	void AdjustNpcHeight();
+	void RenderItem();
 	
 public:
 	void NextWave();
