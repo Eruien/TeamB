@@ -2,6 +2,7 @@
 #include "LGlobal.h"
 #include "LFbxMgr.h"
 #include "KObject.h"
+
 bool EnemyTakeDamage::Init()
 {
     return true;
@@ -17,7 +18,7 @@ void EnemyTakeDamage::Process()
         m_Timer = true;
     }*/
 
-    if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
+    if (m_pOwner->IsTakeDamage && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
     {
         if (m_pOwner->IsHeadShot)
         {

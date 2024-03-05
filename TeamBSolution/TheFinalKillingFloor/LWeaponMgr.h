@@ -3,8 +3,11 @@
 
 struct GunSpec
 {
+	float defaultShootDelay = 0.0f;
 	float ShootDelay = 0.0f;
+	float defaultDamage = 0.0f;
 	float Damage = 0.0f;
+	int defaultTotalAmmo = 0;
 	int TotalAmmo = 0;
 	int CurrentAmmo = 0;
 };

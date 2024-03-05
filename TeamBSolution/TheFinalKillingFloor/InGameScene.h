@@ -22,14 +22,6 @@
 
 const int g_iMaxLight = 1;
 
-enum MAX_AMMO
-{
-	PISTOL = 15,
-	RIFLE = 30,
-	SHOTGUN = 10,
-	SNIPER = 5,
-};
-
 struct SHADOW_CONSTANT_BUFFER
 {
 	TMatrix	g_matShadow;
@@ -115,6 +107,7 @@ public:
 	void CameraInit();
 	void PlayerInit();
 	void CharacterInit();
+	void ResetWeapon();
 public:
 	//Initialize Functions
 	void InitializeWeapon();
