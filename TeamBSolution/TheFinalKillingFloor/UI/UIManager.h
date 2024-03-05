@@ -2,6 +2,7 @@
 #include "LStd.h"
 #include "KObject.h"
 #include "LGlobal.h"
+#include "../LPlayer.h"
 #include "../LScene.h"
 #include "LInput.h"
 //
