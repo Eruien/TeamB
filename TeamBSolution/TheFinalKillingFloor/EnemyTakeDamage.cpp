@@ -27,7 +27,7 @@ void EnemyTakeDamage::Process()
         }
         else
         {
-            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
+            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_DamageRate;
         }
 
         UpdateHPbar();

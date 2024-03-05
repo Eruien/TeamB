@@ -819,8 +819,8 @@ void InGameScene::InitializeWeapon()
     rifle->m_GunSpec.TotalAmmo = 30;
     rifle->m_GunSpec.defaultShootDelay = 0.1f;
     rifle->m_GunSpec.ShootDelay = 0.1f;
-    rifle->m_GunSpec.defaultDamage = 50.0f;
-    rifle->m_GunSpec.Damage = 50.0f;
+    rifle->m_GunSpec.defaultDamage = 20.0f;
+    rifle->m_GunSpec.Damage = 20.0f;
     
     LWeaponMgr::GetInstance().Add(GunState::PISTOL, pistol);
     LWeaponMgr::GetInstance().Add(GunState::ASSAULTRIFLE, rifle);
