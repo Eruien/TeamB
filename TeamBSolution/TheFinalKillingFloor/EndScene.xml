@@ -32,27 +32,31 @@
             <Script Type="ExitWindow"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_Retry" isRender="true" Group="None" Scene="EndScene.xml">
-        <Position x="-236" y="224" z="0"/>
-        <Scale width="50" height="50"/>
-        <Texture texPath="../../res\ui\Empty.png"/>
+    <UIObject Name="T_RETRY" isRender="true" Group="None" Scene="EndScene.xml">
+        <Position x="-181" y="202" z="0"/>
+        <Scale width="134" height="34"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Retry"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="RETRY" TexListXml="../../res/ui/xml/TextTexture.xml"/>
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_Exit" isRender="true" Group="None" Scene="EndScene.xml">
-        <Position x="111" y="224" z="0"/>
-        <Scale width="50" height="50"/>
-        <Texture texPath="../../res\ui\Empty.png"/>
+    <UIObject Name="T_exit" isRender="true" Group="None" Scene="EndScene.xml">
+        <Position x="147" y="200" z="0"/>
+        <Scale width="118" height="42"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Exit"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="EXIT" TexListXml="../../res/ui/xml/TextTexture.xml"/>
             </Script>
         </Scripts>
     </UIObject>

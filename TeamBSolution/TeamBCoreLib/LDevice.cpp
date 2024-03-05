@@ -1,5 +1,4 @@
 #include "LDevice.h"
-
 bool LDevice::SetDevice()
 {
     UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -67,7 +66,6 @@ bool LDevice::SetSwapChain()
         MessageBoxA(NULL, "Create SwapChain Error", "Error Box", MB_OK);
         return false;
     }
-
     return true;
 }
 

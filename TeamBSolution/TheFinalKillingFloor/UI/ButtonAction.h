@@ -18,6 +18,7 @@ public:
 	void MainSceneOptionClose();
 	void RetryButton();
 	void SoundToggle();
+	void ToggleFullScreen();
 	void GoInGameScene();
 	void GoMainScene();
 	void GoEndScene();
@@ -28,6 +29,7 @@ private:
 	wstring _texXmlPath;
 	shared_ptr<TextureList> _texList;
 	bool _toggleSound = true;
+	bool _toggleFullScreen = false;
 	
 	
 };

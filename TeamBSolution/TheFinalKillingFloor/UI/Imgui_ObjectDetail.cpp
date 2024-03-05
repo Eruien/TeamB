@@ -113,8 +113,8 @@ void Imgui_ObjectDetail::Frame()
 			if (ImGui::TreeNode("Scripts"))
 			{
 
-				const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow","BillBoard","ButtonAction","Text", "SceneChange",
-				"HpBar", "UIEvent"};
+				const char* items[] = { "DragUI", "PickingUI", "Resize2D", "Animator", "DigitDisplay", "ExitWindow","BillBoard","ButtonAction","Text",
+				"HpBar", "UIEvent","TextToTexture"};
 				static int item_current_idx = 0; // Here we store our selection data as an index.
 				if (ImGui::BeginListBox(""))
 				{
@@ -171,6 +171,9 @@ void Imgui_ObjectDetail::Frame()
 							UIManager::s_selectedObject->AddScripts(make_shared<UIEvent>(L"None"));
 							UIManager::s_selectedObject->GetScript<UIEvent>(L"UIEvent")->Init();
 							break;
+						case 11:
+							UIManager::s_selectedObject->AddScripts(make_shared<TextToTexture>(L"ABC", L"../../res/ui/xml/TextTexture.xml"));
+							UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->Init();
 						default:
 							break;
 						}
@@ -391,6 +394,25 @@ void Imgui_ObjectDetail::Frame()
 								ImGui::EndTabItem();
 							}
 						}
+						if (script->GetName() == L"TextToTexture")
+						{
+							if (ImGui::BeginTabItem("TextToTexture"))
+							{
+								ImGui::Text("TextToTexture");
+								if (ImGui::InputText("##TextToTexture", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+								{
+									UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->SetText(mtw(buffer));
+									UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(mtw(buffer));
+								}
+								if (ImGui::Button("Delete"))
+								{
+									UIManager::s_selectedObject->RemoveScript(L"TextToTexture");
+									ImGui::EndTabItem();
+									continue;
+								}
+								ImGui::EndTabItem();
+							}
+						}
 					}
 
 					ImGui::EndTabBar();
@@ -405,7 +427,7 @@ void Imgui_ObjectDetail::Frame()
 		if (ImGui::Button("Remove Object"))
 		{
 			UIManager::GetInstance().RemoveObject(UIManager::s_selectedObject->GetName());
-			UIManager::s_selectedObject = nullptr;
+			UIManager::s_selectedObject = UIManager::GetInstance().GetUIObjects()[0];
 		}
 		ImGui::PopStyleColor();
 		ImGui::End();

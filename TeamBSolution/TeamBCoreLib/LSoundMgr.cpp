@@ -112,7 +112,7 @@ void LSound::SetVolume(float volume)
 void LSound::ToggleSound(bool toggle)
 {
 
-	if (toggle == true)
+	if (toggle == false)
 	{
 		m_pChannel->setVolume(0);
 	}
