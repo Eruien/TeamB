@@ -79,7 +79,11 @@ void InGameScene::Render()
     LWrite::GetInstance().AddText(fpsText, 10.0f, 10.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     //
+<<<<<<< Updated upstream
     
+=======
+    //LGlobal::g_PlayerModel->m_HP = 100.f;
+>>>>>>> Stashed changes
 
     if (!m_VisibleBulletList[LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo])
         m_PointLight[0].m_vPosition.y = -1000.f;

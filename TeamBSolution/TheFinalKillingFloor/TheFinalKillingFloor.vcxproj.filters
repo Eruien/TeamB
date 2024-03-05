@@ -169,8 +169,13 @@
       <Filter>Zombie</Filter>
     </ClCompile>
     <ClCompile Include="AnchorUI.cpp" />
+<<<<<<< Updated upstream
     <ClCompile Include="Item.cpp">
       <Filter>Map</Filter>
+=======
+    <ClCompile Include="UI\TextToTexture.cpp">
+      <Filter>UI</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -342,8 +347,13 @@
       <Filter>NPC</Filter>
     </ClInclude>
     <ClInclude Include="AnchorUI.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="Item.h">
       <Filter>Map</Filter>
+=======
+    <ClInclude Include="UI\TextToTexture.h">
+      <Filter>UI</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

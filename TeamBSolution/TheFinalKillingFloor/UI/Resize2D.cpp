@@ -50,7 +50,7 @@ void Resize2D::Frame()
 
 
 
-	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !UIManager::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
+	if (UIManager::s_selectedObject == GetGameObject() && !UIManager::s_isMouseInImGuiWindow && !Imgui_ObjectDetail::_isDialogWindow)
 	{
 
 		if (TBASIS_EX::TRectangle::RectToPoint(rTop, { (long)MOUSEsX,(long)MOUSEsY }))

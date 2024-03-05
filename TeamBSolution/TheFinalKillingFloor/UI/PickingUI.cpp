@@ -50,7 +50,7 @@ void PickingUI::Frame()
 	
 
 	_buttonState = PICKING_STATE::NONE;// 맨마지막에
-	if (TBASIS_EX::TRectangle::RectToPoint(rect, mouse)&& !Imgui_ObjectDetail::_isDialogWindow)
+	if (TBASIS_EX::TRectangle::RectToPoint(rect, mouse)&& !Imgui_ObjectDetail::_isDialogWindow && !UIManager::s_isMouseInImGuiWindow)
 	{
 		if (LINPUT.m_MouseState[0] == KEY_PUSH)
 		{

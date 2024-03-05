@@ -5,6 +5,7 @@ int LGlobal::g_WindowHeight = 720;
 LWindow* LGlobal::g_pWindow = nullptr;
 ComPtr<ID3D11Device> LGlobal::g_pDevice;
 ComPtr<ID3D11DeviceContext> LGlobal::g_pImmediateContext;
+ComPtr<IDXGISwapChain> LGlobal::g_pSwapChain;
 ComPtr<ID3D11DepthStencilState> LGlobal::g_pDepthStencilState;
 ComPtr<ID3D11DepthStencilState> LGlobal::g_pDepthStencilStateDisable;
 float LGlobal::g_fSPF = 0;

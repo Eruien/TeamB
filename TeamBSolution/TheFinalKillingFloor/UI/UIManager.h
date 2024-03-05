@@ -19,6 +19,7 @@
 #include "Text.h"
 #include "HpBar.h"
 #include "UIEvent.h"
+#include "TextToTexture.h"
 //
 #include "imgui_menuBar.h"
 #include "ImGuiManager.h"
@@ -41,6 +42,7 @@ public:
 
     void AddUIObject(shared_ptr<KObject> obj) { _objs.push_back(obj); };
     shared_ptr<KObject> GetUIObject(wstring name);
+    vector<shared_ptr<KObject>> GetUIObjects() { return _objs; };
     vector<shared_ptr<KObject>> GetGroup(wstring groupName);
     vector<shared_ptr<KObject>> GetSceneObj(wstring sceneName);
     void ChangeScene(Event Scene);
@@ -48,7 +50,7 @@ public:
     void UpdateResolution(int width, int height);
     	static bool s_isMouseInImGuiWindow;
         static shared_ptr<KObject> s_selectedObject;
-        bool _editMode = true;
+        bool _editMode = false;
         int _beforeHeight= LGlobal::g_WindowHeight;
         int _beforeWidth= LGlobal::g_WindowWidth;
 private:

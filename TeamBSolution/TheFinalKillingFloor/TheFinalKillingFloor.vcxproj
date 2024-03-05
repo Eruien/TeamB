@@ -198,6 +198,7 @@
     <ClCompile Include="UI\Resize2D.cpp" />
     <ClCompile Include="UI\ResourceBase.cpp" />
     <ClCompile Include="UI\Text.cpp" />
+    <ClCompile Include="UI\TextToTexture.cpp" />
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIEvent.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="UI\Resize2D.h" />
     <ClInclude Include="UI\ResourceBase.h" />
     <ClInclude Include="UI\Text.h" />
+    <ClInclude Include="UI\TextToTexture.h" />
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIEvent.h" />
     <ClInclude Include="UI\UIManager.h" />
