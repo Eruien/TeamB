@@ -111,7 +111,7 @@
     <ClCompile Include="UI\ResourceBase.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="LGun.cpp">
+    <ClCompile Include="LWeaponMgr.cpp">
       <Filter>Gun</Filter>
     </ClCompile>
     <ClCompile Include="Tank.cpp">
@@ -278,7 +278,7 @@
     <ClInclude Include="UI\ResourceBase.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="LGun.h">
+    <ClInclude Include="LWeaponMgr.h">
       <Filter>Gun</Filter>
     </ClInclude>
     <ClInclude Include="Tank.h">

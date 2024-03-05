@@ -6,7 +6,7 @@
 #include "LCharacterIO.h"
 #include "LAnimationIO.h"
 #include "LExportIO.h"
-#include "LGun.h"
+#include "LWeaponMgr.h"
 
 static bool Init_2 = true;
 bool InGameScene::Init()
@@ -149,7 +149,7 @@ void InGameScene::Render()
     }
 
     RenderObject();
-    LGlobal::g_PlayerModel->m_Gun->Render();
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->Render();
     
     m_ZombieWave->Render();
 
@@ -199,13 +199,13 @@ void InGameScene::Render()
     //muzzleFlash
     if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
-        if (sTime >= LGlobal::g_PlayerModel->m_Gun->m_ShotDelay)
+        if (sTime >= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.ShootDelay)
         {
             m_muzzleFlash->SetIsRender(true);
 
             sTime = 0;
         }
-        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_Gun->m_ShotDelay)
+        else if (sTime + 0.05f >= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.ShootDelay)
         {
             m_muzzleFlash->SetIsRender(false);
         }
@@ -518,11 +518,11 @@ void InGameScene::PlayerInit()
 {
     // PlayerSetting
     LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_Gun = new LGun;
+    //LGlobal::g_PlayerModel->m_Gun = LWeaponMgr::GetInstance().GetPtr(GunState::PISTOL);
     LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-    LGlobal::g_PlayerModel->ItemChnge(GunState::PISTOL, L"Pistols_A.fbx", 0);
+    LGlobal::g_PlayerModel->ItemChnge(GunState::PISTOL);
 
     TMatrix matScale;
     TMatrix matRot;
@@ -592,6 +592,7 @@ void InGameScene::CharacterInit()
     LExportIO::GetInstance().ExportRead(L"PistolPos.bin");
 
     // PlayerSetting
+    InitializeWeapon();
     PlayerInit();
 
     m_Select = new LSelect;
@@ -784,6 +785,25 @@ ID3D11Buffer* InGameScene::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* 
     return pBuffer;
 }
 
+void InGameScene::InitializeWeapon()
+{
+    std::shared_ptr<LWeapon> pistol = std::make_shared<LWeapon>();
+    pistol->m_WeaponModel = std::make_shared<LModel>();
+    pistol->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Pistols_A.fbx");
+    pistol->m_GunSpec.TotalAmmo = 7;
+    pistol->m_GunSpec.ShootDelay = 0.5f;
+    pistol->m_GunSpec.Damage = 50.0f;
+
+    std::shared_ptr<LWeapon> rifle = std::make_shared<LWeapon>();
+    rifle->m_WeaponModel = std::make_shared<LModel>();
+    rifle->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
+    rifle->m_GunSpec.TotalAmmo = 30;
+    rifle->m_GunSpec.ShootDelay = 0.1f;
+    rifle->m_GunSpec.Damage = 20.0f;
+    
+    LWeaponMgr::GetInstance().Add(GunState::PISTOL, pistol);
+    LWeaponMgr::GetInstance().Add(GunState::ASSAULTRIFLE, rifle);
+}
 
 void InGameScene::InitializeObjects()
 {
@@ -1065,7 +1085,7 @@ void InGameScene::ProcessMuzzleFlash()
     matRotation._44 = 1.0f;
     TVector3 foward;
     foward = LGlobal::g_PlayerModel->m_matControl.Forward();
-    TVector3 vTrans = { LGlobal::g_PlayerModel->m_Gun->m_matControl._41 ,LGlobal::g_PlayerModel->m_Gun->m_matControl._42 ,LGlobal::g_PlayerModel->m_Gun->m_matControl._43 };
+    TVector3 vTrans = { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._41 ,LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._42 ,LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._43 };
     vTrans = vTrans + (foward * 180);
     D3DXMatrixTranslation(&matTrans, vTrans.x,
         vTrans.y,
@@ -1372,14 +1392,14 @@ void InGameScene::ProcessItem()
 
 void InGameScene::FrameGunModel()
 {
-    if (LGlobal::g_PlayerModel->m_Gun->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
+    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
     {
         if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
 
-        LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_ParentBoneName];
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
+            * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
     }
 }
 
@@ -1555,14 +1575,14 @@ void InGameScene::LimitNpcMovement()
 
 void InGameScene::UpdateGunModelPosition()
 {
-    if (LGlobal::g_PlayerModel->m_Gun->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
+    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
     {
         if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
 
-        LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_ParentBoneName];
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
+            * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
     }
 }
 

@@ -117,6 +117,7 @@ public:
 	void CharacterInit();
 public:
 	//Initialize Functions
+	void InitializeWeapon();
 	void InitializeObjects();
 	void InitializeSkyBox();
 	void InitializePlayerIcon();

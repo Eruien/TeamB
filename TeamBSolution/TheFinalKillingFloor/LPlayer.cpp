@@ -228,17 +228,17 @@ void LPlayer::Move()
 	}
 }
 
-void LPlayer::ItemChnge(GunState gun, std::wstring gunName, int gunIndex)
+void LPlayer::ItemChnge(GunState gun)
 {
 	m_CurrentGun = gun;
-	m_Gun->m_pModel = LFbxMgr::GetInstance().GetPtr(gunName);
+	m_Gun = LWeaponMgr::GetInstance().GetPtr(gun);
 
-	if (m_Gun->m_pModel == nullptr) return;
+	if (m_Gun == nullptr) return;
 
-	m_Gun->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
-	m_Gun->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
-	m_Gun->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
-	m_Gun->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
+	m_Gun->m_WeaponModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
+	m_Gun->m_WeaponModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
+	m_Gun->m_WeaponModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
+	m_Gun->m_WeaponModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
 }
 
 bool LPlayer::Frame()
@@ -281,14 +281,14 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
-		ItemChnge(GunState::PISTOL, L"Pistols_A.fbx", 0);
+		ItemChnge(GunState::PISTOL);
 	}
 	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
 	{
-		ItemChnge(GunState::ASSAULTRIFLE, L"Assault_Rifle_A.fbx", 1);
+		ItemChnge(GunState::ASSAULTRIFLE);
 	}
 	
-	m_Gun->m_StartShoot += LGlobal::g_fSPF;
+	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;
 	IsReload = false;
 
@@ -297,7 +297,7 @@ bool LPlayer::Frame()
 		IsMove = true;
 		IsAttack = true;
 
-		if (m_Gun->m_StartShoot > m_Gun->m_ShotDelay)
+		if (m_StartShoot > m_Gun->m_GunSpec.ShootDelay)
 		{
 			if (LGlobal::g_BulletCount > 0)
 			{
@@ -312,7 +312,7 @@ bool LPlayer::Frame()
 				LGlobal::g_BulletCount = 0;
 			}
 
-			m_Gun->m_StartShoot = 0.0f;
+			m_StartShoot = 0.0f;
 			IsShoot = true;
 			
 			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
@@ -350,7 +350,7 @@ bool LPlayer::Frame()
 	if (IsSteamPack)
 	{
 		m_SteamPackStart += LGlobal::g_fSPF;
-		m_Gun->m_ShotDelay = 0.05f;
+		m_Gun->m_GunSpec.ShootDelay = 0.05f;
 		m_AnimationRate = 1.5f;
 		float excleSpeed = m_Speed * 1.5;
 		m_Speed = excleSpeed;
@@ -358,7 +358,7 @@ bool LPlayer::Frame()
 
 	if (m_SteamPackEnd < m_SteamPackStart)
 	{
-		m_Gun->m_ShotDelay = 0.1f;
+		m_Gun->m_GunSpec.ShootDelay = 0.1f;
 		m_SteamPackStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsSteamPack = false;
