@@ -23,11 +23,11 @@ void TankTakeDamage::Process()
         if (m_pOwner->IsHeadShot)
         {
             LGlobal::g_HeadShotSound->PlayEffect();
-            m_pOwner->m_HP -= 10.0f;
+            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
         }
         else
         {
-            m_pOwner->m_HP -= 3.0f;
+            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
         }
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;

@@ -518,7 +518,6 @@ void InGameScene::PlayerInit()
 {
     // PlayerSetting
     LGlobal::g_PlayerModel = new LPlayer;
-    //LGlobal::g_PlayerModel->m_Gun = LWeaponMgr::GetInstance().GetPtr(GunState::PISTOL);
     LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
@@ -696,7 +695,6 @@ void InGameScene::NextWave()
 
 void InGameScene::RenderObject()
 {
-    
     LGlobal::g_PlayerModel->m_pModel->m_DrawList[0]->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CBmatShadow.g_matShadow = LGlobal::g_PlayerModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
     D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
@@ -706,7 +704,6 @@ void InGameScene::RenderObject()
     ID3D11ShaderResourceView* pSRV[] = { m_RT.m_pSRV.Get() };
     LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
     LGlobal::g_PlayerModel->Render();
-  
 }
 
 void InGameScene::RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
