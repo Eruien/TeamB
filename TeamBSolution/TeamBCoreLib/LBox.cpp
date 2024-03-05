@@ -58,6 +58,8 @@ void LBox::CreateOBBBox(float fExtentX, float fExtentY, float fExtentZ,
 	D3DXVec3Normalize(&m_Box.vAxis[0], &m_Box.vAxis[0]);
 	D3DXVec3Normalize(&m_Box.vAxis[1], &m_Box.vAxis[1]);
 	D3DXVec3Normalize(&m_Box.vAxis[2], &m_Box.vAxis[2]);
+
+	fTall = m_Box.vMax.y - m_Box.vMin.y;
 }
 
 void LBox::UpdateOBBBoxPosition(TVector3 vCenter)

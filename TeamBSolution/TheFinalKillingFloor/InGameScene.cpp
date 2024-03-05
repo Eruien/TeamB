@@ -241,15 +241,14 @@ void InGameScene::Render()
     {
         if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
         {
-            float fHeight = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Zombie"][0]->m_OBBBox.m_Box.vMin.y;
             for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
             {
-
                 if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
                 {
                     if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
                     {
-                        if ((zombie->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.15))
+                        float ShotHeight = (m_Select->m_vIntersection.y - zombie->m_matControl._42);
+                        if (ShotHeight > (zombie->m_OBBBox.fTall * 0.85))
                         {
                             zombie->IsHeadShot = true;
                         }
@@ -277,14 +276,14 @@ void InGameScene::Render()
     {
         if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
         {
-            float fHeight = m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMax.y - m_ZombieWave->m_EnemyMap["Tank"][0]->m_OBBBox.m_Box.vMin.y;
             for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
             {
                 if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
                 {
                     if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
                     {
-                        if ((tank->m_OBBBox.m_Box.vMax.y - m_Select->m_vIntersection.y) < (fHeight * 0.15))
+                        float ShotHeight = (m_Select->m_vIntersection.y - tank->m_matControl._42);
+                        if (ShotHeight > (tank->m_OBBBox.fTall * 0.85))
                         {
                             tank->IsHeadShot = true;
                         }
