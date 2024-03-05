@@ -81,7 +81,7 @@ void InGameScene::Render()
     //
     
 
-    if (!m_VisibleBulletList[LGlobal::g_BulletCount])
+    if (!m_VisibleBulletList[LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo])
         m_PointLight[0].m_vPosition.y = -1000.f;
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
@@ -197,7 +197,7 @@ void InGameScene::Render()
     RenderItem();
 
     //muzzleFlash
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
         if (sTime >= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.ShootDelay)
         {
@@ -245,7 +245,7 @@ void InGameScene::Render()
             {
                 if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
                 {
-                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
+                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
                     {
                         float ShotHeight = (m_Select->m_vIntersection.y - zombie->m_matControl._42);
                         if (ShotHeight > (zombie->m_OBBBox.fTall * 0.85))
@@ -280,7 +280,7 @@ void InGameScene::Render()
             {
                 if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
                 {
-                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_BulletCount > 0)
+                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
                     {
                         float ShotHeight = (m_Select->m_vIntersection.y - tank->m_matControl._42);
                         if (ShotHeight > (tank->m_OBBBox.fTall * 0.85))
@@ -405,8 +405,9 @@ void InGameScene::Retry()
     LGlobal::g_IngameSound->Play(true);
     IsEndGame = false;
     DeleteCurrentObject();
+    ResetWeapon();
     PlayerInit();
-    LGlobal::g_BulletCount = 30;
+    LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     Init_2 = true;
@@ -594,6 +595,19 @@ void InGameScene::CharacterInit()
     PlayerInit();
 
     m_Select = new LSelect;
+}
+
+void InGameScene::ResetWeapon()
+{
+    LWeapon* pistol = LWeaponMgr::GetInstance().GetPtr(GunState::PISTOL);
+    pistol->m_GunSpec.TotalAmmo = pistol->m_GunSpec.defaultTotalAmmo;
+    pistol->m_GunSpec.ShootDelay = pistol->m_GunSpec.defaultShootDelay;
+    pistol->m_GunSpec.Damage = pistol->m_GunSpec.defaultDamage;
+
+    LWeapon* rifle = LWeaponMgr::GetInstance().GetPtr(GunState::ASSAULTRIFLE);
+    rifle->m_GunSpec.TotalAmmo = rifle->m_GunSpec.defaultTotalAmmo;
+    rifle->m_GunSpec.ShootDelay = rifle->m_GunSpec.defaultShootDelay;
+    rifle->m_GunSpec.Damage = rifle->m_GunSpec.defaultDamage;
 }
 
 void InGameScene::NextWave()
@@ -786,16 +800,23 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> pistol = std::make_shared<LWeapon>();
     pistol->m_WeaponModel = std::make_shared<LModel>();
     pistol->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Pistols_A.fbx");
-    pistol->m_GunSpec.TotalAmmo = 7;
+
+    pistol->m_GunSpec.defaultTotalAmmo = 20;
+    pistol->m_GunSpec.TotalAmmo = 20;
+    pistol->m_GunSpec.defaultShootDelay = 0.5f;
     pistol->m_GunSpec.ShootDelay = 0.5f;
+    pistol->m_GunSpec.defaultDamage = 50.0f;
     pistol->m_GunSpec.Damage = 50.0f;
 
     std::shared_ptr<LWeapon> rifle = std::make_shared<LWeapon>();
     rifle->m_WeaponModel = std::make_shared<LModel>();
     rifle->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
+    rifle->m_GunSpec.defaultTotalAmmo = 30;
     rifle->m_GunSpec.TotalAmmo = 30;
+    rifle->m_GunSpec.defaultShootDelay = 0.1f;
     rifle->m_GunSpec.ShootDelay = 0.1f;
-    rifle->m_GunSpec.Damage = 20.0f;
+    rifle->m_GunSpec.defaultDamage = 50.0f;
+    rifle->m_GunSpec.Damage = 50.0f;
     
     LWeaponMgr::GetInstance().Add(GunState::PISTOL, pistol);
     LWeaponMgr::GetInstance().Add(GunState::ASSAULTRIFLE, rifle);
@@ -1254,8 +1275,8 @@ void InGameScene::UpdateTreeModels()
 
 void InGameScene::UpdateBulletModels()
 {
-    int index = LGlobal::g_BulletCount % m_BulletList.size();
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
+    int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo % m_BulletList.size();
+    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0 && LGlobal::g_PlayerModel->IsEndReload)
     {
         if (m_VisibleBulletList[index] == false)
         {
@@ -1537,11 +1558,11 @@ void InGameScene::HandlePlayerCollisions()
 		float distance = dir.Length();
 		float r = LGlobal::g_PlayerModel->m_fRadius + (*it2)->m_fRadius;
 
-        if (distance <= r && LGlobal::g_BulletCount != MAX_AMMO::RIFLE)
+        if (distance <= r && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo != LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo)
         {
-			LGlobal::g_BulletCount = MAX_AMMO::RIFLE;
+            LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
 			it2 = m_AmmoList.erase(it2);
-            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
 		}
         else
         {

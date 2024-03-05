@@ -25,7 +25,6 @@ public:
 	static float g_fGameTimer;
 	static LCamera* g_pMainCamera;
 	static UICamera* g_pUICamera;
-	static int g_BulletCount;
 	static LPlayer* g_PlayerModel;
 	static LSound* g_BackgroundSound;
 	static LSound* g_PlayerHitSound;

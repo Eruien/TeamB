@@ -299,23 +299,23 @@ bool LPlayer::Frame()
 
 		if (m_StartShoot > m_Gun->m_GunSpec.ShootDelay)
 		{
-			if (LGlobal::g_BulletCount > 0)
+			if (m_Gun->m_GunSpec.CurrentAmmo > 0)
 			{
 				LGlobal::g_EffectSound1->PlayEffect();
 			}
 
-			LGlobal::g_BulletCount -= 1;
+			m_Gun->m_GunSpec.CurrentAmmo -= 1;
 
-			if (LGlobal::g_BulletCount <= 0)
+			if (m_Gun->m_GunSpec.CurrentAmmo <= 0)
 			{
 				IsReload = true;
-				LGlobal::g_BulletCount = 0;
+				m_Gun->m_GunSpec.CurrentAmmo = 0;
 			}
 
 			m_StartShoot = 0.0f;
 			IsShoot = true;
 			
-			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 		}
 	}
 
