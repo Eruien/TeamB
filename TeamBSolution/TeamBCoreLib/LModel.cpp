@@ -254,7 +254,7 @@ bool LModel::CreateBoneBuffer()
 bool LModel::Frame()
 {
 	if (m_pModel == nullptr) return false;
-
+	m_matForAnim = m_matControl;
 	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * 1.0f;
 
 	if (m_fCurrentAnimTime >= m_pModel->m_iEndFrame)
@@ -275,7 +275,7 @@ bool LModel::FrameInstancing()
 		LFbxObj* obj = fbxMeshList[iSub].get();
 		for (int j = 0; j < obj->m_InstanceSize; j++)
 		{
-			obj->m_matInstanceList.mat[j] = m_matControl;
+			obj->m_matInstanceList.mat[j] = m_matForAnim;
 			D3DXMatrixTranspose(&obj->m_matInstanceList.mat[j], &obj->m_matInstanceList.mat[j]);
 		}
 
@@ -296,7 +296,7 @@ bool LModel::Render()
 	{
 		LFbxObj* obj = fbxMeshList[iSub].get();
 		//TMatrix matWorld = m_pModel->m_MatrixArray[m_fCurrentAnimTime][obj->m_iBoneIndex] * m_matControl;
-		obj->SetMatrix(&m_matControl, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+		obj->SetMatrix(&m_matForAnim, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
 		obj->PreRender();
 		obj->PostRender();
 	}
@@ -313,7 +313,7 @@ bool LModel::ShadowRender(TMatrix* matShadowWorld, TMatrix* matShadowView, TMatr
 	for (int iSub = 0; iSub < fbxMeshList.size(); iSub++)
 	{
 		LFbxObj* obj = fbxMeshList[iSub].get();
-		//TMatrix matWorld = m_pModel->m_MatrixArray[m_fCurrentAnimTime][obj->m_iBoneIndex] * m_matControl;
+		//TMatrix matWorld = m_pModel->m_MatrixArray[m_fCurrentAnimTime][obj->m_iBoneIndex] * m_matForAnim;
 		obj->SetMatrix(matShadowWorld, matShadowView, matShadowProj);
 		obj->PreRender();
 		obj->PostRender();
@@ -486,7 +486,7 @@ bool LSkinningModel::Render()
 		LGlobal::g_pImmediateContext->UpdateSubresource(m_pBoneArrayCB.Get(), 0, NULL, &m_matMeshBoneArray, 0, 0);
 		LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pBoneArrayCB.GetAddressOf());
 
-		obj->SetMatrix(&m_matControl,
+		obj->SetMatrix(&m_matForAnim,
 			&LGlobal::g_pMainCamera->m_matView,
 			&LGlobal::g_pMainCamera->m_matProj);
 
@@ -521,7 +521,7 @@ bool LSkinningModel::AniRender()
 		LGlobal::g_pImmediateContext->VSSetConstantBuffers(2, 1, m_pCurrentFrameCB.GetAddressOf());
 		//LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, LGlobal::pBuffers);
 
-		obj->SetMatrix(&m_matControl,
+		obj->SetMatrix(&m_matForAnim,
 			&LGlobal::g_pMainCamera->m_matView,
 			&LGlobal::g_pMainCamera->m_matProj);
 

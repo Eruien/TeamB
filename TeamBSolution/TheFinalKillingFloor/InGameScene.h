@@ -81,6 +81,8 @@ public: // light
 	LIGHT_CONSTANT_BUFFER2	m_cbLight2;
 	ComPtr<ID3D11Buffer>	m_pConstantBufferLight[2];
 	Light					m_PointLight[1];
+	float fLightStart = 1.0f;
+	float fLightEnd = 0.1f;
 public:
 	// Shadow
 	LDxRT m_RT;
@@ -132,7 +134,6 @@ public:
 	void InitializeMuzzleFlash();
 	void InitializeTreePosition(std::shared_ptr<LModel>& tree);
 	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
-	void InitializeBulletPosition(std::shared_ptr<LModel>& bullet);
 	void InitializeOBBBox();
 	void InitializeItem();
 
@@ -149,6 +150,7 @@ public:
 	void UpdateBulletModels();
 	void ProcessItem();
 	void GetItem();
+	void ShootBullet();
 	
 	void SwitchCameraView();
 	void UpdateCameraTargetPosition();

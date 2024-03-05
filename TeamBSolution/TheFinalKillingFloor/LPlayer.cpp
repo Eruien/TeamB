@@ -61,10 +61,44 @@ void LPlayer::Move()
 {
 	if (IsOnAir)
 	{
+		m_matForAnim = m_matControl;
+		if (accumulatedTime > 0) accumulatedTime = max(0, accumulatedTime - LGlobal::g_fSPF * 150);
+		else if (accumulatedTime < 0) accumulatedTime = min(0, accumulatedTime + LGlobal::g_fSPF * 150);
+		if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+		{
+			if (LInput::GetInstance().m_MouseState[0] == KEY_FREE && accumulatedTime > -0.1f)
+			{
+				accumulatedTime = min(20, accumulatedTime + LGlobal::g_fSPF * 300);
+			}
+		}
+		else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+		{
+			if (LInput::GetInstance().m_MouseState[0] == KEY_FREE && accumulatedTime < 0.1f)
+			{
+				accumulatedTime = max(-20, accumulatedTime - LGlobal::g_fSPF * 300);
+			}
+		}
+		if (abs(accumulatedTime) > 0.001f)
+		{
+			float angle = -accumulatedTime;
+
+			float rotateAngle = XMConvertToRadians(angle); //
+			TMatrix matRotate;
+			D3DXMatrixRotationY(&matRotate, rotateAngle); //
+			m_matForAnim *= matRotate; // m_matForAnim에 회전 변환 적용
+			m_matForAnim._41 = m_matControl._41;
+			m_matForAnim._42 = m_matControl._42;
+			m_matForAnim._43 = m_matControl._43;
+		}
 		return;
 	}
 	IsMoveOneDir = false;
 	m_PrevPosition = { m_matControl._41, m_matControl._42, m_matControl._43 };
+	m_matForAnim = m_matControl;
+	if (accumulatedTime > 0) accumulatedTime = max(0, accumulatedTime - LGlobal::g_fSPF * 150);
+	else if (accumulatedTime < 0) accumulatedTime = min(0, accumulatedTime + LGlobal::g_fSPF * 150);
+
+
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
@@ -76,17 +110,12 @@ void LPlayer::Move()
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
 		m_Speed = FRONTMOVESPEED;
 
-		m_matForAnim = m_matControl;
-		float rotateAngle = atan2(m_AddDirection.x, m_AddDirection.z);
-		m_matForAnim._11 = cos(rotateAngle);
-		m_matForAnim._13 = -sin(rotateAngle);
-		m_matForAnim._31 = sin(rotateAngle);
-		m_matForAnim._33 = cos(rotateAngle);
-		//float rotateAngle = XMConvertToRadians(45); // 45도를 라디안으로 변환
-		//TMatrix matRotate;
-		//D3DXMatrixRotationY(&matRotate, 45.f); // y축을 중심으로 45도 회전하는 변환 행렬 생성
-		//m_matForAnim *= matRotate; // m_matForAnim에 회전 변환 적용
 		
+		
+		if (LInput::GetInstance().m_MouseState[0] == KEY_FREE && accumulatedTime > - 0.1f)
+		{
+			accumulatedTime  = min(20, accumulatedTime + LGlobal::g_fSPF * 300);
+		}
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
@@ -99,7 +128,25 @@ void LPlayer::Move()
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
 		m_Speed = 100.0f;
+
+		if (LInput::GetInstance().m_MouseState[0] == KEY_FREE && accumulatedTime < 0.1f)
+		{
+			accumulatedTime = max(-20, accumulatedTime - LGlobal::g_fSPF * 300);
+		}
 	}
+	if (abs(accumulatedTime) > 0.001f)
+	{
+		float angle = -accumulatedTime;
+
+		float rotateAngle = XMConvertToRadians(angle); //
+		TMatrix matRotate;
+		D3DXMatrixRotationY(&matRotate, rotateAngle); //
+		m_matForAnim *= matRotate; // m_matForAnim에 회전 변환 적용
+		m_matForAnim._41 = m_matControl._41;
+		m_matForAnim._42 = m_matControl._42;
+		m_matForAnim._43 = m_matControl._43;
+	}
+
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
@@ -207,34 +254,119 @@ void LPlayer::Move()
 			{
 				if (IsSteamPack)
 				{
-					m_Velocity.x = m_matControl.Forward().x * 2000.0f;
-					m_Velocity.z = m_matControl.Forward().z * 2000.0f;
-
+					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
+					}
+					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
+					}
+					else
+					{
+						m_Velocity.x = m_matControl.Forward().x * 2000.0f;
+						m_Velocity.z = m_matControl.Forward().z * 2000.0f;
+					}
 				}
 				else
 				{
-					m_Velocity.x = m_matControl.Forward().x * 1500.0f;
-					m_Velocity.z = m_matControl.Forward().z * 1500.0f;
+					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
+					}
+					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
+					}
+					else
+					{
+						m_Velocity.x = m_matControl.Forward().x * 2000.0f;
+						m_Velocity.z = m_matControl.Forward().z * 2000.0f;
+					}
 				}
 			}
 			else
 			{
 				if (IsSteamPack)
 				{
-					m_Velocity.x = m_matControl.Forward().x * 1500.0f;
-					m_Velocity.z = m_matControl.Forward().z * 1500.0f;
+					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
+					}
+					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
+					}
+					else
+					{
+						m_Velocity.x = m_matControl.Forward().x * 1500.0f;
+						m_Velocity.z = m_matControl.Forward().z * 1500.0f;
+					}
 				}
 				else
 				{
-					m_Velocity.x = m_matControl.Forward().x * 1000.0f;
-					m_Velocity.z = m_matControl.Forward().z * 1000.0f;
+					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
+					}
+					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+					{
+						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
+						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
+					}
+					else
+					{
+						m_Velocity.x = m_matControl.Forward().x * 1000.0f;
+						m_Velocity.z = m_matControl.Forward().z * 1000.0f;
+					}
 				}
 			}
 		}
 		if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 		{
-			m_Velocity.x = m_matControl.Forward().x * -600.0f;
-			m_Velocity.z = m_matControl.Forward().z * -600.0f;
+			if (IsSteamPack)
+			{
+				if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+				{
+					m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * -1000.0f;
+					m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * -1000.0f;
+				}
+				else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+				{
+					m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * -1000.0f;
+					m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * -1000.0f;
+				}
+				else
+				{
+					m_Velocity.x = m_matControl.Forward().x * -1000.0f;
+					m_Velocity.z = m_matControl.Forward().z * -1000.0f;
+				}
+			}
+			else
+			{
+				if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+				{
+					m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * -500.0f;
+					m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * -500.0f;
+				}
+				else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+				{
+					m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * -500.0f;
+					m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * -500.0f;
+				}
+				else
+				{
+					m_Velocity.x = m_matControl.Forward().x * -500.0f;
+					m_Velocity.z = m_matControl.Forward().z * -500.0f;
+				}
+			}
 		}
 		IsOnAir = true;
 	}
@@ -304,7 +436,7 @@ bool LPlayer::Frame()
 	IsShoot = false;
 	IsReload = false;
 
-	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH) && IsEndReload)
+	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH) && IsEndReload && abs(accumulatedTime < 0.001f))
 	{
 		IsMove = true;
 		IsAttack = true;
