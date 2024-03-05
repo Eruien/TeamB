@@ -156,7 +156,7 @@
     <ClCompile Include="LAnimationIO.cpp" />
     <ClCompile Include="LCharacterIO.cpp" />
     <ClCompile Include="LExportIO.cpp" />
-    <ClCompile Include="LGun.cpp" />
+    <ClCompile Include="LWeaponMgr.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LMainScene.cpp" />
     <ClCompile Include="LNPC.cpp" />
@@ -217,7 +217,7 @@
     <ClInclude Include="LAnimationIO.h" />
     <ClInclude Include="LCharacterIO.h" />
     <ClInclude Include="LExportIO.h" />
-    <ClInclude Include="LGun.h" />
+    <ClInclude Include="LWeaponMgr.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LMainScene.h" />
     <ClInclude Include="LNPC.h" />
