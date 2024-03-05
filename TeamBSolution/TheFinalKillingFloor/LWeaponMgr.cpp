@@ -1,11 +1,11 @@
 #include "LWeaponMgr.h"
 
-void LWeaponMgr::Add(GunState key, std::shared_ptr<LWeapon> data)
+void LWeaponMgr::Add(WeaponState key, std::shared_ptr<LWeapon> data)
 {
 	m_map.insert(std::make_pair(key, data));
 }
 
-LWeapon* LWeaponMgr::GetPtr(GunState key)
+LWeapon* LWeaponMgr::GetPtr(WeaponState key)
 {
 	auto iter = m_map.find(key);
 
@@ -17,7 +17,7 @@ LWeapon* LWeaponMgr::GetPtr(GunState key)
 	return iter->second.get();
 }
 
-bool LWeaponMgr::Get(GunState key, LWeapon& ret)
+bool LWeaponMgr::Get(WeaponState key, LWeapon& ret)
 {
 	auto iter = m_map.find(key);
 

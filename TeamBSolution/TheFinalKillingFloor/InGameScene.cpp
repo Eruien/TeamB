@@ -525,7 +525,7 @@ void InGameScene::PlayerInit()
     LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-    LGlobal::g_PlayerModel->ItemChnge(GunState::PISTOL);
+    LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL);
 
     TMatrix matScale;
     TMatrix matRot;
@@ -603,12 +603,12 @@ void InGameScene::CharacterInit()
 
 void InGameScene::ResetWeapon()
 {
-    LWeapon* pistol = LWeaponMgr::GetInstance().GetPtr(GunState::PISTOL);
+    LWeapon* pistol = LWeaponMgr::GetInstance().GetPtr(WeaponState::PISTOL);
     pistol->m_GunSpec.TotalAmmo = pistol->m_GunSpec.defaultTotalAmmo;
     pistol->m_GunSpec.ShootDelay = pistol->m_GunSpec.defaultShootDelay;
     pistol->m_GunSpec.Damage = pistol->m_GunSpec.defaultDamage;
 
-    LWeapon* rifle = LWeaponMgr::GetInstance().GetPtr(GunState::ASSAULTRIFLE);
+    LWeapon* rifle = LWeaponMgr::GetInstance().GetPtr(WeaponState::ASSAULTRIFLE);
     rifle->m_GunSpec.TotalAmmo = rifle->m_GunSpec.defaultTotalAmmo;
     rifle->m_GunSpec.ShootDelay = rifle->m_GunSpec.defaultShootDelay;
     rifle->m_GunSpec.Damage = rifle->m_GunSpec.defaultDamage;
@@ -811,6 +811,7 @@ void InGameScene::InitializeWeapon()
     pistol->m_GunSpec.ShootDelay = 0.5f;
     pistol->m_GunSpec.defaultDamage = 50.0f;
     pistol->m_GunSpec.Damage = 50.0f;
+    pistol->m_GunSpec.CurrentAmmo = pistol->m_GunSpec.TotalAmmo;
 
     std::shared_ptr<LWeapon> rifle = std::make_shared<LWeapon>();
     rifle->m_WeaponModel = std::make_shared<LModel>();
@@ -821,9 +822,10 @@ void InGameScene::InitializeWeapon()
     rifle->m_GunSpec.ShootDelay = 0.1f;
     rifle->m_GunSpec.defaultDamage = 20.0f;
     rifle->m_GunSpec.Damage = 20.0f;
+    rifle->m_GunSpec.CurrentAmmo = rifle->m_GunSpec.TotalAmmo;
     
-    LWeaponMgr::GetInstance().Add(GunState::PISTOL, pistol);
-    LWeaponMgr::GetInstance().Add(GunState::ASSAULTRIFLE, rifle);
+    LWeaponMgr::GetInstance().Add(WeaponState::PISTOL, pistol);
+    LWeaponMgr::GetInstance().Add(WeaponState::ASSAULTRIFLE, rifle);
 }
 
 void InGameScene::InitializeObjects()

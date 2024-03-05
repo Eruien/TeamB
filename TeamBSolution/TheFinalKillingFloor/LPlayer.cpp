@@ -228,7 +228,7 @@ void LPlayer::Move()
 	}
 }
 
-void LPlayer::ItemChnge(GunState gun)
+void LPlayer::ItemChnge(WeaponState gun)
 {
 	m_CurrentGun = gun;
 	m_Gun = LWeaponMgr::GetInstance().GetPtr(gun);
@@ -281,11 +281,15 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
-		ItemChnge(GunState::PISTOL);
+		ItemChnge(WeaponState::PISTOL);
+		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
+		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
 	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
 	{
-		ItemChnge(GunState::ASSAULTRIFLE);
+		ItemChnge(WeaponState::ASSAULTRIFLE);
+		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
+		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
 	
 	m_StartShoot += LGlobal::g_fSPF;

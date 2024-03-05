@@ -22,7 +22,7 @@ public:
 
 class LWeaponMgr
 {
-	using LList = std::map<GunState, std::shared_ptr<LWeapon>>;
+	using LList = std::map<WeaponState, std::shared_ptr<LWeapon>>;
 public:
 	static LWeaponMgr& GetInstance()
 	{
@@ -31,10 +31,10 @@ public:
 	}
 	LList m_map;
 public:
-	void Add(GunState key, std::shared_ptr<LWeapon> data);
+	void Add(WeaponState key, std::shared_ptr<LWeapon> data);
 public:
-	LWeapon* GetPtr(GunState key);
-	bool Get(GunState key, LWeapon& ret);
+	LWeapon* GetPtr(WeaponState key);
+	bool Get(WeaponState key, LWeapon& ret);
 public:
 	virtual ~LWeaponMgr() {};
 };

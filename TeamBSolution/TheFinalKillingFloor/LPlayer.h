@@ -23,7 +23,7 @@ class LPlayer : public LSkinningModel
 {
 public:
 	State m_CurrentState = State::NONE;
-	GunState m_CurrentGun = GunState::PISTOL;
+	WeaponState m_CurrentGun = WeaponState::PISTOL;
 	LFiniteStateMachine* m_pFsm = nullptr;
 	PlayerState* m_pAction = nullptr;
 	LWeapon* m_Gun;
@@ -77,7 +77,7 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move();
-	void ItemChnge(GunState gun);
+	void ItemChnge(WeaponState gun);
 public:
 	virtual	void Process();
 	bool Frame() override;
