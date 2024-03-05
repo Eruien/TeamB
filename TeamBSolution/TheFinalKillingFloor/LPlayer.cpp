@@ -75,6 +75,18 @@ void LPlayer::Move()
 		m_matControl._41 += m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
 		m_Speed = FRONTMOVESPEED;
+
+		m_matForAnim = m_matControl;
+		float rotateAngle = atan2(m_AddDirection.x, m_AddDirection.z);
+		m_matForAnim._11 = cos(rotateAngle);
+		m_matForAnim._13 = -sin(rotateAngle);
+		m_matForAnim._31 = sin(rotateAngle);
+		m_matForAnim._33 = cos(rotateAngle);
+		//float rotateAngle = XMConvertToRadians(45); // 45도를 라디안으로 변환
+		//TMatrix matRotate;
+		//D3DXMatrixRotationY(&matRotate, 45.f); // y축을 중심으로 45도 회전하는 변환 행렬 생성
+		//m_matForAnim *= matRotate; // m_matForAnim에 회전 변환 적용
+		
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH

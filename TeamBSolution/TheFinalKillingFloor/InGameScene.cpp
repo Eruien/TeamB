@@ -1378,8 +1378,12 @@ void InGameScene::FrameGunModel()
 
         LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_matForAnim =
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * 
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * 
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket * 
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * 
+            LGlobal::g_PlayerModel->m_matForAnim;
     }
 }
 

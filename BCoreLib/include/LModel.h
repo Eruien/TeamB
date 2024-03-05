@@ -31,6 +31,7 @@ public:
 	LBoneWorld m_matMeshBoneArray;
 	ComPtr<ID3D11Buffer> m_pBoneArrayCB = nullptr;
 	TMatrix m_matControl;
+	TMatrix m_matForAnim;
 	std::wstring m_ParentBoneName;
 public:
 	bool m_TimerStart = false;
