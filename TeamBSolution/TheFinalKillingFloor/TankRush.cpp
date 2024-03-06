@@ -15,7 +15,7 @@ void TankRush::Process()
     {
         if (m_pOwner->IsHeadShot)
         {
-            LGlobal::g_HeadShotSound->PlayEffect();
+            LSoundMgr::GetInstance().GetPtr(L"headshot.mp3")->PlayEffect();
             m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
         }
         else

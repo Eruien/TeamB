@@ -34,8 +34,8 @@ void SceneChange::Frame()
 		{
 			//수정해야함
 			//LInput::GetInstance().CursorChange();
-			LGlobal::g_IngameSound->Stop();
-			LGlobal::g_BackgroundSound->Play();
+			LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Stop();
+			LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Play();
 			UIManager::GetInstance().Load(L"MainScene.xml");
 			
 			LScene::GetInstance().SetTransition(_sceneEvent);
@@ -44,7 +44,8 @@ void SceneChange::Frame()
 		{
 		
 			LInput::GetInstance().CursorChange();
-			LGlobal::g_BackgroundSound->Stop();
+			LGlobal::
+				->Stop();
 			UIManager::GetInstance().Load(L"IngameScene.xml");
 			UIManager::GetInstance().AdjustRes();
 			LScene::GetInstance().SetTransition(_sceneEvent);

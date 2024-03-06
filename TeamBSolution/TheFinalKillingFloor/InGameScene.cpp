@@ -406,7 +406,7 @@ void InGameScene::Render()
 
 void InGameScene::Retry()
 {
-    LGlobal::g_IngameSound->Play(true);
+    LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play(true);
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
@@ -479,15 +479,15 @@ void InGameScene::Release()
 
 void InGameScene::SoundInit()
 {
-    LGlobal::g_IngameSound = LSoundMgr::GetInstance().Load(L"../../res/sound/InGameMusic.mp3");
-    LGlobal::g_EffectSound1 = LSoundMgr::GetInstance().Load(L"../../res/sound/fire3.wav");
-    LGlobal::g_EffectSound2 = LSoundMgr::GetInstance().Load(L"../../res/sound/step1.wav");
-    LGlobal::g_SteamPackSound = LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
-    LGlobal::g_ZedTimeStart = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTimeFirst.mp3");
-    LGlobal::g_ZedTimeEnd = LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTimeLast.mp3");
-    LGlobal::g_PlayerHitSound = LSoundMgr::GetInstance().Load(L"../../res/sound/Attacked.WAV");
-    LGlobal::g_HeadShotSound = LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
-    LGlobal::g_KillSound = LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/InGameSound.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/GunFire.wav");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/PlayerStep.wav");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/SteamPack.wav");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTimeFirst.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/ZedTimeLast.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/PlayerHitSound.WAV");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");
 }
 
 void InGameScene::CameraInit()
@@ -1254,7 +1254,7 @@ void InGameScene::CheckPlayerDeath()
 
 void InGameScene::PlayInGameSound()
 {
-    LGlobal::g_IngameSound->Play();
+    LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play();
 }
 
 void InGameScene::UpdateUI()

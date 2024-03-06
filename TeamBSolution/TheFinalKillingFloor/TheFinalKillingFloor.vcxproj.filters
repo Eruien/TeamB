@@ -165,11 +165,11 @@
     <ClInclude Include="PlayerWalk.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="InGameScene.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="LPlayer.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

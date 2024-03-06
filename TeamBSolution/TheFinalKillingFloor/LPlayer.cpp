@@ -68,7 +68,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -80,7 +80,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -92,7 +92,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -104,7 +104,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -116,7 +116,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward();
 		m_AddDirection.Normalize();
@@ -128,7 +128,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -140,7 +140,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -152,7 +152,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LGlobal::g_EffectSound2->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward();
 		m_AddDirection.Normalize();
@@ -163,25 +163,25 @@ void LPlayer::Move()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
 	{
-		LGlobal::g_EffectSound2->Stop();
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
 		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] == KEY_UP)
 	{
-		LGlobal::g_EffectSound2->Stop();
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
 		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_UP)
 	{
-		LGlobal::g_EffectSound2->Stop();
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
 		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] == KEY_UP)
 	{
-		LGlobal::g_EffectSound2->Stop();
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
 		m_Speed = 0.0f;
 	}
 
@@ -268,7 +268,8 @@ bool LPlayer::Frame()
 		m_HP -= 20;
 		UIManager::GetInstance().GetUIObject(L"ScreenBlood")->SetIsRender(true);
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
-		LGlobal::g_PlayerHitSound->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"PlayerHitSound.WAV")->PlayEffect();
+		
 		if (m_HP <= 61.0f)
 		{
 			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face2.png");
@@ -311,7 +312,7 @@ bool LPlayer::Frame()
 		{
 			if (m_Gun->m_GunSpec.CurrentAmmo > 0)
 			{
-				LGlobal::g_EffectSound1->PlayEffect();
+				LSoundMgr::GetInstance().GetPtr(L"GunFire.wav")->PlayEffect();
 			}
 
 			m_Gun->m_GunSpec.CurrentAmmo -= 1;
@@ -344,7 +345,7 @@ bool LPlayer::Frame()
 	{
 		IsSteamPack = true;
 		m_HP -= 10;
-		LGlobal::g_SteamPackSound->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->PlayEffect();
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 
@@ -378,13 +379,13 @@ bool LPlayer::Frame()
 	{
 		m_ZedTimeCount += 1;
 		IsZedTime = true;
-		LGlobal::g_ZedTimeStart->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
 	}
 	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH)
 	{
 		m_ZedTimeCount = 1;
 		IsZedTime = true;
-		LGlobal::g_ZedTimeStart->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
 	}
 
 
@@ -402,7 +403,7 @@ bool LPlayer::Frame()
 		m_ZedTimeStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsZedTime = false;
-		LGlobal::g_ZedTimeEnd->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"ZedTimeLast.mp3")->PlayEffect();
 	}
 
 	if (IsMove)

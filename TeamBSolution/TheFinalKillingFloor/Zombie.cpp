@@ -169,7 +169,7 @@ bool Zombie::Frame()
 
 	if (m_HP <= 0)
 	{
-		LGlobal::g_KillSound->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"killsound.mp3")->PlayEffect();
 		IsDead = true;
 	}
 

@@ -127,13 +127,11 @@ void ButtonAction::SoundToggle()
 		UIManager::GetInstance().GetUIObject(L"T_SoundToggle")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"SOUND ON");
 	}
 	
-	LGlobal::g_IngameSound->ToggleSound(_toggleSound);
-	LGlobal::g_BackgroundSound->ToggleSound(_toggleSound);
-	LGlobal::g_EffectSound1->ToggleSound(_toggleSound);
-	LGlobal::g_EffectSound2->ToggleSound(_toggleSound);
-	LGlobal::g_SteamPackSound->ToggleSound(_toggleSound);
-	
-
+	LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"GunFire.wav")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->ToggleSound(_toggleSound);
 	
 }
 

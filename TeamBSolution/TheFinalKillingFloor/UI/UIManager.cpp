@@ -447,7 +447,7 @@ void UIManager::ChangeScene(Event Scene)
     {
 
         LInput::GetInstance().CursorChange();
-        LGlobal::g_BackgroundSound->Stop();
+        LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
         //UIManager::GetInstance().Load(L"IngameScene.xml");
         for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
         {
