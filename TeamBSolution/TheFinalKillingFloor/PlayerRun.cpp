@@ -53,6 +53,10 @@ void PlayerRun::Process()
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Sprint_Fwd_Rifle.fbx");
     }
+    else if (m_pOwner->m_CurrentGun == WeaponState::SHOTGUN)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Sprint_Fwd_Rifle.fbx");
+    }
 }
 
 void PlayerRun::Release()

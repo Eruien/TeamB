@@ -113,6 +113,7 @@ enum class WeaponState
 	NONE,
 	PISTOL,
 	ASSAULTRIFLE,
+	SHOTGUN,
 };
 
 //--------------------------------------------------------------------------------------

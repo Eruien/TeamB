@@ -587,9 +587,13 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Pistol_TakeDamage.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Psitol_Walk.bin");
 
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Shotgun_Fire.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Shotgun_Reload.bin");
+
     // Item
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Pistols_A.bin");
+    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Shotgun_A.bin");
     // form
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
     LExportIO::GetInstance().ExportRead(L"PistolPos.bin");
@@ -612,6 +616,11 @@ void InGameScene::ResetWeapon()
     rifle->m_GunSpec.TotalAmmo = rifle->m_GunSpec.defaultTotalAmmo;
     rifle->m_GunSpec.ShootDelay = rifle->m_GunSpec.defaultShootDelay;
     rifle->m_GunSpec.Damage = rifle->m_GunSpec.defaultDamage;
+
+    LWeapon* shotgun = LWeaponMgr::GetInstance().GetPtr(WeaponState::SHOTGUN);
+    shotgun->m_GunSpec.TotalAmmo = shotgun->m_GunSpec.defaultTotalAmmo;
+    shotgun->m_GunSpec.ShootDelay = shotgun->m_GunSpec.defaultShootDelay;
+    shotgun->m_GunSpec.Damage = shotgun->m_GunSpec.defaultDamage;
 }
 
 void InGameScene::NextWave()
@@ -823,9 +832,21 @@ void InGameScene::InitializeWeapon()
     rifle->m_GunSpec.defaultDamage = 20.0f;
     rifle->m_GunSpec.Damage = 20.0f;
     rifle->m_GunSpec.CurrentAmmo = rifle->m_GunSpec.TotalAmmo;
-    
+
+    std::shared_ptr<LWeapon> shotGun = std::make_shared<LWeapon>();
+    shotGun->m_WeaponModel = std::make_shared<LModel>();
+    shotGun->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_A.fbx");
+    shotGun->m_GunSpec.defaultTotalAmmo = 7;
+    shotGun->m_GunSpec.TotalAmmo = 7;
+    shotGun->m_GunSpec.defaultShootDelay = 1.3f;
+    shotGun->m_GunSpec.ShootDelay = 1.3f;
+    shotGun->m_GunSpec.defaultDamage = 100.0f;
+    shotGun->m_GunSpec.Damage = 100.0f;
+    shotGun->m_GunSpec.CurrentAmmo = shotGun->m_GunSpec.TotalAmmo;
+
     LWeaponMgr::GetInstance().Add(WeaponState::PISTOL, pistol);
     LWeaponMgr::GetInstance().Add(WeaponState::ASSAULTRIFLE, rifle);
+    LWeaponMgr::GetInstance().Add(WeaponState::SHOTGUN, shotGun);
 }
 
 void InGameScene::InitializeObjects()

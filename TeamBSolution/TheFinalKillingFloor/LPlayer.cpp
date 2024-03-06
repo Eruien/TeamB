@@ -291,6 +291,12 @@ bool LPlayer::Frame()
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_6] == KEY_PUSH)
+	{
+		ItemChnge(WeaponState::SHOTGUN);
+		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
+		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
+	}
 	
 	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;

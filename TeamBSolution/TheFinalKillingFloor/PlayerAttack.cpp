@@ -41,6 +41,10 @@ void PlayerAttack::Process()
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_Ironsights.fbx");
     }
+    else if (m_pOwner->m_CurrentGun == WeaponState::SHOTGUN)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_Fire.fbx");
+    }
     
 }
 
