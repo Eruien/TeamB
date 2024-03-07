@@ -157,6 +157,45 @@ bool LBox::CollisionCheckOBB(LBox* other)
 	return true;
 }
 
+bool LBox::IsPointInBox(TVector3 point, float radius)
+{
+	TVector3 localPoint = point - this->m_Box.vCenter;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		float proj = DotProduct(localPoint, this->m_Box.vAxis[i]);
+
+		if (proj > this->m_Box.fExtent[i])
+			return false;
+		if (proj < -this->m_Box.fExtent[i])
+			return false;
+	}
+
+	return true;
+}
+
+bool LBox::IsSphereInBox(TVector3 sphereCenter, float radius)
+{
+	TVector3 localPoint = sphereCenter - this->m_Box.vCenter;
+	float distanceSquared = 0.0f;
+
+	for (int i = 0; i < 3; ++i) {
+		float distance = DotProduct(localPoint, this->m_Box.vAxis[i]);
+
+		if (distance < -this->m_Box.fExtent[i]) {
+			float t = distance + this->m_Box.fExtent[i];
+			distanceSquared += t * t;
+		}
+		else if (distance > this->m_Box.fExtent[i]) {
+			float t = distance - this->m_Box.fExtent[i];
+			distanceSquared += t * t;
+		}
+	}
+
+	return distanceSquared <= radius * radius;
+}
+
+
 bool LBox::OverlapOnAxis(const T_BOX& box1, const T_BOX& box2, const TVector3& axis)
 {
 	// 두 박스를 축에 투영한 후의 반경을 구함

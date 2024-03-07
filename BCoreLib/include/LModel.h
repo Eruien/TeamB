@@ -21,6 +21,7 @@ public:
 	T_BOX m_SettingBoxRightHand;
 	LBox m_OBBBoxRightHand;
 	float m_fRadius = 0.0f;
+	bool bVisible = false;
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;
@@ -47,6 +48,11 @@ public:
 	virtual void SetOBBBoxRightHand(TVector3 min, TVector3 max, float boxScale);
 	virtual LFbxObj* GetLFbxObj();
 public:
+	TVector3 GetPosition() { return { m_matControl._41, m_matControl._42, m_matControl._43 }; };
+	void SetPosition(TVector3 pos);
+	void SetPosition(float x, float y, float z);
+
+
 	virtual bool Init(int animationIndex);
 	virtual bool ComputeOffset();
 	virtual bool SetTexture();

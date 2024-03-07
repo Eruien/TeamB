@@ -22,6 +22,7 @@
 #include <random>
 #include <chrono>
 
+
 const int g_iMaxLight = 1;
 
 struct SHADOW_CONSTANT_BUFFER
@@ -43,7 +44,7 @@ public:
 	vector<shared_ptr<KObject>> m_bloodSplatter;
 
 	std::default_random_engine m_Generator;							// 난수 생성
-	std::uniform_real_distribution<float> m_Distribution{ -0.1f, 0.1f };
+	std::uniform_real_distribution<float> m_Distribution{ -0.03f, 0.03f };
 
 
 	std::deque<float> fpsValues;
@@ -51,10 +52,8 @@ public:
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::vector<shared_ptr<LModel>> m_RifleBulletList;
-	std::vector<bool> m_VisibleRifleBulletList;
 
 	vector<vector<shared_ptr<LModel>>> m_ShotgunBulletListArray;
-	vector<bool> m_VisibleShotgunBulletList;
 
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;

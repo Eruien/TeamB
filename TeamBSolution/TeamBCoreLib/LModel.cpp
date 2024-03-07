@@ -327,6 +327,20 @@ bool LModel::Release()
 	return true;
 }
 
+void LModel::SetPosition(TVector3 pos)
+{
+	m_matControl._41 = pos.x;
+	m_matControl._42 = pos.y;
+	m_matControl._43 = pos.z;
+}
+
+void LModel::SetPosition(float x, float y, float z)
+{
+	m_matControl._41 = x;
+	m_matControl._42 = y;
+	m_matControl._43 = z;
+}
+
 bool LSkinningModel::CreateBoneBuffer()
 {
 	D3D11_BUFFER_DESC bufferDesc{};
