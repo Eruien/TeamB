@@ -1295,18 +1295,6 @@ void InGameScene::UpdateTreeModels()
 
 void InGameScene::UpdateBulletModels()
 {
-    int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo % m_BulletList.size();
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0 && LGlobal::g_PlayerModel->IsEndReload)
-    {
-        if (m_VisibleBulletList[index] == false)
-        {
-            m_VisibleBulletList[index] = true;
-            TMatrix scale = TMatrix::CreateScale(0.03);
-            m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
-
-            m_BulletList[index]->m_matControl._42 += 33.f;
-        }
-    }
     for (int i = 0; i < m_BulletList.size(); i++)
     {
         if (m_VisibleBulletList[i])
@@ -1412,7 +1400,7 @@ void InGameScene::FramePlayerModel()
 {
     LGlobal::g_PlayerModel->m_matForAnim = LGlobal::g_PlayerModel->m_matControl;
     LGlobal::g_PlayerModel->Frame();
-    if (LGlobal::g_PlayerModel->IsShoot)
+    if (LGlobal::g_PlayerModel->IsShoot && m_VisibleBulletList[LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo] == false)
     {
         ShootBullet();
         ProcessMuzzleFlash();
@@ -1420,7 +1408,7 @@ void InGameScene::FramePlayerModel()
     }
     LGlobal::g_PlayerModel->Process();
 }
-
+ 
 void InGameScene::ProcessItem()
 {
     for (auto& kit : m_KitList)
@@ -1454,38 +1442,21 @@ void InGameScene::GetItem()
 
 void InGameScene::ShootBullet()
 {
-    int index = LGlobal::g_BulletCount;
+    int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     
-        m_VisibleBulletList[index] = true;
-        TMatrix scale = TMatrix::CreateScale(0.01f);
-        m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
+    m_VisibleBulletList[index] = true;
+    TMatrix scale = TMatrix::CreateScale(0.01f);
+    m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
 
-        m_BulletList[index]->m_matControl._42 += 33.f;
-        m_BulletList[index]->m_matControl._41 += m_BulletList[index]->m_matControl.Forward().x * 20000;
-        m_BulletList[index]->m_matControl._42 += m_BulletList[index]->m_matControl.Forward().y * 20000;
-        m_BulletList[index]->m_matControl._43 += m_BulletList[index]->m_matControl.Forward().z * 20000;
+    m_BulletList[index]->m_matControl._42 += 33.f;
+    m_BulletList[index]->m_matControl._41 += m_BulletList[index]->m_matControl.Forward().x * 20000;
+    m_BulletList[index]->m_matControl._42 += m_BulletList[index]->m_matControl.Forward().y * 20000;
+    m_BulletList[index]->m_matControl._43 += m_BulletList[index]->m_matControl.Forward().z * 20000;
     
 }
 
 void InGameScene::UpdateZombieAndTankModels()
 {
-    //for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
-    //{
-    //    float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
-    //    zombie->m_matControl._42 = fHeight + 1.0f;
-    //}
-
-    //for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
-    //{
-    //    float fHeight = m_CustomMap->GetHeight(tank->m_matControl._41, tank->m_matControl._43);
-    //    tank->m_matControl._42 = fHeight + 1.0f;
-    //}
-
-    //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_ZombieModelList);
-    //m_ZombieWave->CollisionCheckOBB(m_TreeList, m_ZombieWave->m_TankList);
-
-    //m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Zombie"]);
-    //m_ZombieWave->CollisionCheckByDistance(m_TreeList, m_ZombieWave->m_EnemyMap["Tank"]);
     m_ZombieWave->CollisionCheckWithObstacle(m_TreeList);
     m_ZombieWave->CollisionCheckInNpc();
 
