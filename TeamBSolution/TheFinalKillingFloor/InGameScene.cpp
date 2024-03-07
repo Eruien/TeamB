@@ -1357,7 +1357,7 @@ void InGameScene::UpdateBulletModels()
                 }
                 for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
                 {
-                    zombie->m_OBBBox
+                    zombie->m_OBBBox;
                 }
 
                 for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
