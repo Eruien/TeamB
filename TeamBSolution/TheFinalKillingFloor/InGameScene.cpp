@@ -34,7 +34,7 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
-    ProcessMuzzleFlash();
+    
     ProcessBloodSplatter();
     CheckPlayerDeath();
     PlayInGameSound();
@@ -43,10 +43,10 @@ void InGameScene::Process()
     UpdateMapObjects();
     UpdateWallModels();
     UpdateTreeModels();
-    UpdateBulletModels();
     SwitchCameraView();
     UpdateCameraTargetPosition();
     FramePlayerModel();
+    UpdateBulletModels();
     FrameGunModel();
     UpdateZombieAndTankModels();
     HandlePlayerCollisions();
@@ -80,9 +80,11 @@ void InGameScene::Render()
 
     //
     
-
-    if (!m_VisibleBulletList[LGlobal::g_BulletCount])
+    fLightStart += LGlobal::g_fSPF;
+    if (fLightStart > fLightEnd)
+    {
         m_PointLight[0].m_vPosition.y = -1000.f;
+    }
     LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SkyBox->Render();
@@ -197,7 +199,7 @@ void InGameScene::Render()
     RenderItem();
 
     //muzzleFlash
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
+    if (LGlobal::g_PlayerModel->IsShoot)
     {
         if (sTime >= LGlobal::g_PlayerModel->m_Gun->m_ShotDelay)
         {
@@ -697,7 +699,7 @@ void InGameScene::RenderObject()
 {
     
     LGlobal::g_PlayerModel->m_pModel->m_DrawList[0]->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_CBmatShadow.g_matShadow = LGlobal::g_PlayerModel->m_matControl * m_matViewLight * m_matProjLight * m_matTexture;
+    m_CBmatShadow.g_matShadow = LGlobal::g_PlayerModel->m_matForAnim * m_matViewLight * m_matProjLight * m_matTexture;
     D3DXMatrixTranspose(&m_CBmatShadow.g_matShadow, &m_CBmatShadow.g_matShadow);
     LGlobal::g_pImmediateContext->UpdateSubresource(m_pCBShadow.Get(), 0, NULL, &m_CBmatShadow, 0, 0);
     LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pCBShadow.GetAddressOf());
@@ -928,25 +930,20 @@ void InGameScene::InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, i
 void InGameScene::InitializeBullets()
 {
     auto bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
-    m_BulletList.resize(31);
-    m_VisibleBulletList.resize(31);
+    m_BulletList.resize(50);
+    m_VisibleBulletList.resize(50);
     for (int i = 0; i < m_BulletList.size(); ++i)
     {
         m_VisibleBulletList[i] = false;
         m_BulletList[i] = std::make_shared<LModel>();
         m_BulletList[i]->SetLFbxObj(bulletObj);
         m_BulletList[i]->CreateBoneBuffer();
-        InitializeBulletPosition(m_BulletList[i]);
+        DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
+
+        m_BulletList[i]->m_matControl = LGlobal::g_PlayerModel->m_matControl * scalingMatrix;
     }
 }
 
-void InGameScene::InitializeBulletPosition(std::shared_ptr<LModel>& bullet)
-{
-    DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.1f, 0.1f, 0.1f);
-    DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
-    worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-    bullet->m_matControl = worldMatrix;
-}
 
 void InGameScene::InitializeLighting()
 {
@@ -1238,18 +1235,6 @@ void InGameScene::UpdateTreeModels()
 
 void InGameScene::UpdateBulletModels()
 {
-    int index = LGlobal::g_BulletCount % m_BulletList.size();
-    if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH && LGlobal::g_BulletCount > 0 && LGlobal::g_PlayerModel->IsEndReload)
-    {
-        if (m_VisibleBulletList[index] == false)
-        {
-            m_VisibleBulletList[index] = true;
-            TMatrix scale = TMatrix::CreateScale(0.03);
-            m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
-
-            m_BulletList[index]->m_matControl._42 += 33.f;
-        }
-    }
     for (int i = 0; i < m_BulletList.size(); i++)
     {
         if (m_VisibleBulletList[i])
@@ -1353,7 +1338,14 @@ void InGameScene::UpdateCameraTargetPosition()
 
 void InGameScene::FramePlayerModel()
 {
+    LGlobal::g_PlayerModel->m_matForAnim = LGlobal::g_PlayerModel->m_matControl;
     LGlobal::g_PlayerModel->Frame();
+    if (LGlobal::g_PlayerModel->IsShoot)
+    {
+        ShootBullet();
+        ProcessMuzzleFlash();
+        fLightStart = 0.0f;
+    }
     LGlobal::g_PlayerModel->Process();
 }
 
@@ -1378,13 +1370,32 @@ void InGameScene::FrameGunModel()
 
         LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_matForAnim =
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matScale * 
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matRotation * 
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matSocket * 
+            LGlobal::g_PlayerModel->m_Gun->m_pModel->m_matTranslation * 
+            LGlobal::g_PlayerModel->m_matForAnim;
     }
 }
 
 void InGameScene::GetItem()
 {
+    
+}
+
+void InGameScene::ShootBullet()
+{
+    int index = LGlobal::g_BulletCount;
+    
+        m_VisibleBulletList[index] = true;
+        TMatrix scale = TMatrix::CreateScale(0.01f);
+        m_BulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
+
+        m_BulletList[index]->m_matControl._42 += 33.f;
+        m_BulletList[index]->m_matControl._41 += m_BulletList[index]->m_matControl.Forward().x * 20000;
+        m_BulletList[index]->m_matControl._42 += m_BulletList[index]->m_matControl.Forward().y * 20000;
+        m_BulletList[index]->m_matControl._43 += m_BulletList[index]->m_matControl.Forward().z * 20000;
     
 }
 

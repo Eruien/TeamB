@@ -44,6 +44,7 @@ State Zombie::GetState()
 
 void Zombie::Process()
 {
+	m_matForAnim = m_matControl;
 	m_pAction->Process();
 }
 

@@ -46,7 +46,7 @@ public:
 	bool IsOnAir = false;
 	bool IsKillable = true;
 	
-
+	float accumulatedTime = 0.0f;
 public:
 	enum BACKMOVESPEED {
 		BACKMOVESPEED = 80
