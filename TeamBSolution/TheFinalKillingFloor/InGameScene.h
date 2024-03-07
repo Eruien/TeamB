@@ -19,6 +19,8 @@
 #include "ZombieWave.h"
 #include "LSoundMgr.h"
 #include "Light.h" // light
+#include <random>
+#include <chrono>
 
 const int g_iMaxLight = 1;
 
@@ -40,12 +42,20 @@ public:
 	shared_ptr<KObject> m_muzzleFlash = nullptr;
 	vector<shared_ptr<KObject>> m_bloodSplatter;
 
+	std::default_random_engine m_Generator;							// 난수 생성
+	std::uniform_real_distribution<float> m_Distribution{ -0.1f, 0.1f };
+
+
 	std::deque<float> fpsValues;
 	int m_crrBlood = 0;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
-	std::vector<shared_ptr<LModel>> m_BulletList;
-	std::vector<bool> m_VisibleBulletList;
+	std::vector<shared_ptr<LModel>> m_RifleBulletList;
+	std::vector<bool> m_VisibleRifleBulletList;
+
+	vector<vector<shared_ptr<LModel>>> m_ShotgunBulletListArray;
+	vector<bool> m_VisibleShotgunBulletList;
+
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
@@ -145,6 +155,8 @@ public:
 	void ProcessItem();
 	void GetItem();
 	void ShootBullet();
+	void ShootRifle();
+	void ShootShotgun();
 	
 	void SwitchCameraView();
 	void UpdateCameraTargetPosition();
@@ -164,6 +176,8 @@ public:
 	void AdjustNpcHeight();
 	void RenderItem();
 	
+
+	void RenderBullets();
 public:
 	void NextWave();
 	void RenderObject();
