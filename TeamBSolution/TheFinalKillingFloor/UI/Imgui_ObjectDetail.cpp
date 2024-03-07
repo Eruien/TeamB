@@ -429,6 +429,14 @@ void Imgui_ObjectDetail::Frame()
 			UIManager::GetInstance().RemoveObject(UIManager::s_selectedObject->GetName());
 			UIManager::s_selectedObject = UIManager::GetInstance().GetUIObjects()[0];
 		}
+		if (ImGui::Button("Clone Object"))
+		{
+			//KObject 복사생성자에서 내용물 복사
+	/*		KObject obj = *UIManager::s_selectedObject;
+			obj->SetName(L"cloneObj");
+			obj->m_vPosition = { 0,0,0 };
+			UIManager::GetInstance().AddUIObject();*/
+		}
 		ImGui::PopStyleColor();
 		ImGui::End();
 
