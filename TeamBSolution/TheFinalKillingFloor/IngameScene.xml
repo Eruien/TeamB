@@ -187,18 +187,6 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Text_EnemyCount" isRender="true" Group="None" Scene="IngameScene.xml">
-        <Position x="-124" y="357" z="0"/>
-        <Scale width="86" height="68"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Enemy Count"/>
-            </Script>
-        </Scripts>
-    </UIObject>
     <UIObject Name="SteamPackDurationBar" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="205" y="-294" z="0"/>
         <Scale width="-12" height="80"/>
@@ -228,6 +216,20 @@
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="" isRender="true" Group="None" Scene="IngameScene.xml">
+        <Position x="-2" y="333" z="0"/>
+        <Scale width="142" height="32"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="ENEMY" TexListXml="../../res/ui/xml/TextTexture.xml"/>
+            </Script>
         </Scripts>
     </UIObject>
 </UIScene>

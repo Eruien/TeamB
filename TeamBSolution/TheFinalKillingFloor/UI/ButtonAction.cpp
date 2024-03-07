@@ -17,6 +17,7 @@ ButtonAction::ButtonAction(wstring texPaths, wstring bFuntion) : MonoBehaviour(L
 	_functionMap[L"MainSceneOptionClose"] = &ButtonAction::MainSceneOptionClose;
 	_functionMap[L"RetryButton"] = &ButtonAction::RetryButton;
 	_functionMap[L"SoundToggle"] = &ButtonAction::SoundToggle;
+	_functionMap[L"ToggleFullScreen"] = &ButtonAction::ToggleFullScreen;
 
 	_functionMap[L"GoInGameScene"] = &ButtonAction::GoInGameScene;
 	_functionMap[L"GoMainScene"] = &ButtonAction::GoMainScene;
@@ -51,15 +52,16 @@ void ButtonAction::Frame()
 	{
 		GetGameObject()->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[0]);
 		GetGameObject()->m_Tex->Apply();
-
-		if (_functionMap.find(_function) != _functionMap.end())
+		if (!UIManager::GetInstance()._editMode)
 		{
-			(this->*_functionMap[_function])();
+			if (_functionMap.find(_function) != _functionMap.end())
+			{
+				(this->*_functionMap[_function])();
+			}
+			else {
+				std::cout << "Function not found" << std::endl;
+			}
 		}
-		else {
-			std::cout << "Function not found" << std::endl;
-		}
-
 	}
 	//if (state == PICKING_STATE::NONE)
 	//{
@@ -113,21 +115,40 @@ void ButtonAction::RetryButton()
 
 void ButtonAction::SoundToggle()
 {
-	if (_toggleSound == false)
-		UIManager::GetInstance().GetUIObject(L"SoundToggleText")->GetScript<Text>(L"Text")->SetText(L"Sound Off");
-	else
-	{
-		UIManager::GetInstance().GetUIObject(L"SoundToggleText")->GetScript<Text>(L"Text")->SetText(L"Sound On");
-	}
-	_toggleSound = !_toggleSound;
-	LGlobal::g_IngameSound->ToggleSound(_toggleSound);
-	LGlobal::g_BackgroundSound->ToggleSound(_toggleSound);
-	LGlobal::g_EffectSound1->ToggleSound(_toggleSound);
-	LGlobal::g_EffectSound2->ToggleSound(_toggleSound);
-	LGlobal::g_SteamPackSound->ToggleSound(_toggleSound);
-	
 
+	_toggleSound = !_toggleSound;
+
+	if (_toggleSound == false)
+	{
+		UIManager::GetInstance().GetUIObject(L"T_SoundToggle")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"SOUND OFF");
+	}
+	if (_toggleSound == true)
+	{
+		UIManager::GetInstance().GetUIObject(L"T_SoundToggle")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"SOUND ON");
+	}
 	
+	LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"GunFire.wav")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->ToggleSound(_toggleSound);
+	LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->ToggleSound(_toggleSound);
+	
+}
+
+void ButtonAction::ToggleFullScreen()
+{
+	_toggleFullScreen = !_toggleFullScreen;
+	if (_toggleFullScreen == false)
+	{
+		UIManager::GetInstance().GetUIObject(L"T_ScreenToggle")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"SCREEN WINDOW");
+	}
+	if (_toggleFullScreen == true)
+	{
+		UIManager::GetInstance().GetUIObject(L"T_ScreenToggle")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"SCREEN FULL");
+	}
+	/*LGlobal::g_pLDevice->m_pSwapChain->ResizeBuffers(LGlobal::g_pLDevice->m_SwapChainDesc.BufferCount,
+		1920, 1080, LGlobal::g_pLDevice->m_SwapChainDesc.BufferDesc.Format, LGlobal::g_pLDevice->m_SwapChainDesc.Flags);*/
+	LGlobal::g_pSwapChain->SetFullscreenState(_toggleFullScreen, nullptr);
 }
 
 void ButtonAction::GoInGameScene()

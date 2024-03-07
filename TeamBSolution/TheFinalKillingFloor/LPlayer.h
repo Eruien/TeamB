@@ -3,7 +3,7 @@
 #include "LModel.h"
 #include "LInput.h"
 #include "LFSMMgr.h"
-#include "LGun.h"
+#include "LWeaponMgr.h"
 
 class LPlayer;
 
@@ -23,10 +23,10 @@ class LPlayer : public LSkinningModel
 {
 public:
 	State m_CurrentState = State::NONE;
-	GunState m_CurrentGun = GunState::PISTOL;
+	WeaponState m_CurrentGun = WeaponState::PISTOL;
 	LFiniteStateMachine* m_pFsm = nullptr;
 	PlayerState* m_pAction = nullptr;
-	LGun* m_Gun;
+	LWeapon* m_Gun;
 	std::map<State, std::unique_ptr<PlayerState>> m_pActionList;
 public:
 	bool IsWalk = false;
@@ -60,6 +60,7 @@ public:
 
 	int m_ZedTimeCount = 1;
 	float m_Speed = 0.0f;
+	float m_StartShoot = 0.0f;
 	float m_StartTakeDamage = 0.0f;
 	float m_EndTakeDamage = 1.0f;
 	float m_SteamPackStart = 0.0f;
@@ -76,7 +77,7 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move();
-	void ItemChnge(GunState gun, std::wstring gunName, int gunIndex);
+	void ItemChnge(WeaponState gun);
 public:
 	virtual	void Process();
 	bool Frame() override;

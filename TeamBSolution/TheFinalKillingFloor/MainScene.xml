@@ -7,18 +7,6 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_start" isRender="true" Group="None" Scene="MainScene.xml">
-        <Position x="-465" y="153" z="0"/>
-        <Scale width="154" height="94"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Start"/>
-            </Script>
-        </Scripts>
-    </UIObject>
     <UIObject Name="B_start" isRender="true" Group="None" Scene="MainScene.xml">
         <Position x="-433" y="128" z="0"/>
         <Scale width="200" height="100"/>
@@ -56,39 +44,6 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Exit" isRender="true" Group="None" Scene="MainScene.xml">
-        <Position x="-456" y="-132" z="0"/>
-        <Scale width="156" height="98"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Exit"/>
-            </Script>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="T_Option" isRender="true" Group="None" Scene="MainScene.xml">
-        <Position x="-474" y="16" z="0"/>
-        <Scale width="200" height="192"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Option"/>
-            </Script>
-        </Scripts>
-    </UIObject>
-    <UIObject Name="Logo" isRender="true" Group="None" Scene="MainScene.xml">
-        <Position x="92" y="218" z="0"/>
-        <Scale width="744" height="200"/>
-        <Texture texPath="../../res/ui/logo.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
     <UIObject Name="OptionFrame" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
         <Position x="-5" y="-71" z="0"/>
         <Scale width="286" height="394"/>
@@ -99,7 +54,7 @@
         </Scripts>
     </UIObject>
     <UIObject Name="OptionEscape" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
-        <Position x="117" y="97" z="0"/>
+        <Position x="117.00002" y="97" z="0"/>
         <Scale width="30" height="30"/>
         <Texture texPath="../../res/ui/x.png"/>
         <Scripts>
@@ -110,27 +65,93 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="SoundToggleText" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
-        <Position x="-74" y="65" z="0"/>
-        <Scale width="66" height="56"/>
-        <Texture texPath="../../res/ui/Empty.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="ChangeTexture"/>
-            <Script Type="Text">
-                <args Text="Sound On"/>
-            </Script>
-        </Scripts>
-    </UIObject>
     <UIObject Name="SoundToggleButton" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
         <Position x="-8" y="40" z="0"/>
-        <Scale width="230" height="62"/>
+        <Scale width="230" height="62.000011"/>
         <Texture texPath="../../res/ui/button1.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
                 <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="SoundToggle"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_Start" isRender="true" Group="None" Scene="MainScene.xml">
+        <Position x="-410" y="129" z="0"/>
+        <Scale width="100" height="36"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="START" TexListXml="../../res/ui/xml/TextTexture.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_Option" isRender="true" Group="None" Scene="MainScene.xml">
+        <Position x="-402" y="-10" z="0"/>
+        <Scale width="112.00002" height="38"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="OPTION" TexListXml="../../res/ui/xml/TextTexture.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_EXIT" isRender="true" Group="None" Scene="MainScene.xml">
+        <Position x="-417" y="-152" z="0"/>
+        <Scale width="98" height="40"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="Resize2D"/>
+            <Script Type="DragUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="EXIT" TexListXml="../../res/ui/xml/TextTexture.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_SoundToggle" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
+        <Position x="42" y="41" z="0"/>
+        <Scale width="160" height="40"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="SOUND ON" TexListXml="../../res/ui/xml/TextTexture.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="ScreenToggleButton" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
+        <Position x="-8" y="-55" z="0"/>
+        <Scale width="230" height="62.000011"/>
+        <Texture texPath="../../res/ui/button1.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="ButtonAction">
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="ToggleFullScreen"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="T_ScreenToggle" isRender="false" Group="MainOptionMenu" Scene="MainScene.xml">
+        <Position x="64" y="-55" z="0"/>
+        <Scale width="186" height="30"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="TextToTexture">
+                <args TextToTexture="SCREEN WINDOW" TexListXml="../../res/ui/xml/TextTexture.xml"/>
             </Script>
         </Scripts>
     </UIObject>

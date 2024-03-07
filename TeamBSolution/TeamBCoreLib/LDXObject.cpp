@@ -5,6 +5,7 @@ void LDXObject::Set()
 {
 	m_pDevice = LGlobal::g_pDevice;
 	m_pImmediateContext = LGlobal::g_pImmediateContext;
+	
 }
 
 bool LDXObject::CreateVertexData()

@@ -8,26 +8,38 @@ bool Sample::Init()
 	UIManager::GetInstance().Load(L"MainScene.xml");
 	UIManager::GetInstance().Load(L"IngameScene.xml");
 	UIManager::GetInstance().Load(L"EndScene.xml");
+	
 	m_UICamera = std::make_shared<UICamera>();
 	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_UICamera->m_fCameraPitch = 0.0f;
 	m_UICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, -1, 1);
-	LGlobal::g_pUICamera = m_UICamera.get();
+	//LGlobal::g_pUICamera = m_UICamera.get();
 	//LScene::GetInstance().SetTransition(Event::GOMAINSCENE);
-
+	LGlobal::g_pSwapChain = m_pSwapChain.Get();
 	UIManager::GetInstance().Init(m_pDepthStencilState,m_pDepthStencilStateDisable);
 
 
+	
 	LScene::GetInstance().FSM(FSMType::SCENE);
-
 	return true;
 }
 
 bool Sample::Frame()
 {
 	LScene::GetInstance().Process();
-	
-	
+	if (LINPUT.m_KeyStateOld[DIK_F7]== KEY_PUSH)
+	{
+		UIManager::GetInstance()._editMode = !UIManager::GetInstance()._editMode;
+
+		if (UIManager::GetInstance()._editMode)
+		{
+			for (auto obj : UIManager::GetInstance().GetUIObjects())
+			{
+				obj->SetIsRender(true);
+			}
+		}
+	}
+
 	return true;
 }
 

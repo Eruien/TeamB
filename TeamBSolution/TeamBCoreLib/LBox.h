@@ -6,6 +6,7 @@ class LBox : public LObject
 public:
 	T_BOX m_Box;
 	TMatrix m_BoxWorld;
+	float fTall;
 public:
 	void CreateOBBBox(float fExtX = 1.0f, float fExtY = 1.0f, float fExtZ = 1.0f,
 		TVector3 vCenter = TVector3(0.0f, 0.0f, 0.0f),

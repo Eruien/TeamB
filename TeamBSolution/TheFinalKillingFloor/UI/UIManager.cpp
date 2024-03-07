@@ -2,13 +2,19 @@
 #include "tinyxml2.h"
 shared_ptr<KObject> UIManager::s_selectedObject = nullptr;
 bool UIManager::s_isMouseInImGuiWindow = false;
+
+
+bool CompareObjs(const shared_ptr<KObject> obj1, const shared_ptr<KObject> obj2) {
+    // z 값에 따라 비교
+    return obj1->m_vPosition.z < obj2->m_vPosition.z;
+}
+
 void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthStencilState> Disable)
 {
     _DepthStencilState = Depth;
     _DepthStencilStateDisable = Disable;
 
-    if (_editMode)
-    {
+
         _imGuiManager = make_shared< ImGuiManager>();
         _imGuiObjDetail = make_shared<Imgui_ObjectDetail>();
         _imgui_menuBar = make_shared<imgui_menuBar>();
@@ -16,24 +22,20 @@ void UIManager::Init(ComPtr<ID3D11DepthStencilState> Depth, ComPtr<ID3D11DepthSt
    _imGuiManager->Init();
    _imGuiObjDetail->Init();
    _imgui_menuBar->Init();
-    }
+    
 }
 
 void UIManager::Frame()
 {
     
-    if (_editMode)
-    {
-        _imGuiManager->Frame();
-        _imGuiObjDetail->Frame();
-        _imgui_menuBar->Frame();
-    }
+   // std::sort(_objs.begin(), _objs.end(), CompareObjs);
 
 
-    if(_objsTemp.empty()|| _objsTemp.size() != _objs.size())
-        _objsTemp = _objs;
+    //??
+    //if(_objsTemp.empty()|| _objsTemp.size() != _objs.size())
+    //    _objsTemp = _objs;
 
-	for (auto obj : _objsTemp)
+	for (auto obj : _objs)
 	{
         if (obj->GetIsRender() || _editMode)
         {
@@ -41,6 +43,7 @@ void UIManager::Frame()
             obj->Frame();
         }
 	}
+
 
 }
 
@@ -59,8 +62,14 @@ void UIManager::Render()
 		obj->Render();
       //  LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilState.Get(), 1);
 	}
+
+
     if (_editMode)
     {
+        _imGuiManager->Frame();
+        _imGuiObjDetail->Frame();
+        _imgui_menuBar->Frame();
+
         _imGuiObjDetail->Render();
         _imgui_menuBar->Render();
         _imGuiManager->Render();
@@ -72,6 +81,7 @@ void UIManager::Render()
 
 void UIManager::Save(const wstring filePath)
 {
+   
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLElement* root = doc.NewElement("UIScene");
     root->SetAttribute("SceneName", wtm(filePath).c_str());
@@ -79,8 +89,10 @@ void UIManager::Save(const wstring filePath)
 
     for (auto obj : _objs)
     {
-        // 각 객체마다 새로운 루트 엘리먼트(UIObject)를 생성
-        tinyxml2::XMLElement* objRoot = doc.NewElement("UIObject");
+        /*if (filePath == obj->_scene)
+        {*/
+            // 각 객체마다 새로운 루트 엘리먼트(UIObject)를 생성
+            tinyxml2::XMLElement* objRoot = doc.NewElement("UIObject");
         root->LinkEndChild(objRoot);
 
         // Name
@@ -151,7 +163,15 @@ void UIManager::Save(const wstring filePath)
                 scriptNode->LinkEndChild(argsNode);
                 argsNode->SetAttribute("Function", wtm(obj->GetScript<UIEvent>(L"UIEvent")->_function).c_str());
             }
+            if (script->GetName() == L"TextToTexture")
+            {
+                tinyxml2::XMLElement* argsNode = doc.NewElement("args");
+                scriptNode->LinkEndChild(argsNode);
+                argsNode->SetAttribute("TextToTexture", wtm(obj->GetScript<TextToTexture>(L"TextToTexture")->GetText()).c_str());
+                argsNode->SetAttribute("TexListXml", wtm(obj->GetScript<TextToTexture>(L"TextToTexture")->GetXmlPath()).c_str());
+            }
         }
+    //}
     }
 
 
@@ -247,30 +267,30 @@ void UIManager::Load(const wstring filePath)
                     {
                         obj->AddScripts(std::make_shared<PickingUI>());
                     }
-                    if (mtw(scriptTypeAttr) == L"Resize2D")
+                    else if (mtw(scriptTypeAttr) == L"Resize2D")
                     {
                         obj->AddScripts(std::make_shared<Resize2D>());
                     }
-                    if (mtw(scriptTypeAttr) == L"DragUI")
+                    else  if (mtw(scriptTypeAttr) == L"DragUI")
                     {
                         obj->AddScripts(std::make_shared<DragUI>());
                         obj->GetScript<DragUI>(L"DragUI")->Init();
                     }
 
-                    if (mtw(scriptTypeAttr) == L"ChangeTexture")
+                    else if (mtw(scriptTypeAttr) == L"ChangeTexture")
                     {
                         obj->AddScripts(std::make_shared<ChangeTexture>());
                     }
-                    if (mtw(scriptTypeAttr) == L"ExitWindow")
+                    else if (mtw(scriptTypeAttr) == L"ExitWindow")
                     {
                         obj->AddScripts(std::make_shared<ExitWindow>());
                     }
-                    if (mtw(scriptTypeAttr) == L"BillBoard")
+                    else if (mtw(scriptTypeAttr) == L"BillBoard")
                     {
                         obj->AddScripts(std::make_shared<BillBoard>());
                     }
                     // ScriptType에 따라 적절한 스크립트를 추가하고 설정
-                    if (mtw(scriptTypeAttr) == L"Animator")
+                    else if (mtw(scriptTypeAttr) == L"Animator")
                     {
                         // 여기에 적절한 Animator 생성자 인자를 추가
                         tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
@@ -296,7 +316,7 @@ void UIManager::Load(const wstring filePath)
 
                         }
                     }
-                    if (mtw(scriptTypeAttr) == L"ButtonAction")
+                    else if (mtw(scriptTypeAttr) == L"ButtonAction")
                     {
                         tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
                         if (argsElement)
@@ -307,7 +327,7 @@ void UIManager::Load(const wstring filePath)
                            // obj->GetScript<ButtonAction>(L"ButtonAction")->Init();
                         }
                     }
-                    if (mtw(scriptTypeAttr) == L"Text")
+                    else if (mtw(scriptTypeAttr) == L"Text")
                     {
                         tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
                         if (argsElement)
@@ -319,12 +339,12 @@ void UIManager::Load(const wstring filePath)
                             }
                         }
                     }
-                    if (mtw(scriptTypeAttr) == L"HpBar")
+                    else if (mtw(scriptTypeAttr) == L"HpBar")
                     {
                         obj->AddScripts(std::make_shared<HpBar>());
                         obj->GetScript<HpBar>(L"HpBar")->Init();
                     }
-                    if (mtw(scriptTypeAttr) == L"UIEvent")
+                    else if (mtw(scriptTypeAttr) == L"UIEvent")
                     {
                         tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
                         if (argsElement)
@@ -334,12 +354,28 @@ void UIManager::Load(const wstring filePath)
                              obj->GetScript<UIEvent>(L"UIEvent")->Init();
                         }
                     }
+                    else if (mtw(scriptTypeAttr) == L"TextToTexture")
+                    {
+                        // 여기에 적절한 DigitDisplay 생성자 인자를 추가
+                        tinyxml2::XMLElement* argsElement = scriptElement->FirstChildElement("args");
+                        if (argsElement)
+                        {
+                           // wstring textTemp = L"None";
+                            const char* TextAttr = argsElement->Attribute("TextToTexture");
+                           // digitNumber = std::atoi(digitNumberAttr);
+                            const char* texListXmlAttr = argsElement->Attribute("TexListXml");
+                            obj->AddScripts(std::make_shared<TextToTexture>(mtw(TextAttr), mtw(texListXmlAttr)));
+                            obj->GetScript<TextToTexture>(L"TextToTexture")->Init();
+
+                        }
+                    }
                 }
             }
         }
 
         // UIObject를 UIManager에 추가
         _objs.push_back(obj);
+      
     }
 }
 
@@ -383,7 +419,7 @@ void UIManager::ChangeScene(Event Scene)
     if (Scene == Event::GOMAINSCENE)
     {
     
-        LInput::GetInstance().CursorChange();
+       
 
         //UIManager::GetInstance().Load(L"MainScene.xml");
 
@@ -411,7 +447,7 @@ void UIManager::ChangeScene(Event Scene)
     {
 
         LInput::GetInstance().CursorChange();
-        LGlobal::g_BackgroundSound->Stop();
+        LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
         //UIManager::GetInstance().Load(L"IngameScene.xml");
         for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
         {
@@ -427,8 +463,8 @@ void UIManager::ChangeScene(Event Scene)
         }
         LScene::GetInstance().SetTransition(Scene);
         LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
-        UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
-        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(30);
+        UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo);
     }
     else if (Scene == Event::GOENDSCENE)
     {

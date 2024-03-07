@@ -18,16 +18,16 @@ void TankTakeDamage::Process()
         m_Timer = true;
     }*/
 
-    if (m_pOwner->IsTakeDamage && LGlobal::g_BulletCount > 0)
+    if (m_pOwner->IsTakeDamage && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
     {
         if (m_pOwner->IsHeadShot)
         {
-            LGlobal::g_HeadShotSound->PlayEffect();
-            m_pOwner->m_HP -= 10.0f;
+            LSoundMgr::GetInstance().GetPtr(L"headshot.mp3")->PlayEffect();
+            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
         }
         else
         {
-            m_pOwner->m_HP -= 3.0f;
+            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_DamageRate;
         }
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;

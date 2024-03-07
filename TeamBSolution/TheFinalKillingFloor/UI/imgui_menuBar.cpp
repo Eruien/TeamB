@@ -120,7 +120,7 @@ void imgui_menuBar::Test()
                 obj->GetScript<DragUI>(L"DragUI")->Init();
                 obj->SetPos({ 0,0,0 });
                 obj->SetScale({ 200,200,0 });
-                obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/1.png");
+                obj->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Bio_Clock_Circle.png");
                 UIManager::GetInstance().AddUIObject(obj);
             }
 

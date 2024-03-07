@@ -205,7 +205,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Zombie"][i]->m_matControl._41, m_EnemyMap["Zombie"][i]->m_matControl._42 + m_EnemyMap["Zombie"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Zombie"][i]->m_matControl._43));
         m_EnemyMap["Zombie"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_ZombieModelList[i]->m_OBBBox.Render();
+        //m_EnemyMap["Zombie"][i]->m_OBBBox.Render();
         m_EnemyMap["Zombie"][i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -229,7 +229,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Tank"][i]->m_matControl._41, m_EnemyMap["Tank"][i]->m_matControl._42 + m_EnemyMap["Tank"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Tank"][i]->m_matControl._43));
         m_EnemyMap["Tank"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_TankList[i]->m_OBBBox.Render();
+        //m_EnemyMap["Tank"][i]->m_OBBBox.Render();
         m_EnemyMap["Tank"][i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -245,7 +245,7 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_EnemyMap["Tank"][i]->m_matControl;
         m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_TankList[i]->m_OBBBoxRightHand.Render();
+        //m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.Render();
     }
 }
 

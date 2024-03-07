@@ -22,19 +22,23 @@ void PlayerReload::Process()
     if (m_pOwner->m_TimerEnd)
     {
         m_pOwner->IsMove = true;
-        LGlobal::g_BulletCount = 30;
+        m_pOwner->m_Gun->m_GunSpec.CurrentAmmo = m_pOwner->m_Gun->m_GunSpec.TotalAmmo;
         m_pOwner->SetTransition(Event::ENDRELOAD);
-        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_BulletCount);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_pOwner->m_Gun->m_GunSpec.CurrentAmmo);
         return;
     }
     
-    if (m_pOwner->m_CurrentGun == GunState::PISTOL)
+    if (m_pOwner->m_CurrentGun == WeaponState::PISTOL)
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Reload_Rifle_Ironsights.fbx");
     }
-    else if (m_pOwner->m_CurrentGun == GunState::ASSAULTRIFLE)
+    else if (m_pOwner->m_CurrentGun == WeaponState::ASSAULTRIFLE)
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Reload_Rifle_Ironsights.fbx");
+    }
+    else if (m_pOwner->m_CurrentGun == WeaponState::SHOTGUN)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_Reload.fbx");
     }
     
 }

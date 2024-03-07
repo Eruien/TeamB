@@ -36,11 +36,12 @@ void DragUI::Frame()
    // LWrite::GetInstance().AddText(to_wstring(MOUSEsY), 500, 400, { 1,1,1,1 });
 
     
-	if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetIsSelected() && !UIManager::s_isMouseInImGuiWindow )
+	if ( !UIManager::s_isMouseInImGuiWindow && UIManager::s_selectedObject == GetGameObject())
 	{
 
 
-        if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && _resize2D!=nullptr) {
+        if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && _resize2D!=nullptr)
+        {
             if (!_resize2D->GetisBarPicking())
             {
                 if (!_isDragging) {
@@ -55,22 +56,18 @@ void DragUI::Frame()
                 }
             }
         }
-      
-        
-       
-
-        else if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && _resize2D == nullptr)
-        {
-            if (!_isDragging) {
-                // 마우스 버튼이 처음 눌렸을 때
-                offset = GetGameObject()->m_vPosition - TVector3((float)MOUSEsX, (float)MOUSEsY, 1);
-                _isDragging = true;
-            }
-            else {
-                // 마우스 버튼이 눌린 상태에서 마우스가 이동하는 경우
-                GetGameObject()->SetPos(TVector3((float)MOUSEsX, (float)MOUSEsY, 1) + offset);
-            }
-        }
+        //else if ((GetGameObject()->GetScript<PickingUI>(L"PickingUI"))->GetButtonState() == PICKING_STATE::HOLD && _resize2D == nullptr)
+        //{
+        //    if (!_isDragging) {
+        //        // 마우스 버튼이 처음 눌렸을 때
+        //        offset = GetGameObject()->m_vPosition - TVector3((float)MOUSEsX, (float)MOUSEsY, 1);
+        //        _isDragging = true;
+        //    }
+        //    else {
+        //        // 마우스 버튼이 눌린 상태에서 마우스가 이동하는 경우
+        //        GetGameObject()->SetPos(TVector3((float)MOUSEsX, (float)MOUSEsY, 1) + offset);
+        //    }
+        //}
         else {
             // 마우스 버튼이 떼어진 경우
             _isDragging = false;

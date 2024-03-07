@@ -23,8 +23,8 @@ bool LMainScene::Init()
 	{
 		obj->SetIsRender(false);
 	}
-    LGlobal::g_BackgroundSound = LSoundMgr::GetInstance().Load(L"../../res/sound/IntroScene.mp3");
-    LGlobal::g_BackgroundSound->Play();
+    LSoundMgr::GetInstance().Load(L"../../res/sound/BackgroundSound.mp3");
+	LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Play();
 	return true;
     
 }
