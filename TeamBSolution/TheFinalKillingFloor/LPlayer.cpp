@@ -248,125 +248,35 @@ void LPlayer::Move()
 		&& IsOnAir == false)
 	{
 		m_Velocity = { 0.0f, 100.0f, 0.0f };
+		float steamSpeed = 1.f;
+		float runSpeed = 1.f;
+		if (IsSteamPack)
+			steamSpeed = 2.f;
+		if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
+			runSpeed = 2.f;
 		if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 		{
-			if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
-			{
-				if (IsSteamPack)
-				{
-					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
-					}
-					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
-					}
-					else
-					{
-						m_Velocity.x = m_matControl.Forward().x * 2000.0f;
-						m_Velocity.z = m_matControl.Forward().z * 2000.0f;
-					}
-				}
-				else
-				{
-					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
-					}
-					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
-					}
-					else
-					{
-						m_Velocity.x = m_matControl.Forward().x * 2000.0f;
-						m_Velocity.z = m_matControl.Forward().z * 2000.0f;
-					}
-				}
-			}
-			else
-			{
-				if (IsSteamPack)
-				{
-					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
-					}
-					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
-					}
-					else
-					{
-						m_Velocity.x = m_matControl.Forward().x * 1500.0f;
-						m_Velocity.z = m_matControl.Forward().z * 1500.0f;
-					}
-				}
-				else
-				{
-					if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * 1000.0f;
-					}
-					else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-					{
-						m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * 1000.0f;
-						m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * 1000.0f;
-					}
-					else
-					{
-						m_Velocity.x = m_matControl.Forward().x * 1000.0f;
-						m_Velocity.z = m_matControl.Forward().z * 1000.0f;
-					}
-				}
-			}
+			m_Velocity.x += m_matControl.Forward().x * 1000.f * steamSpeed * runSpeed;
+			m_Velocity.z += m_matControl.Forward().z * 1000.f * steamSpeed * runSpeed;
+		}
+		if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
+		{
+			m_Velocity.x += m_matControl.Right().x * 1000.f * steamSpeed * runSpeed;
+			m_Velocity.z += m_matControl.Right().z * 1000.f * steamSpeed * runSpeed;
+			m_Velocity.x *= 0.5f;
+			m_Velocity.z *= 0.5f;
+		}
+		if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
+		{
+			m_Velocity.x -= m_matControl.Right().x * 1000.f * steamSpeed * runSpeed;
+			m_Velocity.z -= m_matControl.Right().z * 1000.f * steamSpeed * runSpeed;
+			m_Velocity.x *= 0.5f;
+			m_Velocity.z *= 0.5f;
 		}
 		if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
 		{
-			if (IsSteamPack)
-			{
-				if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
-				{
-					m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * -1000.0f;
-					m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * -1000.0f;
-				}
-				else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-				{
-					m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * -1000.0f;
-					m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * -1000.0f;
-				}
-				else
-				{
-					m_Velocity.x = m_matControl.Forward().x * -1000.0f;
-					m_Velocity.z = m_matControl.Forward().z * -1000.0f;
-				}
-			}
-			else
-			{
-				if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH)
-				{
-					m_Velocity.x = (m_matControl.Forward().x - m_matControl.Right().x) * -500.0f;
-					m_Velocity.z = (m_matControl.Forward().z - m_matControl.Right().z) * -500.0f;
-				}
-				else if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH)
-				{
-					m_Velocity.x = (m_matControl.Forward().x + m_matControl.Right().x) * -500.0f;
-					m_Velocity.z = (m_matControl.Forward().z + m_matControl.Right().z) * -500.0f;
-				}
-				else
-				{
-					m_Velocity.x = m_matControl.Forward().x * -500.0f;
-					m_Velocity.z = m_matControl.Forward().z * -500.0f;
-				}
-			}
+			m_Velocity.x -= m_matControl.Forward().x * 1000.f * steamSpeed;
+			m_Velocity.z -= m_matControl.Forward().z * 1000.f * steamSpeed;
 		}
 		IsOnAir = true;
 	}
