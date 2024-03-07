@@ -1362,7 +1362,6 @@ void InGameScene::UpdateBulletModels()
 
                 for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
                 {
-                    float fHeight = m_CustomMap->GetHeight(tank->m_matControl._41, tank->m_matControl._43);
                     
                 }
             }
