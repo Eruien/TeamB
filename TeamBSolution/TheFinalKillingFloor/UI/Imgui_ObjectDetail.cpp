@@ -431,11 +431,55 @@ void Imgui_ObjectDetail::Frame()
 		}
 		if (ImGui::Button("Clone Object"))
 		{
-			//KObject 복사생성자에서 내용물 복사
-	/*		KObject obj = *UIManager::s_selectedObject;
-			obj->SetName(L"cloneObj");
-			obj->m_vPosition = { 0,0,0 };
-			UIManager::GetInstance().AddUIObject();*/
+			shared_ptr<KObject> obj = make_shared<KObject>(*UIManager::s_selectedObject);
+
+			// 가능하면 나중에 복사생성자로 구현..
+			for (const auto& script : UIManager::s_selectedObject->GetScripts()) {
+				if (script->GetName() == L"PickingUI")
+				{
+					obj->AddScripts(make_shared<PickingUI>());
+				}
+				else if (script->GetName() == L"Resize2D")
+				{
+					obj->AddScripts(make_shared<Resize2D>());
+				}
+				else if (script->GetName() == L"DragUI")
+				{
+					obj->AddScripts(make_shared<DragUI>());
+					obj->GetScript<DragUI>(L"DragUI")->Init();
+				}
+				else if (script->GetName() == L"ChangeTexture")
+				{
+					obj->AddScripts(std::make_shared<ChangeTexture>());
+				}
+				else if (script->GetName() == L"ExitWindow")
+				{
+					obj->AddScripts(std::make_shared<ExitWindow>());
+				}
+				else if (script->GetName() == L"DigitDisplay")
+				{
+					
+						obj->AddScripts(std::make_shared<DigitDisplay>(UIManager::s_selectedObject->GetScript<DigitDisplay>(L"DigitDisplay")->GetDigitNum(),
+							UIManager::s_selectedObject->GetScript<DigitDisplay>(L"DigitDisplay")->GetXmlPath()));
+						obj->GetScript<DigitDisplay>(L"DigitDisplay")->Init();
+
+			
+				}
+				else if (script->GetName() == L"ButtonAction")
+				{
+						obj->AddScripts(std::make_shared<ButtonAction>(UIManager::s_selectedObject->GetScript<ButtonAction>(L"ButtonAction")->GetXmlPath(),
+							UIManager::s_selectedObject->GetScript<ButtonAction>(L"ButtonAction")->_function));
+				}
+				else if (script->GetName() == L"TextToTexture")
+				{
+						obj->AddScripts(std::make_shared<TextToTexture>(UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->GetText(),
+							UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->GetXmlPath()));
+						obj->GetScript<TextToTexture>(L"TextToTexture")->Init();
+		
+				}
+			}
+
+			UIManager::GetInstance().AddUIObject(obj);
 		}
 		ImGui::PopStyleColor();
 		ImGui::End();
