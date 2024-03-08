@@ -47,7 +47,6 @@ void InGameScene::Process()
     UpdateCameraTargetPosition();
     FramePlayerModel();
     UpdateBulletModels(); // 총알 위치 업데이트
-    FrameGunModel();
     UpdateZombieAndTankModels();
     HandlePlayerCollisions();
     LimitPlayerMovement();
@@ -57,7 +56,6 @@ void InGameScene::Process()
     FramePointLight();
     UpdatePlayerPhysics();
     AdjustPlayerHeight();
-
     UpdateNpcPhysics();
     AdjustNpcHeight();
     UpdateGunModelPosition();
@@ -1536,19 +1534,6 @@ void InGameScene::ProcessItem()
 	}
 }
 
-void InGameScene::FrameGunModel()
-{
-    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel != nullptr && LGlobal::g_PlayerModel->m_pActionModel != nullptr)
-    {
-        if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
-
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
-
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
-    }
-}
-
 void InGameScene::GetItem()
 {
     
@@ -1761,8 +1746,8 @@ void InGameScene::UpdateGunModelPosition()
 
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matControl;
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matForAnim = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
+            * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matForAnim;
     }
 }
 
