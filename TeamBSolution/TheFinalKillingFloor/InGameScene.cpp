@@ -1014,7 +1014,7 @@ void InGameScene::InitializeBullets()
             m_ShotgunBulletListArray[iList][iBullet]->CreateBoneBuffer();
             DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
             m_ShotgunBulletListArray[iList][iBullet]->m_matControl = LGlobal::g_PlayerModel->m_matControl * scalingMatrix;
-            m_ShotgunBulletListArray[iList][iBullet]->m_fRadius = 3.f;
+            m_ShotgunBulletListArray[iList][iBullet]->m_fRadius = 5.f;
         }
     }
 }
@@ -1310,6 +1310,7 @@ void InGameScene::UpdateTreeModels()
 
 void InGameScene::UpdateBulletModels()
 {
+    LGlobal::g_PlayerModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->GetPosition()); // OBBBox 충돌검사 전 갱신
     //rifle
     for (int i = 0; i < m_RifleBulletList.size(); i++)
     {
@@ -1317,9 +1318,9 @@ void InGameScene::UpdateBulletModels()
         {
             m_RifleBulletList[i]->Frame();
 
-            m_RifleBulletList[i]->m_matControl._41 += m_RifleBulletList[i]->m_matControl.Forward().x * 20000.f;
-            m_RifleBulletList[i]->m_matControl._42 += m_RifleBulletList[i]->m_matControl.Forward().y * 20000.f;
-            m_RifleBulletList[i]->m_matControl._43 += m_RifleBulletList[i]->m_matControl.Forward().z * 20000.f;
+            m_RifleBulletList[i]->m_matControl._41 += m_RifleBulletList[i]->m_matControl.Forward().x * 10000.f;
+            m_RifleBulletList[i]->m_matControl._42 += m_RifleBulletList[i]->m_matControl.Forward().y * 10000.f;
+            m_RifleBulletList[i]->m_matControl._43 += m_RifleBulletList[i]->m_matControl.Forward().z * 10000.f;
             if (m_RifleBulletList[i]->m_matControl._41 > 1000.f
                 || m_RifleBulletList[i]->m_matControl._41 < -1000.f
                 || m_RifleBulletList[i]->m_matControl._43 > 1000.f
@@ -1356,6 +1357,7 @@ void InGameScene::UpdateBulletModels()
             }
             for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
             {
+                
                 if (zombie->m_OBBBox.IsSphereInBox(m_ShotgunBulletListArray[i][j]->GetPosition(), m_ShotgunBulletListArray[i][j]->m_fRadius))
                 {
                     if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
@@ -1556,18 +1558,18 @@ void InGameScene::ShootRifle()
 {
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     m_RifleBulletList[index]->bVisible = true;
-    TMatrix scale = TMatrix::CreateScale(0.03f);
+    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
     m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
     m_RifleBulletList[index]->m_matControl._42 += 33.f;
-    m_RifleBulletList[index]->m_matControl._41 += m_RifleBulletList[index]->m_matControl.Forward().x * 20000.f;
-    m_RifleBulletList[index]->m_matControl._42 += m_RifleBulletList[index]->m_matControl.Forward().y * 20000.f;
-    m_RifleBulletList[index]->m_matControl._43 += m_RifleBulletList[index]->m_matControl.Forward().z * 20000.f;
+    m_RifleBulletList[index]->m_matControl._41 += m_RifleBulletList[index]->m_matControl.Forward().x * 200.f;
+    m_RifleBulletList[index]->m_matControl._42 += m_RifleBulletList[index]->m_matControl.Forward().y * 200.f;
+    m_RifleBulletList[index]->m_matControl._43 += m_RifleBulletList[index]->m_matControl.Forward().z * 200.f;
 }
 void InGameScene::ShootShotgun()
 {
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     
-    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.1f) * LGlobal::g_PlayerModel->m_matControl;
+    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f) * LGlobal::g_PlayerModel->m_matControl;
     
     for (int i = 0; i < m_ShotgunBulletListArray[index].size(); ++i)
     {
