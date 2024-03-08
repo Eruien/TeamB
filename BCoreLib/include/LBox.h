@@ -24,3 +24,4 @@ public:
 	bool OverlapOnAxis(const T_BOX& box1, const T_BOX& box2, const TVector3& axis);
 	void SetMatrix(TMatrix* matWorld, TMatrix* matView, TMatrix* matProj) override;
 };
+
