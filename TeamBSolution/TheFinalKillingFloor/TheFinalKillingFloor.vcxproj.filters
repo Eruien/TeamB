@@ -38,7 +38,6 @@
     <ClCompile Include="UI\KObject.cpp" />
     <ClCompile Include="UI\ModalWindow.cpp" />
     <ClCompile Include="UI\MonoBehaviour.cpp" />
-    <ClCompile Include="UI\NumberObject.cpp" />
     <ClCompile Include="UI\PickingUI.cpp" />
     <ClCompile Include="UI\Resize2D.cpp" />
     <ClCompile Include="UI\ResourceBase.cpp" />
@@ -85,6 +84,9 @@
     <ClCompile Include="LPlayer.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="ShopScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchorUI.h" />
@@ -124,7 +126,6 @@
     <ClInclude Include="UI\KObject.h" />
     <ClInclude Include="UI\ModalWindow.h" />
     <ClInclude Include="UI\MonoBehaviour.h" />
-    <ClInclude Include="UI\NumberObject.h" />
     <ClInclude Include="UI\PickingUI.h" />
     <ClInclude Include="UI\Resize2D.h" />
     <ClInclude Include="UI\ResourceBase.h" />
@@ -169,6 +170,9 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="InGameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,10 @@ bool LMainScene::Init()
 	{
 		obj->SetIsRender(false);
 	}
+	for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
+	{
+		obj->SetIsRender(false);
+	}
     LSoundMgr::GetInstance().Load(L"../../res/sound/BackgroundSound.mp3");
 	LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Play();
 	return true;

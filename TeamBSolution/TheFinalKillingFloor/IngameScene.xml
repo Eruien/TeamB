@@ -46,7 +46,7 @@
             <Script Type="HpBar"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
+    <UIObject Name="C_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="432" y="-289" z="0"/>
         <Scale width="50" height="45"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -67,7 +67,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="C_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
+    <UIObject Name="T_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="529" y="-290" z="0"/>
         <Scale width="42" height="45"/>
         <Texture texPath="../../res/ui/Empty.png"/>

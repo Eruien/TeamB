@@ -141,6 +141,7 @@ public:
 	void InitializeItem();
 
 	//Process Functions
+	
 	void ProcessMuzzleFlash();
 	void ProcessBloodSplatter();
 	void CheckPlayerDeath();

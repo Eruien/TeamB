@@ -441,6 +441,10 @@ void UIManager::ChangeScene(Event Scene)
         {
             obj->SetIsRender(false);
         }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
+        {
+            obj->SetIsRender(false);
+        }
         LScene::GetInstance().SetTransition(Scene);
     }
     else if (Scene == Event::GOINGAMESCENE)
@@ -461,10 +465,19 @@ void UIManager::ChangeScene(Event Scene)
         {
             obj->SetIsRender(false);
         }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        if (LScene::GetInstance().GetState() != State::SHOPSCENE)
+        {
+            LScene::GetInstance().SetTransition(Scene);
+            LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
+            UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo);
+            return;
+        }
         LScene::GetInstance().SetTransition(Scene);
-        LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
-        UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
-        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo);
     }
     else if (Scene == Event::GOENDSCENE)
     {
@@ -482,7 +495,35 @@ void UIManager::ChangeScene(Event Scene)
         {
             obj->SetIsRender(true);
         }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
+        {
+            obj->SetIsRender(false);
+        }
         LScene::GetInstance().SetTransition(Scene);
+    }
+    else if (Scene == Event::GOSHOPSCENE)
+    {
+        LInput::GetInstance().CursorChange();
+        //UIManager::GetInstance().Load(L"EndScene.xml");
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
+        {
+            obj->SetIsRender(false);
+        }
+        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
+        {
+           //만약 총기를 구매했으면
+            obj->SetIsRender(true);
+        }
+        LScene::GetInstance().SetTransition(Scene);
+        LScene::GetInstance().m_pAction->Init();
     }
 }
 

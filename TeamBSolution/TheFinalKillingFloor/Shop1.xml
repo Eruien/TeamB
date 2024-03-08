@@ -653,7 +653,7 @@
             <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
-                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="None"/>
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="GoInGameScene"/>
             </Script>
         </Scripts>
     </UIObject>

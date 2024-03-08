@@ -10,6 +10,9 @@ struct GunSpec
 	int defaultTotalAmmo = 0;
 	int TotalAmmo = 0;
 	int CurrentAmmo = 0;
+	int DamgeLevel = 0;
+	int RPMLevel = 0;
+	int MagazineLevel = 0;
 };
 
 class LWeapon
@@ -37,5 +40,8 @@ public:
 	bool Get(WeaponState key, LWeapon& ret);
 public:
 	virtual ~LWeaponMgr() {};
+	void UpgradeDamage();
+	void UpgradeRPM();
+	void UpgradeMagazine(WeaponState weapon);
 };
 

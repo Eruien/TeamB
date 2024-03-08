@@ -380,7 +380,7 @@ bool LPlayer::Frame()
 			m_StartShoot = 0.0f;
 			IsShoot = true;
 			
-			UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
+			UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 		}
 	}
 
