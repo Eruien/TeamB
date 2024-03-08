@@ -21,7 +21,6 @@ public:
 	T_BOX m_SettingBoxRightHand;
 	LBox m_OBBBoxRightHand;
 	float m_fRadius = 0.0f;
-	bool bVisible = false;
 public:
 	LFbxObj* m_pModel = nullptr;
 	LFbxObj* m_pActionModel = nullptr;
@@ -37,6 +36,7 @@ public:
 public:
 	bool m_TimerStart = false;
 	bool m_TimerEnd = false;
+	bool bVisible = false;
 	float m_HP = 100.0f;
 	float m_AnimationRate = 1.0f;
 public:
