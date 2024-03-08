@@ -429,6 +429,7 @@ void Imgui_ObjectDetail::Frame()
 			UIManager::GetInstance().RemoveObject(UIManager::s_selectedObject->GetName());
 			UIManager::s_selectedObject = UIManager::GetInstance().GetUIObjects()[0];
 		}
+		ImGui::PopStyleColor();
 		if (ImGui::Button("Clone Object"))
 		{
 			shared_ptr<KObject> obj = make_shared<KObject>(*UIManager::s_selectedObject);
@@ -481,7 +482,36 @@ void Imgui_ObjectDetail::Frame()
 
 			UIManager::GetInstance().AddUIObject(obj);
 		}
-		ImGui::PopStyleColor();
+		if (ImGui::Button("Render Order Forward "))
+		{
+			for (int i = 0; i < UIManager::GetInstance().GetUIObjects().size(); ++i)
+			{
+				if (UIManager::GetInstance().GetUIObjects()[i] == UIManager::s_selectedObject&&
+					UIManager::GetInstance().GetUIObjects()[0] != UIManager::s_selectedObject)
+				{
+					auto temp = UIManager::GetInstance().GetUIObjects()[i];
+					UIManager::GetInstance().GetUIObjects()[i] = UIManager::GetInstance().GetUIObjects()[i - 1];
+					UIManager::GetInstance().GetUIObjects()[i - 1] = temp;
+					break;
+				}
+			}
+		}
+
+		if (ImGui::Button("Render Order Backward"))
+		{
+			for (int i = 0; i < UIManager::GetInstance().GetUIObjects().size(); ++i)
+			{
+				if (UIManager::GetInstance().GetUIObjects()[i] == UIManager::s_selectedObject&&
+					UIManager::GetInstance().GetUIObjects()[UIManager::GetInstance().GetUIObjects().size()-1] != UIManager::s_selectedObject)
+				{
+					auto temp = UIManager::GetInstance().GetUIObjects()[i];
+					UIManager::GetInstance().GetUIObjects()[i] = UIManager::GetInstance().GetUIObjects()[i + 1];
+					UIManager::GetInstance().GetUIObjects()[i + 1] = temp;
+					break;
+				}
+			}
+		}
+		
 		ImGui::End();
 
 
