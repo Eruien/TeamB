@@ -1,0 +1,18 @@
+Shop_Gun2_empty, Shop_Gun3_empty
+T_Purchase_Gun2, Shop_Gun2_Purchase(구매버튼)
+T_Purchase_Gun3, Shop_Gun3_Purchase(구매버튼)( 구매시 isrender =false)
+Group : Gun2 , Gun3 (구매시 isRender =true)
+
+T_Gun1_DAMAGE 현재 데미지
+T_Gun2_RPM 현재 발사속도
+T_Gun3_MAGAZINE 현재 최대 탄약량
+
+B_Gun1_DAMAGE 데미지 업그레이드 버튼
+B_Gun1_RPM 발사속도 업그레이드 버튼
+B_Gun1_MAGAZINE 탄약량 업그레이드 버튼
+Gun1_Damage_price
+
+상점 나가기버튼 B_Shop_EXIT
+
+
+35 / 35     240

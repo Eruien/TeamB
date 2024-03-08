@@ -58,7 +58,6 @@ void DigitDisplay::UpdateNumber(int num)
         digits.push_back(digit);
         temp /= 10;
     }
-
     for (int i = 0; i < _digitNum; i++)
     {
         _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[0]);
