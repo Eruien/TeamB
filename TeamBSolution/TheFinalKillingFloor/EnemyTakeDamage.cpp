@@ -18,7 +18,7 @@ void EnemyTakeDamage::Process()
         m_Timer = true;
     }*/
 
-    if (m_pOwner->IsTakeDamage && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
+    if (m_pOwner->IsTakeDamage)
     {
         if (m_pOwner->IsHeadShot)
         {

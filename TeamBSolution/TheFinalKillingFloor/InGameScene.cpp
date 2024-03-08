@@ -46,7 +46,7 @@ void InGameScene::Process()
     SwitchCameraView();
     UpdateCameraTargetPosition();
     FramePlayerModel();
-    UpdateBulletModels();
+    UpdateBulletModels(); // 총알 위치 업데이트
     FrameGunModel();
     UpdateZombieAndTankModels();
     HandlePlayerCollisions();
@@ -245,7 +245,7 @@ void InGameScene::Render()
                 if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box) &&
                     LGlobal::g_PlayerModel->m_CurrentGun != WeaponState::SHOTGUN)
                 {
-                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
+                    if (LGlobal::g_PlayerModel->IsShoot)
                     {
                         float ShotHeight = (m_Select->m_vIntersection.y - zombie->m_matControl._42);
                         if (ShotHeight > (zombie->m_OBBBox.fTall * 0.85))
@@ -280,7 +280,7 @@ void InGameScene::Render()
             {
                 if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
                 {
-                    if (LGlobal::g_PlayerModel->IsShoot && LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo > 0)
+                    if (LGlobal::g_PlayerModel->IsShoot)
                     {
                         float ShotHeight = (m_Select->m_vIntersection.y - tank->m_matControl._42);
                         if (ShotHeight > (tank->m_OBBBox.fTall * 0.85))
@@ -894,7 +894,7 @@ void InGameScene::InitializeTrees()
         tree = std::make_shared<LModel>();
         tree->SetLFbxObj(treeObj);
         tree->CreateBoneBuffer();
-        tree->m_fRadius = 23.f;
+        tree->m_fRadius = 16.f;
         InitializeTreePosition(tree);
     }
 }
@@ -1016,7 +1016,7 @@ void InGameScene::InitializeBullets()
             m_ShotgunBulletListArray[iList][iBullet]->CreateBoneBuffer();
             DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
             m_ShotgunBulletListArray[iList][iBullet]->m_matControl = LGlobal::g_PlayerModel->m_matControl * scalingMatrix;
-            m_ShotgunBulletListArray[iList][iBullet]->m_fRadius = 6.f;
+            m_ShotgunBulletListArray[iList][iBullet]->m_fRadius = 3.f;
         }
     }
 }
@@ -1369,7 +1369,13 @@ void InGameScene::UpdateBulletModels()
                         zombie->IsHeadShot = false;
                     }
                     zombie->IsTakeDamage = true;
-
+                    m_bloodSplatter[m_crrBlood]->SetPos(m_ShotgunBulletListArray[i][j]->GetPosition() + m_ShotgunBulletListArray[i][j]->m_matControl.Forward() * 150);
+                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                    m_crrBlood++;
+                    if (m_crrBlood == m_bloodSplatter.size())
+                        m_crrBlood = 0;
+                    m_ShotgunBulletListArray[i][j]->bVisible = false;
                 }
             }
 
@@ -1386,6 +1392,12 @@ void InGameScene::UpdateBulletModels()
                         tank->IsHeadShot = false;
                     }
                     tank->IsTakeDamage = true;
+                    m_bloodSplatter[m_crrBlood]->SetPos(m_ShotgunBulletListArray[i][j]->GetPosition() + m_ShotgunBulletListArray[i][j]->m_matControl.Forward() * 150);
+                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                    m_crrBlood++;
+                    if (m_crrBlood == m_bloodSplatter.size())
+                        m_crrBlood = 0;
                     m_ShotgunBulletListArray[i][j]->bVisible = false;
                 }
             }
@@ -1570,7 +1582,7 @@ void InGameScene::ShootShotgun()
 {
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     
-    TMatrix scale = TMatrix::CreateScale(0.03f) * LGlobal::g_PlayerModel->m_matControl;
+    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.1f) * LGlobal::g_PlayerModel->m_matControl;
     
     for (int i = 0; i < m_ShotgunBulletListArray[index].size(); ++i)
     {
@@ -1585,8 +1597,8 @@ void InGameScene::ShootShotgun()
         m_ShotgunBulletListArray[index][i]->m_matControl = scale;
         m_ShotgunBulletListArray[index][i]->m_matControl.Forward(direction);
         m_ShotgunBulletListArray[index][i]->m_matControl._42 += 33.f;
-        m_ShotgunBulletListArray[index][i]->m_matControl._41 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().x * 100.f;
-        m_ShotgunBulletListArray[index][i]->m_matControl._43 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().z * 100.f;
+        m_ShotgunBulletListArray[index][i]->m_matControl._41 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().x * 5.f;
+        m_ShotgunBulletListArray[index][i]->m_matControl._43 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().z * 5.f;
     }
 }
 void InGameScene::UpdateZombieAndTankModels()
@@ -1601,11 +1613,11 @@ void InGameScene::HandlePlayerCollisions()
 {
     for (auto& tree : m_TreeList)
     {
-        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
-        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tree->m_matControl._42;
-        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
+        float offsetX = LGlobal::g_PlayerModel->m_matControl._41 - tree->m_matControl._41;
+        //float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tree->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_matControl._43 - tree->m_matControl._43;
 
-        TVector3 dir = { offsetX, offsetY, offsetZ };
+        TVector2 dir = { offsetX, offsetZ };
         float distance = dir.Length();
         float r = LGlobal::g_PlayerModel->m_fRadius + tree->m_fRadius;
         if (distance <= r)
@@ -1614,7 +1626,7 @@ void InGameScene::HandlePlayerCollisions()
             dir.Normalize();
             dir *= (r - distance);
             LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
-            LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+            LGlobal::g_PlayerModel->m_matControl._43 += dir.y;
         }
     }
 
@@ -1720,10 +1732,14 @@ void InGameScene::HandlePlayerCollisions()
 
 void InGameScene::LimitPlayerMovement()
 {
-    if (LGlobal::g_PlayerModel->m_matControl._41 > 970.f) LGlobal::g_PlayerModel->m_matControl._41 = 970.f;
-    if (LGlobal::g_PlayerModel->m_matControl._41 < -970.f) LGlobal::g_PlayerModel->m_matControl._41 = -970.f;
-    if (LGlobal::g_PlayerModel->m_matControl._43 > 970.f) LGlobal::g_PlayerModel->m_matControl._43 = 970.f;
-    if (LGlobal::g_PlayerModel->m_matControl._43 < -970.f) LGlobal::g_PlayerModel->m_matControl._43 = -970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._41 > 970.f) 
+        LGlobal::g_PlayerModel->m_matControl._41 = 970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._41 < -970.f)
+        LGlobal::g_PlayerModel->m_matControl._41 = -970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._43 > 970.f)
+        LGlobal::g_PlayerModel->m_matControl._43 = 970.f;
+    if (LGlobal::g_PlayerModel->m_matControl._43 < -970.f)
+        LGlobal::g_PlayerModel->m_matControl._43 = -970.f;
 }
 
 void InGameScene::LimitNpcMovement()

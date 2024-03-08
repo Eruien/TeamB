@@ -92,20 +92,18 @@ void ZombieWave::CollisionCheckWithObstacle(std::vector<std::shared_ptr<LModel>>
         {
             for (auto& npc : npcPair.second)  // npcPair.second는 해당 키의 값을 가져옵니다.
             {
-                TVector3 length = { tree->m_matControl._41, npc->m_matControl._42, tree->m_matControl._43 };
-                length -= npc->m_OBBBox.m_Box.vCenter;
-                float distance = length.Length();
+                float offsetX = npc->m_matControl._41 - tree->m_matControl._41;
+                float offsetZ = npc->m_matControl._43 - tree->m_matControl._43;
 
-                if (distance <= 30)
+                TVector2 dir = { offsetX, offsetZ };
+                float distance = dir.Length();
+                float r = tree->m_fRadius + npc->m_fRadius;
+                if (distance <= r)
                 {
-                    float offsetX = npc->m_OBBBox.m_Box.vCenter.x - tree->m_matControl._41;
-                    float offsetZ = npc->m_OBBBox.m_Box.vCenter.z - tree->m_matControl._43;
-
-                    TVector3 vNormal = { offsetX, npc->m_matControl._42, offsetZ };
-                    vNormal.Normalize();
-                    vNormal *= (30 - distance);
-                    npc->m_matControl._41 += vNormal.x;
-                    npc->m_matControl._43 += vNormal.z;
+                    dir.Normalize();
+                    dir *= (r - distance);
+                    npc->m_matControl._41 += dir.x;
+                    npc->m_matControl._43 += dir.y;
                 }
             }
         }
