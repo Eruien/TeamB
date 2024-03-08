@@ -193,7 +193,6 @@
     <ClCompile Include="UI\KObject.cpp" />
     <ClCompile Include="UI\ModalWindow.cpp" />
     <ClCompile Include="UI\MonoBehaviour.cpp" />
-    <ClCompile Include="UI\NumberObject.cpp" />
     <ClCompile Include="UI\PickingUI.cpp" />
     <ClCompile Include="UI\Resize2D.cpp" />
     <ClCompile Include="UI\ResourceBase.cpp" />
@@ -255,7 +254,6 @@
     <ClInclude Include="UI\KObject.h" />
     <ClInclude Include="UI\ModalWindow.h" />
     <ClInclude Include="UI\MonoBehaviour.h" />
-    <ClInclude Include="UI\NumberObject.h" />
     <ClInclude Include="UI\PickingUI.h" />
     <ClInclude Include="UI\Resize2D.h" />
     <ClInclude Include="UI\ResourceBase.h" />

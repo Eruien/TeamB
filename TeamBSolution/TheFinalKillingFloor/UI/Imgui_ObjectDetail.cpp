@@ -430,6 +430,88 @@ void Imgui_ObjectDetail::Frame()
 			UIManager::s_selectedObject = UIManager::GetInstance().GetUIObjects()[0];
 		}
 		ImGui::PopStyleColor();
+		if (ImGui::Button("Clone Object"))
+		{
+			shared_ptr<KObject> obj = make_shared<KObject>(*UIManager::s_selectedObject);
+
+			// 가능하면 나중에 복사생성자로 구현..
+			for (const auto& script : UIManager::s_selectedObject->GetScripts()) {
+				if (script->GetName() == L"PickingUI")
+				{
+					obj->AddScripts(make_shared<PickingUI>());
+				}
+				else if (script->GetName() == L"Resize2D")
+				{
+					obj->AddScripts(make_shared<Resize2D>());
+				}
+				else if (script->GetName() == L"DragUI")
+				{
+					obj->AddScripts(make_shared<DragUI>());
+					obj->GetScript<DragUI>(L"DragUI")->Init();
+				}
+				else if (script->GetName() == L"ChangeTexture")
+				{
+					obj->AddScripts(std::make_shared<ChangeTexture>());
+				}
+				else if (script->GetName() == L"ExitWindow")
+				{
+					obj->AddScripts(std::make_shared<ExitWindow>());
+				}
+				else if (script->GetName() == L"DigitDisplay")
+				{
+					
+						obj->AddScripts(std::make_shared<DigitDisplay>(UIManager::s_selectedObject->GetScript<DigitDisplay>(L"DigitDisplay")->GetDigitNum(),
+							UIManager::s_selectedObject->GetScript<DigitDisplay>(L"DigitDisplay")->GetXmlPath()));
+						obj->GetScript<DigitDisplay>(L"DigitDisplay")->Init();
+
+			
+				}
+				else if (script->GetName() == L"ButtonAction")
+				{
+						obj->AddScripts(std::make_shared<ButtonAction>(UIManager::s_selectedObject->GetScript<ButtonAction>(L"ButtonAction")->GetXmlPath(),
+							UIManager::s_selectedObject->GetScript<ButtonAction>(L"ButtonAction")->_function));
+				}
+				else if (script->GetName() == L"TextToTexture")
+				{
+						obj->AddScripts(std::make_shared<TextToTexture>(UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->GetText(),
+							UIManager::s_selectedObject->GetScript<TextToTexture>(L"TextToTexture")->GetXmlPath()));
+						obj->GetScript<TextToTexture>(L"TextToTexture")->Init();
+		
+				}
+			}
+
+			UIManager::GetInstance().AddUIObject(obj);
+		}
+		if (ImGui::Button("Render Order Forward "))
+		{
+			for (int i = 0; i < UIManager::GetInstance().GetUIObjects().size(); ++i)
+			{
+				if (UIManager::GetInstance().GetUIObjects()[i] == UIManager::s_selectedObject&&
+					UIManager::GetInstance().GetUIObjects()[0] != UIManager::s_selectedObject)
+				{
+					auto temp = UIManager::GetInstance().GetUIObjects()[i];
+					UIManager::GetInstance().GetUIObjects()[i] = UIManager::GetInstance().GetUIObjects()[i - 1];
+					UIManager::GetInstance().GetUIObjects()[i - 1] = temp;
+					break;
+				}
+			}
+		}
+
+		if (ImGui::Button("Render Order Backward"))
+		{
+			for (int i = 0; i < UIManager::GetInstance().GetUIObjects().size(); ++i)
+			{
+				if (UIManager::GetInstance().GetUIObjects()[i] == UIManager::s_selectedObject&&
+					UIManager::GetInstance().GetUIObjects()[UIManager::GetInstance().GetUIObjects().size()-1] != UIManager::s_selectedObject)
+				{
+					auto temp = UIManager::GetInstance().GetUIObjects()[i];
+					UIManager::GetInstance().GetUIObjects()[i] = UIManager::GetInstance().GetUIObjects()[i + 1];
+					UIManager::GetInstance().GetUIObjects()[i + 1] = temp;
+					break;
+				}
+			}
+		}
+		
 		ImGui::End();
 
 

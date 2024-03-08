@@ -5,10 +5,10 @@
 bool Sample::Init()
 {
 
-	UIManager::GetInstance().Load(L"MainScene.xml");
-	UIManager::GetInstance().Load(L"IngameScene.xml");
-	UIManager::GetInstance().Load(L"EndScene.xml");
-	
+	//UIManager::GetInstance().Load(L"MainScene.xml");
+	//UIManager::GetInstance().Load(L"IngameScene.xml");
+	//UIManager::GetInstance().Load(L"EndScene.xml");
+	UIManager::GetInstance().Load(L"Shop1.xml");
 	m_UICamera = std::make_shared<UICamera>();
 	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_UICamera->m_fCameraPitch = 0.0f;
@@ -27,16 +27,17 @@ bool Sample::Init()
 bool Sample::Frame()
 {
 	LScene::GetInstance().Process();
+
 	if (LINPUT.m_KeyStateOld[DIK_F7]== KEY_PUSH)
 	{
 		UIManager::GetInstance()._editMode = !UIManager::GetInstance()._editMode;
 
 		if (UIManager::GetInstance()._editMode)
 		{
-			for (auto obj : UIManager::GetInstance().GetUIObjects())
+			/*for (auto obj : UIManager::GetInstance().GetUIObjects())
 			{
 				obj->SetIsRender(true);
-			}
+			}*/
 		}
 	}
 

@@ -2,10 +2,30 @@
 #include "LObject.h"
 #include "MonoBehaviour.h"
 
-
 class KObject : public LObject , public enable_shared_from_this<KObject>
 {
 public:
+	KObject() = default;
+	KObject(const KObject& other) 
+	{
+
+
+	
+		Init();
+		Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Hud_Bio_Clock_Circle.png");
+		m_Tex = other.m_Tex;
+		m_Shader = other.m_Shader;
+		m_Tex->Apply();
+		SetPos({ 0,0,0 });
+		SetScale(other.m_vScale);
+		_name = other._name;
+		_group = other._group;
+		_scene = other._scene;
+		_isRender = other._isRender;
+		//_rect = other._rect;
+
+
+	};
 	virtual ~KObject() {};
 public:
 	virtual bool Init() override;
