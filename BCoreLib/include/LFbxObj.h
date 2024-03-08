@@ -3,7 +3,7 @@
 
 struct LBoneWorld
 {
-	TMatrix matBoneWorld[100];
+	TMatrix matBoneWorld[200];
 };
 
 struct LVertexIW

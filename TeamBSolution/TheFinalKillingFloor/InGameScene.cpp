@@ -520,7 +520,7 @@ void InGameScene::PlayerInit()
 {
     // PlayerSetting
     LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
     LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL, 1);
@@ -569,7 +569,7 @@ void InGameScene::CharacterInit()
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
 
-    // Character
+    // Gun Character
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/army3.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Fire_Rifle_Ironsights.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Reload_Rifle_Ironsights.bin");
@@ -588,13 +588,22 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Shotgun_Fire.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Shotgun_Reload.bin");
 
+    // Blade Character
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/BladeMan.bin");
+
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Walk.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Inward.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Outward.bin");
+
     // Item
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Pistols_A.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Shotgun_A.bin");
+    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/OneHandSword.bin");
     // form
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
     LExportIO::GetInstance().ExportRead(L"PistolPos.bin");
+    LExportIO::GetInstance().ExportRead(L"OneHandForm.bin");
 
     // PlayerSetting
     InitializeWeapon();

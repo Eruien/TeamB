@@ -7,7 +7,7 @@ class LModel
 public:
 	static std::vector<LBoneWorld> m_texBoneArray;
 	int m_InstanceSize = 0;
-	int m_matBoneArraySize = 100;
+	int m_matBoneArraySize = 200;
 	ComPtr<ID3D11Texture2D> pAnimationArrayTex = nullptr;
 	ComPtr<ID3D11ShaderResourceView> pAnimationArraySRV = nullptr;
 	std::vector<int> m_texAnimationOffset;
