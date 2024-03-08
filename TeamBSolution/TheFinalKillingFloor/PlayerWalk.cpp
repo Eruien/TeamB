@@ -57,6 +57,10 @@ void PlayerWalk::Process()
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Walk_Fwd_Rifle_Ironsights.fbx");
     }
+    else if (m_pOwner->m_CurrentGun == WeaponState::ONEHANDSWORD)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Walk.fbx");
+    }
     
 }
 

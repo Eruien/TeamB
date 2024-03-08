@@ -297,6 +297,15 @@ void LPlayer::ItemChnge(WeaponState gun, int index)
 
 bool LPlayer::Frame()
 {
+	if (LInput::GetInstance().m_KeyStateOld[DIK_F3] == KEY_PUSH)
+	{
+		m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+	}
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_F4] == KEY_PUSH)
+	{
+		m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
+	}
+
 	if (m_HP <= 0)
 	{
 		IsDeath = true;
@@ -351,6 +360,10 @@ bool LPlayer::Frame()
 		ItemChnge(WeaponState::SHOTGUN, 0);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
+	}
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_7] == KEY_PUSH)
+	{
+		ItemChnge(WeaponState::ONEHANDSWORD, 2);
 	}
 	
 	m_StartShoot += LGlobal::g_fSPF;

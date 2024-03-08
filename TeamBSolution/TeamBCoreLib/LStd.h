@@ -114,6 +114,7 @@ enum class WeaponState
 	PISTOL,
 	ASSAULTRIFLE,
 	SHOTGUN,
+	ONEHANDSWORD,
 };
 
 //--------------------------------------------------------------------------------------

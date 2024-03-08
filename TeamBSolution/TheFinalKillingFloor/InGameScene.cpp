@@ -520,7 +520,7 @@ void InGameScene::PlayerInit()
 {
     // PlayerSetting
     LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
+    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
     LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL, 1);
@@ -854,9 +854,18 @@ void InGameScene::InitializeWeapon()
     shotGun->m_GunSpec.Damage = 100.0f;
     shotGun->m_GunSpec.CurrentAmmo = shotGun->m_GunSpec.TotalAmmo;
 
+    std::shared_ptr<LWeapon> oneHandSword = std::make_shared<LWeapon>();
+    oneHandSword->m_WeaponModel = std::make_shared<LModel>();
+    oneHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"OneHandSword.fbx");
+    oneHandSword->m_SwordSpec.SlashDelay = 0.5;
+    oneHandSword->m_SwordSpec.defaultSlashDelay = 0.5;
+    oneHandSword->m_SwordSpec.Damage = 50.0f;
+    oneHandSword->m_SwordSpec.defaultDamage = 50.0f;
+ 
     LWeaponMgr::GetInstance().Add(WeaponState::PISTOL, pistol);
     LWeaponMgr::GetInstance().Add(WeaponState::ASSAULTRIFLE, rifle);
     LWeaponMgr::GetInstance().Add(WeaponState::SHOTGUN, shotGun);
+    LWeaponMgr::GetInstance().Add(WeaponState::ONEHANDSWORD, oneHandSword);
 }
 
 void InGameScene::InitializeObjects()

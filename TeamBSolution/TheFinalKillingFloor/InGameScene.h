@@ -161,7 +161,6 @@ public:
 	void SwitchCameraView();
 	void UpdateCameraTargetPosition();
 	void FramePlayerModel();
-	void FrameGunModel();
 	void UpdateZombieAndTankModels();
 	void HandlePlayerCollisions();
 	void LimitPlayerMovement();

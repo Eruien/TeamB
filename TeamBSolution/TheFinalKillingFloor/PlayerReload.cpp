@@ -40,6 +40,10 @@ void PlayerReload::Process()
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_Reload.fbx");
     }
+    else if (m_pOwner->m_CurrentGun == WeaponState::ONEHANDSWORD)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_Reload.fbx");
+    }
     
 }
 
