@@ -77,7 +77,7 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move();
-	void ItemChnge(WeaponState gun);
+	void ItemChnge(WeaponState gun, int index);
 public:
 	virtual	void Process();
 	bool Frame() override;

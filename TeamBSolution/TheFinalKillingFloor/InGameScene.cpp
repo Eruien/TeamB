@@ -519,7 +519,7 @@ void InGameScene::PlayerInit()
     LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-    LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL);
+    LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL, 1);
 
     TMatrix matScale;
     TMatrix matRot;

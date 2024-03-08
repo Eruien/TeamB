@@ -282,17 +282,17 @@ void LPlayer::Move()
 	}
 }
 
-void LPlayer::ItemChnge(WeaponState gun)
+void LPlayer::ItemChnge(WeaponState gun, int index)
 {
 	m_CurrentGun = gun;
 	m_Gun = LWeaponMgr::GetInstance().GetPtr(gun);
 
 	if (m_Gun == nullptr) return;
 
-	m_Gun->m_WeaponModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[0];
-	m_Gun->m_WeaponModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[0];
-	m_Gun->m_WeaponModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[0];
-	m_Gun->m_WeaponModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[0];
+	m_Gun->m_WeaponModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[index];
+	m_Gun->m_WeaponModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[index];
+	m_Gun->m_WeaponModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[index];
+	m_Gun->m_WeaponModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[index];
 }
 
 bool LPlayer::Frame()
@@ -336,19 +336,19 @@ bool LPlayer::Frame()
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
-		ItemChnge(WeaponState::PISTOL);
+		ItemChnge(WeaponState::PISTOL, 1);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
 	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
 	{
-		ItemChnge(WeaponState::ASSAULTRIFLE);
+		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
 	else if (LInput::GetInstance().m_KeyStateOld[DIK_6] == KEY_PUSH)
 	{
-		ItemChnge(WeaponState::SHOTGUN);
+		ItemChnge(WeaponState::SHOTGUN, 0);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
