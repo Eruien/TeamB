@@ -605,16 +605,19 @@ void InGameScene::ResetWeapon()
     pistol->m_GunSpec.TotalAmmo = pistol->m_GunSpec.defaultTotalAmmo;
     pistol->m_GunSpec.ShootDelay = pistol->m_GunSpec.defaultShootDelay;
     pistol->m_GunSpec.Damage = pistol->m_GunSpec.defaultDamage;
+    pistol->m_GunSpec.CurrentAmmo = pistol->m_GunSpec.TotalAmmo;
 
     LWeapon* rifle = LWeaponMgr::GetInstance().GetPtr(WeaponState::ASSAULTRIFLE);
     rifle->m_GunSpec.TotalAmmo = rifle->m_GunSpec.defaultTotalAmmo;
     rifle->m_GunSpec.ShootDelay = rifle->m_GunSpec.defaultShootDelay;
     rifle->m_GunSpec.Damage = rifle->m_GunSpec.defaultDamage;
+    rifle->m_GunSpec.CurrentAmmo = rifle->m_GunSpec.TotalAmmo;
 
     LWeapon* shotgun = LWeaponMgr::GetInstance().GetPtr(WeaponState::SHOTGUN);
     shotgun->m_GunSpec.TotalAmmo = shotgun->m_GunSpec.defaultTotalAmmo;
     shotgun->m_GunSpec.ShootDelay = shotgun->m_GunSpec.defaultShootDelay;
     shotgun->m_GunSpec.Damage = shotgun->m_GunSpec.defaultDamage;
+    shotgun->m_GunSpec.CurrentAmmo = shotgun->m_GunSpec.TotalAmmo;
 }
 
 void InGameScene::NextWave()
