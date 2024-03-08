@@ -1000,7 +1000,7 @@ void InGameScene::InitializeBullets()
         m_RifleBulletList[i]->CreateBoneBuffer();
         DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
 
-        m_RifleBulletList[i]->m_matControl = LGlobal::g_PlayerModel->m_matControl * scalingMatrix;
+        m_RifleBulletList[i]->m_matControl = scalingMatrix * LGlobal::g_PlayerModel->m_matControl;
         m_RifleBulletList[i]->m_fRadius = 3.f;
     }
 
@@ -1016,7 +1016,7 @@ void InGameScene::InitializeBullets()
             m_ShotgunBulletListArray[iList][iBullet]->SetLFbxObj(bulletObj);
             m_ShotgunBulletListArray[iList][iBullet]->CreateBoneBuffer();
             DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
-            m_ShotgunBulletListArray[iList][iBullet]->m_matControl = LGlobal::g_PlayerModel->m_matControl * scalingMatrix;
+            m_ShotgunBulletListArray[iList][iBullet]->m_matControl = scalingMatrix * LGlobal::g_PlayerModel->m_matControl;
             m_ShotgunBulletListArray[iList][iBullet]->m_fRadius = 5.f;
         }
     }

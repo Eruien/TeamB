@@ -44,8 +44,24 @@ bool LBackView::Frame()
 
 	m_fCameraPitch = max(-m_MaxPitch, min(m_MaxPitch, m_fCameraPitch));
 	m_vCameraPos.x = m_TargetModel->m_matControl._41;
+	if (m_vCameraPos.x < -970.0f)
+	{
+		m_vCameraPos.x = -970.0f;
+	}
+	if (m_vCameraPos.x > 970.0f)
+	{
+		m_vCameraPos.x = 970.0f;
+	}
 	m_vCameraPos.y = m_TargetModel->m_matControl._42;
 	m_vCameraPos.z = m_TargetModel->m_matControl._43;
+	if (m_vCameraPos.z < -970.0f)
+	{
+		m_vCameraPos.z = -970.0f;
+	}
+	if (m_vCameraPos.z > 970.0f)
+	{
+		m_vCameraPos.z = 970.0f;
+	}
 	TVector3 backView = m_TargetModel->m_matControl.Forward() * 100.f;
 	m_vCameraPos -= backView;
 	m_vCameraPos.y += 35.f;
