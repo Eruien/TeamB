@@ -80,6 +80,9 @@ bool LFSMMgr::Init()
 	sceneFSM->AddStateTransition(State::ENDSCENE, Event::GOMAINSCENE, State::MAINSCENE);
 	sceneFSM->AddStateTransition(State::ENDSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
 
+	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOSHOPSCENE, State::SHOPSCENE);
+	sceneFSM->AddStateTransition(State::SHOPSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
+
 	m_map.insert(std::make_pair(FSMType::SCENE, std::move(sceneFSM)));
 
 	//Player

@@ -34,7 +34,11 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
-    
+    //ªÛ¡°≈∞
+    if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
+    {
+        UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+    }
     ProcessBloodSplatter();
     CheckPlayerDeath();
     PlayInGameSound();
@@ -991,7 +995,7 @@ void InGameScene::InitializeBullets()
     auto bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
 
     // rifle
-    m_RifleBulletList.resize(50);
+    m_RifleBulletList.resize(100);
     for (int i = 0; i < m_RifleBulletList.size(); ++i)
     {
         m_RifleBulletList[i] = std::make_shared<LModel>();
@@ -1005,7 +1009,7 @@ void InGameScene::InitializeBullets()
     }
 
     // shotgun
-    m_ShotgunBulletListArray.resize(20);
+    m_ShotgunBulletListArray.resize(50);
     for (int iList = 0; iList < m_ShotgunBulletListArray.size(); ++iList)
     {
         m_ShotgunBulletListArray[iList].resize(8);
@@ -1731,6 +1735,8 @@ void InGameScene::LimitPlayerMovement()
     if (LGlobal::g_PlayerModel->m_matControl._43 < -970.f)
         LGlobal::g_PlayerModel->m_matControl._43 = -970.f;
 }
+
+
 
 void InGameScene::LimitNpcMovement()
 {

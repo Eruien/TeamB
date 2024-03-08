@@ -203,6 +203,7 @@ bool LInput::Frame()
     g_InputData.bQKey = GetKey(DIK_Q);
     g_InputData.bEKey = GetKey(DIK_E);
     g_InputData.bEKey = GetKey(DIK_Z);
+    g_InputData.bEKey = GetKey(DIK_B);
    
     g_InputData.bLShift = GetKey(DIK_LSHIFT);
 

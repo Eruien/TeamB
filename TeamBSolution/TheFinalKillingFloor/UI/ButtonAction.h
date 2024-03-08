@@ -1,6 +1,6 @@
 #pragma once
 #include "MonoBehaviour.h"
-
+#include "PickingUI.h"
 class TextureList;
 class ButtonAction : public MonoBehaviour
 {
@@ -25,6 +25,7 @@ public:
 
 	std::unordered_map<wstring, void (ButtonAction::*)()> _functionMap;
 	wstring _function = L"None";
+	PICKING_STATE state;
 private:
 	wstring _texXmlPath;
 	shared_ptr<TextureList> _texList;

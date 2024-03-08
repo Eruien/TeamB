@@ -1,5 +1,4 @@
 #include "ButtonAction.h"
-#include "PickingUI.h"
 #include "KObject.h"
 #include "TextureList.h"
 #include "LWrite.h"
@@ -30,7 +29,7 @@ ButtonAction::~ButtonAction()
 void ButtonAction::Frame()
 {
 	//-(LINPUT.GetMousePos().y - LGlobal::g_WindowHeight / 2)
-	PICKING_STATE state = GetGameObject()->GetScript<PickingUI>(L"PickingUI")->GetButtonState();
+	state = GetGameObject()->GetScript<PickingUI>(L"PickingUI")->GetButtonState();
 
 
 	if (state == PICKING_STATE::NONE)
