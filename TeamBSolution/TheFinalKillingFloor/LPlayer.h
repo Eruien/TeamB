@@ -67,6 +67,7 @@ public:
 	float m_SteamPackEnd = 5.0f;
 	float m_ZedTimeStart = 0.0f;
 	float m_ZedTimeEnd = 5.0f;
+	int m_Money = 0;
 	TVector3 m_AddDirection;
 	TVector3 m_Velocity;
 

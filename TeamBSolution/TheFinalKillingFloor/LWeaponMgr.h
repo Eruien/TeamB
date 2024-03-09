@@ -51,8 +51,8 @@ public:
 	bool Get(WeaponState key, LWeapon& ret);
 public:
 	virtual ~LWeaponMgr() {};
-	void UpgradeDamage();
-	void UpgradeRPM();
+	void UpgradeDamage(WeaponState weapon);
+	void UpgradeRPM(WeaponState weapon);
 	void UpgradeMagazine(WeaponState weapon);
 };
 

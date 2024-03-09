@@ -2,6 +2,7 @@
 #include "LGlobal.h"
 #include "LFbxMgr.h"
 #include "UIManager.h"
+#include "LPlayer.h"
 
 bool TankDeath::Init()
 {
@@ -15,6 +16,7 @@ void TankDeath::Process()
         m_pOwner->IsDead = true;
     }
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Tank_Death.fbx");
+ 
 }
 
 void TankDeath::Release()

@@ -2,7 +2,7 @@
 #include "LGlobal.h"
 #include "LFbxMgr.h"
 #include "KObject.h"
-
+#include "LPlayer.h"
 bool EnemyTakeDamage::Init()
 {
     return true;
@@ -42,7 +42,9 @@ void EnemyTakeDamage::Process()
 
     if (m_pOwner->IsDead)
     {
+
         m_pOwner->SetTransition(Event::FATALDAMAGE);
+        
         return;
     }
 
@@ -74,8 +76,9 @@ void EnemyTakeDamage::Release()
 void EnemyTakeDamage::UpdateHPbar()
 {
 
-        float hp = LGlobal::g_PlayerModel->m_HP;
 
+        if (m_pOwner->m_HP <= 0)
+            m_pOwner->m_HP = -0.1;
 
         m_pOwner->m_enemyHp->m_VertexList[1].p.x = 0.5f - (1 - m_pOwner->m_HP / 100);
         m_pOwner->m_enemyHp->m_VertexList[4].p.x = 0.5f - (1 - m_pOwner->m_HP / 100);

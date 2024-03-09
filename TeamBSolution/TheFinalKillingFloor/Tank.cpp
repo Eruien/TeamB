@@ -8,6 +8,7 @@
 #include "TankTakeDamage.h"
 #include "TankDeath.h"
 #include "KObject.h"
+#include "UIManager.h"
 
 void Tank::FSM(FSMType fsmType)
 {
@@ -160,6 +161,8 @@ bool Tank::Frame()
 	if (m_HP <= 0)
 	{
 		LSoundMgr::GetInstance().GetPtr(L"killsound.mp3")->PlayEffect();
+		LGlobal::g_PlayerModel->m_Money += 300;
+		UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 		IsDead = true;
 	}
 

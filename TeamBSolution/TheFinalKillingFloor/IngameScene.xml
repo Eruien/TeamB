@@ -47,7 +47,7 @@
         </Scripts>
     </UIObject>
     <UIObject Name="C_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
-        <Position x="432" y="-289" z="0"/>
+        <Position x="432" y="-290" z="0"/>
         <Scale width="50" height="45"/>
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
@@ -69,7 +69,7 @@
     </UIObject>
     <UIObject Name="T_Ammo" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="529" y="-290" z="0"/>
-        <Scale width="42" height="45"/>
+        <Scale width="50" height="45"/>
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
@@ -230,6 +230,27 @@
             <Script Type="TextToTexture">
                 <args TextToTexture="ENEMY" TexListXml="../../res/ui/xml/TextTexture.xml"/>
             </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="Money" isRender="true" Group="None" Scene="IngameScene.xml">
+        <Position x="553" y="-201" z="0"/>
+        <Scale width="158" height="48"/>
+        <Texture texPath="../../res/ui/Empty.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="DigitDisplay">
+                <args DigitNumber="4" TexListXml="../../res/ui/xml/testNum.xml"/>
+            </Script>
+        </Scripts>
+    </UIObject>
+    <UIObject Name="MoneySymbol" isRender="true" Group="None" Scene="IngameScene.xml">
+        <Position x="396" y="-200" z="0"/>
+        <Scale width="68" height="66"/>
+        <Texture texPath="../../res/ui/Hud_Pound_Symbol.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
 </UIScene>

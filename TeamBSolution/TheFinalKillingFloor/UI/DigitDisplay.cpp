@@ -50,7 +50,7 @@ void DigitDisplay::UpdateNumber(int num)
 {
     vector<int> digits;
     //int temp = _num;
-
+ 
     _num = num;
     int temp = _num;
     while (temp > 0) {
@@ -59,6 +59,18 @@ void DigitDisplay::UpdateNumber(int num)
         temp /= 10;
     }
 
+    if (_digitNum < digits.size())
+    {
+        UpdateDigit(digits.size());
+    }
+ /*   if (_digitNum < digits.size())
+    {
+        for (int i = digits.size() - _digitNum; i > 0 ; i--)
+        {
+            digits.push_back(0);
+        }
+        _digitNum = digits.size();
+    }*/
     for (int i = 0; i < _digitNum; i++)
     {
         _objects[i]->m_Tex = LManager<LTexture>::GetInstance().Load(_texList->GetTexList()[0]);

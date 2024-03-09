@@ -410,6 +410,7 @@ void InGameScene::Retry()
     ResetWeapon();
     PlayerInit();
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
+    LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     Init_2 = true;
@@ -1013,7 +1014,7 @@ void InGameScene::InitializeBullets()
     auto bulletObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/bullet/Tennis.fbx", L"../../res/hlsl/Bullet.hlsl");
 
     // rifle
-    m_RifleBulletList.resize(100);
+    m_RifleBulletList.resize(200);
     for (int i = 0; i < m_RifleBulletList.size(); ++i)
     {
         m_RifleBulletList[i] = std::make_shared<LModel>();
