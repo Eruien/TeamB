@@ -20,16 +20,23 @@ void EnemyTakeDamage::Process()
 
     if (m_pOwner->IsTakeDamage)
     {
-        if (m_pOwner->IsHeadShot)
+        if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
         {
-            LSoundMgr::GetInstance().GetPtr(L"headshot.mp3")->PlayEffect();
-            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
+            if (m_pOwner->IsHeadShot)
+            {
+                LSoundMgr::GetInstance().GetPtr(L"headshot.mp3")->PlayEffect();
+                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
+            }
+            else
+            {
+                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_DamageRate;
+            }
         }
-        else
+        else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
         {
-            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_DamageRate;
+            m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_SwordSpec.Damage * m_DamageRate;
         }
-
+       
         UpdateHPbar();
         m_pOwner->IsTakeDamage = false;
     }

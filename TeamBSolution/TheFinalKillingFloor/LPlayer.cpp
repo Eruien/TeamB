@@ -532,10 +532,13 @@ bool LPlayer::SwordFrame()
 		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
 	}*/
 
+	//IsSlash = false;
+
 	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH))
 	{
 		IsMove = true;
 		IsAttack = true;
+		IsSlash = true;
 		//LSoundMgr::GetInstance().GetPtr(L"GunFire.wav")->PlayEffect();
 	}
 

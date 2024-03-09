@@ -246,41 +246,62 @@ void InGameScene::Render()
  
     m_ZombieWave->CollisionBoxRender();
 
-    if (LInput::GetInstance().m_MouseState[0])
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
-        if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
+        if (LInput::GetInstance().m_MouseState[0])
         {
-            for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+            if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
             {
-                if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box) &&
-                    LGlobal::g_PlayerModel->m_CurrentGun != WeaponState::SHOTGUN)
+                for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
                 {
-                    if (LGlobal::g_PlayerModel->IsShoot)
+                    if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box) &&
+                        LGlobal::g_PlayerModel->m_CurrentGun != WeaponState::SHOTGUN)
                     {
-                        float ShotHeight = (m_Select->m_vIntersection.y - zombie->m_matControl._42);
-                        if (ShotHeight > (zombie->m_OBBBox.fTall * 0.85))
+                        if (LGlobal::g_PlayerModel->IsShoot)
                         {
-                            zombie->IsHeadShot = true;
+                            float ShotHeight = (m_Select->m_vIntersection.y - zombie->m_matControl._42);
+                            if (ShotHeight > (zombie->m_OBBBox.fTall * 0.85))
+                            {
+                                zombie->IsHeadShot = true;
+                            }
+                            else
+                            {
+                                zombie->IsHeadShot = false;
+                            }
+                            zombie->IsTakeDamage = true;
+                            m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
+                            m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                            m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                            m_crrBlood++;
+                            if (m_crrBlood == m_bloodSplatter.size())
+                                m_crrBlood = 0;
                         }
-                        else
-                        {
-                            zombie->IsHeadShot = false;
-                        }
-                        zombie->IsTakeDamage = true;
-                        m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection + LGlobal::g_PlayerModel->m_matControl.Forward() * 150);
-                        m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                        m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                        m_crrBlood++;
-                        if (m_crrBlood == m_bloodSplatter.size())
-                            m_crrBlood = 0;
-                    }
 
-                    //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                    //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+                        //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                        //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
+                    }
                 }
             }
         }
     }
+    else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
+    {
+        if (LInput::GetInstance().m_MouseState[0])
+        {
+            if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
+            {
+                for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+                {
+                    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && LGlobal::g_PlayerModel->IsSlash)
+                    {
+                        zombie->IsTakeDamage = true;
+                    }
+                }
+            }
+        }
+    }
+
+    
 
     if (LInput::GetInstance().m_MouseState[0])
     {
@@ -416,7 +437,7 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    PlayerInit(PlayerType::SWORD);
+    PlayerInit(PlayerType::GUN);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
@@ -626,7 +647,7 @@ void InGameScene::CharacterInit()
 
     // PlayerSetting
     InitializeWeapon();
-    PlayerInit(PlayerType::SWORD);
+    PlayerInit(PlayerType::GUN);
 
     m_Select = new LSelect;
 }
@@ -1359,7 +1380,12 @@ void InGameScene::UpdateTreeModels()
 void InGameScene::UpdateBulletModels()
 {
     LGlobal::g_PlayerModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->GetPosition()); // OBBBox 충돌검사 전 갱신
-    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition()); // OBBBox 충돌검사 전 갱신
+
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
+    {
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition()); // OBBBox 충돌검사 전 갱신
+    }
+    
     //rifle
     for (int i = 0; i < m_RifleBulletList.size(); i++)
     {
@@ -1811,6 +1837,11 @@ void InGameScene::FrameCollisionDetection()
         { LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._41,
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42,
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 });
+
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.UpdateOBBBoxPosition(
+        { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._41,
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._42,
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._43 });
 }
 
 void InGameScene::FrameUI()
@@ -1869,5 +1900,15 @@ void InGameScene::InitializeOBBBox()
         LGlobal::g_PlayerModel->m_SettingBox.vAxis[0],
         LGlobal::g_PlayerModel->m_SettingBox.vAxis[1],
         LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CreateOBBBox(
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[0],
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[1],
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[2],
+        { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._41,
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._42,
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._43 },
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.vAxis[0],
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.vAxis[1],
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.vAxis[2]);
     m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
 }

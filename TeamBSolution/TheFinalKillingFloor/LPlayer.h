@@ -37,6 +37,7 @@ public:
 	bool IsReload = false;
 	bool IsEndReload = true;
 	bool IsShoot = false;
+	bool IsSlash = false;
 	bool IsMoveOneDir = false;
 	bool IsTakeDamage = false;
 	bool IsInvincibility = true;
