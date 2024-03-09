@@ -236,6 +236,14 @@ void InGameScene::Render()
     LGlobal::g_PlayerModel->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     //LGlobal::g_PlayerModel->m_OBBBox.Render();
 
+    TMatrix weaponPos = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matForAnim;
+    
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
+    {
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.SetMatrix(&weaponPos, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.Render();
+    }
+ 
     m_ZombieWave->CollisionBoxRender();
 
     if (LInput::GetInstance().m_MouseState[0])
@@ -408,7 +416,7 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    PlayerInit();
+    PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
@@ -517,14 +525,23 @@ void InGameScene::CameraInit()
     m_MinimapPosCamera->CreateOrthographic((float)256, (float)256, -1.0f, 10000.0f);
 }
 
-void InGameScene::PlayerInit()
+void InGameScene::PlayerInit(PlayerType playerType)
 {
     // PlayerSetting
     LGlobal::g_PlayerModel = new LPlayer;
-    LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+    LGlobal::g_PlayerModel->m_Type = playerType;
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
+    {
+        LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
+        LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL, 1);
+    }
+    else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
+    {
+        LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
+        LGlobal::g_PlayerModel->ItemChnge(WeaponState::ONEHANDSWORD, 2);
+    }
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
-    LGlobal::g_PlayerModel->ItemChnge(WeaponState::PISTOL, 1);
 
     TMatrix matScale;
     TMatrix matRot;
@@ -542,6 +559,7 @@ void InGameScene::PlayerInit()
     TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
 
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, -20.0f }, { 30.0f, 200.0f, 30.0f }, 0.2f);
 }
 
 void InGameScene::CharacterInit()
@@ -608,7 +626,7 @@ void InGameScene::CharacterInit()
 
     // PlayerSetting
     InitializeWeapon();
-    PlayerInit();
+    PlayerInit(PlayerType::SWORD);
 
     m_Select = new LSelect;
 }
@@ -632,6 +650,10 @@ void InGameScene::ResetWeapon()
     shotgun->m_GunSpec.ShootDelay = shotgun->m_GunSpec.defaultShootDelay;
     shotgun->m_GunSpec.Damage = shotgun->m_GunSpec.defaultDamage;
     shotgun->m_GunSpec.CurrentAmmo = shotgun->m_GunSpec.TotalAmmo;
+
+    LWeapon* oneHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::ONEHANDSWORD);
+    oneHandSword->m_SwordSpec.SlashDelay = oneHandSword->m_SwordSpec.defaultSlashDelay;
+    oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
 }
 
 void InGameScene::NextWave()
@@ -1337,6 +1359,7 @@ void InGameScene::UpdateTreeModels()
 void InGameScene::UpdateBulletModels()
 {
     LGlobal::g_PlayerModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->GetPosition()); // OBBBox 충돌검사 전 갱신
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition()); // OBBBox 충돌검사 전 갱신
     //rifle
     for (int i = 0; i < m_RifleBulletList.size(); i++)
     {

@@ -116,7 +116,7 @@ public:
 public:
 	void SoundInit();
 	void CameraInit();
-	void PlayerInit();
+	void PlayerInit(PlayerType playerType);
 	void CharacterInit();
 	void ResetWeapon();
 public:

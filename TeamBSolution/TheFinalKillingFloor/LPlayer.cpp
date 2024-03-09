@@ -343,6 +343,58 @@ bool LPlayer::Frame()
 		}
 	}
 
+	if (m_Type == PlayerType::GUN)
+	{
+		GunFrame();
+	}
+	else if (m_Type == PlayerType::SWORD)
+	{
+		SwordFrame();
+	}
+
+	if (IsMove)
+	{
+		Move();
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
+	{
+		m_Speed = RUNMOVESPEED;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
+	{
+		m_Speed = 0.0f;
+	}
+
+	if (m_Speed > 100.0f)
+	{
+		IsRun = true;
+		IsWalk = true;
+	}
+	else if (m_Speed > 0.0f)
+	{
+		IsRun = false;
+		IsWalk = true;
+	}
+	else if (m_Speed <= 0.0f)
+	{
+		IsRun = false;
+		IsWalk = false;
+	}
+
+	IsEndReload = true;
+
+	std::wstring wSpeed = L"Speed: ";
+	wSpeed += std::to_wstring(int(m_Speed));
+	//LWrite::GetInstance().AddText(wSpeed, 0.0f, 150.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+	LSkinningModel::Frame();
+	return true;
+}
+
+bool LPlayer::GunFrame()
+{
 	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
 		ItemChnge(WeaponState::PISTOL, 1);
@@ -361,11 +413,7 @@ bool LPlayer::Frame()
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
-	else if (LInput::GetInstance().m_KeyStateOld[DIK_7] == KEY_PUSH)
-	{
-		ItemChnge(WeaponState::ONEHANDSWORD, 2);
-	}
-	
+
 	m_StartShoot += LGlobal::g_fSPF;
 	IsShoot = false;
 	IsReload = false;
@@ -392,7 +440,7 @@ bool LPlayer::Frame()
 
 			m_StartShoot = 0.0f;
 			IsShoot = true;
-			
+
 			UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 		}
 	}
@@ -416,12 +464,10 @@ bool LPlayer::Frame()
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 
-
-
 	if (LInput::GetInstance().m_KeyStateOld[DIK_Q] == KEY_PUSH)
 	{
 		m_HP = min(100, m_HP + 30);
-		
+
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 
@@ -455,7 +501,6 @@ bool LPlayer::Frame()
 		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
 	}
 
-
 	if (IsZedTime)
 	{
 		m_ZedTimeStart += LGlobal::g_fSPF;
@@ -473,48 +518,94 @@ bool LPlayer::Frame()
 		LSoundMgr::GetInstance().GetPtr(L"ZedTimeLast.mp3")->PlayEffect();
 	}
 
-	if (IsMove)
+	return true;
+}
+
+bool LPlayer::SwordFrame()
+{
+	/*if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
-		Move();
+		ItemChnge(WeaponState::ONEHANDSWORD, 2);
+	}
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
+	{
+		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
+	}*/
+
+	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH))
+	{
+		IsMove = true;
+		IsAttack = true;
+		//LSoundMgr::GetInstance().GetPtr(L"GunFire.wav")->PlayEffect();
 	}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
+	if (LInput::GetInstance().m_MouseState[0] == KEY_UP)
 	{
-		m_Speed = RUNMOVESPEED;
-	}
-	//else if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH)
-	//{
-	//	m_Speed = 100.0f;
-	//}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
-	{
-		m_Speed = 0.0f;
+		IsMove = true;
+		IsAttack = false;
 	}
 
-	if (m_Speed > 100.0f)
+	if (LInput::GetInstance().m_KeyStateOld[DIK_F] == KEY_PUSH)
 	{
-		IsRun = true;
-		IsWalk = true;
-	}
-	else if (m_Speed > 0.0f)
-	{
-		IsRun = false;
-		IsWalk = true;
-	}
-	else if (m_Speed <= 0.0f)
-	{
-		IsRun = false;
-		IsWalk = false;
+		IsSteamPack = true;
+		m_HP -= 10;
+		LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->PlayEffect();
+		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
 
-	IsEndReload = true;
+	if (LInput::GetInstance().m_KeyStateOld[DIK_Q] == KEY_PUSH)
+	{
+		m_HP = min(100, m_HP + 30);
 
-	std::wstring wSpeed = L"Speed: ";
-	wSpeed += std::to_wstring(int(m_Speed));
-	//LWrite::GetInstance().AddText(wSpeed, 0.0f, 150.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+	}
 
-	LSkinningModel::Frame();
+	if (IsSteamPack)
+	{
+		m_SteamPackStart += LGlobal::g_fSPF;
+		m_Gun->m_SwordSpec.SlashDelay = m_Gun->m_SwordSpec.defaultSlashDelay * 0.5f;
+		m_AnimationRate = 1.5f;
+		float excleSpeed = m_Speed * 1.5;
+		m_Speed = excleSpeed;
+	}
+
+	if (m_SteamPackEnd < m_SteamPackStart)
+	{
+		m_Gun->m_SwordSpec.SlashDelay = m_Gun->m_SwordSpec.defaultSlashDelay;
+		m_SteamPackStart = 0.0f;
+		m_AnimationRate = 1.0f;
+		IsSteamPack = false;
+	}
+
+	if (m_ZedTimeCount % 10 == 0)
+	{
+		m_ZedTimeCount += 1;
+		IsZedTime = true;
+		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+	}
+	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH)
+	{
+		m_ZedTimeCount = 1;
+		IsZedTime = true;
+		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+	}
+
+	if (IsZedTime)
+	{
+		m_ZedTimeStart += LGlobal::g_fSPF;
+		/*m_ShotDelay = 0.05f;
+		m_AnimationRate = 2.0f;
+		float excleSpeed = m_Speed * 2;
+		m_Speed = excleSpeed;*/
+	}
+
+	if (m_ZedTimeEnd < m_ZedTimeStart)
+	{
+		m_ZedTimeStart = 0.0f;
+		m_AnimationRate = 1.0f;
+		IsZedTime = false;
+		LSoundMgr::GetInstance().GetPtr(L"ZedTimeLast.mp3")->PlayEffect();
+	}
 	return true;
 }
 

@@ -22,6 +22,7 @@ public:
 class LPlayer : public LSkinningModel
 {
 public:
+	PlayerType m_Type = PlayerType::GUN;
 	State m_CurrentState = State::NONE;
 	WeaponState m_CurrentGun = WeaponState::PISTOL;
 	LFiniteStateMachine* m_pFsm = nullptr;
@@ -82,6 +83,8 @@ public:
 public:
 	virtual	void Process();
 	bool Frame() override;
+	bool GunFrame();
+	bool SwordFrame();
 public:
 	//LPlayer();
 };
