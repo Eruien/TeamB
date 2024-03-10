@@ -395,19 +395,19 @@ bool LPlayer::Frame()
 
 bool LPlayer::GunFrame()
 {
-	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
+	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH )
 	{
 		ItemChnge(WeaponState::PISTOL, 1);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
-	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH && LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.HasWeapon)
 	{
 		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
 		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 	}
-	else if (LInput::GetInstance().m_KeyStateOld[DIK_6] == KEY_PUSH)
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_6] == KEY_PUSH && LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.HasWeapon)
 	{
 		ItemChnge(WeaponState::SHOTGUN, 0);
 		UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.TotalAmmo);
@@ -460,6 +460,7 @@ bool LPlayer::GunFrame()
 	{
 		IsSteamPack = true;
 		m_HP -= 10;
+		m_Gun->m_GunSpec.ShootDelay *= 0.5f;
 		LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->PlayEffect();
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 	}
@@ -474,7 +475,6 @@ bool LPlayer::GunFrame()
 	if (IsSteamPack)
 	{
 		m_SteamPackStart += LGlobal::g_fSPF;
-		m_Gun->m_GunSpec.ShootDelay = 0.05f;
 		m_AnimationRate = 1.5f;
 		float excleSpeed = m_Speed * 1.5;
 		m_Speed = excleSpeed;
@@ -482,7 +482,7 @@ bool LPlayer::GunFrame()
 
 	if (m_SteamPackEnd < m_SteamPackStart)
 	{
-		m_Gun->m_GunSpec.ShootDelay = 0.1f;
+		m_Gun->m_GunSpec.ShootDelay *=2.f;
 		m_SteamPackStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsSteamPack = false;

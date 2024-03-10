@@ -8,7 +8,7 @@ bool Sample::Init()
 	UIManager::GetInstance().Load(L"MainScene.xml");
 	UIManager::GetInstance().Load(L"IngameScene.xml");
 	UIManager::GetInstance().Load(L"EndScene.xml");
-	//UIManager::GetInstance().Load(L"Shop1.xml");
+	UIManager::GetInstance().Load(L"Shop1.xml");
 
 	m_UICamera = std::make_shared<UICamera>();
 	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });

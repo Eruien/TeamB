@@ -36,12 +36,12 @@ bool LWeaponMgr::Get(WeaponState key, LWeapon& ret)
 void LWeaponMgr::UpgradeDamage(WeaponState weapon)
 {
 
-	if (LGlobal::g_PlayerModel->m_Money < 100)
+	if (LGlobal::g_PlayerModel->m_Money < 100 || m_map[weapon]->m_GunSpec.DamageLevel == 15)
 		return;
 	LGlobal::g_PlayerModel->m_Money -= 100;
 
-	m_map[weapon]->m_GunSpec.DamgeLevel += 1;
-	m_map[weapon]->m_GunSpec.Damage = m_map[weapon]->m_GunSpec.defaultDamage + (m_map[weapon]->m_GunSpec.defaultDamage * 0.1 * m_map[weapon]->m_GunSpec.DamgeLevel);
+	m_map[weapon]->m_GunSpec.DamageLevel += 1;
+	m_map[weapon]->m_GunSpec.Damage = m_map[weapon]->m_GunSpec.defaultDamage + (m_map[weapon]->m_GunSpec.defaultDamage * 0.1 * m_map[weapon]->m_GunSpec.DamageLevel);
 
 	if (weapon == WeaponState::PISTOL)
 	{
@@ -55,30 +55,27 @@ void LWeaponMgr::UpgradeDamage(WeaponState weapon)
 	{
 		UIManager::GetInstance().GetUIObject(L"T_Gun3_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(m_map[weapon]->m_GunSpec.Damage)));
 	}
+	if (m_map[weapon]->m_GunSpec.DamageLevel == 15)
+	{
+		if (weapon == WeaponState::PISTOL)
+			UIManager::GetInstance().GetUIObject(L"Gun1_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+		else if (weapon == WeaponState::ASSAULTRIFLE)
+			UIManager::GetInstance().GetUIObject(L"Gun2_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+		else if (weapon == WeaponState::SHOTGUN)
+			UIManager::GetInstance().GetUIObject(L"Gun3_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+	}
+
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+
 }
 
 void LWeaponMgr::UpgradeRPM(WeaponState weapon)
 {
-	if (LGlobal::g_PlayerModel->m_Money < 100)
+	if (LGlobal::g_PlayerModel->m_Money < 100 || m_map[weapon]->m_GunSpec.RPMLevel == 8)
 		return;
 	LGlobal::g_PlayerModel->m_Money -= 100;
 
-	if (m_map[weapon]->m_GunSpec.RPMLevel == 8)
-	{
-		if (weapon == WeaponState::PISTOL)
-			UIManager::GetInstance().GetUIObject(L"Gun1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
-		else if (weapon == WeaponState::ASSAULTRIFLE)
-			UIManager::GetInstance().GetUIObject(L"Gun2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
-		else if (weapon == WeaponState::SHOTGUN)
-			UIManager::GetInstance().GetUIObject(L"Gun3_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
-		
-
-		//È¯ºÒ
-		LGlobal::g_PlayerModel->m_Money += 100;
-		return;
-	}
 	m_map[weapon]->m_GunSpec.RPMLevel += 1;
 	m_map[weapon]->m_GunSpec.ShootDelay =   m_map[weapon]->m_GunSpec.defaultShootDelay-((0.1*m_map[weapon]->m_GunSpec.RPMLevel* m_map[weapon]->m_GunSpec.defaultShootDelay));
 
@@ -94,6 +91,15 @@ void LWeaponMgr::UpgradeRPM(WeaponState weapon)
 	{
 		UIManager::GetInstance().GetUIObject(L"T_Gun3_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / m_map[weapon]->m_GunSpec.ShootDelay)));
 	}
+	if (m_map[weapon]->m_GunSpec.RPMLevel == 8)
+	{
+		if (weapon == WeaponState::PISTOL)
+			UIManager::GetInstance().GetUIObject(L"Gun1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+		else if (weapon == WeaponState::ASSAULTRIFLE)
+			UIManager::GetInstance().GetUIObject(L"Gun2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+		else if (weapon == WeaponState::SHOTGUN)
+			UIManager::GetInstance().GetUIObject(L"Gun3_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+	}
 
 
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
@@ -102,7 +108,7 @@ void LWeaponMgr::UpgradeRPM(WeaponState weapon)
 
 void LWeaponMgr::UpgradeMagazine(WeaponState weapon)
 {
-	if (LGlobal::g_PlayerModel->m_Money < 100)
+	if (LGlobal::g_PlayerModel->m_Money < 100 || m_map[weapon]->m_GunSpec.MagazineLevel == 15)
 		return;
 	LGlobal::g_PlayerModel->m_Money -= 100;
 
@@ -138,7 +144,15 @@ void LWeaponMgr::UpgradeMagazine(WeaponState weapon)
 			UIManager::GetInstance().GetUIObject(L"T_Gun3_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.TotalAmmo));
 	}
 
-
+	if (m_map[weapon]->m_GunSpec.MagazineLevel == 15)
+	{
+		if (weapon == WeaponState::PISTOL)
+			UIManager::GetInstance().GetUIObject(L"Gun1_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+		else if (weapon == WeaponState::ASSAULTRIFLE)
+			UIManager::GetInstance().GetUIObject(L"Gun2_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+		else if (weapon == WeaponState::SHOTGUN)
+			UIManager::GetInstance().GetUIObject(L"Gun3_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+	}
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 }
