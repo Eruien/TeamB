@@ -42,6 +42,10 @@ bool Sample::Frame()
 		}
 	}
 
+	if (LINPUT.m_KeyStateOld[DIK_F8] == KEY_PUSH)
+	{
+		LScene::GetInstance().SetTransition(Event::GOSELECTSCENE);
+	}
 	return true;
 }
 

@@ -25,6 +25,7 @@ struct SwordSpec
 	float Damage = 0.0f;
 	int DamgeLevel = 0;
 	int MagazineLevel = 0;
+	bool HasWeapon = false;
 };
 
 class LWeapon

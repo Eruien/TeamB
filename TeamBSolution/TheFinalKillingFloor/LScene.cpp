@@ -4,6 +4,7 @@
 #include "InGameScene.h"
 #include "EndScene.h"
 #include "ShopScene.h"
+#include "SelectScene.h"    
 void LScene::FSM(FSMType fsmType)
 {
     auto iter = LFSMMgr::GetInstance().m_map.find(fsmType);
@@ -20,6 +21,7 @@ void LScene::FSM(FSMType fsmType)
     m_pActionList.insert(std::make_pair(State::INGAMESCENE, std::make_unique<InGameScene>(this)));
     m_pActionList.insert(std::make_pair(State::ENDSCENE, std::make_unique<EndScene>(this)));
     m_pActionList.insert(std::make_pair(State::SHOPSCENE, std::make_unique<ShopScene>(this)));
+    m_pActionList.insert(std::make_pair(State::SELECTSCENE, std::make_unique<SelectScene>(this)));
     //
     m_pAction = m_pActionList.find(State::MAINSCENE)->second.get();
     m_CurrentState = State::MAINSCENE;

@@ -1,6 +1,4 @@
 #pragma once
-
-#pragma once
 #include "LScene.h"
 class SelectScene :public SceneState
 {
