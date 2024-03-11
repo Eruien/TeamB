@@ -1648,7 +1648,7 @@ void InGameScene::ShootShotgun()
 {
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     
-    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f) * LGlobal::g_PlayerModel->m_matControl;
+    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f) * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl;
     
     for (int i = 0; i < m_ShotgunBulletListArray[index].size(); ++i)
     {
@@ -1662,9 +1662,8 @@ void InGameScene::ShootShotgun()
 
         m_ShotgunBulletListArray[index][i]->m_matControl = scale;
         m_ShotgunBulletListArray[index][i]->m_matControl.Forward(direction);
-        m_ShotgunBulletListArray[index][i]->m_matControl._42 += 33.f;
-        m_ShotgunBulletListArray[index][i]->m_matControl._41 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().x * 5.f;
-        m_ShotgunBulletListArray[index][i]->m_matControl._43 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().z * 5.f;
+        m_ShotgunBulletListArray[index][i]->m_matControl._41 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().x * LGlobal::g_PlayerModel->m_Gun->m_GunSpec.offset;
+        m_ShotgunBulletListArray[index][i]->m_matControl._43 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().z * LGlobal::g_PlayerModel->m_Gun->m_GunSpec.offset;
     }
 }
 void InGameScene::UpdateZombieAndTankModels()

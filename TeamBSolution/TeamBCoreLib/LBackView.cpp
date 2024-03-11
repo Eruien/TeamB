@@ -74,11 +74,11 @@ bool LBackView::Frame()
 		m_vCameraPos.z = 970.0f;
 	}
 	
-	TVector3 backView = m_TargetModel->m_matControl.Forward() * 200.f;
+	TVector3 backView = m_TargetModel->m_matControl.Forward() * 150.f;
 	m_vCameraPos -= backView;
 	m_vCameraPos.y += 35.f;
-	m_vCameraPos.x -= m_TargetModel->m_matControl.Right().x * 50.f;
-	m_vCameraPos.z -= m_TargetModel->m_matControl.Right().z * 50.f;
+	m_vCameraPos.x -= m_TargetModel->m_matControl.Right().x * 37.5f;
+	m_vCameraPos.z -= m_TargetModel->m_matControl.Right().z * 37.5f;
 	CreateLookAt(m_vCameraPos, m_vCameraPos + backView);
 
 	UpdateVector();
