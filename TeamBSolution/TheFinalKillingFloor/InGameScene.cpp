@@ -660,18 +660,27 @@ void InGameScene::ResetWeapon()
     pistol->m_GunSpec.Damage = pistol->m_GunSpec.defaultDamage;
     pistol->m_GunSpec.CurrentAmmo = pistol->m_GunSpec.TotalAmmo;
     pistol->m_GunSpec.HasWeapon = true;
+    pistol->m_GunSpec.MagazineLevel = 0;
+    pistol->m_GunSpec.DamageLevel = 0;
+    pistol->m_GunSpec.RPMLevel = 0;
     LWeapon* rifle = LWeaponMgr::GetInstance().GetPtr(WeaponState::ASSAULTRIFLE);
     rifle->m_GunSpec.TotalAmmo = rifle->m_GunSpec.defaultTotalAmmo;
     rifle->m_GunSpec.ShootDelay = rifle->m_GunSpec.defaultShootDelay;
     rifle->m_GunSpec.Damage = rifle->m_GunSpec.defaultDamage;
     rifle->m_GunSpec.CurrentAmmo = rifle->m_GunSpec.TotalAmmo;
     rifle->m_GunSpec.HasWeapon = false;
+    rifle->m_GunSpec.MagazineLevel = 0;
+    rifle->m_GunSpec.DamageLevel = 0;
+    rifle->m_GunSpec.RPMLevel = 0;
     LWeapon* shotgun = LWeaponMgr::GetInstance().GetPtr(WeaponState::SHOTGUN);
     shotgun->m_GunSpec.TotalAmmo = shotgun->m_GunSpec.defaultTotalAmmo;
     shotgun->m_GunSpec.ShootDelay = shotgun->m_GunSpec.defaultShootDelay;
     shotgun->m_GunSpec.Damage = shotgun->m_GunSpec.defaultDamage;
     shotgun->m_GunSpec.CurrentAmmo = shotgun->m_GunSpec.TotalAmmo;
     shotgun->m_GunSpec.HasWeapon = false;
+    shotgun->m_GunSpec.MagazineLevel = 0;
+    shotgun->m_GunSpec.DamageLevel = 0;
+    shotgun->m_GunSpec.RPMLevel = 0;
     LWeapon* oneHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::ONEHANDSWORD);
     oneHandSword->m_SwordSpec.SlashDelay = oneHandSword->m_SwordSpec.defaultSlashDelay;
     oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
@@ -1188,7 +1197,7 @@ void InGameScene::InitializeMuzzleFlash()
     m_muzzleFlash = make_shared<KObject>();
     m_muzzleFlash->Init();
     m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
-    m_muzzleFlash->SetScale({ 10,10,1.f });
+    m_muzzleFlash->SetScale({ 15,15,1.f });
     m_muzzleFlash->SetPos({ 0,30,0 });
     // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
 }
@@ -1343,6 +1352,18 @@ void InGameScene::UpdateUI()
         UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveZombieCountList.size());
         UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
         UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
+        UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+
+            UIManager::GetInstance().GetUIObject(L"Gun1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun3_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun1_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun2_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun3_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun1_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun2_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun3_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+
         Init_2 = false;
     }
 }

@@ -314,7 +314,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Gun1_MAGAGINE_price" isRender="true" Group="None" Scene="Shop1.xml">
+    <UIObject Name="Gun1_MAGAZINE_price" isRender="true" Group="None" Scene="Shop1.xml">
         <Position x="-311" y="-176.25" z="0"/>
         <Scale width="68" height="30.133335"/>
         <Texture texPath="../../res/ui/Empty.png"/>
