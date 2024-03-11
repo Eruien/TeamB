@@ -204,6 +204,7 @@
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIEvent.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
+    <ClCompile Include="VideoPlayer.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieWave.cpp" />
   </ItemGroup>
@@ -268,6 +269,7 @@
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIEvent.h" />
     <ClInclude Include="UI\UIManager.h" />
+    <ClInclude Include="VideoPlayer.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="ZombieWave.h" />
   </ItemGroup>
