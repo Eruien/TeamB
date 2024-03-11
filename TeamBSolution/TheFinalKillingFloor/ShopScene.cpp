@@ -67,25 +67,34 @@ void ShopScene::Process()
     else if (UIManager::GetInstance().GetUIObject(L"B_Gun3_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
         LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::SHOTGUN);
     
-        if (UIManager::GetInstance().GetUIObject(L"Shop_Gun2_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP && LGlobal::g_PlayerModel->m_Money>=500)
+        if (UIManager::GetInstance().GetUIObject(L"Shop_Gun2_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP )
         {
-            LGlobal::g_PlayerModel->m_Money -= 500;
+            UIManager::GetInstance().GetUIObject(L"Shop_Gun2_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::NONE;
+            if (!LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.HasWeapon && LGlobal::g_PlayerModel->m_Money >= 500)
+            {
+                LGlobal::g_PlayerModel->m_Money -= 500;
                 UIManager::GetInstance().GetUIObject(L"Shop_Gun2_Purchase")->SetIsRender(false);
                 UIManager::GetInstance().GetUIObject(L"Shop_Gun2_empty")->SetIsRender(false);
                 UIManager::GetInstance().GetUIObject(L"T_Purchase_Gun2")->SetIsRender(false);
                 LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.HasWeapon = true;
                 UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
                 UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+            }
+         
         }
-        if (UIManager::GetInstance().GetUIObject(L"Shop_Gun3_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP && LGlobal::g_PlayerModel->m_Money >= 800)
+        if (UIManager::GetInstance().GetUIObject(L"Shop_Gun3_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP )
         {
-            LGlobal::g_PlayerModel->m_Money -= 800;
-            UIManager::GetInstance().GetUIObject(L"Shop_Gun3_Purchase")->SetIsRender(false);
-            UIManager::GetInstance().GetUIObject(L"Shop_Gun3_empty")->SetIsRender(false);
-            UIManager::GetInstance().GetUIObject(L"T_Purchase_Gun3")->SetIsRender(false);
-            LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.HasWeapon = true;
-            UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
-            UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+            UIManager::GetInstance().GetUIObject(L"Shop_Gun3_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::NONE;
+            if (!LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.HasWeapon && LGlobal::g_PlayerModel->m_Money >= 800)
+            {
+                LGlobal::g_PlayerModel->m_Money -= 800;
+                UIManager::GetInstance().GetUIObject(L"Shop_Gun3_Purchase")->SetIsRender(false);
+                UIManager::GetInstance().GetUIObject(L"Shop_Gun3_empty")->SetIsRender(false);
+                UIManager::GetInstance().GetUIObject(L"T_Purchase_Gun3")->SetIsRender(false);
+                LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.HasWeapon = true;
+                UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+                UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+            }
         }
     
 

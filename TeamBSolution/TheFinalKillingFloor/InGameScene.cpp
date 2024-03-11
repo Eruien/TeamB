@@ -37,7 +37,14 @@ void InGameScene::Process()
     //상점키
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
-        UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+        if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
+        {
+            UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+        }
+        else
+        {
+           // UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+        }
     }
     ProcessBloodSplatter();
     CheckPlayerDeath();
@@ -303,43 +310,62 @@ void InGameScene::Render()
         }
     }
 
-    
-
-    if (LInput::GetInstance().m_MouseState[0])
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
-        if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
+        if (LInput::GetInstance().m_MouseState[0])
         {
-            for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
+            if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
             {
-                if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
+                for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
                 {
-                    if (LGlobal::g_PlayerModel->IsShoot)
+                    if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
                     {
-                        float ShotHeight = (m_Select->m_vIntersection.y - tank->m_matControl._42);
-                        if (ShotHeight > (tank->m_OBBBox.fTall * 0.85))
+                        if (LGlobal::g_PlayerModel->IsShoot)
                         {
-                            tank->IsHeadShot = true;
-                        }
-                        else
-                        {
-                            tank->IsHeadShot = false;
-                        }
-                        tank->IsTakeDamage = true;
+                            float ShotHeight = (m_Select->m_vIntersection.y - tank->m_matControl._42);
+                            if (ShotHeight > (tank->m_OBBBox.fTall * 0.85))
+                            {
+                                tank->IsHeadShot = true;
+                            }
+                            else
+                            {
+                                tank->IsHeadShot = false;
+                            }
+                            tank->IsTakeDamage = true;
 
-                        m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
-                        m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                        m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                        m_crrBlood++;
-                        if (m_crrBlood == m_bloodSplatter.size())
-                            m_crrBlood = 0;
+                            m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
+                            m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
+                            m_bloodSplatter[m_crrBlood]->SetIsRender(true);
+                            m_crrBlood++;
+                            if (m_crrBlood == m_bloodSplatter.size())
+                                m_crrBlood = 0;
+                        }
+
+                        //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
+                        //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
                     }
-
-                    //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                    //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
                 }
             }
         }
     }
+    else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
+    {
+        if (LInput::GetInstance().m_MouseState[0])
+        {
+            if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
+            {
+                for (auto& zombie : m_ZombieWave->m_EnemyMap["Tank"])
+                {
+                    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && LGlobal::g_PlayerModel->IsSlash)
+                    {
+                        zombie->IsTakeDamage = true;
+                    }
+                }
+            }
+        }
+    }
+
+    
    
     std::wstring textState = L"InGameScene";
     //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
@@ -442,7 +468,7 @@ void InGameScene::Retry()
     PlayerInit(PlayerType::GUN);
     //PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
-    LGlobal::g_PlayerModel->m_Money = 0;
+    LGlobal::g_PlayerModel->m_Money = 10000;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     Init_2 = true;
@@ -664,18 +690,27 @@ void InGameScene::ResetWeapon()
     pistol->m_GunSpec.Damage = pistol->m_GunSpec.defaultDamage;
     pistol->m_GunSpec.CurrentAmmo = pistol->m_GunSpec.TotalAmmo;
     pistol->m_GunSpec.HasWeapon = true;
+    pistol->m_GunSpec.MagazineLevel = 0;
+    pistol->m_GunSpec.DamageLevel = 0;
+    pistol->m_GunSpec.RPMLevel = 0;
     LWeapon* rifle = LWeaponMgr::GetInstance().GetPtr(WeaponState::ASSAULTRIFLE);
     rifle->m_GunSpec.TotalAmmo = rifle->m_GunSpec.defaultTotalAmmo;
     rifle->m_GunSpec.ShootDelay = rifle->m_GunSpec.defaultShootDelay;
     rifle->m_GunSpec.Damage = rifle->m_GunSpec.defaultDamage;
     rifle->m_GunSpec.CurrentAmmo = rifle->m_GunSpec.TotalAmmo;
     rifle->m_GunSpec.HasWeapon = false;
+    rifle->m_GunSpec.MagazineLevel = 0;
+    rifle->m_GunSpec.DamageLevel = 0;
+    rifle->m_GunSpec.RPMLevel = 0;
     LWeapon* shotgun = LWeaponMgr::GetInstance().GetPtr(WeaponState::SHOTGUN);
     shotgun->m_GunSpec.TotalAmmo = shotgun->m_GunSpec.defaultTotalAmmo;
     shotgun->m_GunSpec.ShootDelay = shotgun->m_GunSpec.defaultShootDelay;
     shotgun->m_GunSpec.Damage = shotgun->m_GunSpec.defaultDamage;
     shotgun->m_GunSpec.CurrentAmmo = shotgun->m_GunSpec.TotalAmmo;
     shotgun->m_GunSpec.HasWeapon = false;
+    shotgun->m_GunSpec.MagazineLevel = 0;
+    shotgun->m_GunSpec.DamageLevel = 0;
+    shotgun->m_GunSpec.RPMLevel = 0;
     LWeapon* oneHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::ONEHANDSWORD);
     oneHandSword->m_SwordSpec.SlashDelay = oneHandSword->m_SwordSpec.defaultSlashDelay;
     oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
@@ -874,6 +909,7 @@ void InGameScene::InitializeWeapon()
     pistol->m_WeaponModel = std::make_shared<LModel>();
     pistol->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Pistols_A.fbx");
 
+    pistol->m_GunSpec.offset = 23.0f;
     pistol->m_GunSpec.defaultTotalAmmo = 20;
     pistol->m_GunSpec.TotalAmmo = 20;
     pistol->m_GunSpec.defaultShootDelay = 0.5f;
@@ -885,6 +921,7 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> rifle = std::make_shared<LWeapon>();
     rifle->m_WeaponModel = std::make_shared<LModel>();
     rifle->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
+    rifle->m_GunSpec.offset = 115.0f;
     rifle->m_GunSpec.defaultTotalAmmo = 30;
     rifle->m_GunSpec.TotalAmmo = 30;
     rifle->m_GunSpec.defaultShootDelay = 0.1f;
@@ -896,6 +933,7 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> shotGun = std::make_shared<LWeapon>();
     shotGun->m_WeaponModel = std::make_shared<LModel>();
     shotGun->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_A.fbx");
+    shotGun->m_GunSpec.offset = 95.0f;
     shotGun->m_GunSpec.defaultTotalAmmo = 7;
     shotGun->m_GunSpec.TotalAmmo = 7;
     shotGun->m_GunSpec.defaultShootDelay = 1.3f;
@@ -1192,7 +1230,7 @@ void InGameScene::InitializeMuzzleFlash()
     m_muzzleFlash = make_shared<KObject>();
     m_muzzleFlash->Init();
     m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
-    m_muzzleFlash->SetScale({ 10,10,1.f });
+    m_muzzleFlash->SetScale({ 15,15,1.f });
     m_muzzleFlash->SetPos({ 0,30,0 });
     // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
 }
@@ -1347,6 +1385,18 @@ void InGameScene::UpdateUI()
         UIManager::GetInstance().GetUIObject(L"total_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_WaveZombieCountList.size());
         UIManager::GetInstance().GetUIObject(L"crr_Wave")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_CurrentWave);
         UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
+        UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+
+            UIManager::GetInstance().GetUIObject(L"Gun1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun3_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun1_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun2_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun3_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun1_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun2_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+            UIManager::GetInstance().GetUIObject(L"Gun3_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+
         Init_2 = false;
     }
 }
