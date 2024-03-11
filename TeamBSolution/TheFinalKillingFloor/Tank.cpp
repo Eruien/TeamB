@@ -45,7 +45,6 @@ State Tank::GetState()
 
 void Tank::Process()
 {
-	m_matForAnim = m_matControl;
 	m_pAction->Process();
 }
 

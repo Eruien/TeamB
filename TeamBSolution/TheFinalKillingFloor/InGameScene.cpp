@@ -236,7 +236,7 @@ void InGameScene::Render()
     LGlobal::g_PlayerModel->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     //LGlobal::g_PlayerModel->m_OBBBox.Render();
 
-    TMatrix weaponPos = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matForAnim;
+    TMatrix weaponPos = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl;
     
     if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
@@ -437,7 +437,7 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    PlayerInit(PlayerType::GUN);
+    PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
@@ -580,7 +580,7 @@ void InGameScene::PlayerInit(PlayerType playerType)
     TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
 
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
-    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, -20.0f }, { 30.0f, 200.0f, 30.0f }, 0.2f);
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 200.0f }, 0.2f);
 }
 
 void InGameScene::CharacterInit()
@@ -647,7 +647,7 @@ void InGameScene::CharacterInit()
 
     // PlayerSetting
     InitializeWeapon();
-    PlayerInit(PlayerType::GUN);
+    PlayerInit(PlayerType::SWORD);
 
     m_Select = new LSelect;
 }

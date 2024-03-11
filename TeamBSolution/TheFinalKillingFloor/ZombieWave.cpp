@@ -257,14 +257,12 @@ bool ZombieWave::Frame()
 {
     for (int i = 0; i < m_EnemyMap["Zombie"].size(); i++)
     {
-        m_EnemyMap["Zombie"][i]->m_matForAnim = m_EnemyMap["Zombie"][i]->m_matControl;
         m_EnemyMap["Zombie"][i]->Process();
         m_EnemyMap["Zombie"][i]->Frame();
     }
 
     for (int i = 0; i < m_EnemyMap["Tank"].size(); i++)
     {
-        m_EnemyMap["Tank"][i]->m_matForAnim = m_EnemyMap["Tank"][i]->m_matControl;
         m_EnemyMap["Tank"][i]->Process();
         m_EnemyMap["Tank"][i]->Frame();
     }
