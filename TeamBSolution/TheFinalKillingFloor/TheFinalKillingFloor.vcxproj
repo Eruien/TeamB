@@ -171,6 +171,7 @@
     <ClCompile Include="PlayerTakeDamage.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="ShopScene.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TankCombo.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="SelectScene.h" />
     <ClInclude Include="ShopScene.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="TankCombo.h" />

@@ -159,6 +159,9 @@
     <ClCompile Include="Zombie.cpp">
       <Filter>Zombie</Filter>
     </ClCompile>
+    <ClCompile Include="SelectScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -318,6 +321,9 @@
     </ClInclude>
     <ClInclude Include="Zombie.h">
       <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
