@@ -173,6 +173,7 @@
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="ShopScene.cpp" />
+    <ClCompile Include="SwordShopScene.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TankCombo.cpp" />
     <ClCompile Include="TankDeath.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Sample.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="ShopScene.h" />
+    <ClInclude Include="SwordShopScene.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="TankCombo.h" />
     <ClInclude Include="TankDeath.h" />

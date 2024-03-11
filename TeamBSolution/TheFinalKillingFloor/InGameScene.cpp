@@ -37,7 +37,14 @@ void InGameScene::Process()
     //»óÁ¡Å°
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
-        UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+        if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
+        {
+            UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+        }
+        else
+        {
+           // UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
+        }
     }
     ProcessBloodSplatter();
     CheckPlayerDeath();

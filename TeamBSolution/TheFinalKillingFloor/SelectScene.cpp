@@ -16,3 +16,12 @@ void SelectScene::Process()
 void SelectScene::Release()
 {
 }
+
+SelectScene::SelectScene(LScene* parent) : SceneState(parent)
+{
+}
+
+SelectScene::~SelectScene()
+{
+
+}

@@ -162,6 +162,9 @@
     <ClCompile Include="SelectScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SwordShopScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -323,6 +326,9 @@
       <Filter>Zombie</Filter>
     </ClInclude>
     <ClInclude Include="SelectScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordShopScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
