@@ -1207,9 +1207,9 @@ void InGameScene::ProcessMuzzleFlash()
     matRotation._43 = 0.0f;
     matRotation._44 = 1.0f;
     TVector3 foward;
-    foward = LGlobal::g_PlayerModel->m_matControl.Forward();
+    foward = LGlobal::g_PlayerModel->m_matControl.Forward() * LGlobal::g_PlayerModel->m_Gun->m_GunSpec.offset;
     TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();
-    vTrans = vTrans + (foward * 180);
+    vTrans = vTrans + foward;
     D3DXMatrixTranslation(&matTrans, vTrans.x,
         vTrans.y,
         vTrans.z

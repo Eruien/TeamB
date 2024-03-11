@@ -42,7 +42,7 @@ bool LBackView::Frame()
 	//std::memcpy(&matTemp, &xmInverse, sizeof(DirectX::XMMATRIX));
 	m_TargetModel->m_matControl = matTemp;
 	// 카메라 추가 회전 45도
-	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, DirectX::XMConvertToRadians(345), 0);
+	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, DirectX::XMConvertToRadians(350), 0);
 	DirectX::XMVECTOR xmCameraPos = DirectX::XMVectorSet(m_TargetModel->m_matControl._41, m_TargetModel->m_matControl._42, m_TargetModel->m_matControl._43, 1.0f);
 	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmModelPos);
 	matTemp = m_ModelMatrix * matRotation;

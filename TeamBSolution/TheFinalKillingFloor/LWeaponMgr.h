@@ -14,6 +14,7 @@ struct GunSpec
 	int RPMLevel = 0;
 	int MagazineLevel = 0;
 	bool HasWeapon = false;
+	float offset = 150.0f;
 };
 
 struct SwordSpec
