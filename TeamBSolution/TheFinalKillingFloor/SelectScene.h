@@ -15,7 +15,17 @@ public:
 	std::shared_ptr<LSkinningModel> m_GunMan = nullptr;
 	std::shared_ptr<LSkinningModel> m_SwordMan = nullptr;
 	std::shared_ptr<LWeapon> m_Rifle = nullptr;
+	std::shared_ptr<LWeapon> m_OneHandSword = nullptr;
 	LSelect m_Select;
+public:
+	// 처음 카메라 세팅
+	TVector3 m_BindCameraPos = { -23.948f, 98.073f, 74.283f };
+	float m_BindCameraYaw = 3.11021948f;
+	float m_BindCameraPitch = 44.4585144f;
+	float m_BindCameraRoll = 0.0f;
+	// 처음 캐릭터 포지션 세팅
+	TVector3 m_GunManPos = { 0.0f, 50.0f, 0.0f };
+	TVector3 m_SwordManPos = { -50.0f, 50.0f, 0.0f };
 public:
 	// light
 	LIGHT_CONSTANT_BUFFER1	m_cbLight1;
@@ -37,6 +47,7 @@ public:
 	void UpdateWeaponPosition();
 	void InitializeLighting();
 	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic = false);
+	void UpdateOBB();
 public:
 	SelectScene(LScene* parent);
 	virtual ~SelectScene();

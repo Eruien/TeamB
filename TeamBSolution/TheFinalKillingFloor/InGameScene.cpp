@@ -34,6 +34,10 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
+    if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
+    {
+        LGlobal::g_pMainCamera = m_BackViewCamera.get();
+    }
     //ªÛ¡°≈∞
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
