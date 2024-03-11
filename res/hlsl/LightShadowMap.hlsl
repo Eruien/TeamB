@@ -100,6 +100,14 @@ float4 ComputePointLight(float3 vVertexPos, float3 vVertexNormal, int nNumLights
     }
     return vPointLightColor;
 }
+float4 Diffuse(float3 vNormal)
+{
+    float fIntensity = max(0, dot(vNormal, normalize(-g_vLightDir[0])));
+    float4 diffuse = g_cAmbientMaterial[0] * g_cAmbientLightColor[0] +
+		(g_cDiffuseMaterial[0] * g_cDiffuseLightColor[0] * fIntensity);
+    return diffuse;
+}
+
 
 // 픽셀 셰이더 함수
 float4 PS(VS_OUTPUT vIn) : SV_Target
@@ -111,7 +119,8 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     // light
     float4 vPointLightColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
     // 기본 텍스처의 색상을 샘플링
-    float4 FinalColor = vTexColor * (vPointLightColor + 0.3f);
+    float4 vDiffuse = Diffuse(vIn.n);
+    float4 FinalColor = vTexColor * (vPointLightColor + vDiffuse);
 
     
 

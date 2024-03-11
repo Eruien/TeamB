@@ -166,7 +166,7 @@ public:
 	void LimitPlayerMovement();
 	void LimitNpcMovement();
 	void UpdateGunModelPosition();
-	void FrameCollisionDetection();
+	void UpdateOBB();
 	void FrameUI();
 	void FramePointLight();
 	void UpdatePlayerPhysics();

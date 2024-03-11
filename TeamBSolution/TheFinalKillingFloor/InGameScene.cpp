@@ -55,14 +55,15 @@ void InGameScene::Process()
     HandlePlayerCollisions();
     LimitPlayerMovement();
     LimitNpcMovement();
-    FrameCollisionDetection();
+    UpdateGunModelPosition();
+    UpdateOBB();
     FrameUI();
     FramePointLight();
     UpdatePlayerPhysics();
     AdjustPlayerHeight();
     UpdateNpcPhysics();
     AdjustNpcHeight();
-    UpdateGunModelPosition();
+    
 
     ProcessItem();
 }
@@ -94,7 +95,7 @@ void InGameScene::Render()
     //LGlobal::g_pImmediateContext->OMSetBlendState(0, 0, 0xffffffff);
     // Light Render
     m_cbLight1.g_cAmbientMaterial[0] = TVector4(0.1f, 0.1f, 0.1f, 1);
-    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(0.6f);
     m_cbLight1.g_cSpecularMaterial[0] = TVector4(1, 1, 1, 1);
     m_cbLight1.g_cEmissionMaterial[0] = TVector4(0, 0, 0, 1);
 
@@ -292,7 +293,8 @@ void InGameScene::Render()
             {
                 for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
                 {
-                    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && LGlobal::g_PlayerModel->IsSlash)
+                    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && 
+                        LGlobal::g_PlayerModel->IsSlash)
                     {
                         zombie->IsTakeDamage = true;
                     }
@@ -437,7 +439,8 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    PlayerInit(PlayerType::SWORD);
+    PlayerInit(PlayerType::GUN);
+    //PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
@@ -647,7 +650,8 @@ void InGameScene::CharacterInit()
 
     // PlayerSetting
     InitializeWeapon();
-    PlayerInit(PlayerType::SWORD);
+    PlayerInit(PlayerType::GUN);
+    //PlayerInit(PlayerType::SWORD);
 
     m_Select = new LSelect;
 }
@@ -1381,13 +1385,6 @@ void InGameScene::UpdateTreeModels()
 
 void InGameScene::UpdateBulletModels()
 {
-    LGlobal::g_PlayerModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->GetPosition()); // OBBBox 충돌검사 전 갱신
-
-    if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
-    {
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.UpdateOBBBoxPosition(LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition()); // OBBBox 충돌검사 전 갱신
-    }
-    
     //rifle
     for (int i = 0; i < m_RifleBulletList.size(); i++)
     {
@@ -1826,14 +1823,22 @@ void InGameScene::UpdateGunModelPosition()
     {
         if (LGlobal::g_PlayerModel->m_pActionModel->m_iEndFrame <= int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)) return;
 
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = 
+            LGlobal::g_PlayerModel->m_pActionModel->
+            m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
-            * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matForAnim;
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = 
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * 
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * 
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket * 
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * 
+            LGlobal::g_PlayerModel->m_matForAnim;
     }
+
+    
 }
 
-void InGameScene::FrameCollisionDetection()
+void InGameScene::UpdateOBB()
 {
     m_Select->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     LGlobal::g_PlayerModel->m_OBBBox.UpdateOBBBoxPosition(
@@ -1845,6 +1850,20 @@ void InGameScene::FrameCollisionDetection()
         { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._41,
             LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._42,
             LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._43 });
+
+    if (LGlobal::g_PlayerModel->IsSlash)
+    {
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CreateOBBBox(
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[0],
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[1],
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[2],
+            { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._41,
+                LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._42,
+                LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._43 },
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl.Right(),
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl.Up(),
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl.Forward());
+    }
 }
 
 void InGameScene::FrameUI()
@@ -1855,10 +1874,12 @@ void InGameScene::FrameUI()
 void InGameScene::FramePointLight()
 {
     // Frame point light
-    m_PointLight[0].Frame(LGlobal::g_PlayerModel->m_matControl._41 + LGlobal::g_PlayerModel->m_matControl.Forward().x * 150,
-        LGlobal::g_PlayerModel->m_matControl._42,
-        LGlobal::g_PlayerModel->m_matControl._43 + LGlobal::g_PlayerModel->m_matControl.Forward().z * 150);
-    //m_PointLight[0].m_vDirection = LGlobal::g_PlayerModel->m_matControl.Forward();
+    m_PointLight[0].Frame(
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._41 + LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl.Forward().x * 150,
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._42,
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._43 + LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl.Forward().z * 150);
+    m_PointLight[0].m_vDirection = { 0, -1, -2 };
+    m_PointLight[0].m_vDirection.Normalize();
 }
 
 void InGameScene::UpdatePlayerPhysics()

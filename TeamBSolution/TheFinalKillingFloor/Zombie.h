@@ -6,6 +6,8 @@ class KObject;
 class Zombie : public LNPC
 {
 public:
+	bool IsAlreadyDamaged = false;
+
 	void FSM(FSMType fsmType) override;
 	void SetTransition(Event inputEvent) override;
 	State GetState() override;

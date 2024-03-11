@@ -44,7 +44,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7
 		..\res\hlsl\CharacterShaderInAnimationData.hlsl = ..\res\hlsl\CharacterShaderInAnimationData.hlsl
 		..\res\hlsl\CharacterShadow.hlsl = ..\res\hlsl\CharacterShadow.hlsl
 		..\res\hlsl\CustomizeMap.hlsl = ..\res\hlsl\CustomizeMap.hlsl
-		..\res\hlsl\DiffuseLight - 복사본.hlsl = ..\res\hlsl\DiffuseLight - 복사본.hlsl
 		..\res\hlsl\DiffuseLight.hlsl = ..\res\hlsl\DiffuseLight.hlsl
 		..\res\hlsl\Fade.hlsl = ..\res\hlsl\Fade.hlsl
 		..\res\hlsl\HeightMap.hlsl = ..\res\hlsl\HeightMap.hlsl

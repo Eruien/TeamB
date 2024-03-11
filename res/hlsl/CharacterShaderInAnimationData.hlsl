@@ -145,6 +145,15 @@ struct PS_IN
     float4 p : SV_POSITION;
     float2 t : TEXTURE;
 };
+float4 Diffuse(float3 vNormal)
+{
+    float3 vLightDir = { 0, -1, 0 };
+    float fIntensity = max(0, dot(vNormal, -vLightDir));
+    float4 diffuse = g_cAmbientMaterial[0] * g_cAmbientLightColor[0] +
+		(g_cDiffuseMaterial[0] * g_cDiffuseLightColor[0] * fIntensity);
+    return diffuse;
+}
+
 float4 PS(VS_OUTPUT vIn) : SV_Target
 {
     //float depthValue = vIn.p.z / vIn.p.w;
@@ -152,7 +161,8 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
     //            r,g,b,a(1)=불투명, a(0)=완전투명, a(0.0< 1.0f)= 반투명
     float4 vTexColor = g_txDiffuse1.Sample(sample0, vIn.t);
     float4 vPointLightColor = ComputePointLight(vIn.v, vIn.n, g_iNumLight);
-    float4 FinalColor = vTexColor * (vPointLightColor + 0.2f);
+    float4 vDiffuse = Diffuse(vIn.n);
+    float4 FinalColor = vTexColor * (vPointLightColor + vDiffuse);
     
     float grayScale = dot(FinalColor.rgb, float3(0.299, 0.587, 0.114));
     float3 grayColor = float3(grayScale, grayScale, grayScale);

@@ -53,7 +53,7 @@ Light::Light(void)
 	m_fRange = 200.0f;
 	m_fFalloff = 4.0f;
 
-	m_DiffuseColor = TVector4(1.0f, 1.f, 1.f, 1.0f);
+	m_DiffuseColor = TVector4(1.f);
 
 	m_fTheta = (float)(XM_PI / 4.0f);
 	m_fPhi = m_fTheta + (float)(XMConvertToRadians(5));

@@ -48,6 +48,6 @@ struct PS_IN
 float4 PS(VS_OUTPUT vIn) : SV_Target
 {
     float4 color = g_txDiffuse1.Sample(sample0, vIn.t);
-    color.a = 1.0f; // 알파 값을 0으로 설정하여 완전히 투명하게 만듭니다.
+    color.a = 0.0f; // 알파 값을 0으로 설정하여 완전히 투명하게 만듭니다.
     return color;
 }
