@@ -70,9 +70,9 @@ public:
 	virtual bool AllNodeRender();
 	bool CreateBoneBuffer() override;
 	bool CreateCurrentFrameBuffer();
-	bool Frame() override;
-	bool AniFrame();
-	bool Render() override;
-	bool AniRender();
+	virtual bool Frame() override;
+	virtual bool AniFrame();
+	virtual bool Render() override;
+	virtual bool AniRender();
 	bool Release() override;
 };

@@ -35,15 +35,28 @@ bool LBackView::Frame()
 	//std::memcpy(&m_matView, &xmMatView, sizeof(DirectX::XMMATRIX));
 
 	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(m_fCameraPitch, m_fCameraYaw, 0);
-	DirectX::XMVECTOR xmModelPos = DirectX::XMVectorSet(m_TargetModel->m_matControl._41, m_TargetModel->m_matControl._42, m_TargetModel->m_matControl._43, 1.0f);
+	DirectX::XMVECTOR xmModelPos = DirectX::XMVectorSet(m_TargetModel->m_matControl._41, m_TargetModel->m_matControl._42, m_TargetModel->m_matControl._43, 1.0f);	
 	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmModelPos);
 	
 	matTemp = m_ModelMatrix * matRotation;
 	//std::memcpy(&matTemp, &xmInverse, sizeof(DirectX::XMMATRIX));
 	m_TargetModel->m_matControl = matTemp;
+	// 카메라 추가 회전 45도
+	gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, DirectX::XMConvertToRadians(345), 0);
+	DirectX::XMVECTOR xmCameraPos = DirectX::XMVectorSet(m_TargetModel->m_matControl._41, m_TargetModel->m_matControl._42, m_TargetModel->m_matControl._43, 1.0f);
+	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmModelPos);
+	matTemp = m_ModelMatrix * matRotation;
+	m_vCameraPos.x = matTemp._41;
+	m_vCameraPos.y = matTemp._42;
+	m_vCameraPos.z = matTemp._43;
+
+
 
 	m_fCameraPitch = max(-m_MaxPitch, min(m_MaxPitch, m_fCameraPitch));
-	m_vCameraPos.x = m_TargetModel->m_matControl._41;
+	/*m_vCameraPos.x = m_TargetModel->m_matControl._41;
+	m_vCameraPos.y = m_TargetModel->m_matControl._42;
+	m_vCameraPos.z = m_TargetModel->m_matControl._43;*/
+	// 카메라 벽 매몰 방지
 	if (m_vCameraPos.x < -970.0f)
 	{
 		m_vCameraPos.x = -970.0f;
@@ -52,8 +65,6 @@ bool LBackView::Frame()
 	{
 		m_vCameraPos.x = 970.0f;
 	}
-	m_vCameraPos.y = m_TargetModel->m_matControl._42;
-	m_vCameraPos.z = m_TargetModel->m_matControl._43;
 	if (m_vCameraPos.z < -970.0f)
 	{
 		m_vCameraPos.z = -970.0f;
@@ -62,9 +73,12 @@ bool LBackView::Frame()
 	{
 		m_vCameraPos.z = 970.0f;
 	}
-	TVector3 backView = m_TargetModel->m_matControl.Forward() * 100.f;
+	
+	TVector3 backView = m_TargetModel->m_matControl.Forward() * 200.f;
 	m_vCameraPos -= backView;
 	m_vCameraPos.y += 35.f;
+	m_vCameraPos.x -= m_TargetModel->m_matControl.Right().x * 50.f;
+	m_vCameraPos.z -= m_TargetModel->m_matControl.Right().z * 50.f;
 	CreateLookAt(m_vCameraPos, m_vCameraPos + backView);
 
 	UpdateVector();

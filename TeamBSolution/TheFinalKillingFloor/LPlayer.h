@@ -72,7 +72,7 @@ public:
 	int m_Money = 0;
 	TVector3 m_AddDirection;
 	TVector3 m_Velocity;
-
+	TMatrix m_matForAnim;
 	// 충돌 처리를 위한 직전 위치. 시진 추가
 	TVector3 m_PrevPosition;
 public:
@@ -86,6 +86,9 @@ public:
 	bool Frame() override;
 	bool GunFrame();
 	bool SwordFrame();
+
+	bool Render() override;
+	bool PostFrame();
 public:
 	//LPlayer();
 };

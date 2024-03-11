@@ -1208,7 +1208,7 @@ void InGameScene::ProcessMuzzleFlash()
     matRotation._44 = 1.0f;
     TVector3 foward;
     foward = LGlobal::g_PlayerModel->m_matControl.Forward();
-    TVector3 vTrans = { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._41 ,LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._42 ,LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl._43 };
+    TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();
     vTrans = vTrans + (foward * 180);
     D3DXMatrixTranslation(&matTrans, vTrans.x,
         vTrans.y,
@@ -1637,10 +1637,12 @@ void InGameScene::ShootRifle()
     m_RifleBulletList[index]->bVisible = true;
     TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
     m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
-    m_RifleBulletList[index]->m_matControl._42 += 33.f;
-    m_RifleBulletList[index]->m_matControl._41 += m_RifleBulletList[index]->m_matControl.Forward().x * 200.f;
-    m_RifleBulletList[index]->m_matControl._42 += m_RifleBulletList[index]->m_matControl.Forward().y * 200.f;
-    m_RifleBulletList[index]->m_matControl._43 += m_RifleBulletList[index]->m_matControl.Forward().z * 200.f;
+    TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();
+    TVector3 dir = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl.Forward();
+    m_RifleBulletList[index]->m_matControl._41 = vTrans.x + dir.x;
+    m_RifleBulletList[index]->m_matControl._42 = vTrans.y;
+    m_RifleBulletList[index]->m_matControl._43 = vTrans.z + dir.z;
+
 }
 void InGameScene::ShootShotgun()
 {
@@ -1827,7 +1829,7 @@ void InGameScene::UpdateGunModelPosition()
 
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket = LGlobal::g_PlayerModel->m_pActionModel->m_NameMatrixMap[int(LGlobal::g_PlayerModel->m_fCurrentAnimTime)][LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_ParentBoneName];
 
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matForAnim = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket
             * LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * LGlobal::g_PlayerModel->m_matForAnim;
     }
 }

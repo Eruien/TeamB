@@ -389,7 +389,7 @@ bool LPlayer::Frame()
 	wSpeed += std::to_wstring(int(m_Speed));
 	//LWrite::GetInstance().AddText(wSpeed, 0.0f, 150.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	LSkinningModel::Frame();
+	PostFrame();
 	return true;
 }
 
@@ -616,3 +616,91 @@ bool LPlayer::SwordFrame()
 //{
 //	m_GunModel = std::make_shared<LModel>();
 //}
+
+bool LPlayer::PostFrame()
+{
+	if (m_pActionModel == nullptr) return false;
+
+	if (m_pComparePtr == nullptr || m_pComparePtr != m_pActionModel)
+	{
+		m_pComparePtr = m_pActionModel;
+		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
+	}
+
+	m_TimerEnd = false;
+
+	if (m_TimerStart)
+	{
+		m_TimerStart = false;
+	}
+
+	m_fCurrentAnimTime += m_pModel->m_iFrameSpeed * LGlobal::g_fSPF * m_AnimationRate;
+
+	if (m_fCurrentAnimTime >= m_pActionModel->m_iEndFrame)
+	{
+		m_fCurrentAnimTime = m_pActionModel->m_iStartFrame;
+		m_TimerEnd = true;
+	}
+
+	for (int iNode = 0; iNode < m_pActionModel->m_AnimationTreeSize; iNode++)
+	{
+		std::wstring name = m_pModel->m_pFbxNodeNameList[iNode];
+		m_matBoneArray.matBoneWorld[iNode] = m_pActionModel->m_NameMatrixMap[int(m_fCurrentAnimTime)][name];
+	}
+
+	return true;
+}
+
+
+bool LPlayer::Render()
+{
+	if (m_pModel == nullptr) return false;
+
+	auto fbxMeshList = m_pModel->m_DrawList;
+
+	for (int iSub = 0; iSub < fbxMeshList.size(); iSub++)
+	{
+		LFbxObj* obj = fbxMeshList[iSub].get();
+
+		for (auto data : m_pModel->m_pFbxNodeNameMap)
+		{
+			auto model = obj->m_dxMatrixBindPoseMap.find(data.first);
+
+			if (model == obj->m_dxMatrixBindPoseMap.end())
+			{
+				continue;
+			}
+
+			TMatrix matBindPose = model->second;
+			int iIndex = data.second;
+			m_matMeshBoneArray.matBoneWorld[iIndex] = matBindPose * m_matBoneArray.matBoneWorld[iIndex];
+
+			// hlsl에서 dx기준으로 쓸려면 전치시켜서 넘겨줘야 한다
+			D3DXMatrixTranspose(&m_matMeshBoneArray.matBoneWorld[iIndex],
+				&m_matMeshBoneArray.matBoneWorld[iIndex]);
+		}
+
+		// 71개중에 해당하는 본에 관련된 애니메이션 행렬만 CB에 넘겨줌
+		LGlobal::g_pImmediateContext->UpdateSubresource(m_pBoneArrayCB.Get(), 0, NULL, &m_matMeshBoneArray, 0, 0);
+		LGlobal::g_pImmediateContext->VSSetConstantBuffers(1, 1, m_pBoneArrayCB.GetAddressOf());
+
+		obj->SetMatrix(&m_matForAnim,
+			&LGlobal::g_pMainCamera->m_matView,
+			&LGlobal::g_pMainCamera->m_matProj);
+
+		// 각종 IA세팅이랑 텍스처 적용을 여기서 한다.
+		obj->PreRender();
+
+		// 버텍스 버퍼를 두개 사용한다고 세팅할 때 넘겨줌
+		UINT Strides[2] = { sizeof(SimpleVertex), sizeof(LVertexIW) };
+		UINT Offsets[2] = { 0, };
+
+		ComPtr<ID3D11Buffer> buffer[2] = { obj->m_pVertexBuffer.Get(), obj->m_pVBWeightList.Get() };
+		LGlobal::g_pImmediateContext->IASetVertexBuffers(0, 2, buffer->GetAddressOf(), Strides, Offsets);
+
+		obj->PostRender();
+		// 렌더링 할 때 카메라가 움직이면 카메라의 역행렬을 곱해줌
+	}
+
+	return true;
+}
