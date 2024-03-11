@@ -439,7 +439,7 @@ void InGameScene::Retry()
     ResetWeapon();
     PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
-    LGlobal::g_PlayerModel->m_Money = 0;
+    LGlobal::g_PlayerModel->m_Money = 10000;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     Init_2 = true;
@@ -879,6 +879,7 @@ void InGameScene::InitializeWeapon()
     pistol->m_WeaponModel = std::make_shared<LModel>();
     pistol->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Pistols_A.fbx");
 
+    pistol->m_GunSpec.offset = 23.0f;
     pistol->m_GunSpec.defaultTotalAmmo = 20;
     pistol->m_GunSpec.TotalAmmo = 20;
     pistol->m_GunSpec.defaultShootDelay = 0.5f;
@@ -890,6 +891,7 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> rifle = std::make_shared<LWeapon>();
     rifle->m_WeaponModel = std::make_shared<LModel>();
     rifle->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Assault_Rifle_A.fbx");
+    rifle->m_GunSpec.offset = 115.0f;
     rifle->m_GunSpec.defaultTotalAmmo = 30;
     rifle->m_GunSpec.TotalAmmo = 30;
     rifle->m_GunSpec.defaultShootDelay = 0.1f;
@@ -901,6 +903,7 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> shotGun = std::make_shared<LWeapon>();
     shotGun->m_WeaponModel = std::make_shared<LModel>();
     shotGun->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Shotgun_A.fbx");
+    shotGun->m_GunSpec.offset = 95.0f;
     shotGun->m_GunSpec.defaultTotalAmmo = 7;
     shotGun->m_GunSpec.TotalAmmo = 7;
     shotGun->m_GunSpec.defaultShootDelay = 1.3f;
