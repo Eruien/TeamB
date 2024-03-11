@@ -57,28 +57,33 @@ bool LBackView::Frame()
 	m_vCameraPos.y = m_TargetModel->m_matControl._42;
 	m_vCameraPos.z = m_TargetModel->m_matControl._43;*/
 	// 카메라 벽 매몰 방지
-	if (m_vCameraPos.x < -970.0f)
-	{
-		m_vCameraPos.x = -970.0f;
-	}
-	if (m_vCameraPos.x > 970.0f)
-	{
-		m_vCameraPos.x = 970.0f;
-	}
-	if (m_vCameraPos.z < -970.0f)
-	{
-		m_vCameraPos.z = -970.0f;
-	}
-	if (m_vCameraPos.z > 970.0f)
-	{
-		m_vCameraPos.z = 970.0f;
-	}
+
 	
 	TVector3 backView = m_TargetModel->m_matControl.Forward() * 150.f;
 	m_vCameraPos -= backView;
 	m_vCameraPos.y += 35.f;
 	m_vCameraPos.x -= m_TargetModel->m_matControl.Right().x * 37.5f;
 	m_vCameraPos.z -= m_TargetModel->m_matControl.Right().z * 37.5f;
+	if (m_vCameraPos.x < -990.0f)
+	{
+		m_vCameraPos.x = -990.0f;
+		m_vCameraPos.y += 1.0f;
+	}
+	if (m_vCameraPos.x > 990.0f)
+	{
+		m_vCameraPos.x = 990.0f;
+		m_vCameraPos.y += 1.0f;
+	}
+	if (m_vCameraPos.z < -990.0f)
+	{
+		m_vCameraPos.z = -990.0f;
+		m_vCameraPos.y += 1.0f;
+	}
+	if (m_vCameraPos.z > 990.0f)
+	{
+		m_vCameraPos.z = 990.0f;
+		m_vCameraPos.y += 1.0f;
+	}
 	CreateLookAt(m_vCameraPos, m_vCameraPos + backView);
 
 	UpdateVector();
