@@ -34,10 +34,10 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
-    if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
+  /*  if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
     {
         LGlobal::g_pMainCamera = m_BackViewCamera.get();
-    }
+    }*/
     //»óÁ¡Å°
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
@@ -300,13 +300,22 @@ void InGameScene::Render()
     {
         if (LInput::GetInstance().m_MouseState[0])
         {
+            if (LGlobal::g_PlayerModel->IsResetBladeAttack)
+            {
+                for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+                {
+                    zombie->IsHitBladeAttack = false;
+                }
+            }
+          
             if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
             {
                 for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
                 {
                     if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && 
-                        LGlobal::g_PlayerModel->IsSlash)
+                        LGlobal::g_PlayerModel->IsSlash && !zombie->IsHitBladeAttack)
                     {
+                        zombie->IsHitBladeAttack = true;
                         zombie->IsTakeDamage = true;
                     }
                 }

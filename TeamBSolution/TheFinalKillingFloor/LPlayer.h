@@ -47,6 +47,7 @@ public:
 	bool IsZedTime = false;
 	bool IsOnAir = false;
 	bool IsKillable = true;
+	bool IsResetBladeAttack = false;
 	
 	float accumulatedTime = 0.0f;
 public:

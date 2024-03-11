@@ -531,10 +531,9 @@ bool LPlayer::SwordFrame()
 	{
 		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
 	}*/
+	IsResetBladeAttack = false;
 
-	//IsSlash = false;
-
-	if ((LInput::GetInstance().m_MouseState[0] > KEY_PUSH))
+	if ((LInput::GetInstance().m_MouseState[0] >= KEY_PUSH))
 	{
 		IsMove = true;
 		IsAttack = true;
