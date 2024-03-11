@@ -10,6 +10,7 @@ bool SelectScene::Init()
     InitializeMap();
     InitializeModel();
     InitializeWeapon();
+    InitializeLighting();
     return false;
 }
 
@@ -45,6 +46,40 @@ void SelectScene::Render()
     m_GunMan->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_GunMan->m_OBBBox.Render();
     m_Rifle->m_WeaponModel->Render();
+
+    fLightStart += LGlobal::g_fSPF;
+    if (fLightStart > fLightEnd)
+    {
+        m_PointLight[0].m_vPosition.y = -1000.f;
+    }
+
+    m_cbLight1.g_cAmbientMaterial[0] = TVector4(0.1f, 0.1f, 0.1f, 1);
+    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(0.6f);
+    m_cbLight1.g_cSpecularMaterial[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cEmissionMaterial[0] = TVector4(0, 0, 0, 1);
+
+    m_cbLight1.g_cAmbientLightColor[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cSpecularLightColor[0] = TVector4(1, 1, 1, 1);
+    m_cbLight1.g_cDiffuseLightColor[0] = TVector4(m_PointLight[0].m_DiffuseColor.x,
+        m_PointLight[0].m_DiffuseColor.y,
+        m_PointLight[0].m_DiffuseColor.z, 1.0f);
+
+    m_cbLight2.g_vLightPos[0] = TVector4(m_PointLight[0].m_vPosition.x,
+        m_PointLight[0].m_vPosition.y,
+        m_PointLight[0].m_vPosition.z,
+        m_PointLight[0].m_fRange);
+
+    m_cbLight2.g_vLightDir[0] = TVector4(m_PointLight[0].m_vDirection.x,
+        m_PointLight[0].m_vDirection.y,
+        m_PointLight[0].m_vDirection.z, 1.0f);
+   
+    LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[0].Get(), 0, NULL, &m_cbLight1, 0, 0);
+    LGlobal::g_pImmediateContext->UpdateSubresource(m_pConstantBufferLight[1].Get(), 0, NULL, &m_cbLight2, 0, 0);
+
+    ID3D11Buffer* pBuffers[2];
+    pBuffers[0] = m_pConstantBufferLight[0].Get();
+    pBuffers[1] = m_pConstantBufferLight[1].Get();
+    LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
 }
 
 void SelectScene::Release()
@@ -74,7 +109,7 @@ void SelectScene::InitializeMap()
     MapDesc.iNumRows = m_CustomMap->m_iNumRows;
     MapDesc.fCellDistance = 4.0f;
     MapDesc.fScaleHeight = 0.4f;
-    MapDesc.ShaderFilePath = L"../../res/hlsl/LightShadowMap.hlsl";
+    MapDesc.ShaderFilePath = L"../../res/hlsl/CustomizeMap.hlsl";
     MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
 }
@@ -138,6 +173,68 @@ void SelectScene::UpdateWeaponPosition()
         m_Rifle->m_WeaponModel->m_matControl = m_Rifle->m_WeaponModel->m_pModel->m_matScale * m_Rifle->m_WeaponModel->m_pModel->m_matRotation * m_Rifle->m_WeaponModel->m_pModel->m_matSocket
             * m_Rifle->m_WeaponModel->m_pModel->m_matTranslation * m_GunMan->m_matControl;
     }
+}
+
+void SelectScene::InitializeLighting()
+{
+    m_pConstantBufferLight[0].Attach(CreateConstantBuffer(
+        LGlobal::g_pDevice.Get(), &m_cbLight1, 1, sizeof(LIGHT_CONSTANT_BUFFER1)));
+    m_pConstantBufferLight[1].Attach(CreateConstantBuffer(
+        LGlobal::g_pDevice.Get(), &m_cbLight2, 1, sizeof(LIGHT_CONSTANT_BUFFER2)));
+    float fLightRange = 50.0f;
+    TVector3 vRotation = TVector3(0.f, 0.0f, 0.0f); //TVector3(-(XM_PI * 0.2f), 0.0f, 0.0f);
+    TVector3 vDir = TVector3(0.0f, -1.0f, 0.0f);
+    TVector3 v0 = TVector3(0.0f, 10.0f, 0.0f);
+    TVector4 v1 = TVector4(1.0f, 1.0f, 1.0f, 1.0f); // color
+    TVector3 v2 = TVector3(10.0f, 10.0f, 10.0f);    // scale
+    m_PointLight[0].SetValue(&v0,
+        &vDir,
+        &fLightRange,
+        &v1,
+        &v2,
+        &vRotation,
+        90.0f, // 내부
+        120.0f);//외부
+}
+
+ID3D11Buffer* SelectScene::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic)
+{
+    HRESULT hr = S_OK;
+    ID3D11Buffer* pBuffer = nullptr;
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+    D3D11_SUBRESOURCE_DATA InitData;
+    ZeroMemory(&InitData, sizeof(InitData));
+    if (bDynamic)
+    {
+        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    }
+    else
+    {
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.CPUAccessFlags = 0;
+    }
+    bd.ByteWidth = iSize * iNumIndex;
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    InitData.pSysMem = data;
+    if (data != NULL)
+    {
+        if (FAILED(hr = pd3dDevice->CreateBuffer(&bd, &InitData, &pBuffer)))
+        {
+            //H(hr);
+            return nullptr;
+        }
+    }
+    else
+    {
+        if (FAILED(hr = pd3dDevice->CreateBuffer(&bd, NULL, &pBuffer)))
+        {
+            //H(hr);
+            return nullptr;
+        }
+    }
+    return pBuffer;
 }
 
 SelectScene::SelectScene(LScene* parent) : SceneState(parent)
