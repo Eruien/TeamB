@@ -83,7 +83,7 @@ public: // light
 	ComPtr<ID3D11Buffer>	m_pConstantBufferLight[2];
 	Light					m_PointLight[1];
 	float fLightStart = 1.0f;
-	float fLightEnd = 0.1f;
+	float fLightEnd = 0.15f;
 public:
 	// Shadow
 	LDxRT m_RT;

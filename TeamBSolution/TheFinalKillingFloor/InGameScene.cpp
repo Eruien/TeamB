@@ -1018,24 +1018,29 @@ void InGameScene::InitializeTrees()
         tree = std::make_shared<LModel>();
         tree->SetLFbxObj(treeObj);
         tree->CreateBoneBuffer();
-        tree->m_fRadius = 16.f;
         InitializeTreePosition(tree);
     }
 }
 
 void InGameScene::InitializeTreePosition(std::shared_ptr<LModel>& tree)
 {
-    DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+    DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix, ratationYMatrix;
     float x = (rand() % 1800) - 900;
     float z = (rand() % 1800) - 900;
+    float y = (rand() % 360);
+    float scale = (rand() % 200) + 30.f;
     translationMatrix = DirectX::XMMatrixTranslation(x, m_CustomMap->GetHeight(x, z), z);
     rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
-    scalingMatrix = DirectX::XMMatrixScaling(110.0f, 110.0f, 110.0f);
+    // 나무 Y축회전 랜덤 부여
+    ratationYMatrix = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(y));
+    rotationMatrix *= ratationYMatrix;
+    scalingMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
     worldMatrix = DirectX::XMMatrixIdentity();
     worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
     worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
     worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
     tree->m_matControl = worldMatrix;
+    tree->m_fRadius = scale / 110 * 16;
 }
 
 void InGameScene::InitializeWalls()
