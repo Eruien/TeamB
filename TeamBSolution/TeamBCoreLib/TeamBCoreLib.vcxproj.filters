@@ -151,10 +151,14 @@
     <ClInclude Include="LSkyBox.h" />
     <ClInclude Include="LBox.h" />
     <ClInclude Include="LBackView.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGUI">
       <UniqueIdentifier>{4e5f31ed-0755-4fd8-b6de-68a55657f490}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimplePlay.rc" />
   </ItemGroup>
 </Project>

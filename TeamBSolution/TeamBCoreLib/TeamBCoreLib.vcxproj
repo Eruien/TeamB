@@ -115,8 +115,12 @@
     <ClInclude Include="LTimer.h" />
     <ClInclude Include="LWindow.h" />
     <ClInclude Include="LWrite.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TMath.h" />
     <ClInclude Include="UICamera.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimplePlay.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

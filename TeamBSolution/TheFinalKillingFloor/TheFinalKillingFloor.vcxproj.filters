@@ -165,7 +165,6 @@
     <ClCompile Include="SwordShopScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="VideoPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -332,7 +331,8 @@
     <ClInclude Include="SwordShopScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="VideoPlayer.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">
@@ -382,5 +382,8 @@
     <Filter Include="Zombie">
       <UniqueIdentifier>{e43519e7-5785-45ac-a5bc-4a5717c88527}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimplePlay.rc" />
   </ItemGroup>
 </Project>

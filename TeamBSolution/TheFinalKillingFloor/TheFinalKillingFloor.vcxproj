@@ -124,7 +124,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../BCoreLib/lib/;../../BCoreLib/texlib/;../../fbxsdk/lib/debug/;../../fmod/lib/x64/;../../imgui/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../BCoreLib/lib/;../../BCoreLib/texlib/;../../fbxsdk/lib/debug/;../../fmod/lib/x64/;../../imgui/lib;../../imgui/lib/x64/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -204,7 +204,6 @@
     <ClCompile Include="UI\TextureList.cpp" />
     <ClCompile Include="UI\UIEvent.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
-    <ClCompile Include="VideoPlayer.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieWave.cpp" />
   </ItemGroup>
@@ -235,6 +234,7 @@
     <ClInclude Include="PlayerRun.h" />
     <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="ShopScene.h" />
@@ -269,9 +269,9 @@
     <ClInclude Include="UI\TextureList.h" />
     <ClInclude Include="UI\UIEvent.h" />
     <ClInclude Include="UI\UIManager.h" />
-    <ClInclude Include="VideoPlayer.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="ZombieWave.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TeamBCoreLib\TeamBCoreLib.vcxproj">
@@ -290,6 +290,9 @@
     <Xml Include="UI\testNum.xml" />
     <Xml Include="UI\testScene - 복사본.xml" />
     <Xml Include="UI\testScene.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimplePlay.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -859,7 +859,7 @@ void InGameScene::CreateShadowConstantBuffer()
 
 InGameScene::InGameScene(LScene* parent) : SceneState(parent)
 {
-    Init();
+    //Init();
 }
 InGameScene::~InGameScene() {}
 

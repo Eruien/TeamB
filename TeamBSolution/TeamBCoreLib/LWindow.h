@@ -1,6 +1,5 @@
 #pragma once
 #include"LStd.h"
-
 class LWindow
 {
 public:
@@ -21,5 +20,8 @@ public:
 public:
     LWindow();
     virtual ~LWindow();
+    void startPlayer(HWND hwnd, const WCHAR* pwszFilePath);
+
+
 };
 

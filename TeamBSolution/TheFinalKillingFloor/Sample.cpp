@@ -2,15 +2,18 @@
 #include "LGlobal.h"
 #include "LInput.h"
 
+
 bool Sample::Init()
 {
-
+	startPlayer(m_hWnd, L"1.mp4");
 	UIManager::GetInstance().Load(L"MainScene.xml");
 	UIManager::GetInstance().Load(L"IngameScene.xml");
 	UIManager::GetInstance().Load(L"EndScene.xml");
 	UIManager::GetInstance().Load(L"Shop1.xml");
 	//UIManager::GetInstance().Load(L"Shop2.xml");
-
+	//m_videoPlayer = new VideoPlayer(&m_hWnd, m_pDevice, m_pImmediateContext, m_pSwapChain);
+	//m_videoPlayer->Initialize(L"1.mp4");
+   
 	m_UICamera = std::make_shared<UICamera>();
 	m_UICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 	m_UICamera->m_fCameraPitch = 0.0f;
@@ -19,15 +22,16 @@ bool Sample::Init()
 	//LScene::GetInstance().SetTransition(Event::GOMAINSCENE);
 	LGlobal::g_pSwapChain = m_pSwapChain.Get();
 	UIManager::GetInstance().Init(m_pDepthStencilState,m_pDepthStencilStateDisable);
-
+	
 
 	LScene::GetInstance().FSM(FSMType::SCENE);
 	return true;
+
 }
 
 bool Sample::Frame()
 {
-	
+   
 	LScene::GetInstance().Process();
 
 	if (LINPUT.m_KeyStateOld[DIK_F7]== KEY_PUSH)
@@ -46,6 +50,7 @@ bool Sample::Frame()
 	if (LINPUT.m_KeyStateOld[DIK_F8] == KEY_PUSH)
 	{
 		LScene::GetInstance().SetTransition(Event::GOSELECTSCENE);
+		
 	}
 	return true;
 }
@@ -72,6 +77,16 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR IpCmd
 	win->SetRegisterWindowClass(hInstance);
 	win->SetCreateWindow(L"TeamBProject", LGlobal::g_WindowWidth, LGlobal::g_WindowHeight);
 	win->Run();
+
 }
+
+
+
+
+
+
+
+
+
 
 
