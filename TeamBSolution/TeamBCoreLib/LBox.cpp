@@ -218,9 +218,13 @@ void LBox::SetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
 {
 	if (parent != nullptr)
 	{
-		m_matWorld._41 = (*parent)._41;
+		TMatrix boxScale; 
+		D3DXMatrixScaling(&boxScale, m_vScale.x, m_vScale.y, m_vScale.z);
+		m_matWorld = boxScale * (*parent);
+		
+		/*m_matWorld._41 = (*parent)._41;
 		m_matWorld._42 = (*parent)._42;
-		m_matWorld._43 = (*parent)._43;
+		m_matWorld._43 = (*parent)._43;*/
 	}
 
 	if (matView != nullptr)
