@@ -615,13 +615,13 @@ void InGameScene::PlayerInit(PlayerType playerType)
 
     m_ModelCamera->SetTarget(LGlobal::g_PlayerModel);
 
-    std::wstring head = L"Head";
+    std::wstring neck = L"Neck";
     std::wstring root = L"root";
   
-    TMatrix Head = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][head];
+    TMatrix Neck = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][neck];
     TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
 
-    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
+    LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Neck._42, 30.0f }, 0.2f);
     LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 200.0f }, 0.2f);
 }
 
@@ -677,15 +677,21 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Inward.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Outward.bin");
 
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Idle_Anim.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Select_Idle_Anim.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_FrontSlash.bin");
+
     // Item
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Pistols_A.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Shotgun_A.bin");
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/OneHandSword.bin");
+    LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/HeroBlade.bin");
     // form
     LExportIO::GetInstance().ExportRead(L"RightHandForm.bin");
     LExportIO::GetInstance().ExportRead(L"PistolPos.bin");
     LExportIO::GetInstance().ExportRead(L"OneHandForm.bin");
+    LExportIO::GetInstance().ExportRead(L"TwoHandForm.bin");
 
     // PlayerSetting
     InitializeWeapon();
@@ -1898,8 +1904,8 @@ void InGameScene::UpdateGunModelPosition()
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl = 
             LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matScale * 
             LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matRotation * 
+            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation *
             LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matSocket * 
-            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_pModel->m_matTranslation * 
             LGlobal::g_PlayerModel->m_matForAnim;
     }
 

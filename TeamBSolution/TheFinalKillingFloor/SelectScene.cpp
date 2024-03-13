@@ -31,7 +31,7 @@ void SelectScene::Process()
 
         if (m_Select.ChkOBBToRay(&m_SwordMan->m_OBBBox.m_Box))
         {
-            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Outward.fbx");
+            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_FrontSlash.fbx");
         }
     }
 }
@@ -140,9 +140,11 @@ void SelectScene::InitializeModel()
 
     std::wstring head = L"Head";
     std::wstring root = L"root";
+    std::wstring neck = L"Neck";
 
     TMatrix Head = m_GunMan->m_pModel->m_NameMatrixMap[0][head];
     TMatrix Root = m_GunMan->m_pModel->m_NameMatrixMap[0][root];
+    TMatrix Neck;
 
     m_GunMan->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
 
@@ -162,7 +164,7 @@ void SelectScene::InitializeModel()
     m_SwordMan = std::make_shared<LSkinningModel>();
     m_SwordMan->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
     m_SwordMan->CreateBoneBuffer();
-    m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Walk.fbx");
+    m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Select_Idle_Anim.fbx");
 
     D3DXMatrixScaling(&matScale, 0.2f, 0.2f, 0.2f);
     m_SwordMan->m_matControl *= matScale;
@@ -172,10 +174,10 @@ void SelectScene::InitializeModel()
     m_SwordMan->m_matControl._42 += m_SwordManPos.y;
     m_SwordMan->m_matControl._43 += m_SwordManPos.z;
     
-    Head = m_SwordMan->m_pModel->m_NameMatrixMap[0][head];
+    Neck = m_SwordMan->m_pModel->m_NameMatrixMap[0][neck];
     Root = m_SwordMan->m_pModel->m_NameMatrixMap[0][root];
 
-    m_SwordMan->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Head._42, 30.0f }, 0.2f);
+    m_SwordMan->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Neck._42, 30.0f }, 0.2f);
 
     m_SwordMan->m_OBBBox.Frame();
     m_SwordMan->m_OBBBox.CreateOBBBox(
@@ -203,12 +205,12 @@ void SelectScene::InitializeWeapon()
 
     m_OneHandSword = std::make_shared<LWeapon>();
     m_OneHandSword->m_WeaponModel = std::make_shared<LModel>();
-    m_OneHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"OneHandSword.fbx");
+    m_OneHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"HeroBlade.fbx");
 
-    m_OneHandSword->m_WeaponModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[2];
-    m_OneHandSword->m_WeaponModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[2];
-    m_OneHandSword->m_WeaponModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[2];
-    m_OneHandSword->m_WeaponModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[2];
+    m_OneHandSword->m_WeaponModel->m_ParentBoneName = LExportIO::GetInstance().m_ItemParentName[3];
+    m_OneHandSword->m_WeaponModel->m_pModel->m_matScale = LExportIO::GetInstance().m_ItemScale[3];
+    m_OneHandSword->m_WeaponModel->m_pModel->m_matRotation = LExportIO::GetInstance().m_ItemRotation[3];
+    m_OneHandSword->m_WeaponModel->m_pModel->m_matTranslation = LExportIO::GetInstance().m_ItemTranslation[3];
 }
 
 void SelectScene::UpdateWeaponPosition()
@@ -220,8 +222,10 @@ void SelectScene::UpdateWeaponPosition()
         m_Rifle->m_WeaponModel->m_pModel->m_matSocket =
         m_GunMan->m_pActionModel->m_NameMatrixMap[int(m_GunMan->m_fCurrentAnimTime)][m_Rifle->m_WeaponModel->m_ParentBoneName];
 
-        m_Rifle->m_WeaponModel->m_matControl = m_Rifle->m_WeaponModel->m_pModel->m_matScale * m_Rifle->m_WeaponModel->m_pModel->m_matRotation * m_Rifle->m_WeaponModel->m_pModel->m_matSocket
-            * m_Rifle->m_WeaponModel->m_pModel->m_matTranslation * m_GunMan->m_matControl;
+        m_Rifle->m_WeaponModel->m_matControl = 
+            m_Rifle->m_WeaponModel->m_pModel->m_matScale * m_Rifle->m_WeaponModel->m_pModel->m_matRotation * m_Rifle->m_WeaponModel->m_pModel->m_matTranslation 
+            * m_Rifle->m_WeaponModel->m_pModel->m_matSocket
+            * m_GunMan->m_matControl;
     }
     
     if (m_OneHandSword->m_WeaponModel->m_pModel != nullptr && m_SwordMan->m_pActionModel != nullptr)
@@ -231,8 +235,10 @@ void SelectScene::UpdateWeaponPosition()
         m_OneHandSword->m_WeaponModel->m_pModel->m_matSocket =
             m_SwordMan->m_pActionModel->m_NameMatrixMap[int(m_SwordMan->m_fCurrentAnimTime)][m_OneHandSword->m_WeaponModel->m_ParentBoneName];
 
-        m_OneHandSword->m_WeaponModel->m_matControl = m_OneHandSword->m_WeaponModel->m_pModel->m_matScale * m_OneHandSword->m_WeaponModel->m_pModel->m_matRotation * m_OneHandSword->m_WeaponModel->m_pModel->m_matSocket
-            * m_OneHandSword->m_WeaponModel->m_pModel->m_matTranslation * m_SwordMan->m_matControl;
+        m_OneHandSword->m_WeaponModel->m_matControl =
+            m_OneHandSword->m_WeaponModel->m_pModel->m_matScale * m_OneHandSword->m_WeaponModel->m_pModel->m_matRotation * m_OneHandSword->m_WeaponModel->m_pModel->m_matTranslation 
+            * m_OneHandSword->m_WeaponModel->m_pModel->m_matSocket
+            * m_SwordMan->m_matControl;
     }
 }
 
