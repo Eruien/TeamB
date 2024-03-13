@@ -21,6 +21,7 @@
 #include "Light.h" // light
 #include <random>
 #include <chrono>
+#include "Bullet.h"
 
 
 const int g_iMaxLight = 1;
@@ -51,9 +52,9 @@ public:
 	int m_crrBlood = 0;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
-	std::vector<shared_ptr<LModel>> m_RifleBulletList;
+	std::vector<shared_ptr<Bullet>> m_RifleBulletList;
 
-	vector<vector<shared_ptr<LModel>>> m_ShotgunBulletListArray;
+	vector<vector<shared_ptr<Bullet>>> m_ShotgunBulletListArray;
 
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;
@@ -142,6 +143,8 @@ public:
 
 	//Process Functions
 	
+	void ZedAutoAim();
+
 	void ProcessMuzzleFlash();
 	void ProcessBloodSplatter();
 	void CheckPlayerDeath();
