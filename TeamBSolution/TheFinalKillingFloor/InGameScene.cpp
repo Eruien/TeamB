@@ -562,6 +562,7 @@ void InGameScene::SoundInit()
     LSoundMgr::GetInstance().Load(L"../../res/sound/PlayerHitSound.WAV");
     LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
     LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/soldierUlti.mp3");
 }
 
 void InGameScene::CameraInit()

@@ -492,13 +492,15 @@ bool LPlayer::GunFrame()
 	{
 		m_ZedTimeCount += 1;
 		IsZedTime = true;
-		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+		//LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
 	}
-	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH)
+	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH && IsZedTime == false)
 	{
 		m_ZedTimeCount = 1;
 		IsZedTime = true;
-		LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+		//LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
 	}
 
 	if (IsZedTime)
