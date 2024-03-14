@@ -9,14 +9,20 @@ bool PlayerAttack::Init()
 
 void PlayerAttack::Process()
 {
+    m_pOwner->IsSlash = true;
+
     if (m_pOwner->IsDeath)
     {
+        m_pOwner->IsResetBladeAttack = true;
+        m_pOwner->IsSlash = false;
         m_pOwner->SetTransition(Event::FATALDAMAGE);
         return;
     }
 
     if (m_pOwner->IsTakeDammageAni)
     {
+        m_pOwner->IsResetBladeAttack = true;
+        m_pOwner->IsSlash = false;
         m_pOwner->SetTransition(Event::TAKEDAMAGE);
         return;
     }
@@ -30,12 +36,25 @@ void PlayerAttack::Process()
         }
     }
   
-    if (!m_pOwner->IsAttack)
+    if (m_pOwner->m_Type == PlayerType::GUN)
     {
-        m_pOwner->SetTransition(Event::ENDATTACK);
-        return;
+        if (!m_pOwner->IsAttack)
+        {
+            m_pOwner->SetTransition(Event::ENDATTACK);
+            return;
+        }
     }
-
+    else if (m_pOwner->m_Type == PlayerType::SWORD)
+    {
+        if (m_pOwner->m_TimerEnd)
+        {
+            m_pOwner->IsResetBladeAttack = true;
+            m_pOwner->IsSlash = false;
+            m_pOwner->SetTransition(Event::ENDATTACK);
+            return;
+        }
+    }
+  
     if (m_pOwner->m_CurrentGun == WeaponState::PISTOL)
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Shoot.fbx");

@@ -104,6 +104,7 @@ void LModel::SetOBBBox(TVector3 min, TVector3 max, float boxScale)
 
 	TMatrix matScale;
 	D3DXMatrixScaling(&matScale, m_SettingBox.fExtent[0], m_SettingBox.fExtent[1], m_SettingBox.fExtent[2]);
+	m_OBBBox.m_vScale = m_SettingBox.fExtent;
 	m_OBBBox.m_matWorld = matScale;
 	m_OBBBox.m_matWorld._41 = m_SettingBox.vCenter.x;
 	m_OBBBox.m_matWorld._42 = m_SettingBox.vCenter.y;
