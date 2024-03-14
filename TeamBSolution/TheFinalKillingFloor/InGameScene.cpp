@@ -1080,7 +1080,7 @@ void InGameScene::InitializeBullets()
         m_RifleBulletList[i]->bVisible = false;
         m_RifleBulletList[i]->SetLFbxObj(bulletObj);
         m_RifleBulletList[i]->CreateBoneBuffer();
-        DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.03f, 0.03f, 0.03f);
+        DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.03f, 0.03f, 0.033f);
 
         m_RifleBulletList[i]->m_matControl = scalingMatrix * LGlobal::g_PlayerModel->m_matControl;
         m_RifleBulletList[i]->m_fRadius = 3.f;
@@ -1661,11 +1661,12 @@ void InGameScene::ShootRifle()
     m_RifleBulletList[index]->m_matControl._41 = vTrans.x - forward.x * 10.f;
     m_RifleBulletList[index]->m_matControl._42 = vTrans.y;
     m_RifleBulletList[index]->m_matControl._43 = vTrans.z - forward.z * 10.f;
-    m_RifleBulletList[index]->m_Forward = LGlobal::g_PlayerModel->m_matControl.Forward();
+    m_RifleBulletList[index]->m_Forward = forward;
     m_RifleBulletList[index]->m_Forward.Normalize();
 
     forward = LGlobal::g_pMainCamera->m_vTargetPos - LGlobal::g_pMainCamera->m_vCameraPos;
     forward.Normalize();
+    m_RifleBulletList[index]->m_matControl.Forward(forward*0.2f);
     if (LGlobal::g_PlayerModel->IsZedTime && m_RifleBulletList[index]->bTarget == false)
     {
         float fNear = 1000.f;

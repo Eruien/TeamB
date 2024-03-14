@@ -16,7 +16,7 @@ bool LBackView::Init()
 
 bool LBackView::Frame()
 {
-	m_ModelMatrix = m_TargetModel->m_matControl;
+	//m_ModelMatrix = m_TargetModel->m_matControl;
 	float x = LInput::GetInstance().m_vOffset.x;
 	float y = LInput::GetInstance().m_vOffset.y;
 	m_fCameraYaw += DirectX::XMConvertToRadians(x * 0.1f);

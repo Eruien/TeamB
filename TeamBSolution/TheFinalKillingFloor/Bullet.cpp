@@ -16,6 +16,7 @@ bool Bullet::Frame()
 		addDir *= dist;
 		m_Forward += addDir;
 		m_Forward.Normalize();
+		m_matControl.Forward(m_Forward * 0.2f);
 	}
 	m_matControl._41 += m_Forward.x * 15.f;
 	m_matControl._42 += m_Forward.y * 15.f;// -LGlobal::g_fSPF * 30.f;
