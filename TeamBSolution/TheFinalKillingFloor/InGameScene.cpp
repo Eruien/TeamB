@@ -424,8 +424,8 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    PlayerInit(PlayerType::GUN);
-    //PlayerInit(PlayerType::SWORD);
+    //PlayerInit(PlayerType::GUN);
+    PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 10000;
     m_ZombieWave->m_CurrentWave = 0;
@@ -621,6 +621,7 @@ void InGameScene::CharacterInit()
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/BladeMan.bin");
 
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Walk.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Inward.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Outward.bin");
 

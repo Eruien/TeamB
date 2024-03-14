@@ -1,5 +1,6 @@
 #pragma once
 #include "Light.h"
+#include "LSkyBox.h"
 #include "LScene.h"
 #include "LDebugCamera.h"
 #include "LHeightMap.h"
@@ -11,6 +12,7 @@ class SelectScene :public SceneState
 {
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
+	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LSkinningModel> m_GunMan = nullptr;
 	std::shared_ptr<LSkinningModel> m_SwordMan = nullptr;
@@ -41,6 +43,7 @@ public:
 	void Release();
 public:
 	void InitializeDebugCamera();
+	void InitializeSkyBox();
 	void InitializeMap();
 	void InitializeModel();
 	void InitializeWeapon();
