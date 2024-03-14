@@ -982,7 +982,7 @@ void InGameScene::InitializeTreePosition(std::shared_ptr<LModel>& tree)
     float x = (rand() % 1800) - 900;
     float z = (rand() % 1800) - 900;
     float y = (rand() % 360);
-    float scale = (rand() % 200) + 30.f;
+    float scale = (rand() % 150) + 30.f;
     translationMatrix = DirectX::XMMatrixTranslation(x, m_CustomMap->GetHeight(x, z), z);
     rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(270.0f));
     // 나무 Y축회전 랜덤 부여
