@@ -11,5 +11,7 @@ public:
 public:
 	ShopScene(LScene* parent);
 	virtual ~ShopScene();
+	
+
 };
 

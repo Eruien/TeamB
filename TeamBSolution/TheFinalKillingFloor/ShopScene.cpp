@@ -7,6 +7,8 @@
 #include "LWeaponMgr.h"
 bool ShopScene::Init()
 {   
+  
+
     UIManager::GetInstance().GetUIObject(L"T_Gun1_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.TotalAmmo));
     UIManager::GetInstance().GetUIObject(L"T_Gun2_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.TotalAmmo));
     if(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.TotalAmmo <10)
@@ -46,26 +48,132 @@ void ShopScene::Render()
 void ShopScene::Process()
 {
     UIManager::GetInstance().Frame();
+
+
     if (UIManager::GetInstance().GetUIObject(L"B_Gun1_MAGAZINE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeMagazine(WeaponState::PISTOL);
-    else if (UIManager::GetInstance().GetUIObject(L"B_Gun2_MAGAZINE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeMagazine(WeaponState::ASSAULTRIFLE);
-    else if (UIManager::GetInstance().GetUIObject(L"B_Gun3_MAGAZINE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeMagazine(WeaponState::SHOTGUN);
+    {
+        
+        if (LWeaponMgr::GetInstance().UpgradeMagazine(WeaponState::PISTOL, 100, 15))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.TotalAmmo);
+            UIManager::GetInstance().GetUIObject(L"T_Gun1_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.TotalAmmo));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.MagazineLevel == 15)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun1_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+     if (UIManager::GetInstance().GetUIObject(L"B_Gun2_MAGAZINE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+      
+        if (LWeaponMgr::GetInstance().UpgradeMagazine(WeaponState::ASSAULTRIFLE, 100, 15))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.TotalAmmo);
+            UIManager::GetInstance().GetUIObject(L"T_Gun2_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.TotalAmmo));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.MagazineLevel == 15)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun2_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+     if (UIManager::GetInstance().GetUIObject(L"B_Gun3_MAGAZINE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeMagazine(WeaponState::SHOTGUN, 100, 15))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.TotalAmmo);
+
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.TotalAmmo < 10)
+                UIManager::GetInstance().GetUIObject(L"T_Gun3_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.TotalAmmo).insert(0, L"0"));
+            else
+                UIManager::GetInstance().GetUIObject(L"T_Gun3_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.TotalAmmo));
+
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.MagazineLevel == 15)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun3_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
 
     if (UIManager::GetInstance().GetUIObject(L"B_Gun1_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::PISTOL);
-    else if (UIManager::GetInstance().GetUIObject(L"B_Gun2_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::ASSAULTRIFLE);
-    else if (UIManager::GetInstance().GetUIObject(L"B_Gun3_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::SHOTGUN);
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::PISTOL, 100, 8))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Gun1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.ShootDelay)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.RPMLevel == 8)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+    if (UIManager::GetInstance().GetUIObject(L"B_Gun2_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::ASSAULTRIFLE, 100, 8))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Gun2_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.ShootDelay)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.RPMLevel == 8)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+    if (UIManager::GetInstance().GetUIObject(L"B_Gun3_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::SHOTGUN, 100, 8))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Gun3_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.ShootDelay)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.RPMLevel == 8)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun3_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+
+
+
+
+
+
 
     if (UIManager::GetInstance().GetUIObject(L"B_Gun1_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::PISTOL);
-    else if (UIManager::GetInstance().GetUIObject(L"B_Gun2_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::ASSAULTRIFLE);
-    else if (UIManager::GetInstance().GetUIObject(L"B_Gun3_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
-        LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::SHOTGUN);
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::PISTOL, 100, 8))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Gun1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.Damage)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.DamageLevel == 8)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun1_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+     if (UIManager::GetInstance().GetUIObject(L"B_Gun2_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::ASSAULTRIFLE, 100, 8))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Gun2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.Damage)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.DamageLevel == 8)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun2_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+     if (UIManager::GetInstance().GetUIObject(L"B_Gun3_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::SHOTGUN, 100, 8))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Gun3_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.Damage)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.DamageLevel == 8)
+            {
+                UIManager::GetInstance().GetUIObject(L"Gun3_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
     
         if (UIManager::GetInstance().GetUIObject(L"Shop_Gun2_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP )
         {
