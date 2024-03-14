@@ -311,8 +311,7 @@ void InGameScene::Render()
                     zombie->IsHitBladeAttack = false;
                 }
             }
-          
-            if (m_ZombieWave->m_EnemyMap["Zombie"].size() > 0)
+            if (m_ZombieWave->m_EnemyMap["LNPC"].size() > 0)
             {
                 for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
                 {
@@ -326,63 +325,6 @@ void InGameScene::Render()
             }
         }
     }
-
-    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
-    {
-        if (LInput::GetInstance().m_MouseState[0])
-        {
-            if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
-            {
-                for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
-                {
-                    if (m_Select->ChkOBBToRay(&tank->m_OBBBox.m_Box))
-                    {
-                        if (LGlobal::g_PlayerModel->IsShoot)
-                        {
-                            float ShotHeight = (m_Select->m_vIntersection.y - tank->m_matControl._42);
-                            if (ShotHeight > (tank->m_OBBBox.fTall * 0.85))
-                            {
-                                tank->IsHeadShot = true;
-                            }
-                            else
-                            {
-                                tank->IsHeadShot = false;
-                            }
-                            tank->IsTakeDamage = true;
-
-                            m_bloodSplatter[m_crrBlood]->SetPos(m_Select->m_vIntersection);
-                            m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                            m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                            m_crrBlood++;
-                            if (m_crrBlood == m_bloodSplatter.size())
-                                m_crrBlood = 0;
-                        }
-
-                        //std::string boxintersect = "박스와 직선의 충돌, 교점 = (" + std::to_string(m_Select->m_vIntersection.x) + "," + std::to_string(m_Select->m_vIntersection.y) + "," + std::to_string(m_Select->m_vIntersection.z) + ")";
-                        //MessageBoxA(0, boxintersect.c_str(), 0, MB_OK);
-                    }
-                }
-            }
-        }
-    }
-    else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
-    {
-        if (LInput::GetInstance().m_MouseState[0])
-        {
-            if (m_ZombieWave->m_EnemyMap["Tank"].size() > 0)
-            {
-                for (auto& zombie : m_ZombieWave->m_EnemyMap["Tank"])
-                {
-                    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && LGlobal::g_PlayerModel->IsSlash)
-                    {
-                        zombie->IsTakeDamage = true;
-                    }
-                }
-            }
-        }
-    }
-
-    
    
     std::wstring textState = L"InGameScene";
     //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
@@ -1482,6 +1424,8 @@ void InGameScene::UpdateBulletModels()
         }
         for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
         {
+            if (zombie->IsDead)
+                continue;
             if (zombie->m_OBBBox.IsSphereInBox(m_RifleBulletList[i]->GetPosition(), m_RifleBulletList[i]->m_fRadius))
             {
                 if (m_RifleBulletList[i]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
@@ -1528,7 +1472,8 @@ void InGameScene::UpdateBulletModels()
             }
             for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
             {
-                
+                if (zombie->IsDead)
+					continue;
                 if (zombie->m_OBBBox.IsSphereInBox(m_ShotgunBulletListArray[i][j]->GetPosition(), m_ShotgunBulletListArray[i][j]->m_fRadius))
                 {
                     if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
@@ -1550,28 +1495,6 @@ void InGameScene::UpdateBulletModels()
                 }
             }
 
-            /*for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
-            {
-                if (tank->m_OBBBox.IsSphereInBox(m_ShotgunBulletListArray[i][j]->GetPosition(), m_ShotgunBulletListArray[i][j]->m_fRadius))
-                {
-                    if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > (tank->m_OBBBox.fTall * 0.85))
-                    {
-                        tank->IsHeadShot = true;
-                    }
-                    else
-                    {
-                        tank->IsHeadShot = false;
-                    }
-                    tank->IsTakeDamage = true;
-                    m_bloodSplatter[m_crrBlood]->SetPos(m_ShotgunBulletListArray[i][j]->GetPosition() + m_ShotgunBulletListArray[i][j]->m_matControl.Forward() * 150);
-                    m_bloodSplatter[m_crrBlood]->GetScript<Animator>(L"Animator")->_currentKeyframeIndex = 0;
-                    m_bloodSplatter[m_crrBlood]->SetIsRender(true);
-                    m_crrBlood++;
-                    if (m_crrBlood == m_bloodSplatter.size())
-                        m_crrBlood = 0;
-                    m_ShotgunBulletListArray[i][j]->bVisible = false;
-                }
-            }*/
         }
     }
 

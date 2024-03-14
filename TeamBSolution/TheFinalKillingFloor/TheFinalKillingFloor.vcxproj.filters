@@ -165,7 +165,7 @@
     <ClCompile Include="SwordShopScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="VideoPlayer.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -332,7 +332,7 @@
     <ClInclude Include="SwordShopScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="VideoPlayer.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">
