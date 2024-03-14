@@ -2,6 +2,8 @@
 #include "LStd.h"
 #include "LModel.h"
 #include "LNPC.h"
+#include "LGlobal.h"
+
 class Bullet : public LModel
 {
 public:

@@ -57,7 +57,8 @@ void PlayerAttack::Process()
   
     if (m_pOwner->m_CurrentGun == WeaponState::PISTOL)
     {
-        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Shoot.fbx");
+        //m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Shoot.fbx");
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Idle.fbx");
     }
     else if (m_pOwner->m_CurrentGun == WeaponState::ASSAULTRIFLE)
     {

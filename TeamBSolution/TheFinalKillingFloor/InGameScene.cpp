@@ -1079,7 +1079,7 @@ void InGameScene::InitializeBullets()
         m_RifleBulletList[i]->bVisible = false;
         m_RifleBulletList[i]->SetLFbxObj(bulletObj);
         m_RifleBulletList[i]->CreateBoneBuffer();
-        DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
+        DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.03f, 0.03f, 0.03f);
 
         m_RifleBulletList[i]->m_matControl = scalingMatrix * LGlobal::g_PlayerModel->m_matControl;
         m_RifleBulletList[i]->m_fRadius = 3.f;
@@ -1096,7 +1096,7 @@ void InGameScene::InitializeBullets()
             m_ShotgunBulletListArray[iList][iBullet]->bVisible = false;
             m_ShotgunBulletListArray[iList][iBullet]->SetLFbxObj(bulletObj);
             m_ShotgunBulletListArray[iList][iBullet]->CreateBoneBuffer();
-            DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
+            DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(0.03f, 0.03f, 0.03f);
             m_ShotgunBulletListArray[iList][iBullet]->m_matControl = scalingMatrix * LGlobal::g_PlayerModel->m_matControl;
             m_ShotgunBulletListArray[iList][iBullet]->m_fRadius = 5.f;
         }
@@ -1652,14 +1652,15 @@ void InGameScene::ShootRifle()
 {
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     m_RifleBulletList[index]->bVisible = true;
-    TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
-    m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;
+    /*TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
+    m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;*/
     TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();
     TVector3 forward = LGlobal::g_PlayerModel->m_matControl.Forward();
-    m_RifleBulletList[index]->m_matControl._41 = vTrans.x + forward.x;
+    //TVector3 right = LGlobal::g_PlayerModel->m_matControl.Right();
+    m_RifleBulletList[index]->m_matControl._41 = vTrans.x - forward.x * 10.f;
     m_RifleBulletList[index]->m_matControl._42 = vTrans.y;
-    m_RifleBulletList[index]->m_matControl._43 = vTrans.z + forward.z;
-    m_RifleBulletList[index]->m_Forward = m_RifleBulletList[index]->m_matControl.Forward();
+    m_RifleBulletList[index]->m_matControl._43 = vTrans.z - forward.z * 10.f;
+    m_RifleBulletList[index]->m_Forward = LGlobal::g_PlayerModel->m_matControl.Forward();
     m_RifleBulletList[index]->m_Forward.Normalize();
 
     forward = LGlobal::g_pMainCamera->m_vTargetPos - LGlobal::g_pMainCamera->m_vCameraPos;
