@@ -19,6 +19,8 @@ public:
 	std::shared_ptr<LWeapon> m_Rifle = nullptr;
 	std::shared_ptr<LWeapon> m_OneHandSword = nullptr;
 	LSelect m_Select;
+	PlayerType m_playerType = PlayerType::GUN;
+	
 public:
 	// 처음 카메라 세팅
 	TVector3 m_BindCameraPos = { -28.948f, 71.073f, 99.283f };

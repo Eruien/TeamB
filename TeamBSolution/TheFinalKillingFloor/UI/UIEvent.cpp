@@ -50,16 +50,16 @@ void UIEvent::HitPlayerEffect()
 {
 	if (GetGameObject()->GetIsRender())
 	{
-		static float temp = 0; // ÀÌµû°¡ ¸â¹ö·Î »©»ï
-		temp += LGlobal::g_fSPF / _duration;
-		data.alpha[0] = temp;
+	
+		_CTime += LGlobal::g_fSPF / _duration;
+		data.alpha[0] = _CTime;
 
 		LGlobal::g_pImmediateContext->UpdateSubresource(_cBuff.Get(), 0, NULL, &data, 0, 0);
 		LGlobal::g_pImmediateContext->PSSetConstantBuffers(5, 1, _cBuff.GetAddressOf());
 		if (data.alpha[0] >= 1.0f)
 		{
 			//data.alpha[0] = 0;
-			temp = 0;
+			_CTime = 0;
 			GetGameObject()->SetIsRender(false);
 
 		}

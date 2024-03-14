@@ -19,6 +19,7 @@ public:
 	void RetryButton();
 	void SoundToggle();
 	void ToggleFullScreen();
+	void GoSelectScene();
 	void GoInGameScene();
 	void GoMainScene();
 	void GoEndScene();

@@ -6,10 +6,12 @@ bool Sample::Init()
 {
 
 	UIManager::GetInstance().Load(L"MainScene.xml");
+	UIManager::GetInstance().Load(L"SelectScene.xml");
 	UIManager::GetInstance().Load(L"IngameScene.xml");
 	UIManager::GetInstance().Load(L"EndScene.xml");
 	UIManager::GetInstance().Load(L"Shop1.xml");
-	//UIManager::GetInstance().Load(L"Shop2.xml");
+	UIManager::GetInstance().Load(L"Shop2.xml");
+
 
 
 	m_UICamera = std::make_shared<UICamera>();

@@ -38,7 +38,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
             <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">
@@ -52,7 +51,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
             <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">

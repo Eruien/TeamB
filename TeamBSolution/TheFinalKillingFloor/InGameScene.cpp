@@ -7,6 +7,7 @@
 #include "LAnimationIO.h"
 #include "LExportIO.h"
 #include "LWeaponMgr.h"
+#include "SelectScene.h"
 
 static bool Init_2 = true;
 bool InGameScene::Init()
@@ -41,14 +42,9 @@ void InGameScene::Process()
     //»óÁ¡Å°
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
-        if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
-        {
+    
             UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
-        }
-        else
-        {
-           // UIManager::GetInstance().ChangeScene(Event::GOSHOPSCENE);
-        }
+        
     }
 
     if (LGlobal::g_PlayerModel->IsZedTime)
@@ -424,9 +420,17 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    PlayerInit(PlayerType::GUN);
+    //m_pActionList.find(State::CHARACTERIDLE)->second.get();
+    if (static_cast<SelectScene*>(LScene::GetInstance().m_pActionList.find(State::SELECTSCENE)->second.get())->m_playerType == PlayerType::GUN)
+    {
+        PlayerInit(PlayerType::GUN);
+        LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
+    }
+    if (static_cast<SelectScene*>(LScene::GetInstance().m_pActionList.find(State::SELECTSCENE)->second.get())->m_playerType == PlayerType::SWORD)
+    {
+        PlayerInit(PlayerType::SWORD);
+    }
     //PlayerInit(PlayerType::SWORD);
-    LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 10000;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();

@@ -15,7 +15,7 @@
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
-                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="GoInGameScene"/>
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="GoSelectScene"/>
             </Script>
         </Scripts>
     </UIObject>
@@ -83,8 +83,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
-            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">
                 <args TextToTexture="START" TexListXml="../../res/ui/xml/TextTexture.xml"/>
@@ -97,8 +95,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
-            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">
                 <args TextToTexture="OPTION" TexListXml="../../res/ui/xml/TextTexture.xml"/>
@@ -111,8 +107,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
-            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">
                 <args TextToTexture="EXIT" TexListXml="../../res/ui/xml/TextTexture.xml"/>

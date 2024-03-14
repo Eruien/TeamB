@@ -18,6 +18,8 @@ ButtonAction::ButtonAction(wstring texPaths, wstring bFuntion) : MonoBehaviour(L
 	_functionMap[L"SoundToggle"] = &ButtonAction::SoundToggle;
 	_functionMap[L"ToggleFullScreen"] = &ButtonAction::ToggleFullScreen;
 
+
+	_functionMap[L"GoSelectScene"] = &ButtonAction::GoSelectScene;
 	_functionMap[L"GoInGameScene"] = &ButtonAction::GoInGameScene;
 	_functionMap[L"GoMainScene"] = &ButtonAction::GoMainScene;
 	_functionMap[L"GoEndScene"] = &ButtonAction::GoEndScene;
@@ -148,6 +150,12 @@ void ButtonAction::ToggleFullScreen()
 	/*LGlobal::g_pLDevice->m_pSwapChain->ResizeBuffers(LGlobal::g_pLDevice->m_SwapChainDesc.BufferCount,
 		1920, 1080, LGlobal::g_pLDevice->m_SwapChainDesc.BufferDesc.Format, LGlobal::g_pLDevice->m_SwapChainDesc.Flags);*/
 	LGlobal::g_pSwapChain->SetFullscreenState(_toggleFullScreen, nullptr);
+}
+
+
+void ButtonAction::GoSelectScene()
+{
+	UIManager::GetInstance().ChangeScene(Event::GOSELECTSCENE);
 }
 
 void ButtonAction::GoInGameScene()

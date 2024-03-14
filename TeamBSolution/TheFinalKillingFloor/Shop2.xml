@@ -25,7 +25,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Shop_Gun2_Purchase" isRender="true" Group="Shop" Scene="Shop2.xml">
+    <UIObject Name="Shop_Sword2_Purchase" isRender="true" Group="Shop" Scene="Shop2.xml">
         <Position x="270" y="15.125" z="0"/>
         <Scale width="346" height="86.633331"/>
         <Texture texPath="../../res/ui/button1.png"/>
@@ -37,7 +37,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="T_Purchase_Gun2" isRender="true" Group="None" Scene="Shop2.xml">
+    <UIObject Name="T_Purchase_Sword2" isRender="true" Group="None" Scene="Shop2.xml">
         <Position x="294" y="16.125" z="0"/>
         <Scale width="150" height="33.900002"/>
         <Texture texPath="../../res/ui/Empty.png"/>
@@ -157,7 +157,7 @@
             </Script>
         </Scripts>
     </UIObject>
-    <UIObject Name="Gun1_RPM_price" isRender="true" Group="None" Scene="Shop2.xml">
+    <UIObject Name="Sword1_RPM_price" isRender="true" Group="None" Scene="Shop2.xml">
         <Position x="-172" y="-113.83334" z="0"/>
         <Scale width="72" height="30.133335"/>
         <Texture texPath="../../res/ui/Empty.png"/>
