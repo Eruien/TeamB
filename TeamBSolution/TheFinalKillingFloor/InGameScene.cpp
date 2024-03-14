@@ -621,6 +621,7 @@ void InGameScene::CharacterInit()
     LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/BladeMan.bin");
 
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Walk.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Inward.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Outward.bin");
 

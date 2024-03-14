@@ -1,5 +1,6 @@
 #pragma once
 #include "Light.h"
+#include "LSkyBox.h"
 #include "LScene.h"
 #include "LDebugCamera.h"
 #include "LHeightMap.h"
@@ -11,6 +12,7 @@ class SelectScene :public SceneState
 {
 public:
 	std::shared_ptr<LDebugCamera> m_DebugCamera = nullptr;
+	std::shared_ptr<LSkyBox> m_SkyBox = nullptr;
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
 	std::shared_ptr<LSkinningModel> m_GunMan = nullptr;
 	std::shared_ptr<LSkinningModel> m_SwordMan = nullptr;
@@ -19,9 +21,9 @@ public:
 	LSelect m_Select;
 public:
 	// 처음 카메라 세팅
-	TVector3 m_BindCameraPos = { -23.948f, 98.073f, 74.283f };
+	TVector3 m_BindCameraPos = { -28.948f, 71.073f, 99.283f };
 	float m_BindCameraYaw = 3.11021948f;
-	float m_BindCameraPitch = 44.4585144f;
+	float m_BindCameraPitch = 43.9585144f;
 	float m_BindCameraRoll = 0.0f;
 	// 처음 캐릭터 포지션 세팅
 	TVector3 m_GunManPos = { 0.0f, 50.0f, 0.0f };
@@ -41,6 +43,7 @@ public:
 	void Release();
 public:
 	void InitializeDebugCamera();
+	void InitializeSkyBox();
 	void InitializeMap();
 	void InitializeModel();
 	void InitializeWeapon();

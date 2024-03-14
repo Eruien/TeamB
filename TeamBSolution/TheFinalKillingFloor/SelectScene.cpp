@@ -7,6 +7,7 @@
 bool SelectScene::Init()
 {
     InitializeDebugCamera();
+    InitializeSkyBox();
     InitializeMap();
     InitializeModel();
     InitializeWeapon();
@@ -27,17 +28,24 @@ void SelectScene::Process()
         if (m_Select.ChkOBBToRay(&m_GunMan->m_OBBBox.m_Box))
         {
             m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_Ironsights.fbx");
+            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Select_Idle_Anim.fbx");
         }
 
         if (m_Select.ChkOBBToRay(&m_SwordMan->m_OBBBox.m_Box))
         {
             m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_FrontSlash.fbx");
+            m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
         }
     }
 }
 
 void SelectScene::Render()
 {
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
+    m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_SkyBox->Render();
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);
+
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
     m_GunMan->Render();
@@ -103,6 +111,13 @@ void SelectScene::InitializeDebugCamera()
     m_DebugCamera->m_fCameraPitch = m_BindCameraPitch;
     m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;
     LGlobal::g_pMainCamera = m_DebugCamera.get();
+}
+
+void SelectScene::InitializeSkyBox()
+{
+    m_SkyBox = std::make_shared<LSkyBox>();
+    m_SkyBox->Set();
+    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
 }
 
 void SelectScene::InitializeMap()
