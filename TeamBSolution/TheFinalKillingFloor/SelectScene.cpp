@@ -27,6 +27,9 @@ void SelectScene::Process()
     m_GunMan->Frame();
     m_SwordMan->Frame();
     UpdateWeaponPosition();
+
+    FrameLight();
+
     UpdateOBB();
   
     if (LInput::GetInstance().m_MouseState[0])
@@ -48,6 +51,22 @@ void SelectScene::Process()
         }
     }
     UIManager::GetInstance().Frame();
+}
+
+void SelectScene::FrameLight()
+{
+    if (m_playerType == PlayerType::GUN)
+    {
+        m_PointLight[0].Frame(m_GunMan->GetPosition());
+        m_PointLight[0].m_vDirection = { 0, -1, -1 };
+	}
+    else
+    {
+        m_PointLight[0].Frame(m_SwordMan->GetPosition());
+        m_PointLight[0].m_vDirection = { 0, -1, 1 };
+	}
+    
+    m_PointLight[0].m_vDirection.Normalize();
 }
 
 void SelectScene::Render()
@@ -73,14 +92,10 @@ void SelectScene::Render()
     //m_SwordMan->m_OBBBox.Render();
     m_OneHandSword->m_WeaponModel->Render();
 
-    fLightStart += LGlobal::g_fSPF;
-    if (fLightStart > fLightEnd)
-    {
-        m_PointLight[0].m_vPosition.y = -1000.f;
-    }
+    //m_PointLight[0].m_vPosition = m_GunMan->GetPosition();
 
     m_cbLight1.g_cAmbientMaterial[0] = TVector4(0.1f, 0.1f, 0.1f, 1);
-    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(0.6f);
+    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(0.2f);
     m_cbLight1.g_cSpecularMaterial[0] = TVector4(1, 1, 1, 1);
     m_cbLight1.g_cEmissionMaterial[0] = TVector4(0, 0, 0, 1);
 
@@ -143,7 +158,7 @@ void SelectScene::InitializeMap()
     MapDesc.iNumRows = m_CustomMap->m_iNumRows;
     MapDesc.fCellDistance = 4.0f;
     MapDesc.fScaleHeight = 0.4f;
-    MapDesc.ShaderFilePath = L"../../res/hlsl/CustomizeMap.hlsl";
+    MapDesc.ShaderFilePath = L"../../res/hlsl/LightMapForSelect.hlsl";
     MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
 }
@@ -275,7 +290,7 @@ void SelectScene::InitializeLighting()
         LGlobal::g_pDevice.Get(), &m_cbLight1, 1, sizeof(LIGHT_CONSTANT_BUFFER1)));
     m_pConstantBufferLight[1].Attach(CreateConstantBuffer(
         LGlobal::g_pDevice.Get(), &m_cbLight2, 1, sizeof(LIGHT_CONSTANT_BUFFER2)));
-    float fLightRange = 50.0f;
+    float fLightRange = 20.0f;
     TVector3 vRotation = TVector3(0.f, 0.0f, 0.0f); //TVector3(-(XM_PI * 0.2f), 0.0f, 0.0f);
     TVector3 vDir = TVector3(0.0f, -1.0f, 0.0f);
     TVector3 v0 = TVector3(0.0f, 10.0f, 0.0f);

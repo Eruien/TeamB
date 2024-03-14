@@ -23,13 +23,13 @@ public:
 	
 public:
 	// 처음 카메라 세팅
-	TVector3 m_BindCameraPos = { -28.948f, 71.073f, 99.283f };
+	TVector3 m_BindCameraPos = { -28.948f, 51.073f, 99.283f };
 	float m_BindCameraYaw = 3.11021948f;
 	float m_BindCameraPitch = 43.9585144f;
 	float m_BindCameraRoll = 0.0f;
 	// 처음 캐릭터 포지션 세팅
-	TVector3 m_GunManPos = { 0.0f, 50.0f, 0.0f };
-	TVector3 m_SwordManPos = { -50.0f, 50.0f, 0.0f };
+	TVector3 m_GunManPos = { 0.0f, 36.0f, 0.0f };
+	TVector3 m_SwordManPos = { -50.0f, 30.0f, 0.0f };
 public:
 	// light
 	LIGHT_CONSTANT_BUFFER1	m_cbLight1;
@@ -42,6 +42,7 @@ public:
 	bool Init() override;
 	void Render() override;
 	void Process() override;
+	void FrameLight();
 	void Release();
 public:
 	void InitializeDebugCamera();

@@ -66,7 +66,7 @@ Light::Light(void)
 bool Light::Frame(TVector3 pos)
 {
 	m_vPosition.x = pos.x;
-	m_vPosition.x = pos.y;
-	m_vPosition.x = pos.z;
+	m_vPosition.y = pos.y;
+	m_vPosition.z = pos.z;
 	return true;
 }
