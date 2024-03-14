@@ -306,6 +306,7 @@ void InGameScene::Render()
                 {
                     zombie->IsHitBladeAttack = false;
                 }
+                LGlobal::g_PlayerModel->IsResetBladeAttack = false;
             }
             if (m_ZombieWave->m_EnemyMap["LNPC"].size() > 0)
             {
