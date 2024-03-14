@@ -424,8 +424,8 @@ void InGameScene::Retry()
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();
-    //PlayerInit(PlayerType::GUN);
-    PlayerInit(PlayerType::SWORD);
+    PlayerInit(PlayerType::GUN);
+    //PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
     LGlobal::g_PlayerModel->m_Money = 10000;
     m_ZombieWave->m_CurrentWave = 0;
