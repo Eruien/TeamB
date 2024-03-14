@@ -75,6 +75,8 @@ bool LFSMMgr::Init()
 	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
 	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOSELECTSCENE, State::SELECTSCENE);
 
+	sceneFSM->AddStateTransition(State::SELECTSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
+
 	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOMAINSCENE, State::MAINSCENE);
 	sceneFSM->AddStateTransition(State::INGAMESCENE, Event::GOENDSCENE, State::ENDSCENE);
 

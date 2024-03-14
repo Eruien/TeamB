@@ -3,7 +3,7 @@
 #include "LFbxMgr.h"
 #include "LExportIO.h"
 #include "LInput.h"
-
+#include "UIManager.h"
 bool SelectScene::Init()
 {
     InitializeDebugCamera();
@@ -17,6 +17,12 @@ bool SelectScene::Init()
 
 void SelectScene::Process()
 {
+
+    m_DebugCamera->m_vCameraPos = m_BindCameraPos;
+    m_DebugCamera->m_fCameraYaw = m_BindCameraYaw;
+    m_DebugCamera->m_fCameraPitch = m_BindCameraPitch;
+    m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;
+
     m_CustomMap->Frame();
     m_GunMan->Frame();
     m_SwordMan->Frame();
@@ -29,14 +35,19 @@ void SelectScene::Process()
         {
             m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_Ironsights.fbx");
             m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Select_Idle_Anim.fbx");
+            m_playerType = PlayerType::GUN;
+           
         }
 
         if (m_Select.ChkOBBToRay(&m_SwordMan->m_OBBBox.m_Box))
         {
             m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_FrontSlash.fbx");
             m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+           m_playerType = PlayerType::SWORD;
+           
         }
     }
+    UIManager::GetInstance().Frame();
 }
 
 void SelectScene::Render()
@@ -95,6 +106,7 @@ void SelectScene::Render()
     pBuffers[0] = m_pConstantBufferLight[0].Get();
     pBuffers[1] = m_pConstantBufferLight[1].Get();
     LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
+    UIManager::GetInstance().Render();
 }
 
 void SelectScene::Release()

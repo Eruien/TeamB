@@ -1,5 +1,6 @@
 #pragma once
 #include "LFSMMgr.h"
+
 class LScene;
 
 class SceneState

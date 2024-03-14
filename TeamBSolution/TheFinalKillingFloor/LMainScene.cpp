@@ -6,27 +6,22 @@
 #include "UI/UIManager.h"
 bool LMainScene::Init()
 {
-	for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
-	{
-		obj->SetIsRender(true);
-		auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
-		for (auto obj : group)
-		{
-			obj->SetIsRender(false);
-		}
-	}
-	for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
-	{
-		obj->SetIsRender(false);
-	}
-	for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
-	{
-		obj->SetIsRender(false);
-	}
-	for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
-	{
-		obj->SetIsRender(false);
-	}
+    for (auto obj : UIManager::GetInstance().GetUIObjects())
+    {
+        obj->SetIsRender(false);
+        if (obj->_scene == L"MainScene.xml")
+        {
+            obj->SetIsRender(true);
+        }
+    }
+    auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
+    for (auto obj : group)
+    {
+        obj->SetIsRender(false);
+    }
+
+
+
     LSoundMgr::GetInstance().Load(L"../../res/sound/BackgroundSound.mp3");
 	LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Play();
 	return true;

@@ -418,113 +418,113 @@ void UIManager::ChangeScene(Event Scene)
 {
     if (Scene == Event::GOMAINSCENE)
     {
-    
-       
-
         //UIManager::GetInstance().Load(L"MainScene.xml");
-
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        for (auto obj : _objs)
         {
-
-            obj->SetIsRender(true);
-            auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
-            for (auto obj : group)
+            obj->SetIsRender(false);
+            if (obj->_scene == L"MainScene.xml")
             {
-                obj->SetIsRender(false);
+                obj->SetIsRender(true);
             }
         }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+        auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
+        for (auto obj : group)
         {
             obj->SetIsRender(false);
         }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
-        {
-            obj->SetIsRender(false);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
-        {
-            obj->SetIsRender(false);
-        }
-        LScene::GetInstance().SetTransition(Scene);
+ 
+    
     }
     else if (Scene == Event::GOINGAMESCENE)
     {
 
         LInput::GetInstance().CursorChange();
+       
+        
         LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
-        //UIManager::GetInstance().Load(L"IngameScene.xml");
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        for (auto obj : _objs)
         {
             obj->SetIsRender(false);
+            if (obj->_scene == L"IngameScene.xml")
+            {
+                obj->SetIsRender(true);
+            }
         }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
-        {
-            obj->SetIsRender(true);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
-        {
-            obj->SetIsRender(false);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
-        {
-            obj->SetIsRender(false);
-        }
+        UIManager::GetInstance().GetUIObject(L"ScreenBlood")->GetScript<UIEvent>(L"UIEvent")->_CTime = 1;
+
         if (LScene::GetInstance().GetState() != State::SHOPSCENE)
         {
-            LScene::GetInstance().SetTransition(Scene);
+            
             LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
-            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
-            UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo);
-            return;
+           /* UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
+            UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo);*/
+
         }
-        LScene::GetInstance().SetTransition(Scene);
+       
+       
     }
     else if (Scene == Event::GOENDSCENE)
     {
         LInput::GetInstance().CursorChange();
         //UIManager::GetInstance().Load(L"EndScene.xml");
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        for (auto obj : _objs)
         {
             obj->SetIsRender(false);
+            if (obj->_scene == L"EndScene.xml")
+            {
+                obj->SetIsRender(true);
+            }
         }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
-        {
-            obj->SetIsRender(false);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
-        {
-            obj->SetIsRender(true);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
-        {
-            obj->SetIsRender(false);
-        }
-        LScene::GetInstance().SetTransition(Scene);
+
+       
     }
     else if (Scene == Event::GOSHOPSCENE)
     {
         LInput::GetInstance().CursorChange();
         //UIManager::GetInstance().Load(L"EndScene.xml");
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"MainScene.xml"))
+        
+
+        if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
         {
-            obj->SetIsRender(false);
+            for (auto obj : _objs)
+            {
+                obj->SetIsRender(false);
+                if (obj->_scene == L"Shop1.xml")
+                {
+                    obj->SetIsRender(true);
+                }
+            }
         }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"IngameScene.xml"))
+
+        if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
         {
-            obj->SetIsRender(false);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"EndScene.xml"))
-        {
-            obj->SetIsRender(false);
-        }
-        for (auto obj : UIManager::GetInstance().GetSceneObj(L"Shop1.xml"))
-        {
-           //만약 총기를 구매했으면
-            obj->SetIsRender(true);
+            for (auto obj : _objs)
+            {
+                obj->SetIsRender(false);
+                if (obj->_scene == L"Shop2.xml")
+                {
+                    obj->SetIsRender(true);
+                }
+            }
         }
         LScene::GetInstance().SetTransition(Scene);
         LScene::GetInstance().m_pAction->Init();
+        return;
     }
+    else if (Scene == Event::GOSELECTSCENE)
+    {
+        
+        for (auto obj : _objs)
+        {
+            obj->SetIsRender(false);
+            if (obj->_scene == L"SelectScene.xml")
+            {
+                obj->SetIsRender(true);
+            }
+        }
+        LScene::GetInstance().m_pActionList[State::SELECTSCENE]->Init();
+    }
+    LScene::GetInstance().SetTransition(Scene);
 }
 
 void UIManager::RemoveObject(wstring name)
