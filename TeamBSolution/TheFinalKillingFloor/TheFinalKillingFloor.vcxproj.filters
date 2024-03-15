@@ -166,6 +166,7 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="ParticleClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -333,6 +334,7 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="ParticleClass.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">

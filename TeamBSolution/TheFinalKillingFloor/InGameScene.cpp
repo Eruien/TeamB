@@ -407,7 +407,7 @@ void InGameScene::Render()
        UIManager::GetInstance().ChangeScene(Event::GOENDSCENE);
    }
 
-   if (LInput::GetInstance().m_MouseState[1] == KEY_PUSH)
+   if (LInput::GetInstance().m_MouseState[2] == KEY_PUSH)
    {
        LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
      //  Retry();
@@ -1681,7 +1681,7 @@ void InGameScene::ShootRifle()
         playerPosition = LGlobal::g_PlayerModel->GetPosition();
         for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
         {
-            if (zombie->m_HP < 0.001f)
+            if (zombie->IsDead)
                 continue;
             zombiePos = zombie->GetPosition();
             dir = zombiePos - playerPosition;
@@ -1692,8 +1692,9 @@ void InGameScene::ShootRifle()
             float dotProduct = forward.Dot(dir);
             if (dotProduct < 0)
                 continue;
-            float angle = acos(dotProduct) * (180.0 / L_PI); // 라디안을 도로 변환
-            if (angle <= 40)
+            float angle = acos(dotProduct) * (180 / L_PI); // 라디안을 도로 변환
+            
+            if (angle <= 10)
             {
                 if (fNear > distance)
                 {
@@ -1798,6 +1799,7 @@ void InGameScene::HandlePlayerCollisions()
                 vNormal.y = 0.5f;
                 LGlobal::g_PlayerModel->m_Velocity = vNormal * 400;
                 LGlobal::g_PlayerModel->IsOnAir = true;
+                LGlobal::g_PlayerModel->IsTakeDamage = true;
             }
             else
             {
