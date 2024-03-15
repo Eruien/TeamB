@@ -72,6 +72,7 @@ void PlayerBladeSlash::Process()
         IsFirstClick = false;
         IsClick = false;
         m_CurrentCombo = ComboType::INWARD;
+        m_pOwner->IsTakeDammageAni = false;
         m_pOwner->SetTransition(Event::ENDATTACK);
         return;
     }

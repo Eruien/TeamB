@@ -3,6 +3,8 @@
 class EnemyAttack : public NPCState
 {
 public:
+	bool Montage(int startFrame, int endFrame);
+public:
 	bool Init() override;
 	void Process() override;
 	void Release();

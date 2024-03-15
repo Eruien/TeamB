@@ -2,6 +2,16 @@
 #include "LGlobal.h"
 #include "LFbxMgr.h"
 
+bool EnemyAttack::Montage(int startFrame, int endFrame)
+{
+    if ((m_pOwner->m_pActionModel->m_iStartFrame + startFrame) <= m_pOwner->m_fCurrentAnimTime
+        && (m_pOwner->m_pActionModel->m_iEndFrame + endFrame) >= m_pOwner->m_fCurrentAnimTime)
+    {
+        return true;
+    }
+    return false;
+}
+
 bool EnemyAttack::Init()
 {
     return true;
@@ -9,6 +19,17 @@ bool EnemyAttack::Init()
 
 void EnemyAttack::Process()
 {
+    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Attack_Anim.fbx");
+
+    if (Montage(44, 80))
+    {
+        m_pOwner->IsHitPlayer = true;
+    }
+    else
+    {
+        m_pOwner->IsHitPlayer = false;
+    }
+
     if (m_pOwner->IsTakeDamage)
     {
         m_Timer = false;
@@ -22,8 +43,6 @@ void EnemyAttack::Process()
         m_pOwner->SetTransition(Event::PLAYEROUTATTACKRANGE);
         return;
     }
-
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Zombie_Attack_Anim.fbx");
 
     if (!m_Timer)
     {

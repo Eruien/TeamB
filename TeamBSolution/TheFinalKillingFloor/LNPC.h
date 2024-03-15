@@ -43,6 +43,7 @@ public:
 	bool IsComboRange = false;
 	bool IsOnAir = false;
 	bool IsHitBladeAttack = false;
+	bool IsHitPlayer = false;
 	
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
