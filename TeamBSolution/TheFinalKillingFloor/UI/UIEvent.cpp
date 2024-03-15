@@ -2,11 +2,18 @@
 #include "KObject.h"
 #include "LGlobal.h"
 #include "../LPlayer.h"
+#include "ChangeTexture.h"
 UIEvent::UIEvent(wstring Function) : MonoBehaviour(L"UIEvent")
 {
 	_function = Function;
-	_functionMap[L"HitPlayerEffect"] = &UIEvent::HitPlayerEffect;
-	_functionMap[L"SteamPack"] = &UIEvent::SteamPack;
+
+	//프레임마다
+	_functionMapFrame[L"HitPlayerEffect"] = &UIEvent::HitPlayerEffect;
+	_functionMapFrame[L"SteamPack"] = &UIEvent::SteamPack;
+
+
+	//한번
+	_functionMap[L"UpdatePlayerFace"] = &UIEvent::UpdatePlayerFace;
 }
 
 UIEvent::~UIEvent()
@@ -29,9 +36,9 @@ void UIEvent::Init()
 
 void UIEvent::Frame()
 {
-	if (_functionMap.find(_function) != _functionMap.end())
+	if (_functionMapFrame.find(_function) != _functionMapFrame.end())
 	{
-			(this->*_functionMap[_function])();
+			(this->*_functionMapFrame[_function])();
 	}
 	else {
 		std::cout << "Function not found" << std::endl;
@@ -113,5 +120,22 @@ void UIEvent::SteamPack()
 	{
 		MessageBoxA(NULL, "Create Buffer Error", "Error Box", MB_OK);
 		return;
+	}
+}
+
+void UIEvent::UpdatePlayerFace()
+{
+	 float hp = LGlobal::g_PlayerModel->m_HP;
+	if (hp >= 61.0f)
+	{
+	GetGameObject()->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face.png");
+	}
+	else if (hp >= 21.0f)
+	{
+		GetGameObject()->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face2.png");
+	}
+	else
+	{
+		GetGameObject()->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face3.png");
 	}
 }

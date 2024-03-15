@@ -337,15 +337,8 @@ bool LPlayer::Frame()
 		UIManager::GetInstance().GetUIObject(L"ScreenBlood")->SetIsRender(true);
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 		LSoundMgr::GetInstance().GetPtr(L"PlayerHitSound.WAV")->PlayEffect();
-		
-		if (m_HP <= 61.0f)
-		{
-			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face2.png");
-		}
-		if (m_HP <= 21.0f)
-		{
-			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face3.png");
-		}
+		UIManager::GetInstance().GetUIObject(L"face")->GetScript<UIEvent>(L"UIEvent")->UpdatePlayerFace();
+	
 	}
 
 	if (m_Type == PlayerType::GUN)
@@ -468,6 +461,7 @@ bool LPlayer::GunFrame()
 		m_Gun->m_GunSpec.ShootDelay *= 0.5f;
 		LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->PlayEffect();
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+		UIManager::GetInstance().GetUIObject(L"face")->GetScript<UIEvent>(L"UIEvent")->UpdatePlayerFace();
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_Q] == KEY_PUSH)

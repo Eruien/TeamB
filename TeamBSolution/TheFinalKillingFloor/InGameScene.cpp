@@ -423,10 +423,23 @@ void InGameScene::Retry()
     {
         PlayerInit(PlayerType::GUN);
         LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
+        UIManager::GetInstance().GetUIObject(L"Selected_Sword")->SetIsRender(false);
+        UIManager::GetInstance().GetUIObject(L"C_Ammo")->SetIsRender(true);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->SetIsRender(true);
+        UIManager::GetInstance().GetUIObject(L"weaponUI")->SetIsRender(true);
+        UIManager::GetInstance().GetUIObject(L"AmmoSlash")->SetIsRender(true);
+        UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.CurrentAmmo);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.defaultTotalAmmo);
     }
     if (static_cast<SelectScene*>(LScene::GetInstance().m_pActionList.find(State::SELECTSCENE)->second.get())->m_playerType == PlayerType::SWORD)
     {
         PlayerInit(PlayerType::SWORD);
+        UIManager::GetInstance().GetUIObject(L"Selected_Sword")->SetIsRender(true);
+        UIManager::GetInstance().GetUIObject(L"C_Ammo")->SetIsRender(false);
+        UIManager::GetInstance().GetUIObject(L"T_Ammo")->SetIsRender(false);
+        UIManager::GetInstance().GetUIObject(L"weaponUI")->SetIsRender(false);
+        UIManager::GetInstance().GetUIObject(L"AmmoSlash")->SetIsRender(false);
+        UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/knife.png");
     }
     //PlayerInit(PlayerType::SWORD);
     LGlobal::g_PlayerModel->m_Money = 10000;
@@ -434,7 +447,7 @@ void InGameScene::Retry()
     NextWave();
     Init_2 = true;
     UpdateUI();
-    UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+    
 }
 
 void InGameScene::DeleteCurrentObject()
@@ -1273,32 +1286,33 @@ void InGameScene::InitializeItem()
 	}
 
     // ammo
-    m_AmmoList.resize(5);
-    ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    for (auto& ammo : m_AmmoList)
-    {
-        ammo = std::make_shared<LModel>();
-        ammo->SetLFbxObj(ammoObj);
-        ammo->CreateBoneBuffer();
+
+        m_AmmoList.resize(5);
+        ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+        for (auto& ammo : m_AmmoList)
         {
-			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+            ammo = std::make_shared<LModel>();
+            ammo->SetLFbxObj(ammoObj);
+            ammo->CreateBoneBuffer();
+            {
+                DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
 
-			// make translation matrix randomly ( -1000 ~ 1000 )
-			float x = (rand() % 1800) - 900;
-			float z = (rand() % 1800) - 900;
-			float y = m_CustomMap->GetHeight(x, z) + 5.f;
+                // make translation matrix randomly ( -1000 ~ 1000 )
+                float x = (rand() % 1800) - 900;
+                float z = (rand() % 1800) - 900;
+                float y = m_CustomMap->GetHeight(x, z) + 5.f;
 
-			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
-			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(90.0f));
-			scalingMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
-			worldMatrix = DirectX::XMMatrixIdentity();
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
-			ammo->m_matControl = worldMatrix;
-			ammo->m_fRadius = 30.f;
-		}
-    }
+                translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+                rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(90.0f));
+                scalingMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
+                worldMatrix = DirectX::XMMatrixIdentity();
+                worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+                worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+                worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+                ammo->m_matControl = worldMatrix;
+                ammo->m_fRadius = 30.f;
+            }
+        }
 }
 
 void InGameScene::ProcessBloodSplatter()
@@ -1362,6 +1376,7 @@ void InGameScene::UpdateUI()
         UIManager::GetInstance().GetUIObject(L"EnemyCount")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_ZombieWave->m_EnemyMap["Zombie"].size());
         UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 
+
             UIManager::GetInstance().GetUIObject(L"Gun1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
             UIManager::GetInstance().GetUIObject(L"Gun2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
             UIManager::GetInstance().GetUIObject(L"Gun3_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
@@ -1371,7 +1386,11 @@ void InGameScene::UpdateUI()
             UIManager::GetInstance().GetUIObject(L"Gun1_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
             UIManager::GetInstance().GetUIObject(L"Gun2_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
             UIManager::GetInstance().GetUIObject(L"Gun3_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"100$");
+             UIManager::GetInstance().GetUIObject(L"face")->GetScript<UIEvent>(L"UIEvent")->UpdatePlayerFace();
 
+             
+
+            UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
         Init_2 = false;
     }
 }
@@ -1553,11 +1572,13 @@ void InGameScene::RenderItem()
     {
         item->Render();
     }
-
-    for (auto& item : m_AmmoList)
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
-		item->Render();
-	}
+        for (auto& item : m_AmmoList)
+        {
+            item->Render();
+        }
+    }
 }
 
 void InGameScene::RenderBullets()
@@ -1627,11 +1648,13 @@ void InGameScene::ProcessItem()
     {
         kit->Frame();
     }
-    
-    for (auto& ammo : m_AmmoList)
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
-		ammo->Frame();
-	}
+        for (auto& ammo : m_AmmoList)
+        {
+            ammo->Frame();
+        }
+    }
 }
 
 void InGameScene::GetItem()
@@ -1825,6 +1848,7 @@ void InGameScene::HandlePlayerCollisions()
 				LGlobal::g_PlayerModel->m_HP = 100;
             it = m_KitList.erase(it);
             UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+            UIManager::GetInstance().GetUIObject(L"face")->GetScript<UIEvent>(L"UIEvent")->UpdatePlayerFace();
         }
         else
         {
