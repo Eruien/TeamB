@@ -298,26 +298,23 @@ void InGameScene::Render()
     //}
     if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
-        if (LInput::GetInstance().m_MouseState[0])
+        if (LGlobal::g_PlayerModel->IsResetBladeAttack)
         {
-            if (LGlobal::g_PlayerModel->IsResetBladeAttack)
+            for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
             {
-                for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
-                {
-                    zombie->IsHitBladeAttack = false;
-                }
-                LGlobal::g_PlayerModel->IsResetBladeAttack = false;
+                zombie->IsHitBladeAttack = false;
             }
-            if (m_ZombieWave->m_EnemyMap["LNPC"].size() > 0)
+            LGlobal::g_PlayerModel->IsResetBladeAttack = false;
+        }
+        if (m_ZombieWave->m_EnemyMap["LNPC"].size() > 0)
+        {
+            for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
             {
-                for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
+                if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && 
+                    LGlobal::g_PlayerModel->IsSlash && !zombie->IsHitBladeAttack)
                 {
-                    if (LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBox) && 
-                        LGlobal::g_PlayerModel->IsSlash && !zombie->IsHitBladeAttack)
-                    {
-                        zombie->IsHitBladeAttack = true;
-                        zombie->IsTakeDamage = true;
-                    }
+                    zombie->IsHitBladeAttack = true;
+                    zombie->IsTakeDamage = true;
                 }
             }
         }

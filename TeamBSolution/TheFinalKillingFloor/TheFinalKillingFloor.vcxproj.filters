@@ -166,6 +166,12 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="PlayerBladeSlash.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerGunShoot.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -333,6 +339,12 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="PlayerBladeSlash.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGunShoot.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">

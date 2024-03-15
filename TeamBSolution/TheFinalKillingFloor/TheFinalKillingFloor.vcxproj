@@ -165,7 +165,9 @@
     <ClCompile Include="LScene.cpp" />
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
+    <ClCompile Include="PlayerBladeSlash.cpp" />
     <ClCompile Include="PlayerDeath.cpp" />
+    <ClCompile Include="PlayerGunShoot.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="PlayerReload.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
@@ -230,7 +232,9 @@
     <ClInclude Include="LScene.h" />
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="PlayerAttack.h" />
+    <ClInclude Include="PlayerBladeSlash.h" />
     <ClInclude Include="PlayerDeath.h" />
+    <ClInclude Include="PlayerGunShoot.h" />
     <ClInclude Include="PlayerIdle.h" />
     <ClInclude Include="PlayerReload.h" />
     <ClInclude Include="PlayerRun.h" />
