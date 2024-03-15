@@ -152,10 +152,10 @@ void ShopScene::Process()
     if (UIManager::GetInstance().GetUIObject(L"B_Gun1_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
     {
 
-        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::PISTOL, 100, 8))
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::PISTOL, 100, 10))
         {
             UIManager::GetInstance().GetUIObject(L"T_Gun1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.Damage)));
-            if (LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.DamageLevel == 8)
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.DamageLevel == 10)
             {
                 UIManager::GetInstance().GetUIObject(L"Gun1_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
             }
@@ -164,10 +164,10 @@ void ShopScene::Process()
     if (UIManager::GetInstance().GetUIObject(L"B_Gun2_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
     {
 
-        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::ASSAULTRIFLE, 100, 8))
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::ASSAULTRIFLE, 100, 10))
         {
             UIManager::GetInstance().GetUIObject(L"T_Gun2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.Damage)));
-            if (LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.DamageLevel == 8)
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::ASSAULTRIFLE]->m_GunSpec.DamageLevel == 10)
             {
                 UIManager::GetInstance().GetUIObject(L"Gun2_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
             }
@@ -176,10 +176,10 @@ void ShopScene::Process()
     if (UIManager::GetInstance().GetUIObject(L"B_Gun3_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
     {
 
-        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::SHOTGUN, 100, 8))
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::SHOTGUN, 100, 10))
         {
             UIManager::GetInstance().GetUIObject(L"T_Gun3_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.Damage)));
-            if (LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.DamageLevel == 8)
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::SHOTGUN]->m_GunSpec.DamageLevel == 10)
             {
                 UIManager::GetInstance().GetUIObject(L"Gun3_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
             }
@@ -221,10 +221,10 @@ void ShopScene::Process()
     if (UIManager::GetInstance().GetUIObject(L"B_Sword1_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
     {
 
-        if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::ONEHANDSWORD, 100, 8))
+        if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::ONEHANDSWORD, 100, 6))
         {
             UIManager::GetInstance().GetUIObject(L"T_Sword1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashDelay)));
-            if (LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.RPMLevel == 8)
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.RPMLevel == 6)
             {
                 UIManager::GetInstance().GetUIObject(L"Sword1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
             }
@@ -233,10 +233,10 @@ void ShopScene::Process()
     if (UIManager::GetInstance().GetUIObject(L"B_Sword1_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
     {
 
-        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::ONEHANDSWORD, 100, 8))
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::ONEHANDSWORD, 100, 10))
         {
             UIManager::GetInstance().GetUIObject(L"T_Sword1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.Damage)));
-            if (LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.DamageLevel == 8)
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.DamageLevel == 10)
             {
                 UIManager::GetInstance().GetUIObject(L"Sword1_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
             }

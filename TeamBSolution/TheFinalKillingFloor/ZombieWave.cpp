@@ -117,7 +117,8 @@ void ZombieWave::CollisionCheckInNpc()
         for (int i = 0; i < zombieModelList.size(); ++i)
         {
             if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand)
-                && zombieModelList[i]->m_CurrentState == State::ENEMYATTACK)
+                && zombieModelList[i]->m_CurrentState == State::ENEMYATTACK
+                && zombieModelList[i]->IsHitPlayer)
             {
                 LGlobal::g_PlayerModel->IsTakeDamage = true;
             }

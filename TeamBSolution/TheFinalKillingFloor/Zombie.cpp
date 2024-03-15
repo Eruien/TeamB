@@ -140,32 +140,33 @@ bool Zombie::Frame()
 	m_ZombieSound->Play();
 	// 網爾萄
 
+	if (m_HP != 100)
+	{
+		m_enemyHp->SetPos({ m_matControl._41,m_matControl._42 + 40, m_matControl._43 });
 
-	m_enemyHp->SetPos({ m_matControl._41,m_matControl._42 + 40, m_matControl._43 });
+		/*  LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
+		 LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 500);*/
+		TMatrix matRotation, matTrans, matScale, worldMat;
+		D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
+		matRotation._41 = 0.0f;
+		matRotation._42 = 0.0f;
+		matRotation._43 = 0.0f;
+		matRotation._44 = 1.0f;
 
-	/*  LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 400);
-	 LWRITE.AddText(to_wstring(LGlobal::g_PlayerModel->m_matControl._41), 100, 500);*/
-	TMatrix matRotation, matTrans, matScale, worldMat;
-	D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
-	matRotation._41 = 0.0f;
-	matRotation._42 = 0.0f;
-	matRotation._43 = 0.0f;
-	matRotation._44 = 1.0f;
+		D3DXMatrixTranslation(&matTrans, m_enemyHp->m_vPosition.x,
+			m_enemyHp->m_vPosition.y,
+			m_enemyHp->m_vPosition.z
+		);
 
-	D3DXMatrixTranslation(&matTrans, m_enemyHp->m_vPosition.x,
-		m_enemyHp->m_vPosition.y,
-		m_enemyHp->m_vPosition.z
-	);
-
-	D3DXMatrixScaling(&matScale, m_enemyHp->m_vScale.x,
-		m_enemyHp->m_vScale.y,
-		m_enemyHp->m_vScale.z
-	);
-	worldMat = matScale * matRotation * matTrans;
-	m_enemyHp->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-	m_enemyHp->Frame();
-	// 網爾萄 部
-
+		D3DXMatrixScaling(&matScale, m_enemyHp->m_vScale.x,
+			m_enemyHp->m_vScale.y,
+			m_enemyHp->m_vScale.z
+		);
+		worldMat = matScale * matRotation * matTrans;
+		m_enemyHp->SetMatrix(&worldMat, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+		m_enemyHp->Frame();
+		// 網爾萄 部
+	}
 
 
 	if (m_HP <= 0)
@@ -250,6 +251,7 @@ bool Zombie::FrameInstancing()
 
 bool Zombie::Render()
 {
+	if(m_HP != 100)
 	m_enemyHp->Render();
 	return true;
 }

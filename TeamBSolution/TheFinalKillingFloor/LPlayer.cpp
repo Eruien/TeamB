@@ -8,6 +8,8 @@
 #include "PlayerWalk.h"
 #include "PlayerRun.h"
 #include "PlayerAttack.h"
+#include "PlayerGunShoot.h"
+#include "PlayerBladeSlash.h"
 #include "PlayerReload.h"
 #include "PlayerTakeDamage.h"
 #include "PlayerDeath.h"
@@ -29,7 +31,10 @@ void LPlayer::FSM(FSMType fsmType)
 	m_pActionList.insert(std::make_pair(State::CHARACTERIDLE, std::make_unique<PlayerIdle>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERWALK, std::make_unique<PlayerWalk>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERRUN, std::make_unique<PlayerRun>(this)));
-	m_pActionList.insert(std::make_pair(State::CHARACTERSHOOT, std::make_unique<PlayerAttack>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERATTACK, std::make_unique<PlayerAttack>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERSHOOT, std::make_unique<PlayerGunShoot>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERBLADESLASH, std::make_unique<PlayerBladeSlash>(this)));
+
 	m_pActionList.insert(std::make_pair(State::CHARACTERRELOAD, std::make_unique<PlayerReload>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERTAKEDAMAGE, std::make_unique<PlayerTakeDamage>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERDEATH, std::make_unique<PlayerDeath>(this)));
@@ -332,15 +337,8 @@ bool LPlayer::Frame()
 		UIManager::GetInstance().GetUIObject(L"ScreenBlood")->SetIsRender(true);
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
 		LSoundMgr::GetInstance().GetPtr(L"PlayerHitSound.WAV")->PlayEffect();
-		
-		if (m_HP <= 61.0f)
-		{
-			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face2.png");
-		}
-		if (m_HP <= 21.0f)
-		{
-			UIManager::GetInstance().GetUIObject(L"face")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/face3.png");
-		}
+		UIManager::GetInstance().GetUIObject(L"face")->GetScript<UIEvent>(L"UIEvent")->UpdatePlayerFace();
+	
 	}
 
 	if (m_Type == PlayerType::GUN)
@@ -463,6 +461,7 @@ bool LPlayer::GunFrame()
 		m_Gun->m_GunSpec.ShootDelay *= 0.5f;
 		LSoundMgr::GetInstance().GetPtr(L"SteamPack.wav")->PlayEffect();
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+		UIManager::GetInstance().GetUIObject(L"face")->GetScript<UIEvent>(L"UIEvent")->UpdatePlayerFace();
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_Q] == KEY_PUSH)
