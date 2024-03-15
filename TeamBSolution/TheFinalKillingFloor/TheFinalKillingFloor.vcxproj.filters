@@ -172,6 +172,9 @@
     <ClCompile Include="PlayerGunShoot.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerRush.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -343,6 +346,9 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerGunShoot.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRush.h">
       <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>

@@ -171,6 +171,7 @@
     <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="PlayerReload.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
+    <ClCompile Include="PlayerRush.cpp" />
     <ClCompile Include="PlayerTakeDamage.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="PlayerIdle.h" />
     <ClInclude Include="PlayerReload.h" />
     <ClInclude Include="PlayerRun.h" />
+    <ClInclude Include="PlayerRush.h" />
     <ClInclude Include="PlayerTakeDamage.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />

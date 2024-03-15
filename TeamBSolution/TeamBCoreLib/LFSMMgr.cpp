@@ -97,6 +97,7 @@ bool LFSMMgr::Init()
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::WALKSPEED, State::CHARACTERWALK);
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::RUNSPEED, State::CHARACTERRUN);
 	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::CLICKATTACKBUTTON, State::CHARACTERATTACK);
+	PlayerFSM->AddStateTransition(State::CHARACTERIDLE, Event::USERUSH, State::CHARACTERRUSH);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::TAKEDAMAGE, State::CHARACTERTAKEDAMAGE);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::FATALDAMAGE, State::CHARACTERDEATH);
@@ -104,6 +105,7 @@ bool LFSMMgr::Init()
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::RUNSPEED, State::CHARACTERRUN);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::CLICKATTACKBUTTON, State::CHARACTERATTACK);
 	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::IDLESPEED, State::CHARACTERIDLE);
+	PlayerFSM->AddStateTransition(State::CHARACTERWALK, Event::USERUSH, State::CHARACTERRUSH);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::TAKEDAMAGE, State::CHARACTERTAKEDAMAGE);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::FATALDAMAGE, State::CHARACTERDEATH);
@@ -111,6 +113,7 @@ bool LFSMMgr::Init()
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::IDLESPEED, State::CHARACTERIDLE);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::WALKSPEED, State::CHARACTERWALK);
 	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::CLICKATTACKBUTTON, State::CHARACTERATTACK);
+	PlayerFSM->AddStateTransition(State::CHARACTERRUN, Event::USERUSH, State::CHARACTERRUSH);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERATTACK, Event::GUNSHOOT, State::CHARACTERSHOOT);
 	PlayerFSM->AddStateTransition(State::CHARACTERATTACK, Event::BLADESLASH, State::CHARACTERBLADESLASH);
@@ -122,6 +125,9 @@ bool LFSMMgr::Init()
 
 	PlayerFSM->AddStateTransition(State::CHARACTERBLADESLASH, Event::FATALDAMAGE, State::CHARACTERDEATH);
 	PlayerFSM->AddStateTransition(State::CHARACTERBLADESLASH, Event::ENDATTACK, State::CHARACTERIDLE);
+	PlayerFSM->AddStateTransition(State::CHARACTERBLADESLASH, Event::USERUSH, State::CHARACTERRUSH);
+
+	PlayerFSM->AddStateTransition(State::CHARACTERRUSH, Event::ENDRUSH, State::CHARACTERIDLE);
 
 	PlayerFSM->AddStateTransition(State::CHARACTERRELOAD, Event::FATALDAMAGE, State::CHARACTERDEATH);
 	PlayerFSM->AddStateTransition(State::CHARACTERRELOAD, Event::ENDRELOAD, State::CHARACTERIDLE);

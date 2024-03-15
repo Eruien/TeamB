@@ -624,6 +624,7 @@ void InGameScene::CharacterInit()
 
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Walk.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Run.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Rush.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Inward.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/OneHand_Outward.bin");
 
