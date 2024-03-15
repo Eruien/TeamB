@@ -1285,32 +1285,33 @@ void InGameScene::InitializeItem()
 	}
 
     // ammo
-    m_AmmoList.resize(5);
-    ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
-    for (auto& ammo : m_AmmoList)
-    {
-        ammo = std::make_shared<LModel>();
-        ammo->SetLFbxObj(ammoObj);
-        ammo->CreateBoneBuffer();
+
+        m_AmmoList.resize(5);
+        ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
+        for (auto& ammo : m_AmmoList)
         {
-			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
+            ammo = std::make_shared<LModel>();
+            ammo->SetLFbxObj(ammoObj);
+            ammo->CreateBoneBuffer();
+            {
+                DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
 
-			// make translation matrix randomly ( -1000 ~ 1000 )
-			float x = (rand() % 1800) - 900;
-			float z = (rand() % 1800) - 900;
-			float y = m_CustomMap->GetHeight(x, z) + 5.f;
+                // make translation matrix randomly ( -1000 ~ 1000 )
+                float x = (rand() % 1800) - 900;
+                float z = (rand() % 1800) - 900;
+                float y = m_CustomMap->GetHeight(x, z) + 5.f;
 
-			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
-			rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(90.0f));
-			scalingMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
-			worldMatrix = DirectX::XMMatrixIdentity();
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
-			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
-			ammo->m_matControl = worldMatrix;
-			ammo->m_fRadius = 30.f;
-		}
-    }
+                translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
+                rotationMatrix = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(90.0f));
+                scalingMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
+                worldMatrix = DirectX::XMMatrixIdentity();
+                worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, rotationMatrix);
+                worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, scalingMatrix);
+                worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
+                ammo->m_matControl = worldMatrix;
+                ammo->m_fRadius = 30.f;
+            }
+        }
 }
 
 void InGameScene::ProcessBloodSplatter()
@@ -1570,11 +1571,13 @@ void InGameScene::RenderItem()
     {
         item->Render();
     }
-
-    for (auto& item : m_AmmoList)
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
-		item->Render();
-	}
+        for (auto& item : m_AmmoList)
+        {
+            item->Render();
+        }
+    }
 }
 
 void InGameScene::RenderBullets()
@@ -1644,11 +1647,13 @@ void InGameScene::ProcessItem()
     {
         kit->Frame();
     }
-    
-    for (auto& ammo : m_AmmoList)
+    if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
-		ammo->Frame();
-	}
+        for (auto& ammo : m_AmmoList)
+        {
+            ammo->Frame();
+        }
+    }
 }
 
 void InGameScene::GetItem()
