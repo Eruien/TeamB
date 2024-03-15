@@ -451,6 +451,27 @@ void UIManager::ChangeScene(Event Scene)
             }
         }
         UIManager::GetInstance().GetUIObject(L"ScreenBlood")->GetScript<UIEvent>(L"UIEvent")->_CTime = 1;
+        if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
+        {
+            UIManager::GetInstance().GetUIObject(L"Selected_Sword")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"C_Ammo")->SetIsRender(true);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->SetIsRender(true);
+            UIManager::GetInstance().GetUIObject(L"weaponUI")->SetIsRender(true);
+            UIManager::GetInstance().GetUIObject(L"AmmoSlash")->SetIsRender(true);
+            UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.CurrentAmmo);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.defaultTotalAmmo);
+        }
+        else
+        {
+            UIManager::GetInstance().GetUIObject(L"Selected_Sword")->SetIsRender(true);
+            UIManager::GetInstance().GetUIObject(L"C_Ammo")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"weaponUI")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"AmmoSlash")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/knife.png");
+        }
+        
+
 
         if (LScene::GetInstance().GetState() != State::SHOPSCENE)
         {

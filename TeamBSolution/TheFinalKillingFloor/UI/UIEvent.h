@@ -18,6 +18,7 @@ public :
 	void HitPlayerEffect();
 	void CreateConstantBuffer();
 	void SteamPack();
+	void UpdatePlayerFace();
 	wstring _function = L"None";
 	float _CTime = 1.0f;
 private:
@@ -30,8 +31,8 @@ private:
 
 	cb_DataA data;
 	ComPtr<ID3D11Buffer> _cBuff;
+	std::unordered_map<wstring, void (UIEvent::*)()> _functionMapFrame;
 	std::unordered_map<wstring, void (UIEvent::*)()> _functionMap;
-	
 
 };
 
