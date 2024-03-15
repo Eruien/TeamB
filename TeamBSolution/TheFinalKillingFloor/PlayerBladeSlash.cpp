@@ -23,7 +23,6 @@ void PlayerBladeSlash::Process()
     {
         if (Montage(20, 38))
         {
-            m_pOwner->IsResetBladeAttack = true;
             m_pOwner->IsSlash = true;
         }
         else
@@ -43,7 +42,7 @@ void PlayerBladeSlash::Process()
         }
     }
 
-    if (LInput::GetInstance().m_MouseState[0] == KEY_PUSH && !IsFirstClick)
+    if (LInput::GetInstance().m_MouseState[0] >= KEY_PUSH && !IsFirstClick)
     {
         IsFirstClick = true;
         IsClick = true;
@@ -51,6 +50,7 @@ void PlayerBladeSlash::Process()
 
     if (IsClick && m_pOwner->m_TimerEnd)
     {
+        m_pOwner->IsResetBladeAttack = true;
         m_pOwner->m_TimerEnd = false;
         IsClick = false;
         m_CurrentCombo = ComboType::OUTWARD;

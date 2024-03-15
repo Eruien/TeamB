@@ -253,7 +253,7 @@ void InGameScene::Render()
     if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.SetMatrix(&weaponPos, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.Render();
+        //LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.Render();
     }
  
     m_ZombieWave->CollisionBoxRender();
@@ -571,7 +571,7 @@ void InGameScene::PlayerInit(PlayerType playerType)
     TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
 
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Neck._42, 30.0f }, 0.2f);
-    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 200.0f }, 1.0f);
+    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 100.0f }, 1.0f);
 }
 
 void InGameScene::CharacterInit()
