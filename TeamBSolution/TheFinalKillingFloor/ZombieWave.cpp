@@ -116,6 +116,21 @@ void ZombieWave::CollisionCheckInNpc()
         auto& zombieModelList = npcPair.second;
         for (int i = 0; i < zombieModelList.size(); ++i)
         {
+            if (!LGlobal::g_PlayerModel->IsRush)
+            {
+                zombieModelList[i]->IsTakeRushDamage = false;
+                zombieModelList[i]->IsFirstRushDamage = true;
+            }
+          
+            if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBox)
+                && LGlobal::g_PlayerModel->IsRush
+                && zombieModelList[i]->IsFirstRushDamage)
+            {
+                zombieModelList[i]->IsTakeDamage = true;
+                zombieModelList[i]->IsTakeRushDamage = true;
+                zombieModelList[i]->IsFirstRushDamage = false;
+            }
+
             if (LGlobal::g_PlayerModel->m_OBBBox.CollisionCheckOBB(&zombieModelList[i]->m_OBBBoxRightHand)
                 && zombieModelList[i]->m_CurrentState == State::ENEMYATTACK
                 && zombieModelList[i]->IsHitPlayer)

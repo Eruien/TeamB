@@ -697,6 +697,7 @@ void InGameScene::ResetWeapon()
     LWeapon* oneHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::ONEHANDSWORD);
     oneHandSword->m_SwordSpec.SlashDelay = oneHandSword->m_SwordSpec.defaultSlashDelay;
     oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
+    oneHandSword->m_SwordSpec.RushDamage = oneHandSword->m_SwordSpec.defaultRushDamage;
 
     
 }
@@ -932,6 +933,8 @@ void InGameScene::InitializeWeapon()
     oneHandSword->m_SwordSpec.defaultSlashDelay = 0.5;
     oneHandSword->m_SwordSpec.Damage = 50.0f;
     oneHandSword->m_SwordSpec.defaultDamage = 50.0f;
+    oneHandSword->m_SwordSpec.RushDamage = 30.0f;
+    oneHandSword->m_SwordSpec.defaultRushDamage = 30.0f;
  
     LWeaponMgr::GetInstance().Add(WeaponState::PISTOL, pistol);
     LWeaponMgr::GetInstance().Add(WeaponState::ASSAULTRIFLE, rifle);

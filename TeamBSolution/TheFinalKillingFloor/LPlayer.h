@@ -48,7 +48,9 @@ public:
 	bool IsOnAir = false;
 	bool IsKillable = true;
 	bool IsResetBladeAttack = false;
-	
+	bool IsRush = false;
+	bool IsUseRush = true;
+
 	float accumulatedTime = 0.0f;
 public:
 	enum BACKMOVESPEED {
@@ -56,6 +58,9 @@ public:
 	};
 	enum FRONTMOVESPEED {
 		FRONTMOVESPEED = 100
+	};
+	enum RUSHSPEED {
+		RUSHSPEED = 400
 	};
 	enum RUNMOVESPEED {
 		RUNMOVESPEED = 150
@@ -70,6 +75,10 @@ public:
 	float m_SteamPackEnd = 5.0f;
 	float m_ZedTimeStart = 0.0f;
 	float m_ZedTimeEnd = 5.0f;
+	float m_RushStart = 0.0f;
+	float m_RushEnd = 2.0f;
+	float m_RushCoolTimeStart = 0.0f;
+	float m_RushCoolTimeEnd = 10.0f;
 	int m_Money = 0;
 	TVector3 m_AddDirection;
 	TVector3 m_Velocity;
@@ -81,6 +90,7 @@ public:
 	void SetTransition(Event inputEvent);
 	State GetState();
 	void Move();
+	void RushMove();
 	void ItemChnge(WeaponState gun, int index);
 public:
 	virtual	void Process();

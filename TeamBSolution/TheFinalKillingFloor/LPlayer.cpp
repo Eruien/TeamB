@@ -15,6 +15,7 @@
 #include "PlayerDeath.h"
 #include "UIManager.h"
 #include "LSoundMgr.h"
+#include "PlayerRush.h"
 
 void LPlayer::FSM(FSMType fsmType)
 {
@@ -31,6 +32,7 @@ void LPlayer::FSM(FSMType fsmType)
 	m_pActionList.insert(std::make_pair(State::CHARACTERIDLE, std::make_unique<PlayerIdle>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERWALK, std::make_unique<PlayerWalk>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERRUN, std::make_unique<PlayerRun>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERRUSH, std::make_unique<PlayerRush>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERATTACK, std::make_unique<PlayerAttack>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERSHOOT, std::make_unique<PlayerGunShoot>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERBLADESLASH, std::make_unique<PlayerBladeSlash>(this)));
@@ -287,6 +289,16 @@ void LPlayer::Move()
 	}
 }
 
+void LPlayer::RushMove()
+{
+	TVector3 forward = m_matControl.Forward();
+	forward.Normalize();
+	m_matControl._41 += m_Speed * LGlobal::g_fSPF * forward.x;
+	m_matControl._43 += m_Speed * LGlobal::g_fSPF * forward.z;
+	m_Speed = RUSHSPEED;
+}
+
+
 void LPlayer::ItemChnge(WeaponState gun, int index)
 {
 	m_CurrentGun = gun;
@@ -302,15 +314,6 @@ void LPlayer::ItemChnge(WeaponState gun, int index)
 
 bool LPlayer::Frame()
 {
-	if (LInput::GetInstance().m_KeyStateOld[DIK_F3] == KEY_PUSH)
-	{
-		m_pModel = LFbxMgr::GetInstance().GetPtr(L"army3.fbx");
-	}
-	else if (LInput::GetInstance().m_KeyStateOld[DIK_F4] == KEY_PUSH)
-	{
-		m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
-	}
-
 	if (m_HP <= 0)
 	{
 		IsDeath = true;
@@ -353,16 +356,16 @@ bool LPlayer::Frame()
 	if (IsMove)
 	{
 		Move();
-	}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
-	{
-		m_Speed = RUNMOVESPEED;
-	}
+		if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
+		{
+			m_Speed = RUNMOVESPEED;
+		}
 
-	if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
-	{
-		m_Speed = 0.0f;
+		if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] == KEY_UP)
+		{
+			m_Speed = 0.0f;
+		}
 	}
 
 	if (m_Speed > 100.0f)
@@ -533,7 +536,6 @@ bool LPlayer::SwordFrame()
 		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
 	}*/
 	
-
 	if ((LInput::GetInstance().m_MouseState[0] >= KEY_PUSH))
 	{
 		IsMove = true;
@@ -560,6 +562,37 @@ bool LPlayer::SwordFrame()
 		m_HP = min(100, m_HP + 30);
 
 		UIManager::GetInstance().GetUIObject(L"HPbar")->GetScript<HpBar>(L"HpBar")->UpdateHp();
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_X] == KEY_PUSH && IsUseRush)
+	{
+		IsRush = true;
+	}
+
+	if (!IsUseRush)
+	{
+		m_RushCoolTimeStart += LGlobal::g_fSPF;
+	}
+
+	if (m_RushCoolTimeStart > m_RushCoolTimeEnd)
+	{
+		m_RushCoolTimeStart = 0.0f;
+		IsUseRush = true;
+	}
+
+	if (IsRush)
+	{
+		RushMove();
+		m_RushStart += LGlobal::g_fSPF;
+	}
+
+	if (m_RushStart > m_RushEnd)
+	{
+		m_Speed = 0.0f;
+		m_RushStart = 0.0f;
+		IsRush = false;
+		IsMove = true;
+		IsUseRush = false;
 	}
 
 	if (IsSteamPack)

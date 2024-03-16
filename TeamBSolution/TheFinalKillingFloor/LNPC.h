@@ -44,6 +44,8 @@ public:
 	bool IsOnAir = false;
 	bool IsHitBladeAttack = false;
 	bool IsHitPlayer = false;
+	bool IsFirstRushDamage = true;
+	bool IsTakeRushDamage = false;
 	
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;

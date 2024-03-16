@@ -29,6 +29,12 @@ void PlayerIdle::Process()
             return;
         }
     }
+
+    if (m_pOwner->IsRush)
+    {
+        m_pOwner->SetTransition(Event::USERUSH);
+        return;
+    }
    
     if (m_pOwner->IsAttack)
     {

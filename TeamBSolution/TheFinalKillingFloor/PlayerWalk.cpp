@@ -21,6 +21,12 @@ void PlayerWalk::Process()
         return;
     }
 
+    if (m_pOwner->IsRush)
+    {
+        m_pOwner->SetTransition(Event::USERUSH);
+        return;
+    }
+
     if (m_pOwner->m_Type == PlayerType::GUN)
     {
         if (m_pOwner->IsReload)
