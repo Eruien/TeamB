@@ -527,14 +527,14 @@ bool LPlayer::GunFrame()
 
 bool LPlayer::SwordFrame()
 {
-	/*if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
+	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
 		ItemChnge(WeaponState::ONEHANDSWORD, 2);
 	}
 	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
 	{
-		ItemChnge(WeaponState::ASSAULTRIFLE, 0);
-	}*/
+		ItemChnge(WeaponState::TWOHANDSWORD, 3);
+	}
 	
 	if ((LInput::GetInstance().m_MouseState[0] >= KEY_PUSH))
 	{

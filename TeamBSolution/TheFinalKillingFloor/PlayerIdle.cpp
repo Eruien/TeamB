@@ -70,6 +70,10 @@ void PlayerIdle::Process()
    {
        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
    }
+   else if (m_pOwner->m_CurrentGun == WeaponState::TWOHANDSWORD)
+   {
+       m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Idle_Anim.fbx");
+   }
 
 }
 

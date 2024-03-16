@@ -19,7 +19,14 @@ void PlayerRush::Process()
         return;
     }
 
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Rush.fbx");
+    if (m_pOwner->m_CurrentGun == WeaponState::ONEHANDSWORD)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Rush.fbx");
+    }
+    else if (m_pOwner->m_CurrentGun == WeaponState::TWOHANDSWORD)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Rush.fbx");
+    }
 }
 
 void PlayerRush::Release()

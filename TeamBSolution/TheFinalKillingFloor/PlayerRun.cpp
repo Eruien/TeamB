@@ -53,7 +53,7 @@ void PlayerRun::Process()
         m_pOwner->SetTransition(Event::IDLESPEED);
         return;
     }
-  
+    
     if (m_pOwner->m_CurrentGun == WeaponState::PISTOL)
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Pistol_Run.fbx");
@@ -69,6 +69,10 @@ void PlayerRun::Process()
     else if (m_pOwner->m_CurrentGun == WeaponState::ONEHANDSWORD)
     {
         m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Run.fbx");
+    }
+    else if (m_pOwner->m_CurrentGun == WeaponState::TWOHANDSWORD)
+    {
+        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Run.fbx");
     }
 }
 

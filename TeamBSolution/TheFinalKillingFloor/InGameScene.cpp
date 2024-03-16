@@ -568,7 +568,10 @@ void InGameScene::PlayerInit(PlayerType playerType)
     else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
         LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
+        LGlobal::g_PlayerModel->ItemChnge(WeaponState::TWOHANDSWORD, 3);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 50.0f, 300.0f }, 1.0f);
         LGlobal::g_PlayerModel->ItemChnge(WeaponState::ONEHANDSWORD, 2);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 100.0f }, 1.0f);
     }
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
@@ -589,7 +592,6 @@ void InGameScene::PlayerInit(PlayerType playerType)
     TMatrix Root = LGlobal::g_PlayerModel->m_pModel->m_NameMatrixMap[0][root];
 
     LGlobal::g_PlayerModel->SetOBBBox({ -30.0f, Root._42, -20.0f }, { 30.0f, Neck._42, 30.0f }, 0.2f);
-    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 100.0f }, 1.0f);
 }
 
 void InGameScene::CharacterInit()
@@ -649,6 +651,9 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Idle_Anim.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Select_Idle_Anim.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_FrontSlash.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Walk.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Run.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Rush.bin");
 
     // Item
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");
@@ -940,11 +945,22 @@ void InGameScene::InitializeWeapon()
     oneHandSword->m_SwordSpec.defaultDamage = 50.0f;
     oneHandSword->m_SwordSpec.RushDamage = 30.0f;
     oneHandSword->m_SwordSpec.defaultRushDamage = 30.0f;
+
+    std::shared_ptr<LWeapon> twoHandSword = std::make_shared<LWeapon>();
+    twoHandSword->m_WeaponModel = std::make_shared<LModel>();
+    twoHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"HeroBlade.fbx");
+    twoHandSword->m_SwordSpec.SlashDelay = 0.7;
+    twoHandSword->m_SwordSpec.defaultSlashDelay = 0.7;
+    twoHandSword->m_SwordSpec.Damage = 60.0f;
+    twoHandSword->m_SwordSpec.defaultDamage = 60.0f;
+    twoHandSword->m_SwordSpec.RushDamage = 30.0f;
+    twoHandSword->m_SwordSpec.defaultRushDamage = 30.0f;
  
     LWeaponMgr::GetInstance().Add(WeaponState::PISTOL, pistol);
     LWeaponMgr::GetInstance().Add(WeaponState::ASSAULTRIFLE, rifle);
     LWeaponMgr::GetInstance().Add(WeaponState::SHOTGUN, shotGun);
     LWeaponMgr::GetInstance().Add(WeaponState::ONEHANDSWORD, oneHandSword);
+    LWeaponMgr::GetInstance().Add(WeaponState::TWOHANDSWORD, twoHandSword);
 }
 
 void InGameScene::InitializeObjects()
@@ -1946,11 +1962,6 @@ void InGameScene::UpdateOBB()
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._42,
             LGlobal::g_PlayerModel->m_OBBBox.m_matWorld._43 });
 
-    LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.UpdateOBBBoxPosition(
-        { LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._41,
-            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._42,
-            LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.m_matWorld._43 });
-
     if (LGlobal::g_PlayerModel->IsSlash)
     {
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CreateOBBBox(
@@ -2024,6 +2035,7 @@ void InGameScene::InitializeOBBBox()
         LGlobal::g_PlayerModel->m_SettingBox.vAxis[0],
         LGlobal::g_PlayerModel->m_SettingBox.vAxis[1],
         LGlobal::g_PlayerModel->m_SettingBox.vAxis[2]);
+
     LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.CreateOBBBox(
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[0],
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.fExtent[1],
