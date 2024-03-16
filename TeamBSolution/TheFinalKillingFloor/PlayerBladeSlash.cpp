@@ -29,6 +29,11 @@ void PlayerBladeSlash::Process()
     {
         if (Montage(20, 38))
         {
+            if (IsSecondSlashSound)
+            {
+                LSoundMgr::GetInstance().GetPtr(L"OneHandSlashTwo.WAV")->Play(false);
+                IsSecondSlashSound = false;
+            }
             m_pOwner->IsSlash = true;
         }
         else
@@ -40,6 +45,11 @@ void PlayerBladeSlash::Process()
     {
         if (Montage(34, 52))
         {
+            if (IsFirstSlashSound)
+            {
+                LSoundMgr::GetInstance().GetPtr(L"OneHandSlashOne.WAV")->Play(false);
+                IsFirstSlashSound = false;
+            }
             m_pOwner->IsSlash = true;
         }
         else
@@ -67,6 +77,8 @@ void PlayerBladeSlash::Process()
         m_pOwner->IsResetBladeAttack = true;
         IsFirstClick = false;
         IsClick = false;
+        IsFirstSlashSound = true;
+        IsSecondSlashSound = true;
         m_CurrentCombo = ComboType::INWARD;
         m_pOwner->SetTransition(Event::FATALDAMAGE);
         return;
@@ -79,6 +91,8 @@ void PlayerBladeSlash::Process()
         IsClick = false;
         m_CurrentCombo = ComboType::INWARD;
         m_pOwner->IsTakeDammageAni = false;
+        IsFirstSlashSound = true;
+        IsSecondSlashSound = true;
         m_pOwner->SetTransition(Event::ENDATTACK);
         return;
     }

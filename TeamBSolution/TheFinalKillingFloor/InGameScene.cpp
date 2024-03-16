@@ -520,6 +520,11 @@ void InGameScene::SoundInit()
     LSoundMgr::GetInstance().Load(L"../../res/sound/headshot.mp3");
     LSoundMgr::GetInstance().Load(L"../../res/sound/killsound.mp3");
     LSoundMgr::GetInstance().Load(L"../../res/sound/soldierUlti.mp3");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/OneHandSlashOne.WAV");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/OneHandSlashTwo.WAV");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/TwoHandSlashOne.WAV");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/TwoHandSlashTwo.WAV");
+    LSoundMgr::GetInstance().Load(L"../../res/sound/BladeHitSound.mp3");
 }
 
 void InGameScene::CameraInit()

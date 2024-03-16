@@ -34,6 +34,7 @@ void TankRush::Process()
             }
             else
             {
+                LSoundMgr::GetInstance().GetPtr(L"BladeHitSound.mp3")->Play(false);
                 m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_SwordSpec.Damage * m_DamageRate;
             }
         }

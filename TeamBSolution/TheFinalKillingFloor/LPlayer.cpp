@@ -540,7 +540,6 @@ bool LPlayer::SwordFrame()
 	{
 		IsMove = true;
 		IsAttack = true;
-		//LSoundMgr::GetInstance().GetPtr(L"GunFire.wav")->PlayEffect();
 	}
 
 	if (LInput::GetInstance().m_MouseState[0] == KEY_UP)

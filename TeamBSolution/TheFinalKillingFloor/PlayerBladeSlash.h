@@ -5,6 +5,8 @@ class PlayerBladeSlash : public PlayerState
 public:
 	bool IsClick = false;
 	bool IsFirstClick = false;
+	bool IsFirstSlashSound = true;
+	bool IsSecondSlashSound = true;
 	ComboType m_CurrentCombo = ComboType::INWARD;
 public:
 	bool Montage(int startFrame, int endFrame);
