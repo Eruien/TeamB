@@ -9,7 +9,8 @@
 #include "PlayerRun.h"
 #include "PlayerAttack.h"
 #include "PlayerGunShoot.h"
-#include "PlayerBladeSlash.h"
+#include "PlayerOneHandSlash.h"
+#include "PlayerTwoHandSlash.h"
 #include "PlayerReload.h"
 #include "PlayerTakeDamage.h"
 #include "PlayerDeath.h"
@@ -35,7 +36,8 @@ void LPlayer::FSM(FSMType fsmType)
 	m_pActionList.insert(std::make_pair(State::CHARACTERRUSH, std::make_unique<PlayerRush>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERATTACK, std::make_unique<PlayerAttack>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERSHOOT, std::make_unique<PlayerGunShoot>(this)));
-	m_pActionList.insert(std::make_pair(State::CHARACTERBLADESLASH, std::make_unique<PlayerBladeSlash>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERONEHANDSLASH, std::make_unique<PlayerOneHandSlash>(this)));
+	m_pActionList.insert(std::make_pair(State::CHARACTERTWOHANDSLASH, std::make_unique<PlayerTwoHandSlash>(this)));
 
 	m_pActionList.insert(std::make_pair(State::CHARACTERRELOAD, std::make_unique<PlayerReload>(this)));
 	m_pActionList.insert(std::make_pair(State::CHARACTERTAKEDAMAGE, std::make_unique<PlayerTakeDamage>(this)));

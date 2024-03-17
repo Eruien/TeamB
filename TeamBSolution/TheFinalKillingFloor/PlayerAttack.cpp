@@ -13,7 +13,14 @@ void PlayerAttack::Process()
     }
     else if (m_pOwner->m_Type == PlayerType::SWORD)
     {
-        m_pOwner->SetTransition(Event::BLADESLASH);
+        if (m_pOwner->m_CurrentGun == WeaponState::ONEHANDSWORD)
+        {
+            m_pOwner->SetTransition(Event::BLADEONESLASH);
+        }
+        else if (m_pOwner->m_CurrentGun == WeaponState::TWOHANDSWORD)
+        {
+            m_pOwner->SetTransition(Event::BLADETWOSLASH);
+        }
     }
 }
 

@@ -166,13 +166,17 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="PlayerBladeSlash.cpp">
+    <ClCompile Include="PlayerOneHandSlash.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerGunShoot.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerRush.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleClass.cpp" />
+    <ClCompile Include="PlayerTwoHandSlash.cpp">
       <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -342,13 +346,17 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="PlayerBladeSlash.h">
+    <ClInclude Include="PlayerOneHandSlash.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerGunShoot.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerRush.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleClass.h" />
+    <ClInclude Include="PlayerTwoHandSlash.h">
       <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
