@@ -11,5 +11,7 @@ public:
 	TVector3 m_Forward = { 0,0,0 };
 	bool bTarget = false;
 	bool Frame() override;
+	float lifeTime = 3.f;
+	float lifeStart = 10.f;
 };
 

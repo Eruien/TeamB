@@ -1436,7 +1436,7 @@ void InGameScene::UpdateBulletModels()
             continue;
 
         m_RifleBulletList[i]->Frame();
-        if (m_RifleBulletList[i]->m_matControl._41 > 1000.f
+        /*if (m_RifleBulletList[i]->m_matControl._41 > 1000.f
             || m_RifleBulletList[i]->m_matControl._41 < -1000.f
             || m_RifleBulletList[i]->m_matControl._43 > 1000.f
             || m_RifleBulletList[i]->m_matControl._43 < -1000.f
@@ -1444,7 +1444,12 @@ void InGameScene::UpdateBulletModels()
             || m_RifleBulletList[i]->m_matControl._42 < m_CustomMap->GetHeight(m_RifleBulletList[i]->m_matControl._41, m_RifleBulletList[i]->m_matControl._43))
         {
             m_RifleBulletList[i]->bVisible = false;
-        }
+        }*/
+
+        m_RifleBulletList[i]->lifeStart += LGlobal::g_fSPF;
+        if (m_RifleBulletList[i]->lifeStart > m_RifleBulletList[i]->lifeTime)
+            m_RifleBulletList[i]->bVisible = false;
+
         for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
         {
             if (zombie->IsDead)
@@ -1480,11 +1485,14 @@ void InGameScene::UpdateBulletModels()
             {
                 continue;
             }
+            m_RifleBulletList[i]->lifeStart += LGlobal::g_fSPF;
+            if (m_RifleBulletList[i]->lifeStart > m_RifleBulletList[i]->lifeTime)
+                m_RifleBulletList[i]->bVisible = false;
             m_ShotgunBulletListArray[i][j]->Frame();
             m_ShotgunBulletListArray[i][j]->m_matControl._41 += m_ShotgunBulletListArray[i][j]->m_matControl.Forward().x * 100.f;
             m_ShotgunBulletListArray[i][j]->m_matControl._42 += m_ShotgunBulletListArray[i][j]->m_matControl.Forward().y * 100.f;
             m_ShotgunBulletListArray[i][j]->m_matControl._43 += m_ShotgunBulletListArray[i][j]->m_matControl.Forward().z * 100.f;
-            if (m_ShotgunBulletListArray[i][j]->m_matControl._41 > 1000.f
+            /*if (m_ShotgunBulletListArray[i][j]->m_matControl._41 > 1000.f
                 || m_ShotgunBulletListArray[i][j]->m_matControl._41 < -1000.f
                 || m_ShotgunBulletListArray[i][j]->m_matControl._43 > 1000.f
                 || m_ShotgunBulletListArray[i][j]->m_matControl._43 < -1000.f
@@ -1492,7 +1500,7 @@ void InGameScene::UpdateBulletModels()
                 || m_ShotgunBulletListArray[i][j]->m_matControl._42 < m_CustomMap->GetHeight(m_ShotgunBulletListArray[i][j]->m_matControl._41, m_ShotgunBulletListArray[i][j]->m_matControl._43))
             {
                 m_ShotgunBulletListArray[i][j]->bVisible = false;
-            }
+            }*/
             for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
             {
                 if (zombie->IsDead)
@@ -1689,7 +1697,7 @@ void InGameScene::ShootRifle()
     m_RifleBulletList[index]->m_matControl._43 = vTrans.z - forward.z * 10.f;
     m_RifleBulletList[index]->m_Forward = forward;
     m_RifleBulletList[index]->m_Forward.Normalize();
-
+    m_RifleBulletList[index]->lifeStart = 0.f;
     forward = LGlobal::g_pMainCamera->m_vTargetPos - LGlobal::g_pMainCamera->m_vCameraPos;
     forward.Normalize();
     m_RifleBulletList[index]->m_matControl.Forward(forward*0.2f);
@@ -1751,6 +1759,7 @@ void InGameScene::ShootShotgun()
         m_ShotgunBulletListArray[index][i]->m_matControl.Forward(direction);
         m_ShotgunBulletListArray[index][i]->m_matControl._41 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().x * LGlobal::g_PlayerModel->m_Gun->m_GunSpec.offset;
         m_ShotgunBulletListArray[index][i]->m_matControl._43 += m_ShotgunBulletListArray[index][i]->m_matControl.Forward().z * LGlobal::g_PlayerModel->m_Gun->m_GunSpec.offset;
+        m_RifleBulletList[index]->lifeStart = 0.f;
     }
 }
 void InGameScene::UpdateZombieAndTankModels()
