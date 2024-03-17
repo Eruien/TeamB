@@ -24,6 +24,7 @@
 #include "Bullet.h"
 
 
+#define GPLAYER LGlobal::g_PlayerModel
 const int g_iMaxLight = 1;
 
 struct SHADOW_CONSTANT_BUFFER

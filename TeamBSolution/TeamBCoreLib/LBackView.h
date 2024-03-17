@@ -1,5 +1,8 @@
+#pragma once
 #include "LCamera.h"
 #include "LModel.h"
+#include "LInput.h"
+#include "LGlobal.h"
 
 class LBackView : public LCamera
 {

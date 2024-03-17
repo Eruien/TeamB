@@ -1,6 +1,4 @@
 #include "LBackView.h"
-#include "LInput.h"
-#include "LGlobal.h"
 
 void LBackView::SetTarget(LModel* model)
 {
@@ -47,7 +45,8 @@ bool LBackView::Frame()
 	//std::memcpy(&matTemp, &xmInverse, sizeof(DirectX::XMMATRIX));
 	m_TargetModel->m_matControl = matTemp;
 
-	if (LINPUT.m_MouseState[1] > KEY_PUSH)
+	if (LINPUT.m_MouseState[1] > KEY_PUSH
+		&& m_TargetModel->m_Type == PlayerType::GUN)
 	{
 		// 카메라 추가 회전 45도
 		gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, DirectX::XMConvertToRadians(315), 0);

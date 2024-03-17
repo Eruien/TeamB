@@ -32,12 +32,14 @@ public:
 	ComPtr<ID3D11Buffer> m_pBoneArrayCB = nullptr;
 	TMatrix m_matControl;
 	std::wstring m_ParentBoneName;
+	PlayerType m_Type = PlayerType::GUN;
 public:
 	bool m_TimerStart = false;
 	bool m_TimerEnd = false;
 	bool bVisible = false;
 	float m_HP = 100.0f;
 	float m_AnimationRate = 1.0f;
+
 public:
 	virtual void SetAnimationArrayTexture();
 	virtual void SetAnimationArraySRV();

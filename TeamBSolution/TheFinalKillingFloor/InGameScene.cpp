@@ -63,7 +63,7 @@ void InGameScene::Process()
     FramePlayerModel();
     UpdateBulletModels(); // 총알 위치 업데이트
     UpdateZombieAndTankModels();
-    HandlePlayerCollisions();
+    HandlePlayerCollisions(); // 플레이어 충돌처리
     LimitPlayerMovement();
     LimitNpcMovement();
     UpdateGunModelPosition();
@@ -1807,7 +1807,6 @@ void InGameScene::HandlePlayerCollisions()
         float r = LGlobal::g_PlayerModel->m_fRadius + tree->m_fRadius;
         if (distance <= r)
         {
-            
             dir.Normalize();
             dir *= (r - distance);
             LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
@@ -1817,6 +1816,17 @@ void InGameScene::HandlePlayerCollisions()
 
     for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
     {
+        if (LGlobal::g_PlayerModel->IsRush == false)
+        {
+            zombie->IsTakeRushDamage = false;
+            zombie->IsFirstRushDamage = true;
+        }
+        if (GPLAYER->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBoxRightHand)
+            && zombie->m_CurrentState == State::ENEMYATTACK
+            && zombie->IsHitPlayer)
+        {
+            LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
         float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
         float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - zombie->m_matControl._42;
         float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
@@ -1826,6 +1836,20 @@ void InGameScene::HandlePlayerCollisions()
         float r = LGlobal::g_PlayerModel->m_fRadius + zombie->m_fRadius;
         if (distance <= r)
         {
+            if (GPLAYER->IsRush)
+            {
+                if (zombie->IsFirstRushDamage)
+                {
+                    zombie->IsTakeDamage = true;
+                    zombie->IsTakeRushDamage = true;
+                    zombie->IsFirstRushDamage = false;
+                }
+                TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                vNormal.Normalize();
+                vNormal.y = 0.5f;
+                zombie->m_Velocity = vNormal * 400;
+                zombie->IsOnAir = true;
+            }
             dir.Normalize();
             dir *= (r - distance);
 			LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
@@ -1835,6 +1859,11 @@ void InGameScene::HandlePlayerCollisions()
 
 	for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
 	{
+        if (LGlobal::g_PlayerModel->IsRush == false)
+        {
+            tank->IsTakeRushDamage = false;
+            tank->IsFirstRushDamage = true;
+        }
         float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - tank->m_matControl._41;
         float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - tank->m_matControl._42;
         float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - tank->m_matControl._43;
@@ -1848,20 +1877,33 @@ void InGameScene::HandlePlayerCollisions()
         {
             if (tank->IsRush)
             {
-                TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                TVector3 vNormal = { offsetX, 0.f, offsetZ };
                 vNormal.Normalize();
                 vNormal.y = 0.5f;
                 LGlobal::g_PlayerModel->m_Velocity = vNormal * 400;
                 LGlobal::g_PlayerModel->IsOnAir = true;
                 LGlobal::g_PlayerModel->IsTakeDamage = true;
+                GPLAYER->m_RushStart += 10.f;
             }
-            else
+            if (GPLAYER->IsRush)
             {
-                dir.Normalize();
-                dir *= (r - distance);
-                LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
-                LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+                if (tank->IsFirstRushDamage)
+                {
+                    tank->IsTakeDamage = true;
+                    tank->IsTakeRushDamage = true;
+                    tank->IsFirstRushDamage = false;
+                }
+                TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                vNormal.Normalize();
+                vNormal.y = 0.5f;
+                tank->m_Velocity = vNormal * 400;
+                tank->IsOnAir = true;
+                tank->m_RushStart += 10.f;
             }
+            dir.Normalize();
+            dir *= (r - distance);
+            LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+            LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
         }
 	}
 
