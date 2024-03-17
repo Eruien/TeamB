@@ -23,6 +23,8 @@ struct SwordSpec
 	float SlashDelay = 0.0f;
 	float defaultDamage = 0.0f;
 	float Damage = 0.0f;
+	float defaultRushDamage = 0.0f;
+	float RushDamage = 0.0f;
 	int DamageLevel = 0;
 	int MagazineLevel = 0;
 	int RPMLevel = 0;

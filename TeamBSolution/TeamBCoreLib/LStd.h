@@ -115,6 +115,7 @@ enum class WeaponState
 	ASSAULTRIFLE,
 	SHOTGUN,
 	ONEHANDSWORD,
+	TWOHANDSWORD,
 };
 
 enum class PlayerType

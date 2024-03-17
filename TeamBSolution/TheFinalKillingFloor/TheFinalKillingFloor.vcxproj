@@ -166,7 +166,7 @@
     <ClCompile Include="LSelect.cpp" />
     <ClCompile Include="ParticleClass.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
-    <ClCompile Include="PlayerBladeSlash.cpp" />
+    <ClCompile Include="PlayerOneHandSlash.cpp" />
     <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerGunShoot.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
@@ -174,6 +174,7 @@
     <ClCompile Include="PlayerRun.cpp" />
     <ClCompile Include="PlayerRush.cpp" />
     <ClCompile Include="PlayerTakeDamage.cpp" />
+    <ClCompile Include="PlayerTwoHandSlash.cpp" />
     <ClCompile Include="PlayerWalk.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="SelectScene.cpp" />
@@ -235,7 +236,7 @@
     <ClInclude Include="LSelect.h" />
     <ClInclude Include="ParticleClass.h" />
     <ClInclude Include="PlayerAttack.h" />
-    <ClInclude Include="PlayerBladeSlash.h" />
+    <ClInclude Include="PlayerOneHandSlash.h" />
     <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerGunShoot.h" />
     <ClInclude Include="PlayerIdle.h" />
@@ -243,6 +244,7 @@
     <ClInclude Include="PlayerRun.h" />
     <ClInclude Include="PlayerRush.h" />
     <ClInclude Include="PlayerTakeDamage.h" />
+    <ClInclude Include="PlayerTwoHandSlash.h" />
     <ClInclude Include="PlayerWalk.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="SelectScene.h" />

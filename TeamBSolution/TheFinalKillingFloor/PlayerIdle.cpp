@@ -29,6 +29,12 @@ void PlayerIdle::Process()
             return;
         }
     }
+
+    if (m_pOwner->IsRush)
+    {
+        m_pOwner->SetTransition(Event::USERUSH);
+        return;
+    }
    
     if (m_pOwner->IsAttack)
     {
@@ -63,6 +69,10 @@ void PlayerIdle::Process()
    else if (m_pOwner->m_CurrentGun == WeaponState::ONEHANDSWORD)
    {
        m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+   }
+   else if (m_pOwner->m_CurrentGun == WeaponState::TWOHANDSWORD)
+   {
+       m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Idle_Anim.fbx");
    }
 
 }
