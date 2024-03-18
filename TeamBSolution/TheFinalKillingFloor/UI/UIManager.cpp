@@ -442,6 +442,7 @@ void UIManager::ChangeScene(Event Scene)
        
         
         LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
+        LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play();
         for (auto obj : _objs)
         {
             obj->SetIsRender(false);
@@ -458,8 +459,9 @@ void UIManager::ChangeScene(Event Scene)
             UIManager::GetInstance().GetUIObject(L"T_Ammo")->SetIsRender(true);
             UIManager::GetInstance().GetUIObject(L"weaponUI")->SetIsRender(true);
             UIManager::GetInstance().GetUIObject(L"AmmoSlash")->SetIsRender(true);
+
             UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.CurrentAmmo);
-            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.defaultTotalAmmo);
+            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[LGlobal::g_PlayerModel->m_CurrentGun]->m_GunSpec.TotalAmmo);
         }
         else
         {
@@ -468,7 +470,8 @@ void UIManager::ChangeScene(Event Scene)
             UIManager::GetInstance().GetUIObject(L"T_Ammo")->SetIsRender(false);
             UIManager::GetInstance().GetUIObject(L"weaponUI")->SetIsRender(false);
             UIManager::GetInstance().GetUIObject(L"AmmoSlash")->SetIsRender(false);
-            UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/knife.png");
+            
+            
         }
         
 
@@ -487,6 +490,8 @@ void UIManager::ChangeScene(Event Scene)
     else if (Scene == Event::GOENDSCENE)
     {
         LInput::GetInstance().CursorChange();
+        LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Stop();
+        LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
         //UIManager::GetInstance().Load(L"EndScene.xml");
         for (auto obj : _objs)
         {

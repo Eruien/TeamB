@@ -1,6 +1,8 @@
 #pragma once
 #include "LModel.h"
 
+
+
 struct GunSpec
 {
 	float defaultShootDelay = 0.0f;

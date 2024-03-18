@@ -81,7 +81,8 @@ bool LWeaponMgr::UpgradeRPM(WeaponState weapon, int price, int MaxLevel)
 		LGlobal::g_PlayerModel->m_Money -= price;
 
 		m_map[weapon]->m_SwordSpec.RPMLevel += 1;
-		m_map[weapon]->m_SwordSpec.SlashSpeed = m_map[weapon]->m_SwordSpec.defaultSlashSpeed - ((0.1 * m_map[weapon]->m_SwordSpec.RPMLevel * m_map[weapon]->m_SwordSpec.defaultSlashSpeed));
+
+		m_map[weapon]->m_SwordSpec.SlashSpeed = m_map[weapon]->m_SwordSpec.defaultSlashSpeed + 0.15 * m_map[weapon]->m_SwordSpec.RPMLevel;
 	}
 
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);

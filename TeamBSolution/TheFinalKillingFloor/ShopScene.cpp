@@ -41,17 +41,21 @@ bool ShopScene::Init()
     }
     else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
-        UIManager::GetInstance().GetUIObject(L"T_Gun1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashSpeed)));
-        //UIManager::GetInstance().GetUIObject(L"T_Gun2_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::]->m_SwordSpec.SlashSpeed)));
 
-        UIManager::GetInstance().GetUIObject(L"T_Gun1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.Damage));
-       // UIManager::GetInstance().GetUIObject(L"T_Gun2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::]->m_SwordSpec.Damage));
+        UIManager::GetInstance().GetUIObject(L"T_Sword1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashSpeed)));
+        UIManager::GetInstance().GetUIObject(L"T_Sword2_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.SlashSpeed)));
+
+
+        UIManager::GetInstance().GetUIObject(L"T_Sword1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.Damage));
+        UIManager::GetInstance().GetUIObject(L"T_Sword2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.Damage));
         UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 
-        //bool hasSword = LWeaponMgr::GetInstance().m_map[WeaponState::]->m_SwordSpec.HasWeapon;
-        //UIManager::GetInstance().GetUIObject(L"Shop_Sword2_Purchase")->SetIsRender(!hasSword);
-        //UIManager::GetInstance().GetUIObject(L"Shop_Sword2_empty")->SetIsRender(!hasSword);
-        //UIManager::GetInstance().GetUIObject(L"T_Purchase_Sword2")->SetIsRender(!hasSword);
+
+
+        bool hasTwoHandSword = LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.HasWeapon;
+        UIManager::GetInstance().GetUIObject(L"Shop_Sword2_Purchase")->SetIsRender(!hasTwoHandSword);
+        UIManager::GetInstance().GetUIObject(L"Sword2_Icon_Empty")->SetIsRender(!hasTwoHandSword);
+        UIManager::GetInstance().GetUIObject(L"T_Purchase_Sword2")->SetIsRender(!hasTwoHandSword);
     }
     return true;
 }
@@ -73,6 +77,7 @@ void ShopScene::Process()
         {
             UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.TotalAmmo);
             UIManager::GetInstance().GetUIObject(L"T_Gun1_MAGAZINE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring(LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.TotalAmmo));
+
             if (LWeaponMgr::GetInstance().m_map[WeaponState::PISTOL]->m_GunSpec.MagazineLevel == 15)
             {
                 UIManager::GetInstance().GetUIObject(L"Gun1_MAGAZINE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
@@ -223,7 +228,7 @@ void ShopScene::Process()
 
         if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::ONEHANDSWORD, 100, 6))
         {
-            UIManager::GetInstance().GetUIObject(L"T_Sword1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashSpeed)));
+            UIManager::GetInstance().GetUIObject(L"T_Sword1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60*LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashSpeed)));
             if (LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.RPMLevel == 6)
             {
                 UIManager::GetInstance().GetUIObject(L"Sword1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
@@ -242,8 +247,47 @@ void ShopScene::Process()
             }
         }
     }
+    //SWORD2
+    if (UIManager::GetInstance().GetUIObject(L"B_Sword2_RPM")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
 
+        if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::TWOHANDSWORD, 100, 6))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Sword2_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 * LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.SlashSpeed)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.RPMLevel == 6)
+            {
+                UIManager::GetInstance().GetUIObject(L"Sword2_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+    if (UIManager::GetInstance().GetUIObject(L"B_Sword2_DAMAGE")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
 
+        if (LWeaponMgr::GetInstance().UpgradeDamage(WeaponState::TWOHANDSWORD, 100, 10))
+        {
+            UIManager::GetInstance().GetUIObject(L"T_Sword2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.Damage)));
+            if (LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.DamageLevel == 10)
+            {
+                UIManager::GetInstance().GetUIObject(L"Sword2_DAMAGE_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
+            }
+        }
+    }
+
+    if (UIManager::GetInstance().GetUIObject(L"Shop_Sword2_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+        UIManager::GetInstance().GetUIObject(L"Shop_Sword2_Purchase")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::NONE;
+        if (!LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.HasWeapon && LGlobal::g_PlayerModel->m_Money >= 500)
+        {
+            LGlobal::g_PlayerModel->m_Money -= 500;
+            UIManager::GetInstance().GetUIObject(L"Shop_Sword2_Purchase")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"Sword2_Icon_Empty")->SetIsRender(false);
+            UIManager::GetInstance().GetUIObject(L"T_Purchase_Sword2")->SetIsRender(false);
+            LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.HasWeapon = true;
+            UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+            UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+        }
+
+    }
 }
 
 void ShopScene::Release()

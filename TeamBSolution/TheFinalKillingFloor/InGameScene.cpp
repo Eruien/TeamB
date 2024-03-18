@@ -120,7 +120,7 @@ void InGameScene::Render()
     D3DXMatrixTranspose(&matInvWorld, &matInvWorld);
     D3DXMatrixTranspose(&m_cbLight2.g_matInvWorld[0], &matInvWorld);*/
 
-   /* m_cbLight2.g_vEyeDir[0].x = LGlobal::g_pMainCamera->m_vLook.x;
+   /* m_cbLight2.g_vEyeDir[0].x = LGlobal::g_pMainCamera->m_vLook.x; 
     m_cbLight2.g_vEyeDir[0].y = LGlobal::g_pMainCamera->m_vLook.y;
     m_cbLight2.g_vEyeDir[0].z = LGlobal::g_pMainCamera->m_vLook.z;*/
     //m_cbLight2.g_vEyeDir[0].w = 100.0f; // °­µµ
@@ -323,19 +323,8 @@ void InGameScene::Render()
     std::wstring textState = L"InGameScene";
     //LWrite::GetInstance().AddText(textState, 320.0f, 500.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
-    {
-        Release();
-        m_pOwner->SetTransition(Event::GOENDSCENE);
-        return;
-    }
 
-    if (LInput::GetInstance().m_KeyStateOld[DIK_ESCAPE] == KEY_PUSH)
-    {
-        Release();
-        m_pOwner->SetTransition(Event::GOMAINSCENE);
-        return;
-    }
+
     
 
     //UI
@@ -708,7 +697,12 @@ void InGameScene::ResetWeapon()
     oneHandSword->m_SwordSpec.SlashSpeed = oneHandSword->m_SwordSpec.defaultSlashSpeed;
     oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
     oneHandSword->m_SwordSpec.RushDamage = oneHandSword->m_SwordSpec.defaultRushDamage;
-
+    oneHandSword->m_SwordSpec.HasWeapon = false;
+    LWeapon* twoHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::TWOHANDSWORD);
+    twoHandSword->m_SwordSpec.SlashSpeed = twoHandSword->m_SwordSpec.defaultSlashSpeed;
+    twoHandSword->m_SwordSpec.Damage = twoHandSword->m_SwordSpec.defaultDamage;
+    twoHandSword->m_SwordSpec.RushDamage = twoHandSword->m_SwordSpec.defaultRushDamage;
+    twoHandSword->m_SwordSpec.HasWeapon = false;
     
 }
 

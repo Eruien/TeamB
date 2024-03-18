@@ -398,6 +398,7 @@ bool LPlayer::Frame()
 
 bool LPlayer::GunFrame()
 {
+
 	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH )
 	{
 		ItemChnge(WeaponState::PISTOL, 1);
@@ -532,10 +533,13 @@ bool LPlayer::SwordFrame()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_4] == KEY_PUSH)
 	{
 		ItemChnge(WeaponState::ONEHANDSWORD, 2);
+		UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/knife.png");
 	}
-	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH)
+	else if (LInput::GetInstance().m_KeyStateOld[DIK_5] == KEY_PUSH && LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.HasWeapon)
 	{
 		ItemChnge(WeaponState::TWOHANDSWORD, 3);
+		UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/machette.png");
+		
 	}
 	
 	if ((LInput::GetInstance().m_MouseState[0] >= KEY_PUSH))
