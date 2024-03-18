@@ -1480,7 +1480,7 @@ void InGameScene::UpdateBulletModels()
                 continue;
             if (zombie->m_OBBBox.IsSphereInBox(m_RifleBulletList[i]->GetPosition(), m_RifleBulletList[i]->m_fRadius))
             {
-                if (m_RifleBulletList[i]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
+                if (m_RifleBulletList[i]->m_matControl._42 > (zombie->m_matControl._42 + zombie->m_OBBBox.fTall * 0.85))
                 {
                     zombie->IsHeadShot = true;
                 }
@@ -1711,16 +1711,21 @@ void InGameScene::ShootRifle()
 {
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     m_RifleBulletList[index]->bVisible = true;
+    m_RifleBulletList[index]->bTarget = false;
     /*TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
     m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;*/
     TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();
     TVector3 forward = LGlobal::g_PlayerModel->m_matControl.Forward();
     //TVector3 right = LGlobal::g_PlayerModel->m_matControl.Right();
-    m_RifleBulletList[index]->m_matControl._41 = vTrans.x - forward.x * 10.f;
+    m_RifleBulletList[index]->m_matControl._41 = vTrans.x;// -forward.x * 10.f;
     m_RifleBulletList[index]->m_matControl._42 = vTrans.y;
-    m_RifleBulletList[index]->m_matControl._43 = vTrans.z - forward.z * 10.f;
+    m_RifleBulletList[index]->m_matControl._43 = vTrans.z;// -forward.z * 10.f;
     m_RifleBulletList[index]->m_Forward = forward;
     m_RifleBulletList[index]->m_Forward.Normalize();
+    m_RifleBulletList[index]->m_Forward += {0.f, 0.01f, 0.f};
+    TVector3 right = GPLAYER->m_matControl.Right();
+    right.Normalize();
+    m_RifleBulletList[index]->m_Forward -= right * 0.01f;
     m_RifleBulletList[index]->lifeStart = 0.f;
     forward = LGlobal::g_pMainCamera->m_vTargetPos - LGlobal::g_pMainCamera->m_vCameraPos;
     forward.Normalize();
