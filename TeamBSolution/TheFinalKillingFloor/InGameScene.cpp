@@ -35,10 +35,10 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
-    if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
+    /*if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
     {
         LGlobal::g_pMainCamera = m_BackViewCamera.get();
-    }
+    }*/
     //»óÁ¡Å°
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
@@ -569,9 +569,9 @@ void InGameScene::PlayerInit(PlayerType playerType)
     {
         LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
         LGlobal::g_PlayerModel->ItemChnge(WeaponState::TWOHANDSWORD, 3);
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 50.0f, 300.0f }, 1.0f);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 50.0f, 200.0f }, 1.0f);
         LGlobal::g_PlayerModel->ItemChnge(WeaponState::ONEHANDSWORD, 2);
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 100.0f }, 1.0f);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 150.0f, 100.0f }, 1.0f);
     }
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);

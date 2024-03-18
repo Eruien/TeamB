@@ -53,7 +53,7 @@ void PlayerOneHandSlash::Process()
     }
     else if (m_CurrentCombo == ComboType::INWARD)
     {
-        if (Montage(34, 52))
+        if (Montage(32, 38))
         {
             if (IsFirstSlashSound)
             {
