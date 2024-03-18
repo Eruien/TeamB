@@ -25,11 +25,11 @@ void TankTakeDamage::Process()
             if (m_pOwner->IsHeadShot)
             {
                 LSoundMgr::GetInstance().GetPtr(L"headshot.mp3")->PlayEffect();
-                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_DamageRate;
+                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_HeadShootRate * m_GunDamageRate;
             }
             else
             {
-                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_DamageRate;
+                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_GunSpec.Damage * m_GunDamageRate;
             }
         }
         else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
@@ -42,7 +42,7 @@ void TankTakeDamage::Process()
             else
             {
                 LSoundMgr::GetInstance().GetPtr(L"BladeHitSound.mp3")->Play(false);
-                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_SwordSpec.Damage * m_DamageRate;
+                m_pOwner->m_HP -= LGlobal::g_PlayerModel->m_Gun->m_SwordSpec.Damage * m_SwordDamageRate;
             }
         }
        

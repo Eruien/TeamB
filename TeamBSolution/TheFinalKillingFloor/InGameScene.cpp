@@ -35,10 +35,10 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
-    if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
+    /*if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
     {
         LGlobal::g_pMainCamera = m_BackViewCamera.get();
-    }
+    }*/
     //»óÁ¡Å°
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
@@ -569,9 +569,9 @@ void InGameScene::PlayerInit(PlayerType playerType)
     {
         LGlobal::g_PlayerModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"BladeMan.fbx");
         LGlobal::g_PlayerModel->ItemChnge(WeaponState::TWOHANDSWORD, 3);
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 50.0f, 300.0f }, 1.0f);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 50.0f, 200.0f }, 1.0f);
         LGlobal::g_PlayerModel->ItemChnge(WeaponState::ONEHANDSWORD, 2);
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 200.0f, 100.0f }, 1.0f);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->SetOBBBox({ -30.0f, 0.0f, 0.0f }, { 30.0f, 150.0f, 100.0f }, 1.0f);
     }
     LGlobal::g_PlayerModel->CreateBoneBuffer();
     LGlobal::g_PlayerModel->FSM(FSMType::PLAYER);
@@ -705,7 +705,7 @@ void InGameScene::ResetWeapon()
     shotgun->m_GunSpec.DamageLevel = 0;
     shotgun->m_GunSpec.RPMLevel = 0;
     LWeapon* oneHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::ONEHANDSWORD);
-    oneHandSword->m_SwordSpec.SlashDelay = oneHandSword->m_SwordSpec.defaultSlashDelay;
+    oneHandSword->m_SwordSpec.SlashSpeed = oneHandSword->m_SwordSpec.defaultSlashSpeed;
     oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
     oneHandSword->m_SwordSpec.RushDamage = oneHandSword->m_SwordSpec.defaultRushDamage;
 
@@ -939,8 +939,8 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> oneHandSword = std::make_shared<LWeapon>();
     oneHandSword->m_WeaponModel = std::make_shared<LModel>();
     oneHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"OneHandSword.fbx");
-    oneHandSword->m_SwordSpec.SlashDelay = 0.5;
-    oneHandSword->m_SwordSpec.defaultSlashDelay = 0.5;
+    oneHandSword->m_SwordSpec.SlashSpeed = 1.0;
+    oneHandSword->m_SwordSpec.defaultSlashSpeed = 1.0;
     oneHandSword->m_SwordSpec.Damage = 50.0f;
     oneHandSword->m_SwordSpec.defaultDamage = 50.0f;
     oneHandSword->m_SwordSpec.RushDamage = 30.0f;
@@ -949,8 +949,8 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> twoHandSword = std::make_shared<LWeapon>();
     twoHandSword->m_WeaponModel = std::make_shared<LModel>();
     twoHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"HeroBlade.fbx");
-    twoHandSword->m_SwordSpec.SlashDelay = 0.7;
-    twoHandSword->m_SwordSpec.defaultSlashDelay = 0.7;
+    twoHandSword->m_SwordSpec.SlashSpeed = 0.7;
+    twoHandSword->m_SwordSpec.defaultSlashSpeed = 0.7;
     twoHandSword->m_SwordSpec.Damage = 60.0f;
     twoHandSword->m_SwordSpec.defaultDamage = 60.0f;
     twoHandSword->m_SwordSpec.RushDamage = 30.0f;
@@ -1531,7 +1531,7 @@ void InGameScene::UpdateBulletModels()
 					continue;
                 if (zombie->m_OBBBox.IsSphereInBox(m_ShotgunBulletListArray[i][j]->GetPosition(), m_ShotgunBulletListArray[i][j]->m_fRadius))
                 {
-                    if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
+                    if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > ((zombie->m_matControl._42 + zombie->m_OBBBox.fTall) * 0.85))
                     {
                         zombie->IsHeadShot = true;
                     }

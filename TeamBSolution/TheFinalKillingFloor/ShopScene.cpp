@@ -41,8 +41,8 @@ bool ShopScene::Init()
     }
     else if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
-        UIManager::GetInstance().GetUIObject(L"T_Gun1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashDelay)));
-        //UIManager::GetInstance().GetUIObject(L"T_Gun2_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::]->m_SwordSpec.SlashDelay)));
+        UIManager::GetInstance().GetUIObject(L"T_Gun1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashSpeed)));
+        //UIManager::GetInstance().GetUIObject(L"T_Gun2_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::]->m_SwordSpec.SlashSpeed)));
 
         UIManager::GetInstance().GetUIObject(L"T_Gun1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.Damage));
        // UIManager::GetInstance().GetUIObject(L"T_Gun2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::]->m_SwordSpec.Damage));
@@ -223,7 +223,7 @@ void ShopScene::Process()
 
         if (LWeaponMgr::GetInstance().UpgradeRPM(WeaponState::ONEHANDSWORD, 100, 6))
         {
-            UIManager::GetInstance().GetUIObject(L"T_Sword1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashDelay)));
+            UIManager::GetInstance().GetUIObject(L"T_Sword1_RPM")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)(60 / LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.SlashSpeed)));
             if (LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.RPMLevel == 6)
             {
                 UIManager::GetInstance().GetUIObject(L"Sword1_RPM_price")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(L"MAX");
