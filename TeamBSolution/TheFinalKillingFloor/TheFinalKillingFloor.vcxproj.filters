@@ -179,6 +179,9 @@
     <ClCompile Include="PlayerTwoHandSlash.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="LTrail.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -359,6 +362,9 @@
     <ClInclude Include="PlayerTwoHandSlash.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="LTrail.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">
@@ -407,6 +413,9 @@
     </Filter>
     <Filter Include="Zombie">
       <UniqueIdentifier>{e43519e7-5785-45ac-a5bc-4a5717c88527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{e1f3ee26-b06b-430f-8759-b1262aa23b43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
