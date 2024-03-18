@@ -1480,7 +1480,7 @@ void InGameScene::UpdateBulletModels()
                 continue;
             if (zombie->m_OBBBox.IsSphereInBox(m_RifleBulletList[i]->GetPosition(), m_RifleBulletList[i]->m_fRadius))
             {
-                if (m_RifleBulletList[i]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
+                if (m_RifleBulletList[i]->m_matControl._42 > ((zombie->m_matControl._42 + zombie->m_OBBBox.fTall) * 0.85))
                 {
                     zombie->IsHeadShot = true;
                 }
@@ -1531,7 +1531,7 @@ void InGameScene::UpdateBulletModels()
 					continue;
                 if (zombie->m_OBBBox.IsSphereInBox(m_ShotgunBulletListArray[i][j]->GetPosition(), m_ShotgunBulletListArray[i][j]->m_fRadius))
                 {
-                    if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > (zombie->m_OBBBox.fTall * 0.85))
+                    if (m_ShotgunBulletListArray[i][j]->m_matControl._42 > ((zombie->m_matControl._42 + zombie->m_OBBBox.fTall) * 0.85))
                     {
                         zombie->IsHeadShot = true;
                     }
