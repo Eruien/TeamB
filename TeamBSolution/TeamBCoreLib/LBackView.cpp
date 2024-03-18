@@ -85,7 +85,7 @@ bool LBackView::Frame()
 
 		backView = m_TargetModel->m_matControl.Forward() * 200.f;
 		m_vCameraPos -= backView;
-		m_vCameraPos.y += 35.f;
+		m_vCameraPos.y += 38.f;
 	}
 	
 	if (m_vCameraPos.x < -990.0f)

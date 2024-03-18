@@ -1726,6 +1726,15 @@ void InGameScene::ShootRifle()
     TVector3 right = GPLAYER->m_matControl.Right();
     right.Normalize();
     m_RifleBulletList[index]->m_Forward -= right * 0.01f;
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
+    {
+        if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
+        {
+            m_RifleBulletList[index]->m_Forward = m_Select->m_vIntersection - m_RifleBulletList[index]->GetPosition();
+            m_RifleBulletList[index]->m_Forward.Normalize();
+        }
+
+    }
     m_RifleBulletList[index]->lifeStart = 0.f;
     forward = LGlobal::g_pMainCamera->m_vTargetPos - LGlobal::g_pMainCamera->m_vCameraPos;
     forward.Normalize();
