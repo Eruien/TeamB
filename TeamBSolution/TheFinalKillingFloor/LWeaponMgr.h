@@ -19,8 +19,8 @@ struct GunSpec
 
 struct SwordSpec
 {
-	float defaultSlashDelay = 0.0f;
-	float SlashDelay = 0.0f;
+	float defaultSlashSpeed = 0.0f;
+	float SlashSpeed = 0.0f;
 	float defaultDamage = 0.0f;
 	float Damage = 0.0f;
 	float defaultRushDamage = 0.0f;

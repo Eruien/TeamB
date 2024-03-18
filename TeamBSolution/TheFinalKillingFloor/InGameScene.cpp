@@ -705,7 +705,7 @@ void InGameScene::ResetWeapon()
     shotgun->m_GunSpec.DamageLevel = 0;
     shotgun->m_GunSpec.RPMLevel = 0;
     LWeapon* oneHandSword = LWeaponMgr::GetInstance().GetPtr(WeaponState::ONEHANDSWORD);
-    oneHandSword->m_SwordSpec.SlashDelay = oneHandSword->m_SwordSpec.defaultSlashDelay;
+    oneHandSword->m_SwordSpec.SlashSpeed = oneHandSword->m_SwordSpec.defaultSlashSpeed;
     oneHandSword->m_SwordSpec.Damage = oneHandSword->m_SwordSpec.defaultDamage;
     oneHandSword->m_SwordSpec.RushDamage = oneHandSword->m_SwordSpec.defaultRushDamage;
 
@@ -939,8 +939,8 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> oneHandSword = std::make_shared<LWeapon>();
     oneHandSword->m_WeaponModel = std::make_shared<LModel>();
     oneHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"OneHandSword.fbx");
-    oneHandSword->m_SwordSpec.SlashDelay = 0.5;
-    oneHandSword->m_SwordSpec.defaultSlashDelay = 0.5;
+    oneHandSword->m_SwordSpec.SlashSpeed = 1.0;
+    oneHandSword->m_SwordSpec.defaultSlashSpeed = 1.0;
     oneHandSword->m_SwordSpec.Damage = 50.0f;
     oneHandSword->m_SwordSpec.defaultDamage = 50.0f;
     oneHandSword->m_SwordSpec.RushDamage = 30.0f;
@@ -949,8 +949,8 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> twoHandSword = std::make_shared<LWeapon>();
     twoHandSword->m_WeaponModel = std::make_shared<LModel>();
     twoHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"HeroBlade.fbx");
-    twoHandSword->m_SwordSpec.SlashDelay = 0.7;
-    twoHandSword->m_SwordSpec.defaultSlashDelay = 0.7;
+    twoHandSword->m_SwordSpec.SlashSpeed = 0.5;
+    twoHandSword->m_SwordSpec.defaultSlashSpeed = 0.5;
     twoHandSword->m_SwordSpec.Damage = 60.0f;
     twoHandSword->m_SwordSpec.defaultDamage = 60.0f;
     twoHandSword->m_SwordSpec.RushDamage = 30.0f;

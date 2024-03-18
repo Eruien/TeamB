@@ -599,7 +599,6 @@ bool LPlayer::SwordFrame()
 	if (IsSteamPack)
 	{
 		m_SteamPackStart += LGlobal::g_fSPF;
-		m_Gun->m_SwordSpec.SlashDelay = m_Gun->m_SwordSpec.defaultSlashDelay * 0.5f;
 		m_AnimationRate = 1.5f;
 		float excleSpeed = m_Speed * 1.5;
 		m_Speed = excleSpeed;
@@ -607,7 +606,6 @@ bool LPlayer::SwordFrame()
 
 	if (m_SteamPackEnd < m_SteamPackStart)
 	{
-		m_Gun->m_SwordSpec.SlashDelay = m_Gun->m_SwordSpec.defaultSlashDelay;
 		m_SteamPackStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsSteamPack = false;
