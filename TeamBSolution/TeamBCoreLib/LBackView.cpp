@@ -71,7 +71,7 @@ bool LBackView::Frame()
 
 		backView = m_TargetModel->m_matControl.Forward() * 75.f;
 		m_vCameraPos -= backView;
-		m_vCameraPos.y += 35.f;
+		m_vCameraPos.y += 38.f;
 		m_vCameraPos.x -= m_TargetModel->m_matControl.Right().x * 33.3;
 		m_vCameraPos.z -= m_TargetModel->m_matControl.Right().z * 33.3;
 	}
@@ -85,7 +85,7 @@ bool LBackView::Frame()
 
 		backView = m_TargetModel->m_matControl.Forward() * 200.f;
 		m_vCameraPos -= backView;
-		m_vCameraPos.y += 40.f;
+		m_vCameraPos.y += 38.f;
 	}
 	
 	if (m_vCameraPos.x < -990.0f)
