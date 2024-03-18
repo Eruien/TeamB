@@ -161,6 +161,7 @@ public:
 	void ShootBullet();
 	void ShootRifle();
 	void ShootShotgun();
+	void AutoTargetBullet(TVector3 forward, int index, TVector3 thisPosition);
 	
 	void SwitchCameraView();
 	void UpdateCameraTargetPosition();
