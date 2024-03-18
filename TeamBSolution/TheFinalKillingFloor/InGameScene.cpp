@@ -949,8 +949,8 @@ void InGameScene::InitializeWeapon()
     std::shared_ptr<LWeapon> twoHandSword = std::make_shared<LWeapon>();
     twoHandSword->m_WeaponModel = std::make_shared<LModel>();
     twoHandSword->m_WeaponModel->m_pModel = LFbxMgr::GetInstance().GetPtr(L"HeroBlade.fbx");
-    twoHandSword->m_SwordSpec.SlashSpeed = 0.5;
-    twoHandSword->m_SwordSpec.defaultSlashSpeed = 0.5;
+    twoHandSword->m_SwordSpec.SlashSpeed = 0.7;
+    twoHandSword->m_SwordSpec.defaultSlashSpeed = 0.7;
     twoHandSword->m_SwordSpec.Damage = 60.0f;
     twoHandSword->m_SwordSpec.defaultDamage = 60.0f;
     twoHandSword->m_SwordSpec.RushDamage = 30.0f;

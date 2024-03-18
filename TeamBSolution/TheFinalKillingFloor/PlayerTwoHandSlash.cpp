@@ -19,8 +19,18 @@ bool PlayerTwoHandSlash::Init()
 
 void PlayerTwoHandSlash::Process()
 {
+    m_pOwner->m_AnimationRate = m_pOwner->m_Gun->m_SwordSpec.SlashSpeed;
+
     if (m_pOwner->IsRush)
     {
+        m_pOwner->m_AnimationRate = 1.0f;
+        m_pOwner->IsResetBladeAttack = true;
+        IsFirstClick = false;
+        IsClick = false;
+        m_CurrentCombo = ComboType::INWARD;
+        m_pOwner->IsTakeDammageAni = false;
+        IsFirstSlashSound = true;
+        IsSecondSlashSound = true;
         m_pOwner->SetTransition(Event::USERUSH);
         return;
     }
@@ -74,18 +84,21 @@ void PlayerTwoHandSlash::Process()
 
     if (m_pOwner->IsDeath)
     {
+        m_pOwner->m_AnimationRate = 1.0f;
         m_pOwner->IsResetBladeAttack = true;
         IsFirstClick = false;
         IsClick = false;
+        m_CurrentCombo = ComboType::INWARD;
+        m_pOwner->IsTakeDammageAni = false;
         IsFirstSlashSound = true;
         IsSecondSlashSound = true;
-        m_CurrentCombo = ComboType::INWARD;
         m_pOwner->SetTransition(Event::FATALDAMAGE);
         return;
     }
 
     if (m_pOwner->m_TimerEnd)
     {
+        m_pOwner->m_AnimationRate = 1.0f;
         m_pOwner->IsResetBladeAttack = true;
         IsFirstClick = false;
         IsClick = false;
