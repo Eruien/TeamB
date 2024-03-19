@@ -22,6 +22,7 @@
 #include <random>
 #include <chrono>
 #include "Bullet.h"
+#include "Blood3D.h"
 
 
 #define GPLAYER LGlobal::g_PlayerModel
@@ -60,6 +61,7 @@ public:
 	int BulletIndex = 0;
 	std::shared_ptr<LModel> m_Tree;
 	std::shared_ptr<LModel> m_MapModel = nullptr;
+	vector<shared_ptr<Blood3D>> m_BloodList;
 	
 	vector<shared_ptr<LModel>> m_WallList;
 	vector<shared_ptr<LModel>> m_TreeList;
@@ -74,6 +76,7 @@ public:
 	LFbxObj* grassObj = nullptr;
 	LFbxObj* kitObj = nullptr;
 	LFbxObj* ammoObj = nullptr;
+	LFbxObj* bloodObj = nullptr;
 
 	std::shared_ptr<ZombieWave> m_ZombieWave = nullptr;
 public:
@@ -110,6 +113,7 @@ public:
 	bool IsEndGame = false;
 public:
 	bool Init() override;
+	void InitializeBlood3D();
 	void Render() override;
 	void Process() override;
 	void Retry() override;

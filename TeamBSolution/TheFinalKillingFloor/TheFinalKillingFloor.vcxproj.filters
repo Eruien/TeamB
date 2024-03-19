@@ -182,6 +182,7 @@
     <ClCompile Include="LTrail.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Blood3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -365,6 +366,7 @@
     <ClInclude Include="LTrail.h">
       <Filter>Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Blood3D.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">

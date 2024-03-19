@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnchorUI.cpp" />
+    <ClCompile Include="Blood3D.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="EnemyAttack.cpp" />
@@ -216,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchorUI.h" />
+    <ClInclude Include="Blood3D.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="EnemyAttack.h" />

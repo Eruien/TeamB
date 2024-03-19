@@ -17,6 +17,8 @@ bool InGameScene::Init()
     InitializeSkyBox();
     InitializePlayerIcon();
     InitializeBloodSplatters();
+    InitializeBlood3D();
+
     InitializeMap();
     InitializeWalls();
     InitializeBullets();
@@ -32,6 +34,21 @@ bool InGameScene::Init()
     m_PlayerFirstSpawnPos = { LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43 };
 
     return true;
+}
+void InGameScene::InitializeBlood3D()
+{
+    m_BloodList.resize(30);
+    auto bloodObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/blood/blood.fbx", L"../../res/hlsl/LightShadowMap.hlsl");
+    for (int i = 0; i < m_BloodList.size(); ++i)
+    {
+        m_BloodList[i] = std::make_shared<Blood3D>();
+        m_BloodList[i]->bVisible = false;
+        m_BloodList[i]->SetLFbxObj(bloodObj);
+        m_BloodList[i]->CreateBoneBuffer();
+        DirectX::XMMATRIX scalingMatrix = DirectX::XMMatrixScaling(3.f, 3.f, 3.f);
+        m_BloodList[i]->m_matControl = scalingMatrix * LGlobal::g_PlayerModel->m_matControl;
+        m_BloodList[i]->m_fRadius = 3.f;
+    }
 }
 void InGameScene::Process()
 {
@@ -92,6 +109,14 @@ void InGameScene::Render()
     std::wstring fpsText = std::to_wstring(int(averageFPS));
     LWrite::GetInstance().AddText(fpsText, 10.0f, 10.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
+    
+    m_BloodList[0]->Render();
+
+    for (auto& blood : m_BloodList)
+    {
+        blood->bVisible = true;
+        blood->Render();
+    }
     //
     
     fLightStart += LGlobal::g_fSPF;
@@ -1335,7 +1360,7 @@ void InGameScene::InitializeItem()
 
 void InGameScene::ProcessBloodSplatter()
 {
-    for (auto obj : m_bloodSplatter)
+    for (auto& obj : m_bloodSplatter)
     {
         if (obj->GetIsRender())
         {
@@ -1369,6 +1394,41 @@ void InGameScene::ProcessBloodSplatter()
             }
         }
     }
+
+    m_BloodList[0]->bVisible = true;
+    m_BloodList[0]->SetPosition(GPLAYER->GetPosition() + LGlobal::g_PlayerModel->m_matControl.Forward() * 100.f);
+    for (auto& blood : m_BloodList)
+    {
+        
+        if (blood->bVisible)
+        {
+            /*TMatrix matRotation, matTrans, matScale, worldMat;
+			matScale = TMatrix::Identity;
+			D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
+			matRotation._41 = 0.0f;
+			matRotation._42 = 0.0f;
+			matRotation._43 = 0.0f;
+			matRotation._44 = 1.0f;
+			TVector3 foward;
+			foward = LGlobal::g_PlayerModel->m_matControl.Forward();
+			TVector3 vTrans = blood->GetPosition();
+			vTrans = vTrans + (foward * -180);
+            D3DXMatrixTranslation(&matTrans, vTrans.x, vTrans.y, vTrans.z);
+
+            D3DXMatrixScaling(&matScale, m_muzzleFlash->m_vScale.x,
+                m_muzzleFlash->m_vScale.y,
+                m_muzzleFlash->m_vScale.z
+            );
+            worldMat = matScale * matRotation * matTrans;*/
+
+            blood->Frame();
+            /*if (obj->GetScript<Animator>(L"Animator")->_currentKeyframeIndex == 16)
+            {
+                obj->SetIsRender(false);
+            }*/
+        }
+    }
+    
 }
 
 void InGameScene::CheckPlayerDeath()
