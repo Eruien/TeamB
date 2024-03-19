@@ -12,16 +12,19 @@ bool SelectScene::Init()
     InitializeModel();
     InitializeWeapon();
     InitializeLighting();
+    m_SwordTrail = new LTrail;
+    m_SwordTrail->Set();
+    m_SwordTrail->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/map/topdownmap.jpg");
     return false;
 }
 
 void SelectScene::Process()
 {
 
-    m_DebugCamera->m_vCameraPos = m_BindCameraPos;
+   /* m_DebugCamera->m_vCameraPos = m_BindCameraPos;
     m_DebugCamera->m_fCameraYaw = m_BindCameraYaw;
     m_DebugCamera->m_fCameraPitch = m_BindCameraPitch;
-    m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;
+    m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;*/
 
     m_CustomMap->Frame();
     m_GunMan->Frame();
@@ -31,13 +34,15 @@ void SelectScene::Process()
     FrameLight();
 
     UpdateOBB();
+
+    m_SwordTrail->Frame();
   
     if (LInput::GetInstance().m_MouseState[0])
     {
         if (m_Select.ChkOBBToRay(&m_GunMan->m_OBBBox.m_Box))
         {
             m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_Ironsights.fbx");
-            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Select_Idle_Anim.fbx");
+            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Idle_Anim.fbx");
             m_playerType = PlayerType::GUN;
            
         }
@@ -71,10 +76,10 @@ void SelectScene::FrameLight()
 
 void SelectScene::Render()
 {
-    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
+   /* LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SkyBox->Render();
-    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);*/
 
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
@@ -121,6 +126,30 @@ void SelectScene::Render()
     pBuffers[0] = m_pConstantBufferLight[0].Get();
     pBuffers[1] = m_pConstantBufferLight[1].Get();
     LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
+
+    if (LInput::GetInstance().m_KeyStateOld[DIK_4])
+    {
+        m_Height += 1;
+    }
+    else if (LInput::GetInstance().m_KeyStateOld[DIK_5])
+    {
+        m_Height -= 1;
+    }
+
+    TMatrix weaponPos;
+    weaponPos._11 = 30.0f;
+    weaponPos._22 = 30.0f;
+    weaponPos._33 = 30.0f;
+    
+    weaponPos *= m_OneHandSword->m_WeaponModel->m_matControl;
+   
+    TVector3 upPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_Height;
+    weaponPos._41 -= upPos.x;
+    weaponPos._42 -= upPos.y;
+    weaponPos._43 -= upPos.z;
+ 
+    m_SwordTrail->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    m_SwordTrail->Render();
     UIManager::GetInstance().Render();
 }
 
