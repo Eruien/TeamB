@@ -1454,6 +1454,14 @@ void InGameScene::UpdateBulletModels()
             continue;
 
         m_RifleBulletList[i]->Frame();
+        if (m_RifleBulletList[i]->target)
+        {
+            if (m_RifleBulletList[i]->target->IsDead)
+            {
+                TVector3 forward = m_RifleBulletList[i]->m_matControl.Forward();
+                AutoTargetBullet(forward, i, m_RifleBulletList[i]->GetPosition());
+            }
+        }
         /*if (m_RifleBulletList[i]->m_matControl._41 > 1000.f
             || m_RifleBulletList[i]->m_matControl._41 < -1000.f
             || m_RifleBulletList[i]->m_matControl._43 > 1000.f
@@ -1716,10 +1724,10 @@ void InGameScene::ShootRifle()
     m_RifleBulletList[index]->m_matControl._43 = vTrans.z;// -forward.z * 10.f;
     m_RifleBulletList[index]->m_Forward = forward;
     m_RifleBulletList[index]->m_Forward.Normalize();
-    m_RifleBulletList[index]->m_Forward += {0.f, 0.01f, 0.f};
+    //m_RifleBulletList[index]->m_Forward += {0.f, 0.01f, 0.f};
     TVector3 right = GPLAYER->m_matControl.Right();
     right.Normalize();
-    m_RifleBulletList[index]->m_Forward -= right * 0.01f;
+    //m_RifleBulletList[index]->m_Forward -= right * 0.01f;
     for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
     {
         if (m_Select->ChkOBBToRay(&zombie->m_OBBBox.m_Box))
@@ -1732,44 +1740,9 @@ void InGameScene::ShootRifle()
     m_RifleBulletList[index]->lifeStart = 0.f;
     forward = LGlobal::g_pMainCamera->m_vTargetPos - LGlobal::g_pMainCamera->m_vCameraPos;
     forward.Normalize();
-    m_RifleBulletList[index]->m_matControl.Forward(forward*0.2f);
+    m_RifleBulletList[index]->m_matControl.Forward(forward * 0.05f);
     if (LGlobal::g_PlayerModel->IsZedTime && m_RifleBulletList[index]->bTarget == false)
-    {
-        float fNear = 1000.f;
-        float distance;
-        TVector3 dir, playerPosition, zombiePos;
-        LNPC* target = nullptr;
-        playerPosition = LGlobal::g_PlayerModel->GetPosition();
-        for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
-        {
-            if (zombie->IsDead)
-                continue;
-            zombiePos = zombie->GetPosition();
-            dir = zombiePos - playerPosition;
-            distance = dir.Length();
-            // 캐릭터 정면 방향과 좀비 사이의 각도 계산
-            
-            dir.Normalize();
-            float dotProduct = forward.Dot(dir);
-            if (dotProduct < 0)
-                continue;
-            float angle = acos(dotProduct) * (180 / L_PI); // 라디안을 도로 변환
-            
-            if (angle <= 10)
-            {
-                if (fNear > distance)
-                {
-                    fNear = distance;
-                    target = zombie.get();
-                }
-            }
-        }
-        if (target == nullptr)
-            return;
-        m_RifleBulletList[index]->target = target;
-        m_RifleBulletList[index]->bTarget = true;
-    }
-
+        AutoTargetBullet(forward, index, LGlobal::g_PlayerModel->GetPosition());
 }
 void InGameScene::ShootShotgun()
 {
@@ -1980,6 +1953,45 @@ void InGameScene::LimitPlayerMovement()
 }
 
 
+
+void InGameScene::AutoTargetBullet(TVector3 forward, int index, TVector3 thisPosition)
+{
+    float fNear = 10000.f;
+    float distance;
+    TVector3 dir, zombiePos;
+    LNPC* target = nullptr;
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
+    {
+        if (zombie->IsDead)
+            continue;
+        zombiePos = zombie->GetPosition();
+        dir = zombiePos - thisPosition;
+        distance = dir.Length();
+        // 캐릭터 정면 방향과 좀비 사이의 각도 계산
+
+        dir.Normalize();
+        float dotProduct = forward.Dot(dir);
+        if (dotProduct < 0)
+            continue;
+        float angle = acos(dotProduct) * (180 / L_PI); // 라디안을 도로 변환
+
+        //if (angle <= 10)
+        //{
+            if (fNear > distance)
+            {
+                fNear = distance;
+                target = zombie.get();
+            }
+    }
+    if (target == nullptr)
+    {
+        m_RifleBulletList[index]->bTarget = false;
+        //m_RifleBulletList[index]->bVisible = false;
+        return;
+    }
+    m_RifleBulletList[index]->target = target;
+    m_RifleBulletList[index]->bTarget = true;
+}
 
 void InGameScene::LimitNpcMovement()
 {
