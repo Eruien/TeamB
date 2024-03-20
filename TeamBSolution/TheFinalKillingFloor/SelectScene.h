@@ -29,7 +29,7 @@ public:
 	int m_TrailVertexCount = 10;
 	int m_TimerCount = 0;
 	float m_TimerStart = 0.0;
-	float m_TimerEnd = 0.001;
+	float m_TimerEnd = 0.1;
 public:
 	// 처음 카메라 세팅
 	TVector3 m_BindCameraPos = { -28.948f, 51.073f, 99.283f };

@@ -50,7 +50,13 @@ float4 PS(VS_OUTPUT vIn) : SV_Target
 {
     float4 color = g_txDiffuse1.Sample(sample0, vIn.t);
     float redValue = color.r;
-    return float4(redValue, 0, 0, 0.5);
+    
+    if (redValue < 0.1)
+    {
+        discard;
+    }
+    return float4(redValue, 0, 0, 1.0);
+    //return color;
     
     //return vIn.c;
 }
