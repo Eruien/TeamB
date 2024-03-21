@@ -1454,7 +1454,7 @@ void InGameScene::InitializeTrail()
 {
     m_SwordTrail = new LTrail;
     m_SwordTrail->Set();
-    m_SwordTrail->Create(L"../../res/hlsl/SwordTrail.hlsl", L"../../res/map/topdownmap.jpg");
+    m_SwordTrail->Create(L"../../res/hlsl/SwordTrail.hlsl", L"../../res/Trail/T_SwipeTrail.png");
 }
 
 void InGameScene::ProcessBloodSplatter()
