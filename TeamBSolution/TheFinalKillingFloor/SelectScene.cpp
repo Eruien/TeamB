@@ -178,6 +178,12 @@ void SelectScene::Render()
 
     D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount].p, &LocalSwordLow, &m_OneHandSword->m_WeaponModel->m_matControl);
     D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount + 1].p, &LocalSwordHigh, &m_OneHandSword->m_WeaponModel->m_matControl);
+
+    for (int i = 0; i < m_TimerCount; i += 2)
+    {
+        m_SwordTrail->m_VertexList[i].t = { float(i) / float(m_TimerCount - 2), 0.0f };
+        m_SwordTrail->m_VertexList[i + 1].t = { float(i) / float(m_TimerCount - 2), 1.0f };
+    }
    
     if (m_TimerStart > m_TimerEnd)
     {
