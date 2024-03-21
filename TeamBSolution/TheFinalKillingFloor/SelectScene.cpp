@@ -162,9 +162,18 @@ void SelectScene::Render()
 
     m_TimerStart += LGlobal::g_fSPF;
 
-    if (m_TimerCount > 9)
+   
+
+    if (m_TimerCount > m_TrailVertexCount)
     {
-        m_TimerCount = 0;
+        int iRemoveCount = m_TimerCount / 4;
+        m_TimerCount -= iRemoveCount;
+
+        for (int i = 0; i < m_TimerCount; i += 2)
+        {
+            m_SwordTrail->m_VertexList[i].p = m_SwordTrail->m_VertexList[iRemoveCount + i].p;
+            m_SwordTrail->m_VertexList[i + 1].p = m_SwordTrail->m_VertexList[iRemoveCount + i + 1].p;
+        }
     }
 
     D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount].p, &LocalSwordLow, &m_OneHandSword->m_WeaponModel->m_matControl);
@@ -178,16 +187,6 @@ void SelectScene::Render()
         m_TimerCount += 2;
     }
 
-    int iRemoveCount = m_TimerCount / 4;
-    m_TimerCount -= iRemoveCount;
-    
-  
-    for (int i = 0; i < m_TimerCount; i += 2)
-    {
-        m_SwordTrail->m_VertexList[i].p = m_SwordTrail->m_VertexList[iRemoveCount + i].p;
-        m_SwordTrail->m_VertexList[i + 1].p = m_SwordTrail->m_VertexList[iRemoveCount + i + 1].p;
-    }
-       
     LGlobal::g_pImmediateContext->UpdateSubresource(m_SwordTrail->m_pVertexBuffer.Get(), 0, NULL, m_SwordTrail->m_VertexList.data(), 0, 0);
     UINT stride = sizeof(SimpleVertex);
     UINT offset = 0;

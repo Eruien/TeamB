@@ -26,7 +26,7 @@ public:
 	int m_TopHeight = 255;
 	TVector3 LocalSwordLow = { 0.0f, 0.0f, 0.0f };
 	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
-	int m_TrailVertexCount = 10;
+	int m_TrailVertexCount = 9;
 	int m_TimerCount = 0;
 	float m_TimerStart = 0.0;
 	float m_TimerEnd = 0.1;
