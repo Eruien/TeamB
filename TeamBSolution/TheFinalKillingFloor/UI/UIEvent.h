@@ -16,6 +16,7 @@ public:
 	void Render() override;
 public :
 	void HitPlayerEffect();
+	void RushEffect();
 	void CreateConstantBuffer();
 	void SteamPack();
 	void UpdatePlayerFace();

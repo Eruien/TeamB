@@ -9,6 +9,18 @@
             </Script>
         </Scripts>
     </UIObject>
+    <UIObject Name="RushEffect" isRender="false" Group="None" Scene="IngameScene.xml">
+        <Position x="0" y="0" z="0"/>
+        <Scale width="1270" height="720"/>
+        <Texture texPath="F:\GitRepository\TeamB\res\ui\dash.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+            <Script Type="UIEvent">
+                <args Function="RushEffect"/>
+            </Script>
+        </Scripts>
+    </UIObject>
     <UIObject Name="wp_background" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="461" y="-293" z="0"/>
         <Scale width="292" height="86"/>
@@ -152,9 +164,9 @@
         </Scripts>
     </UIObject>
     <UIObject Name="MinimapBg" isRender="true" Group="None" Scene="IngameScene.xml">
-        <Position x="-502" y="218" z="0"/>
-        <Scale width="270" height="270"/>
-        <Texture texPath="../../res/ui/Hud_Box_128x64.png"/>
+        <Position x="-500" y="220" z="0"/>
+        <Scale width="302" height="298"/>
+        <Texture texPath="F:\GitRepository\TeamB\res\ui\Window_Background.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>

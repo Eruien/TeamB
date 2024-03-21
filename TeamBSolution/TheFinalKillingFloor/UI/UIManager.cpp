@@ -473,7 +473,7 @@ void UIManager::ChangeScene(Event Scene)
             
             
         }
-        
+        UIManager::GetInstance().GetUIObject(L"RushEffect")->SetIsRender(false);
 
 
         if (LScene::GetInstance().GetState() != State::SHOPSCENE)

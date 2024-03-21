@@ -572,6 +572,8 @@ bool LPlayer::SwordFrame()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_X] == KEY_PUSH && IsUseRush)
 	{
 		IsRush = true;
+		UIManager::GetInstance().GetUIObject(L"RushEffect")->SetIsRender(true);
+		//UIManager::GetInstance().GetUIObject(L"RushEffect")->GetScript<UIEvent>(L"UIEvent")->isRend
 	}
 
 	if (!IsUseRush)
@@ -598,6 +600,7 @@ bool LPlayer::SwordFrame()
 		IsRush = false;
 		IsMove = true;
 		IsUseRush = false;
+		UIManager::GetInstance().GetUIObject(L"RushEffect")->SetIsRender(false);
 	}
 
 	if (IsSteamPack)

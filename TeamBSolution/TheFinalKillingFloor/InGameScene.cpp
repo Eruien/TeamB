@@ -329,12 +329,17 @@ void InGameScene::Render()
 
 
     
-
+    
     //UI
     UIManager::GetInstance().Render();
  
     m_ShapeMinimap.SetMatrix(NULL, NULL, NULL);
 
+    m_ShapeMinimap.PreRender();
+    {
+        LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_rtMinimap.m_pSRV.GetAddressOf());
+    }
+    m_ShapeMinimap.PostRender();
 
     //¹Ì´Ï¸Ê
     //
@@ -383,11 +388,7 @@ void InGameScene::Render()
         m_rtMinimap.End();
     }
 
-    m_ShapeMinimap.PreRender();
-   {
-       LGlobal::g_pImmediateContext->PSSetShaderResources(0, 1, m_rtMinimap.m_pSRV.GetAddressOf());
-   }
-   m_ShapeMinimap.PostRender();
+   
 
    Release();
 

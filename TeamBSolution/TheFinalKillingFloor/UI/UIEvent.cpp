@@ -9,6 +9,7 @@ UIEvent::UIEvent(wstring Function) : MonoBehaviour(L"UIEvent")
 
 	//프레임마다
 	_functionMapFrame[L"HitPlayerEffect"] = &UIEvent::HitPlayerEffect;
+	_functionMapFrame[L"RushEffect"] = &UIEvent::RushEffect;
 	_functionMapFrame[L"SteamPack"] = &UIEvent::SteamPack;
 
 
@@ -30,6 +31,11 @@ void UIEvent::Init()
 	if (_function == L"HitPlayerEffect")
 	{
 		GetGameObject()->Create(L"../../res/hlsl/Fade.hlsl", L"../../res/ui/GoreSplash.png");
+		CreateConstantBuffer();
+	}
+	if (_function == L"RushEffect")
+	{
+		GetGameObject()->Create(L"../../res/hlsl/Fade.hlsl", L"../../res/ui/dash.png");
 		CreateConstantBuffer();
 	}
 }
@@ -71,6 +77,37 @@ void UIEvent::HitPlayerEffect()
 
 		}
 	}
+}
+
+void UIEvent::RushEffect()
+{
+	
+	if (_cBuff == nullptr)
+	{
+		Init();
+	}
+	if (GetGameObject()->GetIsRender())
+	{
+
+		
+		data.alpha[0] = _CTime;
+
+		LGlobal::g_pImmediateContext->UpdateSubresource(_cBuff.Get(), 0, NULL, &data, 0, 0);
+		LGlobal::g_pImmediateContext->PSSetConstantBuffers(5, 1, _cBuff.GetAddressOf());
+		if (_CTime >= 1.f)
+		{
+			_CTime = 1.f; 
+			_duration = -_duration; 
+		}
+		else if (_CTime <= 0.f)
+		{
+			_CTime = 0.f; 
+			_duration = -_duration; 
+		}
+
+		_CTime += LGlobal::g_fSPF / (_duration*0.3);
+	}
+
 }
 
 void UIEvent::CreateConstantBuffer()
