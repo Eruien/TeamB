@@ -8,6 +8,7 @@
 #include "LWeaponMgr.h"
 #include "LSelect.h"
 #include "LTrail.h"
+#include "TestPlane.h"
 
 class SelectScene :public SceneState
 {

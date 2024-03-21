@@ -22,6 +22,7 @@
 #include <random>
 #include <chrono>
 #include "Bullet.h"
+#include "LTrail.h"
 
 
 #define GPLAYER LGlobal::g_PlayerModel
@@ -100,6 +101,21 @@ public:
 	SHADOW_CONSTANT_BUFFER m_CBmatShadow;
 	ComPtr<ID3D11Buffer> m_pCBShadow;
 public:
+	//Sword Trail
+	LTrail* m_SwordTrail = nullptr;
+	int m_Height = 78;
+	int m_TopHeight = 255;
+	TVector3 LocalSwordLow = { 0.0f, 0.0f, 0.0f };
+	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
+	int m_TrailVertexCount = 9;
+	int m_TimerCount = 0;
+	float m_TimerStart = 0.0;
+	float m_TimerEnd = 0.01;
+	int m_VertexCount = 0;
+	int m_iEndIndex = 9;
+	int m_iCatmullRomCount = 0;
+	int m_iCatmullRomIndex[4] = { 0, };
+public:
 	// Collision
 	LSelect* m_Select = nullptr;
 public:
@@ -141,6 +157,7 @@ public:
 	void InitializeWallPosition(std::shared_ptr<LModel>& wall, int i, int j);
 	void InitializeOBBBox();
 	void InitializeItem();
+	void InitializeTrail();
 
 	//Process Functions
 	
@@ -188,6 +205,7 @@ public:
 	void RenderShadow(TMatrix* matWorld, TMatrix* matShadow,
 		TMatrix* matView, TMatrix* matProj);
 	void CreateShadowConstantBuffer();
+	void RenderTrail();
 public:
 	InGameScene(LScene* parent);
 	virtual ~InGameScene();

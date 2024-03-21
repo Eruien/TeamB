@@ -35,7 +35,7 @@ void SelectScene::Process()
 
     UpdateOBB();
 
-    m_SwordTrail->Frame();
+    //m_SwordTrail->Frame();
   
     if (LInput::GetInstance().m_MouseState[0])
     {
@@ -136,71 +136,65 @@ void SelectScene::Render()
         m_Height -= 1;
     }
 
-    TMatrix weaponPos;
-    TMatrix weaponPosHeight;
-    weaponPos._11 = 30.0f;
-    weaponPos._22 = 30.0f;
-    weaponPos._33 = 30.0f;
-    
-    weaponPos *= m_OneHandSword->m_WeaponModel->m_matControl;
+    //TMatrix weaponPos;
+    //TMatrix weaponPosHeight;
+    //weaponPos._11 = 30.0f;
+    //weaponPos._22 = 30.0f;
+    //weaponPos._33 = 30.0f;
+    //
+    //weaponPos *= m_OneHandSword->m_WeaponModel->m_matControl;
    
-    TVector3 upPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_Height;
-    weaponPos._41 -= upPos.x;
-    weaponPos._42 -= upPos.y;
-    weaponPos._43 -= upPos.z;
+    //TVector3 upPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_Height;
+    //weaponPos._41 -= upPos.x;
+    //weaponPos._42 -= upPos.y;
+    //weaponPos._43 -= upPos.z;
 
-    TVector3 TopPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_TopHeight;
-    weaponPosHeight._41 -= TopPos.x;
-    weaponPosHeight._42 -= TopPos.y;
-    weaponPosHeight._43 -= TopPos.z;
-    
-   /* for (int i = 0; i < m_TrailVertexCount; i += 2)
-    {
-        m_SwordTrail->m_VertexList[i + 1].p = { weaponPos._41, weaponPos._42, weaponPos._43 };
-        m_SwordTrail->m_VertexList[i].p = { weaponPosHeight._41, weaponPosHeight._42, weaponPosHeight._43 };
-    }*/
-
-    m_TimerStart += LGlobal::g_fSPF;
+    //TVector3 TopPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_TopHeight;
+    //weaponPosHeight._41 -= TopPos.x;
+    //weaponPosHeight._42 -= TopPos.y;
+    //weaponPosHeight._43 -= TopPos.z;
+   
+    //m_TimerStart += LGlobal::g_fSPF;
 
    
 
-    if (m_TimerCount > m_TrailVertexCount)
-    {
-        int iRemoveCount = m_TimerCount / 4;
-        m_TimerCount -= iRemoveCount;
+    //if (m_TimerCount > m_TrailVertexCount)
+    //{
+    //    int iRemoveCount = m_TimerCount / 4;
+    //    m_TimerCount -= iRemoveCount;
 
-        for (int i = 0; i < m_TimerCount; i += 2)
-        {
-            m_SwordTrail->m_VertexList[i].p = m_SwordTrail->m_VertexList[iRemoveCount + i].p;
-            m_SwordTrail->m_VertexList[i + 1].p = m_SwordTrail->m_VertexList[iRemoveCount + i + 1].p;
-        }
-    }
+    //    for (int i = 0; i < m_TimerCount; i += 2)
+    //    {
+    //        m_SwordTrail->m_VertexList[i].p = m_SwordTrail->m_VertexList[iRemoveCount + i].p;
+    //        m_SwordTrail->m_VertexList[i + 1].p = m_SwordTrail->m_VertexList[iRemoveCount + i + 1].p;
+    //    }
+    //}
 
-    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount].p, &LocalSwordLow, &m_OneHandSword->m_WeaponModel->m_matControl);
-    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount + 1].p, &LocalSwordHigh, &m_OneHandSword->m_WeaponModel->m_matControl);
+    //D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount].p, &LocalSwordLow, &m_OneHandSword->m_WeaponModel->m_matControl);
+    //D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount + 1].p, &LocalSwordHigh, &m_OneHandSword->m_WeaponModel->m_matControl);
 
-    for (int i = 0; i < m_TimerCount; i += 2)
-    {
-        m_SwordTrail->m_VertexList[i].t = { float(i) / float(m_TimerCount - 2), 0.0f };
-        m_SwordTrail->m_VertexList[i + 1].t = { float(i) / float(m_TimerCount - 2), 1.0f };
-    }
+    //for (int i = 0; i < m_TimerCount; i += 2)
+    //{
+    //    m_SwordTrail->m_VertexList[i].t = { float(i) / float(m_TimerCount - 2), 0.0f };
+    //    m_SwordTrail->m_VertexList[i + 1].t = { float(i) / float(m_TimerCount - 2), 1.0f };
+    //}
    
-    if (m_TimerStart > m_TimerEnd)
-    {
-        m_TimerStart = 0.0f;
-        /* m_SwordTrail->m_VertexList[m_TimerCount].p *= { weaponPos._41, weaponPos._42, weaponPos._43 };
-         m_SwordTrail->m_VertexList[m_TimerCount + 1].p *= { weaponPosHeight._41, weaponPosHeight._42, weaponPosHeight._43};*/
-        m_TimerCount += 2;
-    }
+    //if (m_TimerStart > m_TimerEnd)
+    //{
+    //    m_TimerStart = 0.0f;
+    //    /* m_SwordTrail->m_VertexList[m_TimerCount].p *= { weaponPos._41, weaponPos._42, weaponPos._43 };
+    //     m_SwordTrail->m_VertexList[m_TimerCount + 1].p *= { weaponPosHeight._41, weaponPosHeight._42, weaponPosHeight._43};*/
+    //    m_TimerCount += 2;
+    //}
 
-    LGlobal::g_pImmediateContext->UpdateSubresource(m_SwordTrail->m_pVertexBuffer.Get(), 0, NULL, m_SwordTrail->m_VertexList.data(), 0, 0);
-    UINT stride = sizeof(SimpleVertex);
-    UINT offset = 0;
-    LGlobal::g_pImmediateContext->IASetVertexBuffers(0, 1, m_SwordTrail->m_pVertexBuffer.GetAddressOf(), &stride, &offset);
-    TMatrix swordTrailScale;
-    //D3DXMatrixScaling(&swordTrailScale, 0.2f, 0.2f, 0.2f);
-    m_SwordTrail->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_SwordTrail->Render();
+    //LGlobal::g_pImmediateContext->UpdateSubresource(m_SwordTrail->m_pVertexBuffer.Get(), 0, NULL, m_SwordTrail->m_VertexList.data(), 0, 0);
+    //UINT stride = sizeof(SimpleVertex);
+    //UINT offset = 0;
+    //LGlobal::g_pImmediateContext->IASetVertexBuffers(0, 1, m_SwordTrail->m_pVertexBuffer.GetAddressOf(), &stride, &offset);
+    //TMatrix swordTrailScale;
+    ////D3DXMatrixScaling(&swordTrailScale, 0.2f, 0.2f, 0.2f);
+    //m_SwordTrail->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    //m_SwordTrail->Render();
     UIManager::GetInstance().Render();
 }
 

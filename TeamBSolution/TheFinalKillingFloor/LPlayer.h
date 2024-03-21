@@ -22,9 +22,10 @@ public:
 class LPlayer : public LSkinningModel
 {
 public:
-	
 	State m_CurrentState = State::NONE;
 	WeaponState m_CurrentGun = WeaponState::PISTOL;
+	ComboType m_ComboType = ComboType::NONE;
+	int m_CurrentTrailFrame = 0;
 	LFiniteStateMachine* m_pFsm = nullptr;
 	PlayerState* m_pAction = nullptr;
 	LWeapon* m_Gun;

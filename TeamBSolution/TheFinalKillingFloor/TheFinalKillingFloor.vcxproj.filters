@@ -182,6 +182,9 @@
     <ClCompile Include="LTrail.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="TestPlane.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -363,6 +366,9 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="LTrail.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPlane.h">
       <Filter>Collision</Filter>
     </ClInclude>
   </ItemGroup>

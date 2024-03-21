@@ -53,8 +53,10 @@ void PlayerTwoHandSlash::Process()
     }
     else if (m_CurrentCombo == ComboType::INWARD)
     {
-        if (Montage(32, 38))
+        if (Montage(31, 40))
         {
+            m_pOwner->m_ComboType = ComboType::INWARD;
+            m_pOwner->m_CurrentTrailFrame = int(m_pOwner->m_fCurrentAnimTime) % 3;
             if (IsFirstSlashSound)
             {
                 LSoundMgr::GetInstance().GetPtr(L"OneHandSlashOne.WAV")->Play(false);
@@ -64,6 +66,7 @@ void PlayerTwoHandSlash::Process()
         }
         else
         {
+            m_pOwner->m_ComboType = ComboType::NONE;
             m_pOwner->IsSlash = false;
         }
     }

@@ -187,6 +187,7 @@
     <ClCompile Include="TankRush.cpp" />
     <ClCompile Include="TankTakeDamage.cpp" />
     <ClCompile Include="TankTrace.cpp" />
+    <ClCompile Include="TestPlane.cpp" />
     <ClCompile Include="UI\Animation.cpp" />
     <ClCompile Include="UI\Animator.cpp" />
     <ClCompile Include="UI\BillBoard.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="TankRush.h" />
     <ClInclude Include="TankTakeDamage.h" />
     <ClInclude Include="TankTrace.h" />
+    <ClInclude Include="TestPlane.h" />
     <ClInclude Include="UI\Animation.h" />
     <ClInclude Include="UI\Animator.h" />
     <ClInclude Include="UI\BillBoard.h" />
