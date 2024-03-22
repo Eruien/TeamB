@@ -919,7 +919,7 @@ void InGameScene::RenderTrail()
         m_VertexCount += 2;
     }
 
-    if (m_VertexCount > 2)
+    if (m_VertexCount > m_TrailCountSize)
     {
         m_VertexCount = 0;
     }
@@ -927,38 +927,16 @@ void InGameScene::RenderTrail()
     D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_VertexCount].p, &LocalSwordLow, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
     D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_VertexCount + 1].p, &LocalSwordHigh, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
 
-   
-    //if (LGlobal::g_PlayerModel->m_ComboType == ComboType::INWARD)
-    //{
-    //    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[LGlobal::g_PlayerModel->m_CurrentTrailFrame].p, &LocalSwordLow, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
-    //    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[LGlobal::g_PlayerModel->m_CurrentTrailFrame + 1].p, &LocalSwordHigh, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
-    //   /* for (int i = 0; i < LGlobal::g_PlayerModel->m_CurrentTrailFrame; i += 2)
-    //    {
-    //        m_SwordTrail->m_VertexList[i].t = { (float)i / float(LGlobal::g_PlayerModel->m_CurrentTrailFrame) - 2, 1.0f };
-    //        m_SwordTrail->m_VertexList[i + 1].t = { (float)i / float(LGlobal::g_PlayerModel->m_CurrentTrailFrame) - 2, 0.0f };
-    //    }*/
-    //}
-   
-   /* for (int i = 0; i < m_TimerCount; i += 2)
+    for (int i = 0; i < m_VertexCount; i += 2)
     {
-        m_SwordTrail->m_VertexList[i].t = { float(i) / float(m_TimerCount - 2), 0.0f };
-        m_SwordTrail->m_VertexList[i + 1].t = { float(i) / float(m_TimerCount - 2), 1.0f };
-    }*/
-
-    //if (m_TimerStart > m_TimerEnd)
-    //{
-    //    m_TimerStart = 0.0f;
-    //    /* m_SwordTrail->m_VertexList[m_TimerCount].p *= { weaponPos._41, weaponPos._42, weaponPos._43 };
-    //     m_SwordTrail->m_VertexList[m_TimerCount + 1].p *= { weaponPosHeight._41, weaponPosHeight._42, weaponPosHeight._43};*/
-    //    m_TimerCount += 2;
-    //}
+        m_SwordTrail->m_VertexList[i].t = { float(i) / (float(m_VertexCount) - 2), 0.0f };
+        m_SwordTrail->m_VertexList[i + 1].t = { float(i) / (float(m_VertexCount) - 2), 1.0f };
+    }
 
     LGlobal::g_pImmediateContext->UpdateSubresource(m_SwordTrail->m_pVertexBuffer.Get(), 0, NULL, m_SwordTrail->m_VertexList.data(), 0, 0);
     UINT stride = sizeof(SimpleVertex);
     UINT offset = 0;
     LGlobal::g_pImmediateContext->IASetVertexBuffers(0, 1, m_SwordTrail->m_pVertexBuffer.GetAddressOf(), &stride, &offset);
-    TMatrix swordTrailScale;
-    //D3DXMatrixScaling(&swordTrailScale, 0.2f, 0.2f, 0.2f);
     m_SwordTrail->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SwordTrail->Render();
 }
