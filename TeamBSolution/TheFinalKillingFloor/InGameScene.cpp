@@ -12,7 +12,7 @@
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
-
+    
     InitializeObjects();
     InitializeSkyBox();
     InitializePlayerIcon();
@@ -1017,7 +1017,8 @@ void InGameScene::InitializeSkyBox()
 {
     m_SkyBox = std::make_shared<LSkyBox>();
     m_SkyBox->Set();
-    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
+    //m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/grassenvmap1024.dds");
+    m_SkyBox->Create(L"../../res/hlsl/SkyBox.hlsl", L"../../res/sky/skycubemap2.dds");
 }
 
 void InGameScene::InitializePlayerIcon()
@@ -1919,9 +1920,9 @@ void InGameScene::HandlePlayerCollisions()
                 TVector3 vNormal = { offsetX, 0.f, offsetZ };
                 vNormal.Normalize();
                 vNormal.y = 0.5f;
-                LGlobal::g_PlayerModel->m_Velocity = vNormal * 400;
-                LGlobal::g_PlayerModel->IsOnAir = true;
-                LGlobal::g_PlayerModel->IsTakeDamage = true;
+                GPLAYER->m_Velocity = vNormal * 400;
+                GPLAYER->IsOnAir = true;
+                GPLAYER->IsTakeDamage = true;
                 GPLAYER->m_RushStart += 10.f;
             }
             if (GPLAYER->IsRush)
