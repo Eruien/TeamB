@@ -291,7 +291,7 @@
     <UIObject Name="Sword1_Icon" isRender="true" Group="None" Scene="Shop2.xml">
         <Position x="-312" y="167" z="0"/>
         <Scale width="250" height="250"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\knife.png"/>
+        <Texture texPath="../../res/ui/knife.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -300,7 +300,7 @@
     <UIObject Name="Sword2_Icon" isRender="true" Group="None" Scene="Shop2.xml">
         <Position x="270" y="165" z="0"/>
         <Scale width="250" height="250"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\machette.png"/>
+        <Texture texPath="../../res/ui/machette.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -309,7 +309,7 @@
     <UIObject Name="Sword2_Icon_Empty" isRender="true" Group="None" Scene="Shop2.xml">
         <Position x="270" y="165" z="0"/>
         <Scale width="250" height="250"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\machette_unselected.png"/>
+        <Texture texPath="../../res/ui/machette_unselected.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>

@@ -12,7 +12,7 @@
     <UIObject Name="RushEffect" isRender="false" Group="None" Scene="IngameScene.xml">
         <Position x="0" y="0" z="0"/>
         <Scale width="1270" height="720"/>
-        <Texture texPath="F:\GitRepository\TeamB\res\ui\dash.png"/>
+        <Texture texPath="../../res/ui/dash.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -166,7 +166,7 @@
     <UIObject Name="MinimapBg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-500" y="220" z="0"/>
         <Scale width="302" height="298"/>
-        <Texture texPath="F:\GitRepository\TeamB\res\ui\Window_Background.png"/>
+        <Texture texPath="../../res/ui/Window_Background.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -184,7 +184,7 @@
     <UIObject Name="EnemyCountBg" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-35" y="300" z="0"/>
         <Scale width="200" height="110"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\Hud_Box_128x64.png"/>
+        <Texture texPath="../../res/ui/Hud_Box_128x64.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -271,7 +271,7 @@
     <UIObject Name="Selected_Sword" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="455" y="-315" z="0"/>
         <Scale width="200" height="200"/>
-        <Texture texPath="C:\Users\kgca42095\Documents\GitHub\TeamB\res\ui\knife.png"/>
+        <Texture texPath="../../res/ui/knife.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
