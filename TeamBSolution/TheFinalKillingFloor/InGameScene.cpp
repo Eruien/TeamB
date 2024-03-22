@@ -208,7 +208,7 @@ void InGameScene::Render()
     RenderBullets();
     
 
-    RenderTrail();
+    InterpolRenderTrail();
 
     RenderItem();
 
@@ -851,94 +851,46 @@ void InGameScene::CreateShadowConstantBuffer()
 
 void InGameScene::RenderTrail()
 {
-    m_TimerStart += LGlobal::g_fSPF;
-
-  /*  if (m_TimerCount > m_TrailVertexCount)
+    if (LGlobal::g_PlayerModel->m_CurrentGun == WeaponState::ONEHANDSWORD)
     {
-        int iRemoveCount = m_TimerCount / 4;
-        m_TimerCount -= iRemoveCount;
-
-        for (int i = 0; i < m_TimerCount; i += 2)
+        if (LGlobal::g_PlayerModel->m_CurrentState == State::CHARACTERONEHANDSLASH)
         {
-            m_SwordTrail->m_VertexList[i].p = m_SwordTrail->m_VertexList[iRemoveCount + i].p;
-            m_SwordTrail->m_VertexList[i + 1].p = m_SwordTrail->m_VertexList[iRemoveCount + i + 1].p;
+            m_SwordTrail->RenderTrail(&m_OneHandSwordLow,
+                &m_OneHandSwordHigh,
+                &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
         }
-    }*/
-
-    //if (LGlobal::g_PlayerModel->m_ComboType == ComboType::INWARD)
-    //{
-    //    int m_iVtxCount = int(LGlobal::g_PlayerModel->m_CurrentTrailFrame);
-
-    //    if (m_iVtxCount <= 1)
-    //    {
-    //        m_iVtxCount = 2;
-    //    }
-
-    //    m_iEndIndex = m_iCatmullRomCount * 2 + m_iVtxCount;
-    //    m_iCatmullRomIndex[2] = m_iEndIndex - 2;
-    //    m_iCatmullRomIndex[3] = m_iEndIndex;
-
-    //    m_SwordTrail->m_VertexList[m_iEndIndex - 2].p = m_SwordTrail->m_VertexList[m_iVtxCount - 2].p;
-    //    m_SwordTrail->m_VertexList[m_iEndIndex - 1].p = m_SwordTrail->m_VertexList[m_iVtxCount - 1].p;
-    //    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_iEndIndex].p, &LocalSwordLow, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
-    //    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_iEndIndex + 1].p, &LocalSwordHigh, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
-
-    //    for (int i = 0; i < m_iCatmullRomCount; i++)
-    //    {
-    //        int index = i * 2 + m_iVtxCount - 2;
-    //        float fWeight = float(i + 1) / (m_iCatmullRomCount + 1);
-    //        D3DXVec3CatmullRom(&m_SwordTrail->m_VertexList[index].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[0]].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[1]].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[2]].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[3]].p,
-    //            fWeight);
-
-    //        D3DXVec3CatmullRom(&m_SwordTrail->m_VertexList[index + 1].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[0] + 1].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[1] + 1].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[2] + 1].p,
-    //            &m_SwordTrail->m_VertexList[m_iCatmullRomIndex[3] + 1].p,
-    //            fWeight);
-    //    }
-
-    //    m_iVtxCount = m_iEndIndex * 2;
-
-    //    m_iCatmullRomIndex[0] = m_iCatmullRomIndex[1];
-    //    m_iCatmullRomIndex[1] = m_iCatmullRomIndex[2];
-    //   /* for (int i = 0; i < LGlobal::g_PlayerModel->m_CurrentTrailFrame; i += 2)
-    //    {
-    //        m_SwordTrail->m_VertexList[i].t = { (float)i / float(LGlobal::g_PlayerModel->m_CurrentTrailFrame) - 2, 1.0f };
-    //        m_SwordTrail->m_VertexList[i + 1].t = { (float)i / float(LGlobal::g_PlayerModel->m_CurrentTrailFrame) - 2, 0.0f };
-    //    }*/
-    //}
-
-    if (m_TimerStart > m_TimerEnd)
-    {
-        m_TimerStart = 0.0f;
-        m_VertexCount += 2;
     }
-
-    if (m_VertexCount > m_TrailCountSize)
+    else if (LGlobal::g_PlayerModel->m_CurrentGun == WeaponState::TWOHANDSWORD)
     {
-        m_VertexCount = 0;
+        if (LGlobal::g_PlayerModel->m_CurrentState == State::CHARACTERTWOHANDSLASH)
+        {
+            m_SwordTrail->RenderTrail(&m_TwoHandSwordLow,
+                &m_TwoHandSwordHigh,
+                &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
+        }
     }
+}
 
-    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_VertexCount].p, &LocalSwordLow, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
-    D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_VertexCount + 1].p, &LocalSwordHigh, &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
-
-    for (int i = 0; i < m_VertexCount; i += 2)
+void InGameScene::InterpolRenderTrail()
+{
+    if (LGlobal::g_PlayerModel->m_CurrentGun == WeaponState::ONEHANDSWORD)
     {
-        m_SwordTrail->m_VertexList[i].t = { float(i) / (float(m_VertexCount) - 2), 0.0f };
-        m_SwordTrail->m_VertexList[i + 1].t = { float(i) / (float(m_VertexCount) - 2), 1.0f };
+        if (LGlobal::g_PlayerModel->m_CurrentState == State::CHARACTERONEHANDSLASH)
+        {
+            m_SwordTrail->InterpolRenderTrail(&m_OneHandSwordLow,
+                &m_OneHandSwordHigh,
+                &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
+        }
     }
-
-    LGlobal::g_pImmediateContext->UpdateSubresource(m_SwordTrail->m_pVertexBuffer.Get(), 0, NULL, m_SwordTrail->m_VertexList.data(), 0, 0);
-    UINT stride = sizeof(SimpleVertex);
-    UINT offset = 0;
-    LGlobal::g_pImmediateContext->IASetVertexBuffers(0, 1, m_SwordTrail->m_pVertexBuffer.GetAddressOf(), &stride, &offset);
-    m_SwordTrail->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_SwordTrail->Render();
+    else if (LGlobal::g_PlayerModel->m_CurrentGun == WeaponState::TWOHANDSWORD)
+    {
+        if (LGlobal::g_PlayerModel->m_CurrentState == State::CHARACTERTWOHANDSLASH)
+        {
+            m_SwordTrail->InterpolRenderTrail(&m_TwoHandSwordLow,
+                &m_TwoHandSwordHigh,
+                &LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_matControl);
+        }
+    }
 }
 
 InGameScene::InGameScene(LScene* parent) : SceneState(parent)
@@ -1433,7 +1385,10 @@ void InGameScene::InitializeTrail()
 {
     m_SwordTrail = new LTrail;
     m_SwordTrail->Set();
-    m_SwordTrail->Create(L"../../res/hlsl/SwordTrail.hlsl", L"../../res/Trail/T_SwipeTrail.png");
+    // Texture버전
+    m_SwordTrail->Create(L"../../res/hlsl/SwordTrailTexture.hlsl", L"../../res/Trail/T_SwipeTrail.png");
+    // VertexColor버전
+    //m_SwordTrail->Create(L"../../res/hlsl/SwordTrailVertexColor.hlsl", L"../../res/map/topdownmap.jpg");
 }
 
 void InGameScene::ProcessBloodSplatter()

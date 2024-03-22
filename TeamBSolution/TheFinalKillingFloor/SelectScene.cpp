@@ -12,19 +12,16 @@ bool SelectScene::Init()
     InitializeModel();
     InitializeWeapon();
     InitializeLighting();
-    m_SwordTrail = new LTrail;
-    m_SwordTrail->Set();
-    m_SwordTrail->Create(L"../../res/hlsl/SwordTrail.hlsl", L"../../res/Trail/T_SwipeTrail_M.png");
+    InitializeSwordTrail();
     return false;
 }
 
 void SelectScene::Process()
 {
-
-   /* m_DebugCamera->m_vCameraPos = m_BindCameraPos;
+    m_DebugCamera->m_vCameraPos = m_BindCameraPos;
     m_DebugCamera->m_fCameraYaw = m_BindCameraYaw;
     m_DebugCamera->m_fCameraPitch = m_BindCameraPitch;
-    m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;*/
+    m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;
 
     m_CustomMap->Frame();
     m_GunMan->Frame();
@@ -35,8 +32,6 @@ void SelectScene::Process()
 
     UpdateOBB();
 
-    //m_SwordTrail->Frame();
-  
     if (LInput::GetInstance().m_MouseState[0])
     {
         if (m_Select.ChkOBBToRay(&m_GunMan->m_OBBBox.m_Box))
@@ -44,15 +39,13 @@ void SelectScene::Process()
             m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Fire_Rifle_Ironsights.fbx");
             m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Idle_Anim.fbx");
             m_playerType = PlayerType::GUN;
-           
         }
 
         if (m_Select.ChkOBBToRay(&m_SwordMan->m_OBBBox.m_Box))
         {
-            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"OneHand_Inward.fbx");
+            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_FrontSlash.fbx");
             m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
-           m_playerType = PlayerType::SWORD;
-           
+            m_playerType = PlayerType::SWORD;
         }
     }
     UIManager::GetInstance().Frame();
@@ -76,10 +69,10 @@ void SelectScene::FrameLight()
 
 void SelectScene::Render()
 {
-   /* LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilStateDisable.Get(), 1);
     m_SkyBox->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_SkyBox->Render();
-    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);*/
+    LGlobal::g_pImmediateContext->OMSetDepthStencilState(LGlobal::g_pDepthStencilState.Get(), 1);
 
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
@@ -127,74 +120,7 @@ void SelectScene::Render()
     pBuffers[1] = m_pConstantBufferLight[1].Get();
     LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
 
-    if (LInput::GetInstance().m_KeyStateOld[DIK_4])
-    {
-        m_Height += 1;
-    }
-    else if (LInput::GetInstance().m_KeyStateOld[DIK_5])
-    {
-        m_Height -= 1;
-    }
-
-    //TMatrix weaponPos;
-    //TMatrix weaponPosHeight;
-    //weaponPos._11 = 30.0f;
-    //weaponPos._22 = 30.0f;
-    //weaponPos._33 = 30.0f;
-    //
-    //weaponPos *= m_OneHandSword->m_WeaponModel->m_matControl;
-   
-    //TVector3 upPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_Height;
-    //weaponPos._41 -= upPos.x;
-    //weaponPos._42 -= upPos.y;
-    //weaponPos._43 -= upPos.z;
-
-    //TVector3 TopPos = m_OneHandSword->m_WeaponModel->m_matControl.Forward() * m_TopHeight;
-    //weaponPosHeight._41 -= TopPos.x;
-    //weaponPosHeight._42 -= TopPos.y;
-    //weaponPosHeight._43 -= TopPos.z;
-   
-    //m_TimerStart += LGlobal::g_fSPF;
-
-   
-
-    //if (m_TimerCount > m_TrailVertexCount)
-    //{
-    //    int iRemoveCount = m_TimerCount / 4;
-    //    m_TimerCount -= iRemoveCount;
-
-    //    for (int i = 0; i < m_TimerCount; i += 2)
-    //    {
-    //        m_SwordTrail->m_VertexList[i].p = m_SwordTrail->m_VertexList[iRemoveCount + i].p;
-    //        m_SwordTrail->m_VertexList[i + 1].p = m_SwordTrail->m_VertexList[iRemoveCount + i + 1].p;
-    //    }
-    //}
-
-    //D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount].p, &LocalSwordLow, &m_OneHandSword->m_WeaponModel->m_matControl);
-    //D3DXVec3TransformCoord(&m_SwordTrail->m_VertexList[m_TimerCount + 1].p, &LocalSwordHigh, &m_OneHandSword->m_WeaponModel->m_matControl);
-
-    //for (int i = 0; i < m_TimerCount; i += 2)
-    //{
-    //    m_SwordTrail->m_VertexList[i].t = { float(i) / float(m_TimerCount - 2), 0.0f };
-    //    m_SwordTrail->m_VertexList[i + 1].t = { float(i) / float(m_TimerCount - 2), 1.0f };
-    //}
-   
-    //if (m_TimerStart > m_TimerEnd)
-    //{
-    //    m_TimerStart = 0.0f;
-    //    /* m_SwordTrail->m_VertexList[m_TimerCount].p *= { weaponPos._41, weaponPos._42, weaponPos._43 };
-    //     m_SwordTrail->m_VertexList[m_TimerCount + 1].p *= { weaponPosHeight._41, weaponPosHeight._42, weaponPosHeight._43};*/
-    //    m_TimerCount += 2;
-    //}
-
-    //LGlobal::g_pImmediateContext->UpdateSubresource(m_SwordTrail->m_pVertexBuffer.Get(), 0, NULL, m_SwordTrail->m_VertexList.data(), 0, 0);
-    //UINT stride = sizeof(SimpleVertex);
-    //UINT offset = 0;
-    //LGlobal::g_pImmediateContext->IASetVertexBuffers(0, 1, m_SwordTrail->m_pVertexBuffer.GetAddressOf(), &stride, &offset);
-    //TMatrix swordTrailScale;
-    ////D3DXMatrixScaling(&swordTrailScale, 0.2f, 0.2f, 0.2f);
-    //m_SwordTrail->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    //m_SwordTrail->Render();
+    InterpolRenderTrail();
     UIManager::GetInstance().Render();
 }
 
@@ -380,6 +306,16 @@ void SelectScene::InitializeLighting()
         120.0f);//외부
 }
 
+void SelectScene::InitializeSwordTrail()
+{
+    m_SwordTrail = new LTrail;
+    m_SwordTrail->Set();
+    // Texture버전
+    m_SwordTrail->Create(L"../../res/hlsl/SwordTrailTexture.hlsl", L"../../res/Trail/T_SwipeTrail.png");
+    // VertexColor버전
+    //m_SwordTrail->Create(L"../../res/hlsl/SwordTrailVertexColor.hlsl", L"../../res/map/topdownmap.jpg");
+}
+
 ID3D11Buffer* SelectScene::CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic)
 {
     HRESULT hr = S_OK;
@@ -432,6 +368,13 @@ void SelectScene::UpdateOBB()
         { m_SwordMan->m_OBBBox.m_matWorld._41,
             m_SwordMan->m_OBBBox.m_matWorld._42,
             m_SwordMan->m_OBBBox.m_matWorld._43 });
+}
+
+void SelectScene::InterpolRenderTrail()
+{
+    m_SwordTrail->InterpolRenderTrail(&LocalSwordLow,
+        &LocalSwordHigh, 
+        &m_OneHandSword->m_WeaponModel->m_matControl);
 }
 
 SelectScene::SelectScene(LScene* parent) : SceneState(parent)

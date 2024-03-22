@@ -103,19 +103,10 @@ public:
 public:
 	//Sword Trail
 	LTrail* m_SwordTrail = nullptr;
-	int m_Height = 78;
-	int m_TopHeight = 255;
-	TVector3 LocalSwordLow = { 0.0f, 0.0f, 0.0f };
-	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
-	int m_TrailVertexCount = 9;
-	int m_TrailCountSize = 11;
-	int m_TimerCount = 0;
-	float m_TimerStart = 0.0;
-	float m_TimerEnd = 0.01;
-	int m_VertexCount = 0;
-	int m_iEndIndex = 9;
-	int m_iCatmullRomCount = 0;
-	int m_iCatmullRomIndex[4] = { 0, };
+	TVector3 m_OneHandSwordLow = { 0.0f, 0.0f, 0.0f };
+	TVector3 m_OneHandSwordHigh = { 0.0f, 150.0f, 0.0f };
+	TVector3 m_TwoHandSwordLow = { 0.0f, 0.0f, 0.0f };
+	TVector3 m_TwoHandSwordHigh = { 0.0f, 0.0f, 255.0f };
 public:
 	// Collision
 	LSelect* m_Select = nullptr;
@@ -197,8 +188,6 @@ public:
 	void AdjustPlayerHeight();
 	void AdjustNpcHeight();
 	void RenderItem();
-	
-
 	void RenderBullets();
 public:
 	void NextWave();
@@ -207,6 +196,7 @@ public:
 		TMatrix* matView, TMatrix* matProj);
 	void CreateShadowConstantBuffer();
 	void RenderTrail();
+	void InterpolRenderTrail();
 public:
 	InGameScene(LScene* parent);
 	virtual ~InGameScene();

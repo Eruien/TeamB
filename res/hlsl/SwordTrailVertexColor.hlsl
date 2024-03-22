@@ -48,18 +48,5 @@ struct PS_IN
 };
 float4 PS(VS_OUTPUT vIn) : SV_Target
 {
-    
-    float4 color = g_txDiffuse1.Sample(sample0, vIn.t);
-    float redValue = color.r;
-    
-    if (redValue < 0.1)
-    {
-        discard;
-    }
-    return float4(redValue, 0, 0, 0.6);
-    //return color;
-    //return float4(1.0, 1.0, 1.0, 0.3);
-    //return vIn.c;
-    
-    //return color;
+    return float4(0.5, 0.5, 0.5, 0.3);
 }
