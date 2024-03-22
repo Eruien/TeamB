@@ -407,7 +407,7 @@ void InGameScene::Render()
 
 void InGameScene::Retry()
 {
-    LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play(true);
+    
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();

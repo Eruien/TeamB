@@ -3,8 +3,18 @@
 #include "LInput.h"
 #include "LWrite.h"
 #include "UIManager.h"
+#include "LPlayer.h"
 bool EndScene::Init()
 {
+    if (LGlobal::g_PlayerModel->IsDeath)
+    {
+        UIManager::GetInstance().GetUIObject(L"Eng_Bg")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/End2.png");
+    }
+    else 
+    {
+        UIManager::GetInstance().GetUIObject(L"Eng_Bg")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/End1.png");
+    }
+    
     return true;
 }
 

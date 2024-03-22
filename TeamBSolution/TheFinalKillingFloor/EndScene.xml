@@ -1,8 +1,8 @@
 <UIScene SceneName="EndScene.xml">
-    <UIObject Name="Bg" isRender="true" Group="None" Scene="EndScene.xml">
+    <UIObject Name="Eng_Bg" isRender="true" Group="None" Scene="EndScene.xml">
         <Position x="0" y="0" z="0"/>
         <Scale width="1280" height="720"/>
-        <Texture texPath="../../res\ui\End.png"/>
+        <Texture texPath="../../res/ui/End1.png"/>
         <Scripts>
             <Script Type="ChangeTexture"/>
         </Scripts>
