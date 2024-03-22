@@ -22,15 +22,10 @@ public:
 	std::shared_ptr<LWeapon> m_OneHandSword = nullptr;
 	LSelect m_Select;
 	PlayerType m_playerType = PlayerType::GUN;
+	// SwordTrail
 	LTrail* m_SwordTrail = nullptr;
-	int m_Height = 78;
-	int m_TopHeight = 255;
 	TVector3 LocalSwordLow = { 0.0f, 0.0f, 0.0f };
 	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
-	int m_TrailVertexCount = 9;
-	int m_TimerCount = 0;
-	float m_TimerStart = 0.0;
-	float m_TimerEnd = 0.1;
 public:
 	// 처음 카메라 세팅
 	TVector3 m_BindCameraPos = { -28.948f, 51.073f, 99.283f };
@@ -62,8 +57,10 @@ public:
 	void InitializeWeapon();
 	void UpdateWeaponPosition();
 	void InitializeLighting();
+	void InitializeSwordTrail();
 	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic = false);
 	void UpdateOBB();
+	void InterpolRenderTrail();
 public:
 	SelectScene(LScene* parent);
 	virtual ~SelectScene();

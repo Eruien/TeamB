@@ -55,7 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7
 		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl
 		..\res\hlsl\ShadowMap.hlsl = ..\res\hlsl\ShadowMap.hlsl
 		..\res\hlsl\SkyBox.hlsl = ..\res\hlsl\SkyBox.hlsl
-		..\res\hlsl\SwordTrail.hlsl = ..\res\hlsl\SwordTrail.hlsl
+		..\res\hlsl\SwordTrailTexture.hlsl = ..\res\hlsl\SwordTrailTexture.hlsl
+		..\res\hlsl\SwordTrailVertexColor.hlsl = ..\res\hlsl\SwordTrailVertexColor.hlsl
 		..\res\hlsl\TransparentBox.hlsl = ..\res\hlsl\TransparentBox.hlsl
 	EndProjectSection
 EndProject
