@@ -41,6 +41,7 @@ void PlayerOneHandSlash::Process()
         {
             if (IsSecondSlashSound)
             {
+                m_pOwner->m_ComboType = ComboType::OUTWARD;
                 LSoundMgr::GetInstance().GetPtr(L"OneHandSlashTwo.WAV")->Play(false);
                 IsSecondSlashSound = false;
             }
@@ -48,6 +49,7 @@ void PlayerOneHandSlash::Process()
         }
         else
         {
+            m_pOwner->m_ComboType = ComboType::NONE;
             m_pOwner->IsSlash = false;
         }
     }
@@ -57,6 +59,7 @@ void PlayerOneHandSlash::Process()
         {
             if (IsFirstSlashSound)
             {
+                m_pOwner->m_ComboType = ComboType::INWARD;
                 LSoundMgr::GetInstance().GetPtr(L"OneHandSlashOne.WAV")->Play(false);
                 IsFirstSlashSound = false;
             }
@@ -64,6 +67,7 @@ void PlayerOneHandSlash::Process()
         }
         else
         {
+            m_pOwner->m_ComboType = ComboType::NONE;
             m_pOwner->IsSlash = false;
         }
     }

@@ -41,6 +41,7 @@ void PlayerTwoHandSlash::Process()
         {
             if (IsSecondSlashSound)
             {
+                m_pOwner->m_ComboType = ComboType::OUTWARD;
                 LSoundMgr::GetInstance().GetPtr(L"OneHandSlashTwo.WAV")->Play(false);
                 IsSecondSlashSound = false;
             }
@@ -48,6 +49,7 @@ void PlayerTwoHandSlash::Process()
         }
         else
         {
+            m_pOwner->m_ComboType = ComboType::NONE;
             m_pOwner->IsSlash = false;
         }
     }

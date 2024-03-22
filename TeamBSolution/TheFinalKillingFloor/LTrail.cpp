@@ -45,6 +45,8 @@ void LTrail::InterpolRenderTrail(TVector3* localSwordLow, TVector3* localSwordHi
 
     if (m_iVertexCount > m_iTrailCountSize)
     {
+        m_VertexList.clear();
+        m_VertexList.resize(m_iTrailVertexSize);
         m_iVertexCount = 0;
     }
 
@@ -81,14 +83,14 @@ void LTrail::InterpolRenderTrail(TVector3* localSwordLow, TVector3* localSwordHi
 
     for (int i = 0; i < 1; i++)
     {
-        D3DXVec3CatmullRom(&m_VertexList[i].p,
+        D3DXVec3CatmullRom(&m_VertexList[m_iVertexCount].p,
             &m_VertexList[m_iCatmullRomIndex[0]].p,
             &m_VertexList[m_iCatmullRomIndex[1]].p,
             &m_VertexList[m_iCatmullRomIndex[2]].p,
             &m_VertexList[m_iCatmullRomIndex[3]].p,
             0.5);
 
-        D3DXVec3CatmullRom(&m_VertexList[i + 1].p,
+        D3DXVec3CatmullRom(&m_VertexList[m_iVertexCount + 1].p,
             &m_VertexList[m_iCatmullRomIndex[0] + 1].p,
             &m_VertexList[m_iCatmullRomIndex[1] + 1].p,
             &m_VertexList[m_iCatmullRomIndex[2] + 1].p,
