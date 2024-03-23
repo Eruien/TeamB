@@ -14,6 +14,8 @@ bool LBackView::Init()
 
 bool LBackView::Frame()
 {
+	if (m_TargetModel == nullptr)
+		return false;
 	//m_ModelMatrix = m_TargetModel->m_matControl;
 	float x = LInput::GetInstance().m_vOffset.x;
 	float y = LInput::GetInstance().m_vOffset.y;

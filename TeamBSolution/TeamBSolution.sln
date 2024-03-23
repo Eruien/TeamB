@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34607.119
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34601.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TeamBSample", "TeamBSample", "{EEE8872F-3041-4F99-8A24-4BA51554F68E}"
 EndProject
@@ -53,6 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shader", "shader", "{8B47D7
 		..\res\hlsl\ObjectInstancing.hlsl = ..\res\hlsl\ObjectInstancing.hlsl
 		..\res\hlsl\ProjShadow.hlsl = ..\res\hlsl\ProjShadow.hlsl
 		..\res\hlsl\PVShader.hlsl = ..\res\hlsl\PVShader.hlsl
+		..\res\hlsl\rain.fx = ..\res\hlsl\rain.fx
 		..\res\hlsl\ShadowMap.hlsl = ..\res\hlsl\ShadowMap.hlsl
 		..\res\hlsl\SkyBox.hlsl = ..\res\hlsl\SkyBox.hlsl
 		..\res\hlsl\SwordTrailTexture.hlsl = ..\res\hlsl\SwordTrailTexture.hlsl

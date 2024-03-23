@@ -72,6 +72,8 @@ bool LFSMMgr::Init()
 	std::unique_ptr<LFiniteStateMachine> sceneFSM = std::make_unique<LFiniteStateMachine>();
 
 
+	sceneFSM->AddStateTransition(State::LOADSCENE, Event::GOMAINSCENE, State::MAINSCENE);
+
 	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOINGAMESCENE, State::INGAMESCENE);
 	sceneFSM->AddStateTransition(State::MAINSCENE, Event::GOSELECTSCENE, State::SELECTSCENE);
 

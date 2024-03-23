@@ -148,14 +148,16 @@ bool LCore::EngineInit()
     m_pDefaultCamera = std::make_shared<LCamera>();
     m_pDefaultCamera->Init();
     m_pDefaultCamera->CreateLookAt({ 0.0f, 600.0f, -300.0f }, { 0.0f, 0.0f, 1.0f });
+    //투영 행렬
     m_pDefaultCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
+    
 
     LGlobal::g_pMainCamera = m_pDefaultCamera.get();
 
     m_pDefaultUICamera = std::make_shared<UICamera>();
     m_pDefaultUICamera->CreateLookAt({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
     m_pDefaultUICamera->m_fCameraPitch = 0.0f;
-    m_pDefaultUICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, -1, 1);
+    m_pDefaultUICamera->CreateOrthographic((float)LGlobal::g_WindowWidth, (float)LGlobal::g_WindowHeight, -1, 1); // 직교투영행렬
 
     LGlobal::g_pUICamera = m_pDefaultUICamera.get();
 

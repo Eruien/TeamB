@@ -5,7 +5,7 @@ TMatrix LCamera::CreateLookAt(TVector3 vPosition, TVector3 vTarget, TVector3 vUp
     m_vTargetPos = vTarget;
     m_vCameraPos = vPosition;
 
-    TVector3 vDirection = vTarget - vPosition;
+    TVector3 vDirection = vTarget - vPosition;      // 
     D3DXVec3Normalize(&vDirection, &vDirection);
     float fDot = D3DXVec3Dot(&vUp, &vDirection);
     TVector3 vC = vDirection * fDot;

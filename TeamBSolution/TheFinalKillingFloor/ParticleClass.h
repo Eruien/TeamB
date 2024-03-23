@@ -23,9 +23,6 @@ int totalAnimationValues = 0;
 class ParticleClass
 {
 	
-
-
-
 	void InitializeRainEffect(ID3D11Device* pd3dDevice);
 	void RenderRain(ID3D11DeviceContext* pd3dImmediateContext);
 };

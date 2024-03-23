@@ -1,5 +1,6 @@
 #pragma once
 #include "LFSMMgr.h"
+#include <thread>
 
 class LScene;
 
@@ -40,6 +41,8 @@ public:
 	bool Init();
 	bool Frame();
 	bool Release();
+
+	void InitThread();
 public:
 	LScene();
 	virtual ~LScene();

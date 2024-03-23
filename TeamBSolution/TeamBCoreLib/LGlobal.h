@@ -22,8 +22,11 @@ public:
 	static ComPtr<IDXGISwapChain> g_pSwapChain;
 	static ComPtr<ID3D11DepthStencilState> g_pDepthStencilState;
 	static ComPtr<ID3D11DepthStencilState> g_pDepthStencilStateDisable;
+	static ComPtr<ID3D11Buffer> g_pSOBuffer;
+
 	static float g_fSPF;
 	static float g_fGameTimer;
+	static bool g_IsLoding;
 	static LCamera* g_pMainCamera;
 	static UICamera* g_pUICamera;
 	static LPlayer* g_PlayerModel;

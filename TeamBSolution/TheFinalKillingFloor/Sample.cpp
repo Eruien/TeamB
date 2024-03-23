@@ -6,6 +6,7 @@ bool Sample::Init()
 {
 
 	UIManager::GetInstance().Load(L"MainScene.xml");
+	UIManager::GetInstance().Load(L"LoadScene.xml");
 	UIManager::GetInstance().Load(L"SelectScene.xml");
 	UIManager::GetInstance().Load(L"IngameScene.xml");
 	UIManager::GetInstance().Load(L"EndScene.xml");

@@ -185,6 +185,9 @@
     <ClCompile Include="TestPlane.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="LoadScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="TestPlane.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -157,6 +157,7 @@
     <ClCompile Include="LAnimationIO.cpp" />
     <ClCompile Include="LCharacterIO.cpp" />
     <ClCompile Include="LExportIO.cpp" />
+    <ClCompile Include="LoadScene.cpp" />
     <ClCompile Include="LTrail.cpp" />
     <ClCompile Include="LWeaponMgr.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="LAnimationIO.h" />
     <ClInclude Include="LCharacterIO.h" />
     <ClInclude Include="LExportIO.h" />
+    <ClInclude Include="LoadScene.h" />
     <ClInclude Include="LTrail.h" />
     <ClInclude Include="LWeaponMgr.h" />
     <ClInclude Include="Light.h" />
