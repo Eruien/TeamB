@@ -7,6 +7,7 @@
 #include "SelectScene.h"
 #include "SwordShopScene.h"
 #include "UIManager.h"
+#include "LoadScene.h"
 using std::thread;
 
 void LScene::InitThread()
@@ -33,8 +34,8 @@ void LScene::FSM(FSMType fsmType)
 
     m_pFsm = iter->second.get();
 
+    m_pActionList.insert(std::make_pair(State::LOADSCENE, std::make_unique<LoadScene>(this)));
     m_pActionList.insert(std::make_pair(State::MAINSCENE, std::make_unique<LMainScene>(this)));
-    m_pActionList.insert(std::make_pair(State::LOADSCENE, std::make_unique<LMainScene>(this)));
     // loading scene 추가
 
     thread t1(&LScene::InitThread, this);
@@ -44,7 +45,7 @@ void LScene::FSM(FSMType fsmType)
     //
     m_pAction = m_pActionList.find(State::LOADSCENE)->second.get();
     m_CurrentState = State::LOADSCENE;
-    // 로딩신으로 대체
+    m_pAction->Init();
     
     t1.detach();
 }

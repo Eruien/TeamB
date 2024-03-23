@@ -6,4 +6,5 @@
         <Scripts>
             <Script Type="ChangeTexture"/>
         </Scripts>
+    </UIObject>
 </UIScene>
