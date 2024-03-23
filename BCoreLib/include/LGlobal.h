@@ -26,6 +26,7 @@ public:
 
 	static float g_fSPF;
 	static float g_fGameTimer;
+	static float g_LoadPercent;
 	static bool g_IsLoding;
 	static LCamera* g_pMainCamera;
 	static UICamera* g_pUICamera;

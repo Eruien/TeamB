@@ -12,6 +12,7 @@ ComPtr<ID3D11Buffer> LGlobal::g_pSOBuffer;
 
 float LGlobal::g_fSPF = 0;
 float LGlobal::g_fGameTimer = 0;
+float LGlobal::g_LoadPercent = 0.f;
 bool LGlobal::g_IsLoding = true;
 LCamera* LGlobal::g_pMainCamera = nullptr;
 UICamera* LGlobal::g_pUICamera = nullptr;

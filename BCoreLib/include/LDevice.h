@@ -1,5 +1,6 @@
 #pragma once
 #include "LWindow.h"
+#include "LGlobal.h"
 
 class LDevice : public LWindow
 {
