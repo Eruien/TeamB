@@ -50,6 +50,6 @@ void LMainScene::Release()
 
 LMainScene::LMainScene(LScene* parent) : SceneState(parent)
 {
-    Init();
+    //Init();
 }
 LMainScene::~LMainScene() {}

@@ -379,7 +379,7 @@ void SelectScene::InterpolRenderTrail()
 
 SelectScene::SelectScene(LScene* parent) : SceneState(parent)
 {
-    Init();
+    //Init();
 }
 
 SelectScene::~SelectScene()

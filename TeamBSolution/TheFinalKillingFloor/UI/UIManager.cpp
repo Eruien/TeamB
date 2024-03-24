@@ -59,7 +59,7 @@ void UIManager::Render()
 
        // LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilStateDisable.Get(), 1);
         if(obj->GetIsRender()|| _editMode)
-		obj->Render();
+		    obj->Render();
       //  LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilState.Get(), 1);
 	}
 
