@@ -94,7 +94,8 @@ void LScene::Render()
         UIManager::GetInstance().ChangeScene(Event::GOMAINSCENE);
         
     }
-    LGlobal::g_IsLoding++;
+    if (LGlobal::g_IsLoding < 3)
+        LGlobal::g_IsLoding++;
 }
 
 bool LScene::Init()
