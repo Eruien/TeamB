@@ -625,6 +625,12 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Walk.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
 
+    // Boss
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader.hlsl");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_JumpAttack.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Run.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Swiping.bin");
+  
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
     m_ZombieWave->m_CurrentWave = 0;
