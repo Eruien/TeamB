@@ -195,6 +195,7 @@ void ZombieWave::CollisionCheckInNpc()
                             vNormal.y = 0.5f;
                             zombieModelList[j]->m_Velocity = vNormal * 400;
                             zombieModelList[j]->IsOnAir = true;
+                            zombieModelList[j]->m_RushStart += 10.f;
 						}
                         if (zombieModelList[j]->IsRush)
                         {
@@ -203,6 +204,7 @@ void ZombieWave::CollisionCheckInNpc()
                             vNormal.y = 0.5f;
                             zombieModelList[i]->m_Velocity = vNormal * 400;
                             zombieModelList[i]->IsOnAir = true;
+                            zombieModelList[i]->m_RushStart += 10.f;
                         }
                     }
                 }
