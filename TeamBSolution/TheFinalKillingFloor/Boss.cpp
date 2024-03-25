@@ -78,30 +78,17 @@ void Boss::Move(TVector3 target)
 	m_matControl._43 += m_Speed * LGlobal::g_fSPF * m_Dir.z;
 }
 
-void Boss::RushMove()
-{
-	TVector3 forward = m_matControl.Forward();
-	forward.Normalize();
-	m_matControl._41 += m_RushSpeed * LGlobal::g_fSPF * forward.x;
-	m_matControl._43 += m_RushSpeed * LGlobal::g_fSPF * forward.z;
-}
-
-void Boss::ComboMove()
-{
-	TVector3 forward = m_matControl.Forward();
-	forward.Normalize();
-	m_matControl._41 += m_ComboSpeed * LGlobal::g_fSPF * forward.x;
-	m_matControl._43 += m_ComboSpeed * LGlobal::g_fSPF * forward.z;
-}
-
 void Boss::JumpAttackMove(TVector3 target)
 {
+	m_matControl._41 += m_JumpVelocity.x * LGlobal::g_fSPF;
+	m_matControl._42 += m_JumpVelocity.y * LGlobal::g_fSPF;
+	m_matControl._43 += m_JumpVelocity.z * LGlobal::g_fSPF;
+
+	m_JumpVelocity.y -= GRAVITY * LGlobal::g_fSPF * 100;
+	
 	TVector3 forward = m_matControl.Forward();
 	forward.Normalize();
 	m_matControl._41 += m_JumpAttackSpeed * LGlobal::g_fSPF * forward.x;
-	float jumpHeight = 50.0f;
-	jumpHeight += m_matControl._42;
-	m_matControl._42 += jumpHeight;
 	m_matControl._43 += m_JumpAttackSpeed * LGlobal::g_fSPF * forward.z;
 }
 
@@ -112,21 +99,6 @@ int Boss::GetRandomNumber()
 
 bool Boss::Frame()
 {
-	//if (LGlobal::g_PlayerModel->IsSteamPack)
-	//{
-	//	m_AnimationRate = 0.5f;
-	//	m_Speed = 25.0f;
-	//	m_RushSpeed = 200.0f;
-	//	m_ComboSpeed = 25.0f;
-	//}
-	//else
-	//{
-	//	m_AnimationRate = 1.0f;
-	//	m_Speed = 50.0f;
-	//	m_RushSpeed = 400.0f;
-	//	m_ComboSpeed = 50.0f;
-	//}
-
 	if (LGlobal::g_PlayerModel->IsZedTime)
 	{
 		m_AnimationRate = 0.5f;
@@ -188,19 +160,6 @@ bool Boss::Frame()
 		IsUseRush = true;
 	}
 
-	if (IsRush)
-	{
-		m_RushStart += LGlobal::g_fSPF;
-	}
-
-	if (m_RushStart > m_RushEnd)
-	{
-		m_RushStart = 0.0f;
-		IsRush = false;
-		IsRushDir = true;
-		IsUseRush = false;
-	}
-
 	if (((m_NPCPos.x - m_RushRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_RushRange))
 		&& ((m_NPCPos.z - m_RushRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_RushRange)) && IsRushDir && IsUseRush)
 	{
@@ -245,7 +204,8 @@ Boss::Boss(LPlayer* player)
 	m_RandomPos = { float(GetRandomNumber()), 0.0f, float(GetRandomNumber()) };
 	m_AttackRange = 60.0f;
 	m_RushRange = 300.0f;
-	m_RushCoolTimeStart = 10.0f;
+	m_RushCoolTimeStart = 0.0f;
+	m_RushCoolTimeEnd = 10.0f;
 	m_enemyHp = make_shared<KObject>();
 	m_enemyHp->Init();
 	m_enemyHp->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/hp_bar.png");

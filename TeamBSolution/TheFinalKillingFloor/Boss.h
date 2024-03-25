@@ -10,8 +10,6 @@ public:
 	void FSM(FSMType fsmType) override;
 	void SetTransition(Event inputEvent) override;
 	void Move(TVector3 target) override;
-	void RushMove() override;
-	void ComboMove() override;
 	void JumpAttackMove(TVector3 target) override;
 	int GetRandomNumber() override;
 public:

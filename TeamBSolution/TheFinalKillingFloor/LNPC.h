@@ -38,7 +38,7 @@ public:
 	bool IsMovable = true;
 	bool IsRush = false;
 	bool IsRushDir = true;
-	bool IsUseRush = true;
+	bool IsUseRush = false;
 	bool IsHeadShot = false;
 	bool IsComboRange = false;
 	bool IsOnAir = false;
@@ -68,6 +68,7 @@ public:
 	TVector3 m_PlayerPos;
 	TVector3 m_NPCPos;
 	TVector3 m_RushPos;
+	TVector3 m_JumpVelocity = {0.0f, 300.0f, 0.0f};
 	std::default_random_engine m_Generator;
 	std::uniform_int_distribution<int> m_Distribution;
 	shared_ptr<KObject> m_enemyHp;

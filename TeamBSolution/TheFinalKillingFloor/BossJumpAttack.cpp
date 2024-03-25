@@ -10,6 +10,19 @@ bool BossJumpAttack::Init()
 
 void BossJumpAttack::Process()
 {
+    if (m_pOwner->IsTakeDamage)
+    {
+        m_pOwner->SetTransition(Event::TAKEDAMAGE);
+        return;
+    }
+
+    if (m_pOwner->m_TimerEnd)
+    {
+        m_pOwner->IsUseRush = false;
+        m_pOwner->SetTransition(Event::ENDATTACK);
+        return;
+    }
+
     if (m_pOwner->IsMovable)
     {
         m_pOwner->JumpAttackMove(m_pOwner->m_PlayerPos);

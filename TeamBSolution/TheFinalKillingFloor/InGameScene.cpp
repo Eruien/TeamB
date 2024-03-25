@@ -2323,7 +2323,7 @@ void InGameScene::UpdatePlayerPhysics()
     LGlobal::g_PlayerModel->m_matControl._43 += LGlobal::g_PlayerModel->m_Velocity.z * LGlobal::g_fSPF;
 
     LGlobal::g_PlayerModel->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 30;
-
+    LGlobal::g_fGameTimer = LGlobal::g_fGameTimer;
 }
 
 void InGameScene::UpdateNpcPhysics()
