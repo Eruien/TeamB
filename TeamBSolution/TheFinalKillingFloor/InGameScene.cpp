@@ -1443,8 +1443,8 @@ void InGameScene::InitializeItem()
                 DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
 
                 // make translation matrix randomly ( -1000 ~ 1000 )
-                float x = (rand() % 1800) - 900;
-                float z = (rand() % 1800) - 900;
+                float x = (rand() % 180) - 90;
+                float z = (rand() % 180) - 90;
                 float y = m_CustomMap->GetHeight(x, z) + 5.f;
 
                 translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
@@ -2113,7 +2113,7 @@ void InGameScene::HandlePlayerCollisions()
         {
             LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.TotalAmmo;
 			it2 = m_AmmoList.erase(it2);
-            UIManager::GetInstance().GetUIObject(L"T_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
+            UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo);
 		}
         else
         {
