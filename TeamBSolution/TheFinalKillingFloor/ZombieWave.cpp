@@ -261,6 +261,30 @@ void ZombieWave::CollisionBoxRender()
         m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.Render();
     }
+
+    for (int i = 0; i < m_EnemyMap["Boss"].size(); i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_EnemyMap["Boss"][i]->m_matControl._41, m_EnemyMap["Boss"][i]->m_matControl._42 + m_EnemyMap["Boss"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Boss"][i]->m_matControl._43));
+        m_EnemyMap["Boss"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        //m_EnemyMap["Boss"][i]->m_OBBBox.Render();
+        m_EnemyMap["Boss"][i]->Render();
+
+        TMatrix zombieRightHandSocket;
+        TMatrix matRightHand;
+        if (m_EnemyMap["Boss"][i]->m_pActionModel != nullptr)
+        {
+            if (m_EnemyMap["Boss"][i]->m_pActionModel->m_iEndFrame >= int(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime - m_EnemyMap["Boss"][i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_EnemyMap["Boss"][i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+            }
+        }
+
+        matRightHand = zombieRightHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
+        m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        //m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.Render();
+    }
 }
 
 
@@ -283,6 +307,12 @@ bool ZombieWave::Frame()
         m_EnemyMap["Tank"][i]->Frame();
     }
 
+    for (int i = 0; i < m_EnemyMap["Boss"].size(); i++)
+    {
+        m_EnemyMap["Boss"][i]->Process();
+        m_EnemyMap["Boss"][i]->Frame();
+    }
+
     return true;
 }
 
@@ -296,6 +326,11 @@ bool ZombieWave::Render()
     for (auto& tank : m_EnemyMap["Tank"])
     {
         tank->Render();
+    }
+
+    for (auto& boss : m_EnemyMap["Boss"])
+    {
+        boss->Render();
     }
 
     return true;
@@ -318,4 +353,8 @@ ZombieWave::ZombieWave()
     m_WaveTankCountList.insert(std::make_pair(1, TankWave1));
     m_WaveTankCountList.insert(std::make_pair(2, TankWave2));
     m_WaveTankCountList.insert(std::make_pair(3, TankWave3));
+
+    m_WaveBossCountList.insert(std::make_pair(1, BossWave1));
+    m_WaveBossCountList.insert(std::make_pair(2, BossWave2));
+    m_WaveBossCountList.insert(std::make_pair(3, BossWave3));
 }

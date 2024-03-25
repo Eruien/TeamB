@@ -12,6 +12,7 @@
 #include "LPlaneShape.h"
 #include "Zombie.h"
 #include "Tank.h"
+#include "Boss.h"
 #include "LSkyBox.h"
 #include "LSelect.h"
 #include "LBox.h"

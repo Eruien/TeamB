@@ -399,6 +399,15 @@ void InGameScene::Render()
             obj->RenderMark();
         }
 
+        for (auto obj : m_ZombieWave->m_EnemyMap["Boss"])
+        {
+            obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
+            //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
+            obj->m_minimapMarker->SetMatrix(nullptr, &m_MinimapPosCamera->m_matView, &m_MinimapPosCamera->m_matOrthoProjection);
+            obj->m_minimapMarker->Frame();
+            obj->RenderMark();
+        }
+
 
         //LGlobal::g_PlayerModel
 
@@ -749,7 +758,10 @@ void InGameScene::NextWave()
     int tankCount = m_ZombieWave->m_WaveTankCountList[m_ZombieWave->m_CurrentWave];
     m_ZombieWave->m_EnemyMap["Tank"].resize(tankCount);
 
-    m_ZombieWave->m_EnemyMap["LNPC"].resize(zombieCount + tankCount);
+    int bossCount = m_ZombieWave->m_WaveBossCountList[m_ZombieWave->m_CurrentWave];
+    m_ZombieWave->m_EnemyMap["Boss"].resize(bossCount);
+
+    m_ZombieWave->m_EnemyMap["LNPC"].resize(zombieCount + tankCount + bossCount);
     
     for (int i = 0; i < zombieCount; i++)
     {
@@ -782,6 +794,19 @@ void InGameScene::NextWave()
         m_ZombieWave->m_EnemyMap["LNPC"][zombieCount + i] = m_ZombieWave->m_EnemyMap["Tank"][i];
     }
 
+    for (int i = 0; i < bossCount; i++)
+    {
+        m_ZombieWave->m_EnemyMap["Boss"][i] = std::make_shared<Boss>(LGlobal::g_PlayerModel);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->m_pModel = LFbxMgr::GetInstance().GetPtr(L"Boss.fbx");
+        m_ZombieWave->m_EnemyMap["Boss"][i]->CreateBoneBuffer();
+        m_ZombieWave->m_EnemyMap["Boss"][i]->FSM(FSMType::BOSS);
+
+        m_ZombieWave->m_EnemyMap["Boss"][i]->m_matControl._41 = m_ZombieWave->GetRandomNumber();
+        m_ZombieWave->m_EnemyMap["Boss"][i]->m_matControl._43 = m_ZombieWave->GetRandomNumber();
+
+        m_ZombieWave->m_EnemyMap["LNPC"][zombieCount + tankCount + i] = m_ZombieWave->m_EnemyMap["Boss"][i];
+    }
+
     for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieWave->m_EnemyMap["Zombie"][i]->m_Player = LGlobal::g_PlayerModel;
@@ -801,11 +826,32 @@ void InGameScene::NextWave()
     TMatrix RightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
     TMatrix RightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
 
-    TMatrix TankHead = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
-    TMatrix TankRoot = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
-    TMatrix TankRightShoulder = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
-    TMatrix TankRightHand = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][hand];
+    TMatrix TankHead;
+    TMatrix TankRoot;
+    TMatrix TankRightShoulder;
+    TMatrix TankRightHand;
 
+    TMatrix BossHead;
+    TMatrix BossRoot;
+    TMatrix BossRightShoulder;
+    TMatrix BossRightHand;
+
+    if (tankCount != 0)
+    {
+        TankHead = m_ZombieWave->m_EnemyMap["Tank"][0]->m_pModel->m_NameMatrixMap[0][head];
+        TankRoot = m_ZombieWave->m_EnemyMap["Tank"][0]->m_pModel->m_NameMatrixMap[0][root];
+        TankRightShoulder = m_ZombieWave->m_EnemyMap["Tank"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
+        TankRightHand = m_ZombieWave->m_EnemyMap["Tank"][0]->m_pModel->m_NameMatrixMap[0][hand];
+    }
+
+    if (bossCount != 0)
+    {
+        BossHead = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][head];
+        BossRoot = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][root];
+        BossRightShoulder = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
+        BossRightHand = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][hand];
+    }
+ 
     for (int i = 0; i < zombieCount; i++)
     {
         m_ZombieWave->m_EnemyMap["Zombie"][i]->SetOBBBox({ -20.0f, Root._42, -5.0f }, { 20.0f, Head._42, 30.0f }, 0.2f);
@@ -816,6 +862,12 @@ void InGameScene::NextWave()
     {
         m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42 + 60.0f, 30.0f }, 0.2f);
         m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBoxRightHand({ TankRightHand._41 - 40.0f, TankRightHand._42 - 40.0f, -40.0f }, { TankRightShoulder._41 + 40.0f, TankRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
+    }
+
+    for (int i = 0; i < bossCount; i++)
+    {
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBox({ -40.0f, BossRoot._42, -5.0f }, { 40.0f, BossHead._42 + 60.0f, 30.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxRightHand({ BossRightHand._41 - 40.0f, BossRightHand._42 - 40.0f, -40.0f }, { BossRightShoulder._41 + 40.0f, BossRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
     }
 
     if (m_ZombieWave->m_CurrentWave > 3) return;
