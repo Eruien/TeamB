@@ -91,7 +91,7 @@ void ButtonAction::MainSceneOption()
 
 	vector<shared_ptr<KObject>> group;
 	group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
-	for (auto obj : group)
+	for (auto& obj : group)
 	{
 		obj->SetIsRender(true);
 	}
@@ -101,7 +101,7 @@ void ButtonAction::MainSceneOptionClose()
 {
 	vector<shared_ptr<KObject>> group;
 	group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
-	for (auto obj : group)
+	for (auto& obj : group)
 	{
 		obj->SetIsRender(false);
 	}

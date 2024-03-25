@@ -120,7 +120,7 @@ bool KObject::CreateVertexBuffer()
 void KObject::AddScripts(shared_ptr<MonoBehaviour> script)
 {
 	script->SetGameObject(shared_from_this());
-	for (auto scr : _scripts)
+	for (auto& scr : _scripts)
 	{
 		if (scr->GetName() == script->GetName())
 			return;
@@ -131,7 +131,7 @@ void KObject::AddScripts(shared_ptr<MonoBehaviour> script)
 void KObject::RemoveScript(wstring name)
 {
 	shared_ptr<MonoBehaviour> temp;
-	for (auto script : _scripts)
+	for (auto& script : _scripts)
 	{
 		if (script->GetName() == name)
 			 temp= script;

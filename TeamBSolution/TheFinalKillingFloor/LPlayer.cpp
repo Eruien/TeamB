@@ -705,7 +705,7 @@ bool LPlayer::Render()
 	{
 		LFbxObj* obj = fbxMeshList[iSub].get();
 
-		for (auto data : m_pModel->m_pFbxNodeNameMap)
+		for (auto& data : m_pModel->m_pFbxNodeNameMap)
 		{
 			auto model = obj->m_dxMatrixBindPoseMap.find(data.first);
 

@@ -383,7 +383,7 @@ void InGameScene::Render()
         m_playerIcon->Frame();
         m_playerIcon->Render();
 
-        for (auto obj : m_ZombieWave->m_EnemyMap["Zombie"])
+        for (auto& obj : m_ZombieWave->m_EnemyMap["Zombie"])
         {
             obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
             //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
@@ -392,7 +392,7 @@ void InGameScene::Render()
             obj->RenderMark();
         }
 
-        for (auto obj : m_ZombieWave->m_EnemyMap["Tank"])
+        for (auto& obj : m_ZombieWave->m_EnemyMap["Tank"])
         {
             obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
             //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
@@ -401,7 +401,7 @@ void InGameScene::Render()
             obj->RenderMark();
         }
 
-        for (auto obj : m_ZombieWave->m_EnemyMap["Boss"])
+        for (auto& obj : m_ZombieWave->m_EnemyMap["Boss"])
         {
             obj->m_minimapMarker->m_vPosition = { obj->m_matControl._41 * (256.0f / 2048.0f) ,0, obj->m_matControl._43 * (256.0f / 2048.0f) * offset };
             //obj->m_minimapMarker->m_vRotation.z = -m_ModelCamera->m_fCameraYaw;
