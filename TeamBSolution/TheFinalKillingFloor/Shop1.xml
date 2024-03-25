@@ -256,7 +256,6 @@
         <Texture texPath="../../res/ui/button1.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
             <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
@@ -294,7 +293,6 @@
         <Texture texPath="../../res/ui/button1.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
             <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
@@ -548,8 +546,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
-            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">
                 <args TextToTexture="20" TexListXml="../../res/ui/xml/TextTexture.xml"/>
