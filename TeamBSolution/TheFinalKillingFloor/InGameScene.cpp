@@ -1109,14 +1109,16 @@ void InGameScene::InitializePlayerIcon()
 
 void InGameScene::InitializeBloodSplatters()
 {
-    m_bloodSplatter.resize(10);
+    m_bloodSplatter.resize(30);
     for (auto& blood : m_bloodSplatter)
     {
         blood = std::make_shared<KObject>();
         blood->Init();
         blood->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/Empty.png");
         blood->SetPos({ 0, 10000, 0 });
-        blood->SetScale({ 10,10, 1 });
+        float x = (rand() % 5) + 5.f;
+        blood->SetScale({ x , 15 - x, 1 });
+        blood->m_vScale = { x , 15 - x, 1 };
         blood->AddScripts(std::make_shared<Animator>(L"Anim.xml"));
         blood->SetIsRender(false);
     }
@@ -1362,7 +1364,7 @@ void InGameScene::InitializeMuzzleFlash()
     m_muzzleFlash = make_shared<KObject>();
     m_muzzleFlash->Init();
     m_muzzleFlash->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/muzzleflash.png");
-    m_muzzleFlash->SetScale({ 15,15,1.f });
+    m_muzzleFlash->SetScale({ 10,10,1.f });
     m_muzzleFlash->SetPos({ 0,30,0 });
     // m_muzzleFlash->AddScripts(make_shared<BillBoard>());
 }
@@ -1473,7 +1475,7 @@ void InGameScene::InitializeTrail()
 
 void InGameScene::ProcessBloodSplatter()
 {
-    for (auto obj : m_bloodSplatter)
+    for (auto& obj : m_bloodSplatter)
     {
         if (obj->GetIsRender())
         {
@@ -1493,9 +1495,9 @@ void InGameScene::ProcessBloodSplatter()
                 vTrans.z
             );
 
-            D3DXMatrixScaling(&matScale, m_muzzleFlash->m_vScale.x,
-                m_muzzleFlash->m_vScale.y,
-                m_muzzleFlash->m_vScale.z
+            D3DXMatrixScaling(&matScale, obj->m_vScale.x,
+                obj->m_vScale.y,
+                obj->m_vScale.z
             );
             worldMat = matScale * matRotation * matTrans;
 
