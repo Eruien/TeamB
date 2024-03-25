@@ -77,9 +77,9 @@ public:
 	float m_ZedTimeStart = 0.0f;
 	float m_ZedTimeEnd = 5.0f;
 	float m_RushStart = 0.0f;
-	float m_RushEnd = 2.0f;
+	float m_RushEnd = 3.0f;
 	float m_RushCoolTimeStart = 0.0f;
-	float m_RushCoolTimeEnd = 10.0f;
+	float m_RushCoolTimeEnd = 5.0f;
 	int m_Money = 0;
 	TVector3 m_AddDirection;
 	TVector3 m_Velocity;

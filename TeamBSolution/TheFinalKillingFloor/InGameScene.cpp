@@ -1402,7 +1402,7 @@ void InGameScene::ProcessMuzzleFlash()
 
 void InGameScene::InitializeItem()
 {
-    m_KitList.resize(5);
+    m_KitList.resize(100);
     kitObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/medkit.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
     for (auto& kit : m_KitList)
     {
@@ -1432,7 +1432,7 @@ void InGameScene::InitializeItem()
 
     // ammo
 
-        m_AmmoList.resize(5);
+        m_AmmoList.resize(100);
         ammoObj = LFbxMgr::GetInstance().Load(L"../../res/fbx/item/AmmoBox.fbx", L"../../res/hlsl/CustomizeMap.hlsl");
         for (auto& ammo : m_AmmoList)
         {

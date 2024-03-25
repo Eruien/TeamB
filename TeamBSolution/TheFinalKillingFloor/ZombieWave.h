@@ -5,7 +5,7 @@
 #include <chrono>
 
 enum {
-	MAXWAVE = 10
+	MAXWAVE = 9
 };
 
 class ZombieWave

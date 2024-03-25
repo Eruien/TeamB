@@ -295,9 +295,13 @@ void LPlayer::RushMove()
 {
 	TVector3 forward = m_matControl.Forward();
 	forward.Normalize();
+	m_Speed = RUSHSPEED;
+	if (m_RushStart > (m_RushEnd - 1.f))
+		m_Speed *= ((m_RushEnd - m_RushStart + 1.f) * 0.5f);
+	if (m_RushStart < 0.5f)
+		m_Speed *= (m_RushStart + 0.5f);
 	m_matControl._41 += m_Speed * LGlobal::g_fSPF * forward.x;
 	m_matControl._43 += m_Speed * LGlobal::g_fSPF * forward.z;
-	m_Speed = RUSHSPEED;
 }
 
 

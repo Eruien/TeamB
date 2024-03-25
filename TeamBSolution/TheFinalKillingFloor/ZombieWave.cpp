@@ -353,6 +353,7 @@ ZombieWave::ZombieWave()
         m_WaveZombieCountList.insert(std::make_pair(i, ZombieWave1 * i));
         m_WaveTankCountList.insert(std::make_pair(i, TankWave1 * i));
         m_WaveBossCountList.insert(std::make_pair(i, BossWave1 * i));
+        
 	}
     /*m_WaveZombieCountList.insert(std::make_pair(1, ZombieWave1));
     m_WaveZombieCountList.insert(std::make_pair(2, ZombieWave2));
