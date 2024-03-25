@@ -10,7 +10,12 @@ bool BossJumpAttack::Init()
 
 void BossJumpAttack::Process()
 {
-    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Boss_Run.fbx");
+    if (m_pOwner->IsMovable)
+    {
+        m_pOwner->JumpAttackMove(m_pOwner->m_PlayerPos);
+    }
+
+    m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Boss_JumpAttack.fbx");
 }
 
 void BossJumpAttack::Release()

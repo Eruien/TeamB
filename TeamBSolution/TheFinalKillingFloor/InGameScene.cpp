@@ -483,6 +483,11 @@ void InGameScene::DeleteCurrentObject()
         iter = m_ZombieWave->m_EnemyMap["Tank"].erase(iter);
     }
 
+    for (auto iter = m_ZombieWave->m_EnemyMap["Boss"].begin(); iter != m_ZombieWave->m_EnemyMap["Boss"].end();)
+    {
+        iter = m_ZombieWave->m_EnemyMap["Boss"].erase(iter);
+    }
+
     m_ZombieWave->m_EnemyMap["LNPC"].clear();
 
     delete LGlobal::g_PlayerModel;
@@ -503,11 +508,6 @@ void InGameScene::Release()
         {
             iter++;
         }
-
-        if (m_ZombieWave->m_EnemyMap["Zombie"].size() <= 0)
-        {
-            IsNextWave = true;
-        }
     }
 
     for (auto iter = m_ZombieWave->m_EnemyMap["Tank"].begin(); iter != m_ZombieWave->m_EnemyMap["Tank"].end();)
@@ -523,9 +523,24 @@ void InGameScene::Release()
         }
     }
 
-    if (m_ZombieWave->m_EnemyMap["Tank"].size() <= 0)
+    for (auto iter = m_ZombieWave->m_EnemyMap["Boss"].begin(); iter != m_ZombieWave->m_EnemyMap["Boss"].end();)
     {
-        IsReleaseTank = true;
+        if ((*iter)->IsDead)
+        {
+            iter = m_ZombieWave->m_EnemyMap["Boss"].erase(iter);
+            LGlobal::g_PlayerModel->m_ZedTimeCount += 1;
+        }
+        else
+        {
+            iter++;
+        }
+    }
+
+    if (m_ZombieWave->m_EnemyMap["Zombie"].size() <= 0 && 
+        m_ZombieWave->m_EnemyMap["Tank"].size() <= 0 &&
+        m_ZombieWave->m_EnemyMap["Boss"].size() <= 0)
+    {
+        IsNextWave = true;
     }
 }
 
@@ -637,10 +652,11 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
 
     // Boss
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader.hlsl");
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader2.hlsl");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_JumpAttack.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Swiping.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_TakeDamage.bin");
   
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
@@ -822,6 +838,8 @@ void InGameScene::NextWave()
     std::wstring root = L"root";
     std::wstring shoulder = L"RightShoulder";
     std::wstring hand = L"RightHand";
+    std::wstring leftShoulder = L"LeftShoulder";
+    std::wstring leftHand = L"LeftHand";
 
     TMatrix Head = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][head];
     TMatrix Root = m_ZombieWave->m_EnemyMap["Zombie"][0]->m_pModel->m_NameMatrixMap[0][root];
@@ -837,6 +855,8 @@ void InGameScene::NextWave()
     TMatrix BossRoot;
     TMatrix BossRightShoulder;
     TMatrix BossRightHand;
+    TMatrix BossLeftShoulder;
+    TMatrix BossLeftHand;
 
     if (tankCount != 0)
     {
@@ -852,6 +872,8 @@ void InGameScene::NextWave()
         BossRoot = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][root];
         BossRightShoulder = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][shoulder];
         BossRightHand = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][hand];
+        BossLeftShoulder = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][leftShoulder];
+        BossLeftHand = m_ZombieWave->m_EnemyMap["Boss"][0]->m_pModel->m_NameMatrixMap[0][leftHand];
     }
  
     for (int i = 0; i < zombieCount; i++)
@@ -862,14 +884,15 @@ void InGameScene::NextWave()
 
     for (int i = 0; i < tankCount; i++)
     {
-        m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42 + 60.0f, 30.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42 + 30.0f, 30.0f }, 0.2f);
         m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBoxRightHand({ TankRightHand._41 - 40.0f, TankRightHand._42 - 40.0f, -40.0f }, { TankRightShoulder._41 + 40.0f, TankRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
     }
 
     for (int i = 0; i < bossCount; i++)
     {
         m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBox({ -40.0f, BossRoot._42, -5.0f }, { 40.0f, BossHead._42 + 60.0f, 30.0f }, 0.2f);
-        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxRightHand({ BossRightHand._41 - 40.0f, BossRightHand._42 - 40.0f, -40.0f }, { BossRightShoulder._41 + 40.0f, BossRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxRightHand({ BossRightHand._41 - 100.0f, BossRightHand._42 - 40.0f, -40.0f }, { BossRightShoulder._41 + 100.0f, BossRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxLeftHand({ BossRightHand._41 - 100.0f, BossRightHand._42 - 40.0f, -40.0f }, { BossRightShoulder._41 + 100.0f, BossRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
     }
 
     if (m_ZombieWave->m_CurrentWave > 3) return;
@@ -1555,9 +1578,8 @@ void InGameScene::UpdateUI()
 
 void InGameScene::ProcessWaveTransition()
 {
-    if (IsNextWave && IsReleaseTank)
+    if (IsNextWave)
     {
-        IsReleaseTank = false;
         IsNextWave = false;
         NextWave();
     }
@@ -2059,6 +2081,49 @@ void InGameScene::HandlePlayerCollisions()
             dir *= (r - distance);
             LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
             LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+        }
+
+        for (auto& boss : m_ZombieWave->m_EnemyMap["Boss"])
+        {
+            if (LGlobal::g_PlayerModel->IsRush == false)
+            {
+                boss->IsTakeRushDamage = false;
+                boss->IsFirstRushDamage = true;
+            }
+            if (GPLAYER->m_OBBBox.CollisionCheckOBB(&boss->m_OBBBoxLeftHand)
+                && boss->m_CurrentState == State::BOSSSWIPING
+                && boss->IsHitPlayer)
+            {
+                LGlobal::g_PlayerModel->IsTakeDamage = true;
+            }
+            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - boss->m_matControl._41;
+            float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - boss->m_matControl._42;
+            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - boss->m_matControl._43;
+
+            TVector3 dir = { offsetX, offsetY, offsetZ };
+            float distance = dir.Length();
+            float r = LGlobal::g_PlayerModel->m_fRadius + boss->m_fRadius;
+            if (distance <= r)
+            {
+                if (GPLAYER->IsRush)
+                {
+                    if (boss->IsFirstRushDamage)
+                    {
+                        boss->IsTakeDamage = true;
+                        boss->IsTakeRushDamage = true;
+                        boss->IsFirstRushDamage = false;
+                    }
+                   /* TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                    vNormal.Normalize();
+                    vNormal.y = 0.5f;
+                    boss->m_Velocity = vNormal * 400;
+                    boss->IsOnAir = true;*/
+                }
+                dir.Normalize();
+                dir *= (r - distance);
+                LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+                LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+            }
         }
 	}
 

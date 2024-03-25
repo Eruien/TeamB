@@ -94,6 +94,17 @@ void Boss::ComboMove()
 	m_matControl._43 += m_ComboSpeed * LGlobal::g_fSPF * forward.z;
 }
 
+void Boss::JumpAttackMove(TVector3 target)
+{
+	TVector3 forward = m_matControl.Forward();
+	forward.Normalize();
+	m_matControl._41 += m_JumpAttackSpeed * LGlobal::g_fSPF * forward.x;
+	float jumpHeight = 50.0f;
+	jumpHeight += m_matControl._42;
+	m_matControl._42 += jumpHeight;
+	m_matControl._43 += m_JumpAttackSpeed * LGlobal::g_fSPF * forward.z;
+}
+
 int Boss::GetRandomNumber()
 {
 	return m_Distribution(m_Generator);
@@ -119,22 +130,18 @@ bool Boss::Frame()
 	if (LGlobal::g_PlayerModel->IsZedTime)
 	{
 		m_AnimationRate = 0.5f;
-		m_Speed = 20.0f;
-		m_RushSpeed = 200.0f;
-		m_ComboSpeed = 25.f;
+		m_Speed = 75.0f;
 	}
 	else
 	{
 		m_AnimationRate = 1.0f;
-		m_Speed = 40.0f;
-		m_RushSpeed = 400.0f;
-		m_ComboSpeed = 50.0f;
+		m_Speed = 150.0f;
 	}
 
 	m_ZombieSound->Play();
 	// ºôº¸µå
 
-	m_enemyHp->SetPos({ m_matControl._41,m_matControl._42 + 55, m_matControl._43 });
+	m_enemyHp->SetPos({ m_matControl._41, m_matControl._42 + 70, m_matControl._43 });
 
 	TMatrix matRotation, matTrans, matScale, worldMat;
 	D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
@@ -202,14 +209,14 @@ bool Boss::Frame()
 		IsRushDir = false;
 	}
 
-	if (((m_NPCPos.x - m_ComboRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_ComboRange))
-		&& ((m_NPCPos.z - m_ComboRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_ComboRange)))
+	if (((m_NPCPos.x - m_AttackRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_AttackRange))
+		&& ((m_NPCPos.z - m_AttackRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_AttackRange)))
 	{
-		IsComboRange = true;
+		IsAttackRange = true;
 	}
 	else
 	{
-		IsComboRange = false;
+		IsAttackRange = false;
 	}
 
 	return true;
@@ -236,7 +243,9 @@ Boss::Boss(LPlayer* player)
 	m_Generator.seed(seed);
 
 	m_RandomPos = { float(GetRandomNumber()), 0.0f, float(GetRandomNumber()) };
-
+	m_AttackRange = 60.0f;
+	m_RushRange = 300.0f;
+	m_RushCoolTimeStart = 10.0f;
 	m_enemyHp = make_shared<KObject>();
 	m_enemyHp->Init();
 	m_enemyHp->Create(L"../../res/hlsl/CustomizeMap.hlsl", L"../../res/ui/hp_bar.png");

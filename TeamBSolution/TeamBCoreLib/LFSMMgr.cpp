@@ -196,6 +196,9 @@ bool LFSMMgr::Init()
 	BossFSM->AddStateTransition(State::BOSSTAKEDAMAGE, Event::FATALDAMAGE, State::BOSSDEATH);
 	BossFSM->AddStateTransition(State::BOSSTAKEDAMAGE, Event::RECOVERYDAMAGE, State::BOSSTRACE);
 
+	BossFSM->AddStateTransition(State::BOSSSWIPING, Event::TAKEDAMAGE, State::BOSSTAKEDAMAGE);
+	BossFSM->AddStateTransition(State::BOSSSWIPING, Event::PLAYEROUTATTACKRANGE, State::BOSSTRACE);
+
 	m_map.insert(std::make_pair(FSMType::BOSS, std::move(BossFSM)));
 
 	return true;
