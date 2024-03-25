@@ -1874,9 +1874,10 @@ void InGameScene::GenerateItem()
 				break;
 			}
         }
+        GPLAYER->m_ZedTimeCount++;
     }
 
-    if (GPLAYER->m_ZedTimeCount % 20 == 10)
+    if (GPLAYER->m_ZedTimeCount % 20 == 1)
     {
         for (auto& ammo : m_AmmoList)
         {
@@ -1888,7 +1889,10 @@ void InGameScene::GenerateItem()
                 break;
             }
         }
+        GPLAYER->m_ZedTimeCount++;
     }
+
+    
 }
 
 void InGameScene::ShootBullet()

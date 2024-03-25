@@ -497,17 +497,19 @@ bool LPlayer::GunFrame()
 		IsSteamPack = false;
 	}
 
-	//if (m_ZedTimeCount % 20 == 0 && IsZedTime == false)
-	//{
-	//	m_ZedTimeCount += 1;
-	//	IsZedTime = true;
-	//	//LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
-	//	LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
-	//}
+	if (m_ZedTimeCount % 25 == 0 && IsZedTime == false)
+	{
+		m_ZedTimeCount += 1;
+		IsZedTime = true;
+		//LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
+		LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
+	}
 	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH && IsZedTime == false)
 	{
 		//m_ZedTimeCount = 1;
 		IsZedTime = true;
+		m_Gun->m_GunSpec.CurrentAmmo = m_Gun->m_GunSpec.TotalAmmo;
+		UIManager::GetInstance().GetUIObject(L"C_Ammo")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(m_Gun->m_GunSpec.CurrentAmmo);
 		//LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
 		LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
 	}
@@ -526,7 +528,7 @@ bool LPlayer::GunFrame()
 		m_ZedTimeStart = 0.0f;
 		m_AnimationRate = 1.0f;
 		IsZedTime = false;
-		//m_ZedTimeCount = 1;
+		m_ZedTimeCount = 2;
 		LSoundMgr::GetInstance().GetPtr(L"ZedTimeLast.mp3")->PlayEffect();
 	}
 
