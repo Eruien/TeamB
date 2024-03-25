@@ -82,6 +82,8 @@ void InGameScene::Process()
     UpdateCameraTargetPosition();
     FramePlayerModel();
     UpdateBulletModels(); // 총알 위치 업데이트
+    GenerateItem();
+
     UpdateZombieAndTankModels();
     HandlePlayerCollisions(); // 플레이어 충돌처리
     LimitPlayerMovement();
@@ -1411,8 +1413,8 @@ void InGameScene::InitializeItem()
 			DirectX::XMMATRIX rotationMatrix, scalingMatrix, worldMatrix, translationMatrix;
 
 			// make translation matrix randomly ( -1000 ~ 1000 )
-			float x = (rand() % 1800) - 900;
-			float z = (rand() % 1800) - 900;
+            float x = (rand() % 180) - 90;
+			float z = (rand() % 180) - 90;
 			float y = m_CustomMap->GetHeight(x, z) + 5.f;
 
 			translationMatrix = DirectX::XMMatrixTranslation(x, y, z);
@@ -1424,6 +1426,7 @@ void InGameScene::InitializeItem()
 			worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
 			kit->m_matControl = worldMatrix;
             kit->m_fRadius = 40.f;
+            kit->bVisible = false;
 		}
 	}
 
@@ -1453,6 +1456,7 @@ void InGameScene::InitializeItem()
                 worldMatrix = DirectX::XMMatrixMultiply(worldMatrix, translationMatrix);
                 ammo->m_matControl = worldMatrix;
                 ammo->m_fRadius = 30.f;
+                ammo->bVisible = false;
             }
         }
 }
@@ -1738,13 +1742,15 @@ void InGameScene::RenderItem()
 {
     for (auto& item : m_KitList)
     {
-        item->Render();
+        if (item->bVisible)
+            item->Render();
     }
     if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
     {
         for (auto& item : m_AmmoList)
         {
-            item->Render();
+            if (item->bVisible)
+                item->Render();
         }
     }
 }
@@ -1828,6 +1834,37 @@ void InGameScene::ProcessItem()
 void InGameScene::GetItem()
 {
     
+}
+
+void InGameScene::GenerateItem()
+{
+    if (GPLAYER->m_ZedTimeCount % 20 == 0)
+    {
+        for (auto& kit : m_KitList)
+        {
+            if (kit->bVisible == false)
+            {
+				kit->bVisible = true;
+                kit->SetPosition(kit->GetPosition() + GPLAYER->GetPosition());
+                kit->m_matControl._42 = m_CustomMap->GetHeight(kit->m_matControl._41, kit->m_matControl._43) + 1.0f;
+				break;
+			}
+        }
+    }
+
+    if (GPLAYER->m_ZedTimeCount % 20 == 10)
+    {
+        for (auto& ammo : m_AmmoList)
+        {
+            if (ammo->bVisible == false)
+            {
+                ammo->bVisible = true;
+                ammo->SetPosition(ammo->GetPosition() + GPLAYER->GetPosition());
+                ammo->m_matControl._42 = m_CustomMap->GetHeight(ammo->m_matControl._41, ammo->m_matControl._43) + 1.0f;
+                break;
+            }
+        }
+    }
 }
 
 void InGameScene::ShootBullet()
@@ -2026,6 +2063,11 @@ void InGameScene::HandlePlayerCollisions()
     std::vector<std::shared_ptr<LModel>>::iterator it = m_KitList.begin();
     while (it != m_KitList.end())
     {
+        if ((*it)->bVisible == false)
+        {
+			it++;
+			continue;
+		}
         float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - (*it)->m_matControl._41;
         float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - (*it)->m_matControl._42;
         float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - (*it)->m_matControl._43;
@@ -2054,6 +2096,11 @@ void InGameScene::HandlePlayerCollisions()
     std::vector<std::shared_ptr<LModel>>::iterator it2 = m_AmmoList.begin();
     while (it2 != m_AmmoList.end())
     {
+        if ((*it2)->bVisible == false)
+        {
+			it2++;
+			continue;
+		}
 		float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - (*it2)->m_matControl._41;
 		float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - (*it2)->m_matControl._42;
 		float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - (*it2)->m_matControl._43;

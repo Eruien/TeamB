@@ -168,6 +168,7 @@ public:
 	void UpdateBulletModels();
 	void ProcessItem();
 	void GetItem();
+	void GenerateItem();
 	void ShootBullet();
 	void ShootRifle();
 	void ShootShotgun();
