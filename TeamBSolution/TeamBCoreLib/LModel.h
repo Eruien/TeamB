@@ -19,7 +19,9 @@ public:
 	T_BOX m_SettingBox;
 	LBox m_OBBBox;
 	T_BOX m_SettingBoxRightHand;
+	T_BOX m_SettingBoxLeftHand;
 	LBox m_OBBBoxRightHand;
+	LBox m_OBBBoxLeftHand;
 	float m_fRadius = 0.0f;
 public:
 	LFbxObj* m_pModel = nullptr;
@@ -47,6 +49,7 @@ public:
 	virtual void SetLFbxObj(LFbxObj* fbxObj);
 	virtual void SetOBBBox(TVector3 min, TVector3 max, float boxScale);
 	virtual void SetOBBBoxRightHand(TVector3 min, TVector3 max, float boxScale);
+	virtual void SetOBBBoxLeftHand(TVector3 min, TVector3 max, float boxScale);
 	virtual LFbxObj* GetLFbxObj();
 public:
 	TVector3 GetPosition() { return { m_matControl._41, m_matControl._42, m_matControl._43 }; };

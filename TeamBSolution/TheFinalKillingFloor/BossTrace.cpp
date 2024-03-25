@@ -16,6 +16,18 @@ void BossTrace::Process()
         return;
     }
 
+    /*if (m_pOwner->IsUseRush)
+    {
+        m_pOwner->SetTransition(Event::BOSSJUMPATTACK);
+        return;
+    }*/
+
+    if (m_pOwner->IsAttackRange)
+    {
+        m_pOwner->SetTransition(Event::BOSSSWIPING);
+        return;
+    }
+
     if (m_pOwner->IsMovable)
     {
         m_pOwner->Move(m_pOwner->m_PlayerPos);

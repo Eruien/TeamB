@@ -145,6 +145,36 @@ void LModel::SetOBBBoxRightHand(TVector3 min, TVector3 max, float boxScale)
 	m_OBBBoxRightHand.Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
 }
 
+void LModel::SetOBBBoxLeftHand(TVector3 min, TVector3 max, float boxScale)
+{
+	m_OBBBoxLeftHand.Set();
+
+	m_SettingBoxLeftHand.vMax = TVector3(max.x, max.y, max.z) * boxScale;
+	m_SettingBoxLeftHand.vMin = TVector3(min.x, min.y, min.z) * boxScale;
+	m_SettingBoxLeftHand.vCenter = (m_SettingBoxLeftHand.vMax + m_SettingBoxLeftHand.vMin);
+	m_SettingBoxLeftHand.vCenter.x /= 2.0f;
+	m_SettingBoxLeftHand.vCenter.y /= 2.0f;
+	m_SettingBoxLeftHand.vCenter.z /= 2.0f;
+
+	m_SettingBoxLeftHand.fExtent[0] = fabs(m_SettingBoxLeftHand.vCenter.x - m_SettingBoxLeftHand.vMax.x);
+	m_SettingBoxLeftHand.fExtent[1] = fabs(m_SettingBoxLeftHand.vCenter.y - m_SettingBoxLeftHand.vMax.y);
+	m_SettingBoxLeftHand.fExtent[2] = fabs(m_SettingBoxLeftHand.vCenter.z - m_SettingBoxLeftHand.vMax.z);
+	m_SettingBoxLeftHand.vAxis[0] = TVector3(1.0f, 0.0f, 0.0f);
+	m_SettingBoxLeftHand.vAxis[1] = TVector3(0.0f, 1.0f, 0.0f);
+	m_SettingBoxLeftHand.vAxis[2] = TVector3(0.0f, 0.0f, 1.0f);
+
+	TMatrix matScale;
+	D3DXMatrixScaling(&matScale, m_SettingBoxLeftHand.fExtent[0], m_SettingBoxLeftHand.fExtent[1], m_SettingBoxLeftHand.fExtent[2]);
+	m_OBBBoxLeftHand.m_matWorld = matScale;
+	m_OBBBoxLeftHand.m_matWorld._41 = m_SettingBoxLeftHand.vCenter.x;
+	m_OBBBoxLeftHand.m_matWorld._42 = m_SettingBoxLeftHand.vCenter.y;
+	m_OBBBoxLeftHand.m_matWorld._43 = m_SettingBoxLeftHand.vCenter.z;
+
+	m_OBBBoxLeftHand.CreateOBBBox(m_SettingBoxLeftHand.fExtent[0], m_SettingBoxLeftHand.fExtent[1], m_SettingBoxLeftHand.fExtent[2],
+		m_SettingBoxLeftHand.vCenter, m_SettingBoxLeftHand.vAxis[0], m_SettingBoxLeftHand.vAxis[1], m_SettingBoxLeftHand.vAxis[2]);
+	m_OBBBoxLeftHand.Create(L"../../res/hlsl/TransparentBox.hlsl", L"../../res/map/topdownmap.jpg");
+}
+
 bool LModel::Init(int animationIndex)
 {
 	if (m_pActionModel == nullptr) return false;

@@ -51,6 +51,7 @@ public:
 	float m_Speed = 50.0f;
 	float m_RushSpeed = 400.0f;
 	float m_ComboSpeed = 25.0f;
+	float m_JumpAttackSpeed = 400.0f;
 	TVector3 m_Dir;
 	float m_PatrolRange = 10000.0f;
 	float m_AttackRange = 25.0f;
@@ -78,6 +79,7 @@ public:
 	virtual void Move(TVector3 target) {};
 	virtual void RushMove() {};
 	virtual void ComboMove() {};
+	virtual void JumpAttackMove(TVector3 target) {};
 	virtual void MoveInstancing(TVector3 target) {};
 	virtual int GetRandomNumber() { return 0; };
 public:

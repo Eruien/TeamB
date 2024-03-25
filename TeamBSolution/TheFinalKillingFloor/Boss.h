@@ -12,6 +12,7 @@ public:
 	void Move(TVector3 target) override;
 	void RushMove() override;
 	void ComboMove() override;
+	void JumpAttackMove(TVector3 target) override;
 	int GetRandomNumber() override;
 public:
 	virtual	void Process() override;
