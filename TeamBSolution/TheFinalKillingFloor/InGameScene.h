@@ -24,6 +24,7 @@
 #include <chrono>
 #include "Bullet.h"
 #include "LTrail.h"
+#include "LQurdTree.h"
 
 
 #define GPLAYER LGlobal::g_PlayerModel
@@ -55,6 +56,7 @@ public:
 	int m_crrBlood = 0;
 public:
 	std::shared_ptr<LHeightMap> m_CustomMap = nullptr;
+	shared_ptr<LQurdtree> m_QuadTree = nullptr;
 	std::vector<shared_ptr<Bullet>> m_RifleBulletList;
 
 	vector<vector<shared_ptr<Bullet>>> m_ShotgunBulletListArray;
@@ -154,7 +156,6 @@ public:
 
 	//Process Functions
 	
-	void ZedAutoAim();
 
 	void ProcessMuzzleFlash();
 	void ProcessBloodSplatter();

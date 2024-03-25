@@ -67,15 +67,14 @@ void InGameScene::Process()
         
     }
 
-    if (LGlobal::g_PlayerModel->IsZedTime)
-        ZedAutoAim();
 
+    
     ProcessBloodSplatter();
     CheckPlayerDeath();
     PlayInGameSound();
     UpdateUI();
     ProcessWaveTransition();
-    UpdateMapObjects();
+    UpdateMapObjects(); // map
     UpdateWallModels();
     UpdateTreeModels();
     SwitchCameraView();
@@ -101,6 +100,8 @@ void InGameScene::Process()
 
 void InGameScene::Render()
 {
+    
+
     // 새로운 FPS 값을 큐에 추가
     fpsValues.push_back(1.0f / LGlobal::g_fSPF);
     // 큐의 크기가 일정 크기를 넘으면 가장 오래된 값을 제거
@@ -200,8 +201,10 @@ void InGameScene::Render()
     //LGlobal::g_pImmediateContext->PSSetShaderResources(1, 1, pSRV);
     //m_MapModel->m_pModel->m_DrawList[0]->PostRender();
   
-    m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-    m_CustomMap->Render();
+    m_QuadTree->Render();
+    //m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+    //m_CustomMap->Render();
+    
     static float sTime;
     sTime += LGlobal::g_fSPF;
 
@@ -1315,6 +1318,11 @@ void InGameScene::InitializeMap()
     MapDesc.ShaderFilePath = L"../../res/hlsl/LightShadowMap.hlsl";
     MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
+
+    m_QuadTree = std::make_shared<LQurdtree>();
+    m_QuadTree->Set();
+    m_QuadTree->m_TreeDepth = 2;
+    m_QuadTree->BuildQurdTree(m_CustomMap.get(), 513, 513);
 }
 
 void InGameScene::InitializeGrasses()
@@ -1560,7 +1568,8 @@ void InGameScene::ProcessWaveTransition()
 void InGameScene::UpdateMapObjects()
 {
     //m_MapModel->Frame();
-    m_CustomMap->Frame();
+    //m_CustomMap->Frame();
+    m_QuadTree->Frame();
 }
 
 void InGameScene::UpdateWallModels()
@@ -2252,45 +2261,4 @@ void InGameScene::InitializeOBBBox()
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.vAxis[1],
         LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_SettingBox.vAxis[2]);
     m_BackViewCamera->SetTarget(LGlobal::g_PlayerModel);
-}
-
-void InGameScene::ZedAutoAim()
-{
-    //float fNear = 1000.f;
-    //float distance;
-    //TVector3 dir, target, playerPosition;
-    //playerPosition = LGlobal::g_PlayerModel->GetPosition();
-    //for (auto& zombie : m_ZombieWave->m_EnemyMap["LNPC"])
-    //{
-    //    if (zombie->m_HP < 0.001f)
-    //        continue;
-    //    dir = playerPosition - zombie->GetPosition();
-    //    distance = dir.Length();
-    //    if (fNear > distance)
-    //    {
-    //        fNear = distance;
-    //        target = dir;
-    //    }
-    //}
-    //
-    //if (LInput::GetInstance().m_MouseState[0] > KEY_PUSH)
-    //{
-    //    //m_Dir = target - TVector3(m_matControl._41, m_matControl._42, m_matControl._43);
-    //    dir.Normalize();
-    //    TVector3 forward = LGlobal::g_PlayerModel->m_matControl.Forward();
-    //    float dirX = dir.x;
-    //    float dirZ = dir.z;
-    //    DirectX::XMVECTOR gRotation;
-    //    DirectX::XMMATRIX matRotation;
-    //    float yawRadians = atan2(dirZ, dirX);
-    //    gRotation = DirectX::XMQuaternionRotationRollPitchYaw(0, -yawRadians - 1.5708, 0);
-    //    DirectX::XMVECTOR xmPos = DirectX::XMVectorSet(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43, 1.0f);
-    //    matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmPos);
-    //    TMatrix scale;
-    //    D3DXMatrixScaling(&scale, 0.2f, 0.2f, 0.2f);
-    //    TMatrix Pos = scale * matRotation;
-    //    LGlobal::g_PlayerModel->m_matControl = Pos;
-    //}
-
-
 }
