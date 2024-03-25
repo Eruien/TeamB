@@ -746,7 +746,7 @@ void InGameScene::NextWave()
 {
     m_ZombieWave->m_CurrentWave++;
 
-    if (m_ZombieWave->m_CurrentWave > 3)
+    if (m_ZombieWave->m_CurrentWave > MAXWAVE)
     {
         IsEndGame = true;
         return;
@@ -1848,6 +1848,7 @@ void InGameScene::ShootRifle()
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     m_RifleBulletList[index]->bVisible = true;
     m_RifleBulletList[index]->bTarget = false;
+    m_RifleBulletList[index]->target = nullptr;
     /*TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
     m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;*/
     TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();

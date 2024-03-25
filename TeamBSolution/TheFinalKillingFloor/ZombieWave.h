@@ -4,6 +4,10 @@
 #include <random>
 #include <chrono>
 
+enum {
+	MAXWAVE = 10
+};
+
 class ZombieWave
 {
 public:
@@ -12,10 +16,11 @@ public:
 	std::map<int, int> m_WaveZombieCountList;
 	std::map<int, int> m_WaveTankCountList;
 	std::map<int, int> m_WaveBossCountList;
+	
 	const int ZombieWave1 = 5;
 	const int ZombieWave2 = 10;
 	const int ZombieWave3 = 15;
-	const int TankWave1 = 0;
+	const int TankWave1 = 1;
 	const int TankWave2 = 1;
 	const int TankWave3 = 2;
     const int BossWave1 = 1;

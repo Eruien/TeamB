@@ -346,7 +346,13 @@ ZombieWave::ZombieWave()
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	m_Generator.seed(seed);
     
-    m_WaveZombieCountList.insert(std::make_pair(1, ZombieWave1));
+    for (int i = 1; i < MAXWAVE + 1; i++)
+    {
+        m_WaveZombieCountList.insert(std::make_pair(i, ZombieWave1 * i));
+        m_WaveTankCountList.insert(std::make_pair(i, TankWave1 * i));
+        m_WaveBossCountList.insert(std::make_pair(i, BossWave1 * i));
+	}
+    /*m_WaveZombieCountList.insert(std::make_pair(1, ZombieWave1));
     m_WaveZombieCountList.insert(std::make_pair(2, ZombieWave2));
     m_WaveZombieCountList.insert(std::make_pair(3, ZombieWave3));
 
@@ -356,5 +362,5 @@ ZombieWave::ZombieWave()
 
     m_WaveBossCountList.insert(std::make_pair(1, BossWave1));
     m_WaveBossCountList.insert(std::make_pair(2, BossWave2));
-    m_WaveBossCountList.insert(std::make_pair(3, BossWave3));
+    m_WaveBossCountList.insert(std::make_pair(3, BossWave3));*/
 }
