@@ -445,6 +445,9 @@ void UIManager::ChangeScene(Event Scene)
         LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
         LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play();
         LSoundMgr::GetInstance().GetPtr(L"zombieSound.mp3")->Play();
+
+
+
         for (auto& obj : _objs)
         {
             obj->SetIsRender(false);

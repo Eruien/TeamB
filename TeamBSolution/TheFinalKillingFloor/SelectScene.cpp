@@ -69,6 +69,12 @@ void SelectScene::Process()
     m_GunMan->m_matControl._42 = fHeight + 1.0f;
     m_SwordMan->m_matControl._42 = fHeight + 1.0f;
 
+    
+    if (UIManager::GetInstance().GetUIObject(L"B_Play")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+        UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
+    }
+
 }
 
 void SelectScene::FrameLight()

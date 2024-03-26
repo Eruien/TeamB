@@ -28,7 +28,7 @@
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="ButtonAction">
-                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function="GoInGameScene"/>
+                <args TexListXml="../../res/ui/xml/ButtonTex.xml" Function=""/>
             </Script>
         </Scripts>
     </UIObject>
