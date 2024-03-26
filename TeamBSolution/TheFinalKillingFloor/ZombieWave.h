@@ -27,7 +27,7 @@ public:
 	const int TankWave3 = 5;
 	const int TankWave4 = 7;
 	const int TankWave5 = 0;
-    const int BossWave1 = 1;
+    const int BossWave1 = 0;
     const int BossWave2 = 0;
     const int BossWave3 = 0;
     const int BossWave4 = 0;

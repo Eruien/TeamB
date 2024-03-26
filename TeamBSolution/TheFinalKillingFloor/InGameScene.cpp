@@ -681,6 +681,7 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Walk.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Rush.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/TwoHand_Death.bin");
 
     // Item
     LCharacterIO::GetInstance().ItemRead(L"../../res/UserFile/Item/Assault_Rifle_A.bin");

@@ -23,8 +23,6 @@ void SelectScene::Process()
     m_DebugCamera->m_fCameraPitch = m_BindCameraPitch;
     m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;
 
-
-
     m_CustomMap->Frame();
     m_GunMan->Frame();
     m_SwordMan->Frame();
@@ -46,21 +44,10 @@ void SelectScene::Process()
         if (m_Select.ChkOBBToRay(&m_SwordMan->m_OBBBox.m_Box))
         {
             m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_FrontSlash.fbx");
-            m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_Death.fbx");
-            m_GunChangeDeathAni = true;
+            m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
             m_playerType = PlayerType::SWORD;
         }
     }
-
-    if (m_GunChangeDeathAni)
-    {
-        if (m_GunMan->m_TimerEnd)
-        {
-            m_GunDeathAniEnd = true;
-        }
-    }
-
-
 
     UIManager::GetInstance().Frame();
 
@@ -69,12 +56,14 @@ void SelectScene::Process()
     m_GunMan->m_matControl._42 = fHeight + 1.0f;
     m_SwordMan->m_matControl._42 = fHeight + 1.0f;
 
-    
-    if (UIManager::GetInstance().GetUIObject(L"B_Play")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    if (m_playerType == PlayerType::SWORD)
     {
-        UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
+        SelectBladeMan();
     }
-
+    else if (m_playerType == PlayerType::GUN)
+    {
+        SelectGunMan();
+    }
 }
 
 void SelectScene::FrameLight()
@@ -107,9 +96,12 @@ void SelectScene::Render()
     {
         m_GunMan->Render();
     }
-    
-    m_SwordMan->Render();
 
+    if (!m_SwordDeathAniEnd)
+    {
+        m_SwordMan->Render();
+    }
+    
     TMatrix playerTranslation;
     playerTranslation.Translation(TVector3(m_GunMan->m_matControl._41, m_GunMan->m_matControl._42 + m_GunMan->m_SettingBox.vCenter.y, m_GunMan->m_matControl._43));
     m_GunMan->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
@@ -119,11 +111,15 @@ void SelectScene::Render()
     {
         m_Rifle->m_WeaponModel->Render();
     }
-  
+
     playerTranslation.Translation(TVector3(m_SwordMan->m_matControl._41, m_SwordMan->m_matControl._42 + m_SwordMan->m_SettingBox.vCenter.y, m_SwordMan->m_matControl._43));
     m_SwordMan->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     //m_SwordMan->m_OBBBox.Render();
-    m_OneHandSword->m_WeaponModel->Render();
+   
+    if (!m_SwordDeathAniEnd)
+    {
+        m_OneHandSword->m_WeaponModel->Render();
+    }
 
     //m_PointLight[0].m_vPosition = m_GunMan->GetPosition();
 
@@ -155,7 +151,12 @@ void SelectScene::Render()
     pBuffers[1] = m_pConstantBufferLight[1].Get();
     LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
 
-    InterpolRenderTrail();
+
+    if (!m_SwordDeathAniEnd)
+    {
+        InterpolRenderTrail();
+    }
+    
     UIManager::GetInstance().Render();
 }
 
@@ -411,6 +412,92 @@ void SelectScene::InterpolRenderTrail()
     m_SwordTrail->InterpolRenderTrail(&LocalSwordLow,
         &LocalSwordHigh, 
         &m_OneHandSword->m_WeaponModel->m_matControl);
+}
+
+void SelectScene::SelectBladeMan()
+{
+    if (UIManager::GetInstance().GetUIObject(L"B_Play")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+        m_GunChangeDeathAni = true;
+        m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_Death.fbx");
+        m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Idle_Anim.fbx");
+    }
+
+    if (m_GunChangeDeathAni)
+    {
+        if (m_GunMan->m_TimerEnd)
+        {
+            m_GunDeathAniEnd = true;
+            m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Walk.fbx");
+        }
+    }
+
+    if (m_GunDeathAniEnd)
+    {
+        IsUseTimer = true;
+        TVector3 swordManForWard = m_SwordMan->m_matControl.Forward();
+        swordManForWard.Normalize();
+        m_SwordMan->m_matControl._41 += swordManForWard.x * LGlobal::g_fSPF * 100;
+        m_SwordMan->m_matControl._43 += swordManForWard.z * LGlobal::g_fSPF * 100;
+    }
+
+    if (IsUseTimer)
+    {
+        m_TimerStart += LGlobal::g_fSPF;
+    }
+
+    if (m_TimerStart > m_TimerEnd)
+    {
+        m_TimerStart = 0.0f;
+        m_GunDeathAniEnd = false;
+        IsUseTimer = false;
+        m_GunChangeDeathAni = false;
+        D3DXMatrixTranslation(&m_SwordMan->m_matControl, m_SwordManPos.x, m_SwordManPos.y, m_SwordManPos.z);
+        UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
+    }
+}
+
+void SelectScene::SelectGunMan()
+{
+    if (UIManager::GetInstance().GetUIObject(L"B_Play")->GetScript<ButtonAction>(L"ButtonAction")->state == PICKING_STATE::UP)
+    {
+        m_SwordChangeDeathAni = true;
+        m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+        m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Death.fbx");
+    }
+
+    if (m_SwordChangeDeathAni)
+    {
+        if (m_SwordMan->m_TimerEnd)
+        {
+            m_SwordDeathAniEnd = true;
+            m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Walk_Fwd_Rifle_Ironsights.fbx");
+        }
+    }
+
+    if (m_SwordDeathAniEnd)
+    {
+        IsUseTimer = true;
+        TVector3 gunManForWard = m_GunMan->m_matControl.Forward();
+        gunManForWard.Normalize();
+        m_GunMan->m_matControl._41 += gunManForWard.x * LGlobal::g_fSPF * 100;
+        m_GunMan->m_matControl._43 += gunManForWard.z * LGlobal::g_fSPF * 100;
+    }
+
+    if (IsUseTimer)
+    {
+        m_TimerStart += LGlobal::g_fSPF;
+    }
+
+    if (m_TimerStart > m_TimerEnd)
+    {
+        m_TimerStart = 0.0f;
+        m_SwordDeathAniEnd = false;
+        IsUseTimer = false;
+        m_SwordChangeDeathAni = false;
+        D3DXMatrixTranslation(&m_GunMan->m_matControl, m_GunManPos.x, m_GunManPos.y, m_GunManPos.z);
+        UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
+    }
 }
 
 SelectScene::SelectScene(LScene* parent) : SceneState(parent)
