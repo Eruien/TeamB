@@ -23,6 +23,8 @@ void SelectScene::Process()
     m_DebugCamera->m_fCameraPitch = m_BindCameraPitch;
     m_DebugCamera->m_fCameraRoll = m_BindCameraRoll;
 
+
+
     m_CustomMap->Frame();
     m_GunMan->Frame();
     m_SwordMan->Frame();
@@ -49,6 +51,12 @@ void SelectScene::Process()
         }
     }
     UIManager::GetInstance().Frame();
+
+    // adjust player's height
+    float fHeight = m_CustomMap->GetHeight(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._43);
+    m_GunMan->m_matControl._42 = fHeight + 1.0f;
+    m_SwordMan->m_matControl._42 = fHeight + 1.0f;
+
 }
 
 void SelectScene::FrameLight()
