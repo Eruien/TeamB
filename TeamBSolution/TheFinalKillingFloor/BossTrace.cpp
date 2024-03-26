@@ -16,11 +16,11 @@ void BossTrace::Process()
         return;
     }
 
-    /*if (m_pOwner->IsUseRush)
+    if (m_pOwner->IsUseRush)
     {
         m_pOwner->SetTransition(Event::BOSSJUMPATTACK);
         return;
-    }*/
+    }
 
     if (m_pOwner->IsAttackRange)
     {

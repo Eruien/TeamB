@@ -38,10 +38,10 @@ bool InGameScene::Init()
 }
 void InGameScene::Process()
 {
-    /*if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
+    if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
     {
         LGlobal::g_pMainCamera = m_BackViewCamera.get();
-    }*/
+    }
     //ªÛ¡°≈∞
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
@@ -640,6 +640,7 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Swiping.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Crawl.bin");
   
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
@@ -2100,11 +2101,11 @@ void InGameScene::HandlePlayerCollisions()
                         boss->IsTakeRushDamage = true;
                         boss->IsFirstRushDamage = false;
                     }
-                   /* TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                    TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
                     vNormal.Normalize();
                     vNormal.y = 0.5f;
                     boss->m_Velocity = vNormal * 400;
-                    boss->IsOnAir = true;*/
+                    boss->IsOnAir = true;
                 }
                 dir.Normalize();
                 dir *= (r - distance);
@@ -2310,7 +2311,7 @@ void InGameScene::UpdatePlayerPhysics()
     LGlobal::g_PlayerModel->m_matControl._43 += LGlobal::g_PlayerModel->m_Velocity.z * LGlobal::g_fSPF;
 
     LGlobal::g_PlayerModel->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 30;
-
+    LGlobal::g_fGameTimer = LGlobal::g_fGameTimer;
 }
 
 void InGameScene::UpdateNpcPhysics()
