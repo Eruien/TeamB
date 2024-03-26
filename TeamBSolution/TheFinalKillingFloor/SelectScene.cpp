@@ -93,7 +93,7 @@ void SelectScene::Render()
     //m_PointLight[0].m_vPosition = m_GunMan->GetPosition();
 
     m_cbLight1.g_cAmbientMaterial[0] = TVector4(0.1f, 0.1f, 0.1f, 1);
-    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(0.2f);
+    m_cbLight1.g_cDiffuseMaterial[0] = TVector4(0.3f);
     m_cbLight1.g_cSpecularMaterial[0] = TVector4(1, 1, 1, 1);
     m_cbLight1.g_cEmissionMaterial[0] = TVector4(0, 0, 0, 1);
 
@@ -131,7 +131,7 @@ void SelectScene::Release()
 void SelectScene::InitializeDebugCamera()
 {
     m_DebugCamera = std::make_shared<LDebugCamera>();
-    m_DebugCamera->CreateLookAt({ 0.0f, 200.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
+    m_DebugCamera->CreateLookAt({ 0.0f, 0.0f, -100.0f }, { 0.0f, 0.0f, 1.0f });
     m_DebugCamera->CreatePerspectiveFov(L_PI * 0.25, (float)LGlobal::g_WindowWidth / (float)LGlobal::g_WindowHeight, 1.0f, 10000.0f);
     m_DebugCamera->m_vCameraPos = m_BindCameraPos;
     m_DebugCamera->m_fCameraYaw = m_BindCameraYaw;
@@ -156,10 +156,10 @@ void SelectScene::InitializeMap()
     LMapDesc MapDesc = {};
     MapDesc.iNumCols = m_CustomMap->m_iNumCols;
     MapDesc.iNumRows = m_CustomMap->m_iNumRows;
-    MapDesc.fCellDistance = 4.0f;
-    MapDesc.fScaleHeight = 0.4f;
+    MapDesc.fCellDistance = 1.0f;
+    MapDesc.fScaleHeight = 0.1f;
     MapDesc.ShaderFilePath = L"../../res/hlsl/LightMapForSelect.hlsl";
-    MapDesc.TextureFilePath = L"../../res/map/aerial_grass_rock_diff_8k.jpg";
+    MapDesc.TextureFilePath = L"../../res/map/snow_01_diff_8k.jpg";
     m_CustomMap->Load(MapDesc);
 }
 
@@ -177,8 +177,9 @@ void SelectScene::InitializeModel()
     D3DXMatrixRotationY(&matRot, 3.14159);
     m_GunMan->m_matControl *= matRot;
     m_GunMan->m_matControl._41 += m_GunManPos.x;
-    m_GunMan->m_matControl._42 += m_GunManPos.y;
     m_GunMan->m_matControl._43 += m_GunManPos.z;
+    m_GunMan->m_matControl._42 = m_CustomMap->GetHeight(m_GunMan->m_matControl._41, m_GunMan->m_matControl._43);
+
 
     std::wstring head = L"Head";
     std::wstring root = L"root";
@@ -213,8 +214,8 @@ void SelectScene::InitializeModel()
     D3DXMatrixRotationY(&matRot, 3.14159);
     m_SwordMan->m_matControl *= matRot;
     m_SwordMan->m_matControl._41 += m_SwordManPos.x;
-    m_SwordMan->m_matControl._42 += m_SwordManPos.y;
     m_SwordMan->m_matControl._43 += m_SwordManPos.z;
+    m_SwordMan->m_matControl._42 = m_CustomMap->GetHeight(m_SwordMan->m_matControl._41, m_SwordMan->m_matControl._43);
     
     Neck = m_SwordMan->m_pModel->m_NameMatrixMap[0][neck];
     Root = m_SwordMan->m_pModel->m_NameMatrixMap[0][root];

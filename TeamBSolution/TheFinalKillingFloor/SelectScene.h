@@ -28,7 +28,7 @@ public:
 	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
 public:
 	// 처음 카메라 세팅
-	TVector3 m_BindCameraPos = { -28.948f, 51.073f, 99.283f };
+	TVector3 m_BindCameraPos = { -28.948f, 16.073f, 99.283f };
 	float m_BindCameraYaw = 3.11021948f;
 	float m_BindCameraPitch = 43.9585144f;
 	float m_BindCameraRoll = 0.0f;

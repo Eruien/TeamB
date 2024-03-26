@@ -12,24 +12,7 @@
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
-    // SO
-    D3D11_BUFFER_DESC vbDesc;
-    vbDesc.ByteWidth = 1024;
-    vbDesc.Usage = D3D11_USAGE_DEFAULT;
-    vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER | D3D11_BIND_STREAM_OUTPUT;
-    vbDesc.CPUAccessFlags = 0;
-    vbDesc.MiscFlags = 0;
-    HRESULT hr = LGlobal::g_pDevice->CreateBuffer(&vbDesc, NULL, &LGlobal::g_pSOBuffer);
-
-    LGlobal::g_pImmediateContext->SOSetTargets(1, &LGlobal::g_pSOBuffer, 0);
-    D3D11_SO_DECLARATION_ENTRY Decl[] =
-    {
-        {0, "POSITION", 0,0,3,0},
-        {0,"NORMAL",0,0,3,0},
-        {0,"TEXCOORD",0,0,2,0},
-        {0,"TEXCOORD",1,1,2,0},
-    };
-
+    
     InitializeObjects();
     InitializeSkyBox();
     InitializePlayerIcon();
