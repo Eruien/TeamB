@@ -5,7 +5,7 @@
 #include <chrono>
 
 enum {
-	MAXWAVE = 9
+	MAXWAVE = 5
 };
 
 class ZombieWave
@@ -17,15 +17,21 @@ public:
 	std::map<int, int> m_WaveTankCountList;
 	std::map<int, int> m_WaveBossCountList;
 	
-	const int ZombieWave1 = 5;
-	const int ZombieWave2 = 10;
-	const int ZombieWave3 = 15;
-	const int TankWave1 = 0;
-	const int TankWave2 = 0;
-	const int TankWave3 = 0;
+	const int ZombieWave1 = 10;
+	const int ZombieWave2 = 20;
+	const int ZombieWave3 = 30;
+	const int ZombieWave4 = 40;
+	const int ZombieWave5 = 20;
+	const int TankWave1 = 1;
+	const int TankWave2 = 3;
+	const int TankWave3 = 5;
+	const int TankWave4 = 7;
+	const int TankWave5 = 0;
     const int BossWave1 = 1;
     const int BossWave2 = 0;
     const int BossWave3 = 0;
+    const int BossWave4 = 0;
+    const int BossWave5 = 1;
 public:
     std::map<std::string, std::vector<std::shared_ptr<LNPC>>> m_EnemyMap;
 	int m_CurrentWave = 0;

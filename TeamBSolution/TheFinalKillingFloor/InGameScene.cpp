@@ -876,10 +876,10 @@ void InGameScene::NextWave()
     {
         m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBox({ -100.0f, BossRoot._42, -50.0f }, { 100.0f, BossHead._42 + 180.0f, 50.0f }, 0.4f);
         m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxRightHand({ BossRightHand._41 - 100.0f, BossRightHand._42 - 100.0f, -100.0f }, { BossRightShoulder._41 + 100.0f, BossRightShoulder._42 + 100.0f, 100.0f }, 0.4f);
-        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxLeftHand({ BossLeftHand._41 - 100.0f, BossLeftHand._42 - 100.0f, -100.0f }, { BossLeftShoulder._41 + 100.0f, BossLeftShoulder._42 + 100.0f, 100.0f }, 0.4f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxLeftHand({ BossLeftHand._41 - 100.0f, BossLeftHand._42 - 100.0f, -100.0f }, { BossLeftShoulder._41 + 100.0f, BossLeftShoulder._42 + 100.0f, 100.0f }, 0.6f);
     }
 
-    if (m_ZombieWave->m_CurrentWave > 3) return;
+    if (m_ZombieWave->m_CurrentWave > 5) return;
 
     if (!m_ZombieWave->IsFirstCreate)
     {
@@ -2084,7 +2084,8 @@ void InGameScene::HandlePlayerCollisions()
         {
             LGlobal::g_PlayerModel->IsTakeDamage = true;
         }
-        else if (GPLAYER->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBoxLeftHand)
+
+        if (GPLAYER->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBoxLeftHand)
             && zombie->IsHitPlayer)
         {
            LGlobal::g_PlayerModel->IsTakeDamage = true;

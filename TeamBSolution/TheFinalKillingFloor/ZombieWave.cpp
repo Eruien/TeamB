@@ -228,7 +228,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Zombie"][i]->m_matControl._41, m_EnemyMap["Zombie"][i]->m_matControl._42 + m_EnemyMap["Zombie"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Zombie"][i]->m_matControl._43));
         m_EnemyMap["Zombie"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_EnemyMap["Zombie"][i]->m_OBBBox.Render();
+        //m_EnemyMap["Zombie"][i]->m_OBBBox.Render();
         m_EnemyMap["Zombie"][i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -244,7 +244,7 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_EnemyMap["Zombie"][i]->m_matControl;
         m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.Render();
+        //m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.Render();
     }
 
     for (int i = 0; i < m_EnemyMap["Tank"].size(); i++)
@@ -252,7 +252,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Tank"][i]->m_matControl._41, m_EnemyMap["Tank"][i]->m_matControl._42 + m_EnemyMap["Tank"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Tank"][i]->m_matControl._43));
         m_EnemyMap["Tank"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_EnemyMap["Tank"][i]->m_OBBBox.Render();
+        //m_EnemyMap["Tank"][i]->m_OBBBox.Render();
         m_EnemyMap["Tank"][i]->Render();
         
         TMatrix zombieRightHandSocket;
@@ -303,11 +303,11 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
         m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.Render();
+        //m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.Render();
 
         matLeftHand = zombieLeftHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
         m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.SetMatrix(&matLeftHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.Render();
+        //m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.Render();
     }
 }
 
@@ -370,22 +370,28 @@ ZombieWave::ZombieWave()
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	m_Generator.seed(seed);
     
-    for (int i = 1; i < MAXWAVE + 1; i++)
+    /*for (int i = 1; i < MAXWAVE + 1; i++)
     {
         m_WaveZombieCountList.insert(std::make_pair(i, ZombieWave1 * i));
         m_WaveTankCountList.insert(std::make_pair(i, TankWave1 * i));
         m_WaveBossCountList.insert(std::make_pair(i, BossWave1 * i));
         
-	}
-    /*m_WaveZombieCountList.insert(std::make_pair(1, ZombieWave1));
+	}*/
+    m_WaveZombieCountList.insert(std::make_pair(1, ZombieWave1));
     m_WaveZombieCountList.insert(std::make_pair(2, ZombieWave2));
     m_WaveZombieCountList.insert(std::make_pair(3, ZombieWave3));
+    m_WaveZombieCountList.insert(std::make_pair(4, ZombieWave4));
+    m_WaveZombieCountList.insert(std::make_pair(5, ZombieWave5));
 
     m_WaveTankCountList.insert(std::make_pair(1, TankWave1));
     m_WaveTankCountList.insert(std::make_pair(2, TankWave2));
     m_WaveTankCountList.insert(std::make_pair(3, TankWave3));
+    m_WaveTankCountList.insert(std::make_pair(4, TankWave4));
+    m_WaveTankCountList.insert(std::make_pair(5, TankWave5));
 
     m_WaveBossCountList.insert(std::make_pair(1, BossWave1));
     m_WaveBossCountList.insert(std::make_pair(2, BossWave2));
-    m_WaveBossCountList.insert(std::make_pair(3, BossWave3));*/
+    m_WaveBossCountList.insert(std::make_pair(3, BossWave3));
+    m_WaveBossCountList.insert(std::make_pair(4, BossWave4));
+    m_WaveBossCountList.insert(std::make_pair(5, BossWave5));
 }

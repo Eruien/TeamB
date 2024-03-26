@@ -104,7 +104,7 @@ bool Boss::Frame()
 	m_ZombieSound->Play();
 	// ºôº¸µå
 
-	m_enemyHp->SetPos({ m_matControl._41, m_matControl._42 + 70, m_matControl._43 });
+	m_enemyHp->SetPos({ m_matControl._41, m_matControl._42 + 140, m_matControl._43 });
 
 	TMatrix matRotation, matTrans, matScale, worldMat;
 	D3DXMatrixInverse(&matRotation, nullptr, &LGlobal::g_pMainCamera->m_matView);
