@@ -4,8 +4,7 @@
 
 bool BossSwiping::Montage(int startFrame, int endFrame)
 {
-    if ((m_pOwner->m_pActionModel->m_iStartFrame + startFrame) <= m_pOwner->m_fCurrentAnimTime
-        && (m_pOwner->m_pActionModel->m_iEndFrame + endFrame) >= m_pOwner->m_fCurrentAnimTime)
+    if (startFrame <= m_pOwner->m_fCurrentAnimTime && endFrame >= m_pOwner->m_fCurrentAnimTime)
     {
         return true;
     }
@@ -20,8 +19,9 @@ bool BossSwiping::Init()
 void BossSwiping::Process()
 {
     m_pOwner->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Boss_Swiping.fbx");
-
-    if (Montage(44, 80))
+    m_pOwner->m_pActionModel->m_iStartFrame;
+    m_pOwner->m_pActionModel->m_iEndFrame;
+    if (Montage(100, 150))
     {
         m_pOwner->IsHitPlayer = true;
     }

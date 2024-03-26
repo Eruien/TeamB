@@ -20,9 +20,9 @@ public:
 	const int ZombieWave1 = 5;
 	const int ZombieWave2 = 10;
 	const int ZombieWave3 = 15;
-	const int TankWave1 = 1;
-	const int TankWave2 = 1;
-	const int TankWave3 = 2;
+	const int TankWave1 = 0;
+	const int TankWave2 = 0;
+	const int TankWave3 = 0;
     const int BossWave1 = 1;
     const int BossWave2 = 0;
     const int BossWave3 = 0;

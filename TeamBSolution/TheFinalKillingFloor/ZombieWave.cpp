@@ -81,6 +81,14 @@ void ZombieWave::CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObj
             { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
             zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
     }
+
+    for (int i = 0; i < m_EnemyMap["Boss"].size(); i++)
+    {
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.Frame();
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.CreateOBBBox(m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.fExtent[0], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.fExtent[1], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.fExtent[2],
+            { m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.m_matWorld._41, m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.m_matWorld._42, m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.m_matWorld._43 },
+            m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.vAxis[0], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.vAxis[1], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.vAxis[2]);
+    }
 }
 void ZombieWave::CollisionCheckWithObstacle(std::vector<std::shared_ptr<LModel>>& collisionObject)
 {
@@ -150,8 +158,7 @@ void ZombieWave::CollisionCheckInNpc()
                     { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
                     zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);*/
                 zombieModelList[i]->m_OBBBox.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 });
-                zombieModelList[i]->m_OBBBoxRightHand.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 });
-
+                zombieModelList[i]->m_OBBBoxRightHand.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 });            
             }
 
             for (int j = i + 1; j < zombieModelList.size(); ++j)
@@ -221,7 +228,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Zombie"][i]->m_matControl._41, m_EnemyMap["Zombie"][i]->m_matControl._42 + m_EnemyMap["Zombie"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Zombie"][i]->m_matControl._43));
         m_EnemyMap["Zombie"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_EnemyMap["Zombie"][i]->m_OBBBox.Render();
+        m_EnemyMap["Zombie"][i]->m_OBBBox.Render();
         m_EnemyMap["Zombie"][i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -237,7 +244,7 @@ void ZombieWave::CollisionBoxRender()
 
         matRightHand = zombieRightHandSocket * m_EnemyMap["Zombie"][i]->m_matControl;
         m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.Render();
+        m_EnemyMap["Zombie"][i]->m_OBBBoxRightHand.Render();
     }
 
     for (int i = 0; i < m_EnemyMap["Tank"].size(); i++)
@@ -245,7 +252,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Tank"][i]->m_matControl._41, m_EnemyMap["Tank"][i]->m_matControl._42 + m_EnemyMap["Tank"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Tank"][i]->m_matControl._43));
         m_EnemyMap["Tank"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_EnemyMap["Tank"][i]->m_OBBBox.Render();
+        m_EnemyMap["Tank"][i]->m_OBBBox.Render();
         m_EnemyMap["Tank"][i]->Render();
         
         TMatrix zombieRightHandSocket;
@@ -269,7 +276,7 @@ void ZombieWave::CollisionBoxRender()
         TMatrix zombieTranslation;
         zombieTranslation.Translation(TVector3(m_EnemyMap["Boss"][i]->m_matControl._41, m_EnemyMap["Boss"][i]->m_matControl._42 + m_EnemyMap["Boss"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Boss"][i]->m_matControl._43));
         m_EnemyMap["Boss"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        m_EnemyMap["Boss"][i]->m_OBBBox.Render();
+        //m_EnemyMap["Boss"][i]->m_OBBBox.Render();
         m_EnemyMap["Boss"][i]->Render();
 
         TMatrix zombieRightHandSocket;
@@ -283,9 +290,24 @@ void ZombieWave::CollisionBoxRender()
             }
         }
 
+        TMatrix zombieLeftHandSocket;
+        TMatrix matLeftHand;
+        if (m_EnemyMap["Boss"][i]->m_pActionModel != nullptr)
+        {
+            if (m_EnemyMap["Boss"][i]->m_pActionModel->m_iEndFrame >= int(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime - m_EnemyMap["Boss"][i]->m_pActionModel->m_iStartFrame, 0);
+                zombieLeftHandSocket = m_EnemyMap["Boss"][i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"LeftHand"];
+            }
+        }
+
         matRightHand = zombieRightHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
         m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.Render();
+        m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.Render();
+
+        matLeftHand = zombieLeftHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.SetMatrix(&matLeftHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.Render();
     }
 }
 

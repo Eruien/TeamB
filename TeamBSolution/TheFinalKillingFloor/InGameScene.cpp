@@ -257,8 +257,8 @@ void InGameScene::Render()
     
     if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
     {
-        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.SetMatrix(&weaponPos, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
-        //LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.Render();
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.WeaponSetMatrix(&weaponPos, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->m_OBBBox.Render();
     }
  
     m_ZombieWave->CollisionBoxRender();
@@ -635,12 +635,12 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
 
     // Boss
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader2.hlsl");
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader.hlsl");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_JumpAttack.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Swiping.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_TakeDamage.bin");
-    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Crawl.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_SpinAttack.bin");
   
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
@@ -868,15 +868,15 @@ void InGameScene::NextWave()
 
     for (int i = 0; i < tankCount; i++)
     {
-        m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42 + 30.0f, 30.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBox({ -40.0f, TankRoot._42, -5.0f }, { 40.0f, TankHead._42, 30.0f }, 0.2f);
         m_ZombieWave->m_EnemyMap["Tank"][i]->SetOBBBoxRightHand({ TankRightHand._41 - 40.0f, TankRightHand._42 - 40.0f, -40.0f }, { TankRightShoulder._41 + 40.0f, TankRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
     }
 
     for (int i = 0; i < bossCount; i++)
     {
-        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBox({ -40.0f, BossRoot._42, -5.0f }, { 40.0f, BossHead._42 + 60.0f, 30.0f }, 0.2f);
-        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxRightHand({ BossRightHand._41 - 100.0f, BossRightHand._42 - 40.0f, -40.0f }, { BossRightShoulder._41 + 100.0f, BossRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
-        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxLeftHand({ BossRightHand._41 - 100.0f, BossRightHand._42 - 40.0f, -40.0f }, { BossRightShoulder._41 + 100.0f, BossRightShoulder._42 + 40.0f, 40.0f }, 0.2f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBox({ -100.0f, BossRoot._42, -50.0f }, { 100.0f, BossHead._42 + 180.0f, 50.0f }, 0.4f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxRightHand({ BossRightHand._41 - 100.0f, BossRightHand._42 - 100.0f, -100.0f }, { BossRightShoulder._41 + 100.0f, BossRightShoulder._42 + 100.0f, 100.0f }, 0.4f);
+        m_ZombieWave->m_EnemyMap["Boss"][i]->SetOBBBoxLeftHand({ BossLeftHand._41 - 100.0f, BossLeftHand._42 - 100.0f, -100.0f }, { BossLeftShoulder._41 + 100.0f, BossLeftShoulder._42 + 100.0f, 100.0f }, 0.4f);
     }
 
     if (m_ZombieWave->m_CurrentWave > 3) return;
@@ -1989,41 +1989,41 @@ void InGameScene::HandlePlayerCollisions()
         if (GPLAYER->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBoxRightHand)
             && zombie->m_CurrentState == State::ENEMYATTACK
             && zombie->IsHitPlayer)
-        {
-            LGlobal::g_PlayerModel->IsTakeDamage = true;
-        }
-        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
-        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - zombie->m_matControl._42;
-        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
-
-		TVector3 dir = { offsetX, offsetY, offsetZ };
-		float distance = dir.Length();
-        float r = LGlobal::g_PlayerModel->m_fRadius + zombie->m_fRadius;
-        if (distance <= r)
-        {
-            if (GPLAYER->IsRush)
             {
-                if (zombie->IsFirstRushDamage)
-                {
-                    zombie->IsTakeDamage = true;
-                    zombie->IsTakeRushDamage = true;
-                    zombie->IsFirstRushDamage = false;
-                }
-                TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
-                vNormal.Normalize();
-                vNormal.y = 0.5f;
-                zombie->m_Velocity = vNormal * 400;
-                zombie->IsOnAir = true;
-            }
-            dir.Normalize();
-            dir *= (r - distance);
-			LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
-			LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
-		}
-	}
+                LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
+            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
+            float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - zombie->m_matControl._42;
+            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
 
-	for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
-	{
+            TVector3 dir = { offsetX, offsetY, offsetZ };
+            float distance = dir.Length();
+            float r = LGlobal::g_PlayerModel->m_fRadius + zombie->m_fRadius;
+            if (distance <= r)
+            {
+                if (GPLAYER->IsRush)
+                {
+                    if (zombie->IsFirstRushDamage)
+                    {
+                        zombie->IsTakeDamage = true;
+                        zombie->IsTakeRushDamage = true;
+                        zombie->IsFirstRushDamage = false;
+                    }
+                    TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                    vNormal.Normalize();
+                    vNormal.y = 0.5f;
+                    zombie->m_Velocity = vNormal * 400;
+                    zombie->IsOnAir = true;
+                }
+                dir.Normalize();
+                dir *= (r - distance);
+                LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+                LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+            }
+    }
+
+    for (auto& tank : m_ZombieWave->m_EnemyMap["Tank"])
+    {
         if (LGlobal::g_PlayerModel->IsRush == false)
         {
             tank->IsTakeRushDamage = false;
@@ -2070,50 +2070,54 @@ void InGameScene::HandlePlayerCollisions()
             LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
             LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
         }
+    }
 
-        for (auto& boss : m_ZombieWave->m_EnemyMap["Boss"])
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["Boss"])
+    {
+        if (LGlobal::g_PlayerModel->IsRush == false)
         {
-            if (LGlobal::g_PlayerModel->IsRush == false)
-            {
-                boss->IsTakeRushDamage = false;
-                boss->IsFirstRushDamage = true;
-            }
-            if (GPLAYER->m_OBBBox.CollisionCheckOBB(&boss->m_OBBBoxLeftHand)
-                && boss->m_CurrentState == State::BOSSSWIPING
-                && boss->IsHitPlayer)
-            {
-                LGlobal::g_PlayerModel->IsTakeDamage = true;
-            }
-            float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - boss->m_matControl._41;
-            float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - boss->m_matControl._42;
-            float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - boss->m_matControl._43;
-
-            TVector3 dir = { offsetX, offsetY, offsetZ };
-            float distance = dir.Length();
-            float r = LGlobal::g_PlayerModel->m_fRadius + boss->m_fRadius;
-            if (distance <= r)
-            {
-                if (GPLAYER->IsRush)
-                {
-                    if (boss->IsFirstRushDamage)
-                    {
-                        boss->IsTakeDamage = true;
-                        boss->IsTakeRushDamage = true;
-                        boss->IsFirstRushDamage = false;
-                    }
-                    TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
-                    vNormal.Normalize();
-                    vNormal.y = 0.5f;
-                    boss->m_Velocity = vNormal * 400;
-                    boss->IsOnAir = true;
-                }
-                dir.Normalize();
-                dir *= (r - distance);
-                LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
-                LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
-            }
+            zombie->IsTakeRushDamage = false;
+            zombie->IsFirstRushDamage = true;
         }
-	}
+        if (GPLAYER->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBoxRightHand)
+            && zombie->IsHitPlayer)
+        {
+            LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
+        else if (GPLAYER->m_OBBBox.CollisionCheckOBB(&zombie->m_OBBBoxLeftHand)
+            && zombie->IsHitPlayer)
+        {
+           LGlobal::g_PlayerModel->IsTakeDamage = true;
+        }
+        float offsetX = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.x - zombie->m_matControl._41;
+        float offsetY = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.y - zombie->m_matControl._42;
+        float offsetZ = LGlobal::g_PlayerModel->m_OBBBox.m_Box.vCenter.z - zombie->m_matControl._43;
+
+        TVector3 dir = { offsetX, offsetY, offsetZ };
+        float distance = dir.Length();
+        float r = LGlobal::g_PlayerModel->m_fRadius + zombie->m_fRadius;
+        if (distance <= r)
+        {
+            if (GPLAYER->IsRush)
+            {
+                if (zombie->IsFirstRushDamage)
+                {
+                    zombie->IsTakeDamage = true;
+                    zombie->IsTakeRushDamage = true;
+                    zombie->IsFirstRushDamage = false;
+                }
+                /*TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                vNormal.Normalize();
+                vNormal.y = 0.5f;
+                zombie->m_Velocity = vNormal * 400;
+                zombie->IsOnAir = true;*/
+            }
+            dir.Normalize();
+            dir *= (r - distance);
+            LGlobal::g_PlayerModel->m_matControl._41 += dir.x;
+            LGlobal::g_PlayerModel->m_matControl._43 += dir.z;
+        }
+    }
 
     std::vector<std::shared_ptr<LModel>>::iterator it = m_KitList.begin();
     while (it != m_KitList.end())
@@ -2327,11 +2331,17 @@ void InGameScene::UpdateNpcPhysics()
 
 		zombie->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 30;
 	}
+    for (auto& zombie : m_ZombieWave->m_EnemyMap["Boss"])
+    {
+        if (zombie->IsOnAir == false)
+            continue;
+
+        zombie->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 90;
+    }
 }
 
 void InGameScene::InitializeOBBBox()
 {
-
     LGlobal::g_PlayerModel->m_OBBBox.Frame();
     LGlobal::g_PlayerModel->m_OBBBox.CreateOBBBox(
         LGlobal::g_PlayerModel->m_SettingBox.fExtent[0],
