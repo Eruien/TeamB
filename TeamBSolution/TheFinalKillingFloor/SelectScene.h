@@ -26,6 +26,9 @@ public:
 	LTrail* m_SwordTrail = nullptr;
 	TVector3 LocalSwordLow = { 0.0f, 0.0f, 0.0f };
 	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
+	// character bool
+	bool m_GunDeathAniEnd = false;
+	bool m_GunChangeDeathAni = false;
 public:
 	// 처음 카메라 세팅
 	TVector3 m_BindCameraPos = { -28.948f, 16.073f, 99.283f };

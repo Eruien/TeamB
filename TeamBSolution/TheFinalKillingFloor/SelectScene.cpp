@@ -46,10 +46,22 @@ void SelectScene::Process()
         if (m_Select.ChkOBBToRay(&m_SwordMan->m_OBBBox.m_Box))
         {
             m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_FrontSlash.fbx");
-            m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
+            m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_Death.fbx");
+            m_GunChangeDeathAni = true;
             m_playerType = PlayerType::SWORD;
         }
     }
+
+    if (m_GunChangeDeathAni)
+    {
+        if (m_GunMan->m_TimerEnd)
+        {
+            m_GunDeathAniEnd = true;
+        }
+    }
+
+
+
     UIManager::GetInstance().Frame();
 
     // adjust player's height
@@ -84,15 +96,24 @@ void SelectScene::Render()
 
     m_CustomMap->SetMatrix(nullptr, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     m_CustomMap->Render();
-    m_GunMan->Render();
+
+    if (!m_GunDeathAniEnd)
+    {
+        m_GunMan->Render();
+    }
+    
     m_SwordMan->Render();
 
     TMatrix playerTranslation;
     playerTranslation.Translation(TVector3(m_GunMan->m_matControl._41, m_GunMan->m_matControl._42 + m_GunMan->m_SettingBox.vCenter.y, m_GunMan->m_matControl._43));
     m_GunMan->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     //m_GunMan->m_OBBBox.Render();
-    m_Rifle->m_WeaponModel->Render();
 
+    if (!m_GunDeathAniEnd)
+    {
+        m_Rifle->m_WeaponModel->Render();
+    }
+  
     playerTranslation.Translation(TVector3(m_SwordMan->m_matControl._41, m_SwordMan->m_matControl._42 + m_SwordMan->m_SettingBox.vCenter.y, m_SwordMan->m_matControl._43));
     m_SwordMan->m_OBBBox.SetMatrix(&playerTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
     //m_SwordMan->m_OBBBox.Render();
