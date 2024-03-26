@@ -51,7 +51,7 @@ public:
 	float m_Speed = 50.0f;
 	float m_RushSpeed = 400.0f;
 	float m_ComboSpeed = 25.0f;
-	float m_JumpAttackSpeed = 400.0f;
+	float m_JumpAttackSpeed = 100.0f;
 	TVector3 m_Dir;
 	float m_PatrolRange = 10000.0f;
 	float m_AttackRange = 25.0f;
@@ -68,7 +68,7 @@ public:
 	TVector3 m_PlayerPos;
 	TVector3 m_NPCPos;
 	TVector3 m_RushPos;
-	TVector3 m_JumpVelocity = {0.0f, 300.0f, 0.0f};
+	TVector3 m_JumpVelocity = {-164.0f, 200.0f, 364.0f};
 	std::default_random_engine m_Generator;
 	std::uniform_int_distribution<int> m_Distribution;
 	shared_ptr<KObject> m_enemyHp;

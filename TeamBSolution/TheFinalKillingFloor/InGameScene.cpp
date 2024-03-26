@@ -657,6 +657,7 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Swiping.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_TakeDamage.bin");
+    LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Crawl.bin");
   
     // ZombieWaveSetting
     m_ZombieWave = std::make_shared<ZombieWave>();
@@ -2113,11 +2114,11 @@ void InGameScene::HandlePlayerCollisions()
                         boss->IsTakeRushDamage = true;
                         boss->IsFirstRushDamage = false;
                     }
-                   /* TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
+                    TVector3 vNormal = { -offsetX, 0.f, -offsetZ };
                     vNormal.Normalize();
                     vNormal.y = 0.5f;
                     boss->m_Velocity = vNormal * 400;
-                    boss->IsOnAir = true;*/
+                    boss->IsOnAir = true;
                 }
                 dir.Normalize();
                 dir *= (r - distance);

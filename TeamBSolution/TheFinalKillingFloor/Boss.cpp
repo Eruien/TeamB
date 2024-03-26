@@ -70,7 +70,7 @@ void Boss::Move(TVector3 target)
 	matRotation = DirectX::XMMatrixAffineTransformation(DirectX::g_XMOne, DirectX::g_XMZero, gRotation, xmPos);
 
 	TMatrix zombieScale;
-	D3DXMatrixScaling(&zombieScale, 0.2f, 0.2f, 0.2f);
+	D3DXMatrixScaling(&zombieScale, 0.4f, 0.4f, 0.4f);
 	TMatrix zombiePos = zombieScale * matRotation;
 
 	m_matControl = zombiePos;
@@ -80,16 +80,12 @@ void Boss::Move(TVector3 target)
 
 void Boss::JumpAttackMove(TVector3 target)
 {
-	m_matControl._41 += m_JumpVelocity.x * LGlobal::g_fSPF;
-	m_matControl._42 += m_JumpVelocity.y * LGlobal::g_fSPF;
-	m_matControl._43 += m_JumpVelocity.z * LGlobal::g_fSPF;
+	/*TMatrix rotationX;
+	D3DXMatrixRotationX(&rotationX, 90);
 
-	m_JumpVelocity.y -= GRAVITY * LGlobal::g_fSPF * 100;
-	
-	TVector3 forward = m_matControl.Forward();
-	forward.Normalize();
-	m_matControl._41 += m_JumpAttackSpeed * LGlobal::g_fSPF * forward.x;
-	m_matControl._43 += m_JumpAttackSpeed * LGlobal::g_fSPF * forward.z;
+	TMatrix result;
+	result = m_matControl * rotationX;
+	m_matControl = result;*/
 }
 
 int Boss::GetRandomNumber()
