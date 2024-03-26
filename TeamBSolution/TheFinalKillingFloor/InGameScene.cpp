@@ -418,7 +418,14 @@ void InGameScene::Render()
 
 void InGameScene::Retry()
 {
-    
+    for (auto& kit : m_KitList)
+    {
+        kit->bVisible = false;
+    }
+    for (auto& ammo : m_AmmoList)
+    {
+		ammo->bVisible = false;
+	}
     IsEndGame = false;
     DeleteCurrentObject();
     ResetWeapon();

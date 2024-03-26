@@ -52,8 +52,9 @@ void SelectScene::Process()
     UIManager::GetInstance().Frame();
 
     // adjust player's height
-    float fHeight = m_CustomMap->GetHeight(LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._43);
+    float fHeight = m_CustomMap->GetHeight(m_GunMan->m_matControl._41, m_GunMan->m_matControl._43);
     m_GunMan->m_matControl._42 = fHeight + 1.0f;
+    fHeight = m_CustomMap->GetHeight(m_SwordMan->m_matControl._41, m_SwordMan->m_matControl._43);
     m_SwordMan->m_matControl._42 = fHeight + 1.0f;
 
     if (m_playerType == PlayerType::SWORD)
@@ -76,7 +77,7 @@ void SelectScene::FrameLight()
     else
     {
         m_PointLight[0].Frame(m_SwordMan->GetPosition());
-        m_PointLight[0].m_vDirection = { 0, -1, 1 };
+        m_PointLight[0].m_vDirection = { 0, -1, -1 };
 	}
     
     m_PointLight[0].m_vDirection.Normalize();
