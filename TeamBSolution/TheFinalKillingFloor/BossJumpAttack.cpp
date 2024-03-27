@@ -21,8 +21,9 @@ void BossJumpAttack::Process()
         m_pOwner->m_Velocity = vNormal * 200;
     }
 
-    if (m_pOwner->m_TimerEnd)
+    if (m_pOwner->IsJumpAttackEnd)
     {
+        m_pOwner->IsJumpAttackEnd = false;
         m_pOwner->IsHitPlayer = false;
         m_pOwner->IsOnAir = false;
         m_pOwner->IsUseRush = false;

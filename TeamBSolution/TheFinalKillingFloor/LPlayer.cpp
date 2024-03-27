@@ -111,7 +111,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -130,7 +130,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -160,7 +160,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() - m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -172,7 +172,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH && LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward() + m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -184,7 +184,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward();
 		m_AddDirection.Normalize();
@@ -196,7 +196,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_A] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -208,7 +208,7 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_D] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Right();
 		m_AddDirection.Normalize();
@@ -220,37 +220,13 @@ void LPlayer::Move()
 	if (LInput::GetInstance().m_KeyStateOld[DIK_S] > KEY_PUSH
 		&& !IsMoveOneDir)
 	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(true);
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
 		IsMoveOneDir = true;
 		m_AddDirection = m_matControl.Forward();
 		m_AddDirection.Normalize();
 		m_matControl._41 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.x;
 		m_matControl._43 -= m_Speed * LGlobal::g_fSPF * m_AddDirection.z;
 		m_Speed = BACKMOVESPEED;
-	}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
-	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
-		m_Speed = 0.0f;
-	}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_D] == KEY_UP)
-	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
-		m_Speed = 0.0f;
-	}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_UP)
-	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
-		m_Speed = 0.0f;
-	}
-
-	if (LInput::GetInstance().m_KeyStateOld[DIK_S] == KEY_UP)
-	{
-		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
-		m_Speed = 0.0f;
 	}
 
 	if (LInput::GetInstance().m_KeyStateOld[DIK_SPACE] == KEY_PUSH
@@ -289,6 +265,32 @@ void LPlayer::Move()
 		}
 		IsOnAir = true;
 	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_A] == KEY_UP)
+	{
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
+		m_Speed = 0.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_D] == KEY_UP)
+	{
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
+		m_Speed = 0.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_W] == KEY_UP)
+	{
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
+		m_Speed = 0.0f;
+	}
+
+	if (LInput::GetInstance().m_KeyStateOld[DIK_S] == KEY_UP)
+	{
+		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
+		m_Speed = 0.0f;
+	}
+
+	
 }
 
 void LPlayer::RushMove()
@@ -499,10 +501,10 @@ bool LPlayer::GunFrame()
 
 	if (m_ZedTimeCount % 25 == 0 && IsZedTime == false)
 	{
-		m_ZedTimeCount += 1;
-		IsZedTime = true;
+		//m_ZedTimeCount += 1;
+		//IsZedTime = true;
 		//LSoundMgr::GetInstance().GetPtr(L"ZedTimeFirst.mp3")->PlayEffect();
-		LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
+		//LSoundMgr::GetInstance().GetPtr(L"soldierUlti.mp3")->PlayEffect();
 	}
 	if (LInput::GetInstance().m_KeyStateOld[DIK_Z] > KEY_PUSH && IsZedTime == false)
 	{

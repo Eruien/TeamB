@@ -152,7 +152,6 @@ void SelectScene::Render()
     pBuffers[1] = m_pConstantBufferLight[1].Get();
     LGlobal::g_pImmediateContext->PSSetConstantBuffers(3, 2, pBuffers);
 
-
     if (!m_SwordDeathAniEnd)
     {
         InterpolRenderTrail();
