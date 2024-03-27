@@ -290,7 +290,11 @@ void LPlayer::Move()
 		m_Speed = 0.0f;
 	}
 
-	
+	if (LInput::GetInstance().m_KeyStateOld[DIK_SPACE] == KEY_UP)
+	{
+   		LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
+		m_Speed = 0.0f;
+	}
 }
 
 void LPlayer::RushMove()

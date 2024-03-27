@@ -201,7 +201,7 @@ Boss::Boss(LPlayer* player)
 
 	m_RandomPos = { float(GetRandomNumber()), 0.0f, float(GetRandomNumber()) };
 	m_AttackRange = 60.0f;
-	m_RushRange = 300.0f;
+	m_RushRange = 400.0f;
 	m_RushCoolTimeStart = 0.0f;
 	m_RushCoolTimeEnd = 10.0f;
 	m_enemyHp = make_shared<KObject>();
