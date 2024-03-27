@@ -12,7 +12,24 @@
 static bool Init_2 = true;
 bool InGameScene::Init()
 {
-    
+    // SO
+    D3D11_BUFFER_DESC vbDesc;
+    vbDesc.ByteWidth = 1024;
+    vbDesc.Usage = D3D11_USAGE_DEFAULT;
+    vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER | D3D11_BIND_STREAM_OUTPUT;
+    vbDesc.CPUAccessFlags = 0;
+    vbDesc.MiscFlags = 0;
+    HRESULT hr = LGlobal::g_pDevice->CreateBuffer(&vbDesc, NULL, &LGlobal::g_pSOBuffer);
+
+    LGlobal::g_pImmediateContext->SOSetTargets(1, &LGlobal::g_pSOBuffer, 0);
+    D3D11_SO_DECLARATION_ENTRY Decl[] =
+    {
+        {0, "POSITION", 0,0,3,0},
+        {0,"NORMAL",0,0,3,0},
+        {0,"TEXCOORD",0,0,2,0},
+        {0,"TEXCOORD",1,1,2,0},
+    };
+
     InitializeObjects();
     InitializeSkyBox();
     InitializePlayerIcon();
@@ -31,17 +48,17 @@ bool InGameScene::Init()
     InitializeTrail();
 
     m_PlayerFirstSpawnPos = { LGlobal::g_PlayerModel->m_matControl._41, LGlobal::g_PlayerModel->m_matControl._42, LGlobal::g_PlayerModel->m_matControl._43 };
-    LGlobal::g_pMainCamera = m_BackViewCamera.get();
+
    
 
     return true;
 }
 void InGameScene::Process()
 {
-    if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
+    /*if (m_BackViewCamera.get() != LGlobal::g_pMainCamera)
     {
         LGlobal::g_pMainCamera = m_BackViewCamera.get();
-    }
+    }*/
     //»óÁ¡Å°
     if (LINPUT.m_KeyStateOld[DIK_B] == KEY_UP)
     {
@@ -1773,7 +1790,6 @@ void InGameScene::ShootRifle()
     int index = LGlobal::g_PlayerModel->m_Gun->m_GunSpec.CurrentAmmo;
     m_RifleBulletList[index]->bVisible = true;
     m_RifleBulletList[index]->bTarget = false;
-    m_RifleBulletList[index]->target = nullptr;
     /*TMatrix scale = TMatrix::CreateScale(0.03f, 0.03f, 0.03f);
     m_RifleBulletList[index]->m_matControl = scale * LGlobal::g_PlayerModel->m_matControl;*/
     TVector3 vTrans = LGlobal::g_PlayerModel->m_Gun->m_WeaponModel->GetPosition();

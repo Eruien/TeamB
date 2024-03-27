@@ -440,7 +440,7 @@ void UIManager::ChangeScene(Event Scene)
     {
 
         LInput::GetInstance().CursorChange();
-        
+       
         
         LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
         LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play();
