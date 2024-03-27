@@ -421,6 +421,7 @@ void SelectScene::SelectBladeMan()
         m_GunChangeDeathAni = true;
         m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Player_Death.fbx");
         m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Idle_Anim.fbx");
+        LSoundMgr::GetInstance().GetPtr(L"PlayerHitSound.WAV")->PlayEffect();
     }
 
     if (m_GunChangeDeathAni)
@@ -439,6 +440,7 @@ void SelectScene::SelectBladeMan()
         swordManForWard.Normalize();
         m_SwordMan->m_matControl._41 += swordManForWard.x * LGlobal::g_fSPF * 100;
         m_SwordMan->m_matControl._43 += swordManForWard.z * LGlobal::g_fSPF * 100;
+        LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
     }
 
     if (IsUseTimer)
@@ -453,6 +455,7 @@ void SelectScene::SelectBladeMan()
         IsUseTimer = false;
         m_GunChangeDeathAni = false;
         D3DXMatrixTranslation(&m_SwordMan->m_matControl, m_SwordManPos.x, m_SwordManPos.y, m_SwordManPos.z);
+        LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
         UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
     }
 }
@@ -464,6 +467,7 @@ void SelectScene::SelectGunMan()
         m_SwordChangeDeathAni = true;
         m_GunMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"Idle_Rifle_Ironsights.fbx");
         m_SwordMan->m_pActionModel = LFbxMgr::GetInstance().GetPtr(L"TwoHand_Death.fbx");
+        LSoundMgr::GetInstance().GetPtr(L"PlayerHitSound.WAV")->PlayEffect();
     }
 
     if (m_SwordChangeDeathAni)
@@ -482,6 +486,7 @@ void SelectScene::SelectGunMan()
         gunManForWard.Normalize();
         m_GunMan->m_matControl._41 += gunManForWard.x * LGlobal::g_fSPF * 100;
         m_GunMan->m_matControl._43 += gunManForWard.z * LGlobal::g_fSPF * 100;
+        LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Play(false);
     }
 
     if (IsUseTimer)
@@ -496,6 +501,7 @@ void SelectScene::SelectGunMan()
         IsUseTimer = false;
         m_SwordChangeDeathAni = false;
         D3DXMatrixTranslation(&m_GunMan->m_matControl, m_GunManPos.x, m_GunManPos.y, m_GunManPos.z);
+        LSoundMgr::GetInstance().GetPtr(L"PlayerStep.wav")->Stop();
         UIManager::GetInstance().ChangeScene(Event::GOINGAMESCENE);
     }
 }

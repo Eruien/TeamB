@@ -13,7 +13,11 @@ static bool Init_2 = true;
 bool InGameScene::Init()
 {
     
-    InitializeObjects();
+    SoundInit();
+    CameraInit();
+    CharacterInit();
+    CreateShadowConstantBuffer();
+
     InitializeSkyBox();
     InitializePlayerIcon();
     InitializeBloodSplatters();
@@ -1099,10 +1103,7 @@ void InGameScene::InitializeWeapon()
 
 void InGameScene::InitializeObjects()
 {
-    SoundInit();
-    CameraInit();
-    CharacterInit();
-    CreateShadowConstantBuffer();
+
 }
 
 void InGameScene::InitializeSkyBox()
