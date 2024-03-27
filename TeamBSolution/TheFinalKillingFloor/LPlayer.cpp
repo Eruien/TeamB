@@ -238,7 +238,7 @@ void LPlayer::Move()
 		if (IsSteamPack)
 			steamSpeed = 2.f;
 		if (LInput::GetInstance().m_KeyStateOld[DIK_LSHIFT] > KEY_PUSH)
-			runSpeed = 2.f;
+			runSpeed = 1.5f;
 		if (LInput::GetInstance().m_KeyStateOld[DIK_W] > KEY_PUSH)
 		{
 			m_Velocity.x += m_matControl.Forward().x * 1000.f * steamSpeed * runSpeed;

@@ -457,7 +457,7 @@ void InGameScene::Retry()
         UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/knife.png");
     }
     //PlayerInit(PlayerType::SWORD);
-    LGlobal::g_PlayerModel->m_Money = 10000;
+    LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     Init_2 = true;
