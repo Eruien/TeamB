@@ -39,22 +39,10 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="face" isRender="true" Group="None" Scene="IngameScene.xml">
-        <Position x="-556" y="-293" z="-0.5"/>
-        <Scale width="58" height="56"/>
-        <Texture texPath="../../res/ui/face.png"/>
-        <Scripts>
-            <Script Type="PickingUI"/>
-            <Script Type="UIEvent">
-                <args Function="UpdatePlayerFace"/>
-            </Script>
-            <Script Type="ChangeTexture"/>
-        </Scripts>
-    </UIObject>
     <UIObject Name="HPbar" isRender="true" Group="None" Scene="IngameScene.xml">
         <Position x="-336" y="-310" z="-0.5"/>
         <Scale width="362" height="25"/>
-        <Texture texPath="../../res/ui/FrontHP.png"/>
+        <Texture texPath="../../res/ui/hp_bar.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
             <Script Type="ChangeTexture"/>
@@ -164,8 +152,8 @@
         </Scripts>
     </UIObject>
     <UIObject Name="MinimapBg" isRender="true" Group="None" Scene="IngameScene.xml">
-        <Position x="-500" y="220" z="0"/>
-        <Scale width="302" height="298"/>
+        <Position x="-502" y="222" z="0"/>
+        <Scale width="265" height="265"/>
         <Texture texPath="../../res/ui/Window_Background.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
@@ -239,8 +227,6 @@
         <Texture texPath="../../res/ui/Empty.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
-            <Script Type="Resize2D"/>
-            <Script Type="DragUI"/>
             <Script Type="ChangeTexture"/>
             <Script Type="TextToTexture">
                 <args TextToTexture="ENEMY" TexListXml="../../res/ui/xml/TextTexture.xml"/>
@@ -274,6 +260,18 @@
         <Texture texPath="../../res/ui/knife.png"/>
         <Scripts>
             <Script Type="PickingUI"/>
+            <Script Type="ChangeTexture"/>
+        </Scripts>
+    </UIObject>
+ <UIObject Name="face" isRender="true" Group="None" Scene="IngameScene.xml">
+        <Position x="-552" y="-293" z="-0.5"/>
+        <Scale width="58" height="56"/>
+        <Texture texPath="../../res/ui/face.png"/>
+        <Scripts>
+            <Script Type="PickingUI"/>
+            <Script Type="UIEvent">
+                <args Function="UpdatePlayerFace"/>
+            </Script>
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>

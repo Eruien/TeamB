@@ -7,6 +7,7 @@ enum class FSMType
 	PLAYER,
 	ENEMY,
 	TANK,
+	BOSS,
 };
 
 class LFiniteStateMachine

@@ -81,6 +81,14 @@ void ZombieWave::CollisionCheckOBB(std::vector<shared_ptr<LModel>>& collisionObj
             { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
             zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);
     }
+
+    for (int i = 0; i < m_EnemyMap["Boss"].size(); i++)
+    {
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.Frame();
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.CreateOBBBox(m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.fExtent[0], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.fExtent[1], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.fExtent[2],
+            { m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.m_matWorld._41, m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.m_matWorld._42, m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.m_matWorld._43 },
+            m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.vAxis[0], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.vAxis[1], m_EnemyMap["Boss"][i]->m_SettingBoxLeftHand.vAxis[2]);
+    }
 }
 void ZombieWave::CollisionCheckWithObstacle(std::vector<std::shared_ptr<LModel>>& collisionObject)
 {
@@ -150,8 +158,7 @@ void ZombieWave::CollisionCheckInNpc()
                     { zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 },
                     zombieModelList[i]->m_SettingBoxRightHand.vAxis[0], zombieModelList[i]->m_SettingBoxRightHand.vAxis[1], zombieModelList[i]->m_SettingBoxRightHand.vAxis[2]);*/
                 zombieModelList[i]->m_OBBBox.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBox.m_matWorld._41, zombieModelList[i]->m_OBBBox.m_matWorld._42, zombieModelList[i]->m_OBBBox.m_matWorld._43 });
-                zombieModelList[i]->m_OBBBoxRightHand.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 });
-
+                zombieModelList[i]->m_OBBBoxRightHand.UpdateOBBBoxPosition({ zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._41, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._42, zombieModelList[i]->m_OBBBoxRightHand.m_matWorld._43 });            
             }
 
             for (int j = i + 1; j < zombieModelList.size(); ++j)
@@ -195,6 +202,7 @@ void ZombieWave::CollisionCheckInNpc()
                             vNormal.y = 0.5f;
                             zombieModelList[j]->m_Velocity = vNormal * 400;
                             zombieModelList[j]->IsOnAir = true;
+                            zombieModelList[j]->m_RushStart += 10.f;
 						}
                         if (zombieModelList[j]->IsRush)
                         {
@@ -203,6 +211,7 @@ void ZombieWave::CollisionCheckInNpc()
                             vNormal.y = 0.5f;
                             zombieModelList[i]->m_Velocity = vNormal * 400;
                             zombieModelList[i]->IsOnAir = true;
+                            zombieModelList[i]->m_RushStart += 10.f;
                         }
                     }
                 }
@@ -245,7 +254,7 @@ void ZombieWave::CollisionBoxRender()
         m_EnemyMap["Tank"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_EnemyMap["Tank"][i]->m_OBBBox.Render();
         m_EnemyMap["Tank"][i]->Render();
-
+        
         TMatrix zombieRightHandSocket;
         TMatrix matRightHand;
         if (m_EnemyMap["Tank"][i]->m_pActionModel != nullptr)
@@ -260,6 +269,45 @@ void ZombieWave::CollisionBoxRender()
         matRightHand = zombieRightHandSocket * m_EnemyMap["Tank"][i]->m_matControl;
         m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
         //m_EnemyMap["Tank"][i]->m_OBBBoxRightHand.Render();
+    }
+
+    for (int i = 0; i < m_EnemyMap["Boss"].size(); i++)
+    {
+        TMatrix zombieTranslation;
+        zombieTranslation.Translation(TVector3(m_EnemyMap["Boss"][i]->m_matControl._41, m_EnemyMap["Boss"][i]->m_matControl._42 + m_EnemyMap["Boss"][i]->m_SettingBox.vCenter.y, m_EnemyMap["Boss"][i]->m_matControl._43));
+        m_EnemyMap["Boss"][i]->m_OBBBox.SetMatrix(&zombieTranslation, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        //m_EnemyMap["Boss"][i]->m_OBBBox.Render();
+        m_EnemyMap["Boss"][i]->Render();
+
+        TMatrix zombieRightHandSocket;
+        TMatrix matRightHand;
+        if (m_EnemyMap["Boss"][i]->m_pActionModel != nullptr)
+        {
+            if (m_EnemyMap["Boss"][i]->m_pActionModel->m_iEndFrame >= int(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime - m_EnemyMap["Boss"][i]->m_pActionModel->m_iStartFrame, 0);
+                zombieRightHandSocket = m_EnemyMap["Boss"][i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"RightHand"];
+            }
+        }
+
+        TMatrix zombieLeftHandSocket;
+        TMatrix matLeftHand;
+        if (m_EnemyMap["Boss"][i]->m_pActionModel != nullptr)
+        {
+            if (m_EnemyMap["Boss"][i]->m_pActionModel->m_iEndFrame >= int(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime))
+            {
+                int currentFrame = max(m_EnemyMap["Boss"][i]->m_fCurrentAnimTime - m_EnemyMap["Boss"][i]->m_pActionModel->m_iStartFrame, 0);
+                zombieLeftHandSocket = m_EnemyMap["Boss"][i]->m_pActionModel->m_NameMatrixMap[int(currentFrame)][L"LeftHand"];
+            }
+        }
+
+        matRightHand = zombieRightHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
+        m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.SetMatrix(&matRightHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        //m_EnemyMap["Boss"][i]->m_OBBBoxRightHand.Render();
+
+        matLeftHand = zombieLeftHandSocket * m_EnemyMap["Boss"][i]->m_matControl;
+        m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.SetMatrix(&matLeftHand, &LGlobal::g_pMainCamera->m_matView, &LGlobal::g_pMainCamera->m_matProj);
+        //m_EnemyMap["Boss"][i]->m_OBBBoxLeftHand.Render();
     }
 }
 
@@ -283,6 +331,12 @@ bool ZombieWave::Frame()
         m_EnemyMap["Tank"][i]->Frame();
     }
 
+    for (int i = 0; i < m_EnemyMap["Boss"].size(); i++)
+    {
+        m_EnemyMap["Boss"][i]->Process();
+        m_EnemyMap["Boss"][i]->Frame();
+    }
+
     return true;
 }
 
@@ -298,6 +352,11 @@ bool ZombieWave::Render()
         tank->Render();
     }
 
+    for (auto& boss : m_EnemyMap["Boss"])
+    {
+        boss->Render();
+    }
+
     return true;
 }
 
@@ -311,11 +370,28 @@ ZombieWave::ZombieWave()
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	m_Generator.seed(seed);
     
+    /*for (int i = 1; i < MAXWAVE + 1; i++)
+    {
+        m_WaveZombieCountList.insert(std::make_pair(i, ZombieWave1 * i));
+        m_WaveTankCountList.insert(std::make_pair(i, TankWave1 * i));
+        m_WaveBossCountList.insert(std::make_pair(i, BossWave1 * i));
+        
+	}*/
     m_WaveZombieCountList.insert(std::make_pair(1, ZombieWave1));
     m_WaveZombieCountList.insert(std::make_pair(2, ZombieWave2));
     m_WaveZombieCountList.insert(std::make_pair(3, ZombieWave3));
+    m_WaveZombieCountList.insert(std::make_pair(4, ZombieWave4));
+    m_WaveZombieCountList.insert(std::make_pair(5, ZombieWave5));
 
     m_WaveTankCountList.insert(std::make_pair(1, TankWave1));
     m_WaveTankCountList.insert(std::make_pair(2, TankWave2));
     m_WaveTankCountList.insert(std::make_pair(3, TankWave3));
+    m_WaveTankCountList.insert(std::make_pair(4, TankWave4));
+    m_WaveTankCountList.insert(std::make_pair(5, TankWave5));
+
+    m_WaveBossCountList.insert(std::make_pair(1, BossWave1));
+    m_WaveBossCountList.insert(std::make_pair(2, BossWave2));
+    m_WaveBossCountList.insert(std::make_pair(3, BossWave3));
+    m_WaveBossCountList.insert(std::make_pair(4, BossWave4));
+    m_WaveBossCountList.insert(std::make_pair(5, BossWave5));
 }

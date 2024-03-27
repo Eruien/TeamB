@@ -188,6 +188,24 @@
     <ClCompile Include="LoadScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossJumpAttack.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossSwiping.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossTrace.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossDeath.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossTakeDamage.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
@@ -377,6 +395,24 @@
     <ClInclude Include="LoadScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossJumpAttack.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossSwiping.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossTrace.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossDeath.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossTakeDamage.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UI\Anim2.xml">
@@ -428,6 +464,9 @@
     </Filter>
     <Filter Include="Collision">
       <UniqueIdentifier>{e1f3ee26-b06b-430f-8759-b1262aa23b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Boss">
+      <UniqueIdentifier>{e90b9f49-c4eb-40ce-b9ec-2321fa561ef2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@
 #include "LPlaneShape.h"
 #include "Zombie.h"
 #include "Tank.h"
+#include "Boss.h"
 #include "LSkyBox.h"
 #include "LSelect.h"
 #include "LBox.h"
@@ -114,7 +115,6 @@ public:
 	shared_ptr<KObject> m_playerIcon;
 public:
 	bool IsNextWave = false;
-	bool IsReleaseTank = false;
 	bool IsEndGame = false;
 public:
 	bool Init() override;
@@ -167,6 +167,7 @@ public:
 	void UpdateBulletModels();
 	void ProcessItem();
 	void GetItem();
+	void GenerateItem();
 	void ShootBullet();
 	void ShootRifle();
 	void ShootShotgun();

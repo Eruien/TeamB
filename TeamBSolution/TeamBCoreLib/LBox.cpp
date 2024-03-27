@@ -218,13 +218,34 @@ void LBox::SetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
 {
 	if (parent != nullptr)
 	{
-		TMatrix boxScale; 
+		m_matWorld._41 = (*parent)._41;
+		m_matWorld._42 = (*parent)._42;
+		m_matWorld._43 = (*parent)._43;
+	}
+
+	if (matView != nullptr)
+	{
+		m_matView = *matView;
+	}
+
+	if (matProj != nullptr)
+	{
+		m_matProj = *matProj;
+	}
+
+	m_cbData.matWorld = m_matWorld.Transpose();
+	m_cbData.matView = m_matView.Transpose();
+	m_cbData.matProj = m_matProj.Transpose();
+	m_pImmediateContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, nullptr, &m_cbData, 0, 0);
+}
+
+void LBox::WeaponSetMatrix(TMatrix* parent, TMatrix* matView, TMatrix* matProj)
+{
+	if (parent != nullptr)
+	{
+		TMatrix boxScale;
 		D3DXMatrixScaling(&boxScale, m_vScale.x, m_vScale.y, m_vScale.z);
 		m_matWorld = boxScale * (*parent);
-		
-		/*m_matWorld._41 = (*parent)._41;
-		m_matWorld._42 = (*parent)._42;
-		m_matWorld._43 = (*parent)._43;*/
 	}
 
 	if (matView != nullptr)

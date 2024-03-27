@@ -40,6 +40,13 @@ enum class State
 	TANKTAKEDAMAGE,
 	TANKRUSH,
 	TANKCOMBO,
+
+	//Boss
+	BOSSTRACE,
+	BOSSSWIPING,
+	BOSSJUMPATTACK,
+	BOSSTAKEDAMAGE,
+	BOSSDEATH,
 };
 
 enum class Event
@@ -80,6 +87,10 @@ enum class Event
 	//Tank
 	TANKCOMBOATTACK,
 	TANKRUSHATTACK,
+
+	//Boss
+	BOSSJUMPATTACK,
+	BOSSSWIPING,
 };
 
 class LFiniteState

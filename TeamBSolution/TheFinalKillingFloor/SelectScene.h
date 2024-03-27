@@ -26,9 +26,15 @@ public:
 	LTrail* m_SwordTrail = nullptr;
 	TVector3 LocalSwordLow = { 0.0f, 0.0f, 0.0f };
 	TVector3 LocalSwordHigh = { 0.0f, 0.0f, 255.0f };
+	// character bool
+	bool m_GunDeathAniEnd = false;
+	bool m_GunChangeDeathAni = false;
+	bool m_SwordDeathAniEnd = false;
+	bool m_SwordChangeDeathAni = false;
+	bool IsUseTimer = false;
 public:
 	// 처음 카메라 세팅
-	TVector3 m_BindCameraPos = { -28.948f, 51.073f, 99.283f };
+	TVector3 m_BindCameraPos = { -28.948f, 16.073f, 99.283f };
 	float m_BindCameraYaw = 3.11021948f;
 	float m_BindCameraPitch = 43.9585144f;
 	float m_BindCameraRoll = 0.0f;
@@ -43,6 +49,8 @@ public:
 	Light					m_PointLight[1];
 	float fLightStart = 1.0f;
 	float fLightEnd = 0.1f;
+	float m_TimerStart = 0.0f;
+	float m_TimerEnd = 1.0f;
 public:
 	bool Init() override;
 	void Render() override;
@@ -61,6 +69,8 @@ public:
 	ID3D11Buffer* CreateConstantBuffer(ID3D11Device* pd3dDevice, void* data, UINT iNumIndex, UINT iSize, bool bDynamic = false);
 	void UpdateOBB();
 	void InterpolRenderTrail();
+	void SelectBladeMan();
+	void SelectGunMan();
 public:
 	SelectScene(LScene* parent);
 	virtual ~SelectScene();

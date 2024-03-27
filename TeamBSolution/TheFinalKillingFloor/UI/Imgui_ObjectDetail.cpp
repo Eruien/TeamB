@@ -188,7 +188,7 @@ void Imgui_ObjectDetail::Frame()
 
 				if (ImGui::BeginTabBar("ScriptTabBar", tab_bar_flags))
 				{
-					for (auto script : UIManager::s_selectedObject->GetScripts())
+					for (auto& script : UIManager::s_selectedObject->GetScripts())
 					{
 						if (script->GetName() == L"PickingUI")
 						{

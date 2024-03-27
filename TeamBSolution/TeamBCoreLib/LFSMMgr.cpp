@@ -185,6 +185,25 @@ bool LFSMMgr::Init()
 
 	m_map.insert(std::make_pair(FSMType::TANK, std::move(TankFSM)));
 
+	//Boss
+	std::unique_ptr<LFiniteStateMachine> BossFSM = std::make_unique<LFiniteStateMachine>();
+
+	BossFSM->AddStateTransition(State::BOSSTRACE, Event::TAKEDAMAGE, State::BOSSTAKEDAMAGE);
+	BossFSM->AddStateTransition(State::BOSSTRACE, Event::FATALDAMAGE, State::BOSSDEATH);
+	BossFSM->AddStateTransition(State::BOSSTRACE, Event::BOSSSWIPING, State::BOSSSWIPING);
+	BossFSM->AddStateTransition(State::BOSSTRACE, Event::BOSSJUMPATTACK, State::BOSSJUMPATTACK);
+	
+	BossFSM->AddStateTransition(State::BOSSTAKEDAMAGE, Event::FATALDAMAGE, State::BOSSDEATH);
+	BossFSM->AddStateTransition(State::BOSSTAKEDAMAGE, Event::RECOVERYDAMAGE, State::BOSSTRACE);
+
+	BossFSM->AddStateTransition(State::BOSSSWIPING, Event::TAKEDAMAGE, State::BOSSTAKEDAMAGE);
+	BossFSM->AddStateTransition(State::BOSSSWIPING, Event::PLAYEROUTATTACKRANGE, State::BOSSTRACE);
+
+	BossFSM->AddStateTransition(State::BOSSJUMPATTACK, Event::ENDATTACK, State::BOSSTRACE);
+	BossFSM->AddStateTransition(State::BOSSJUMPATTACK, Event::TAKEDAMAGE, State::BOSSTAKEDAMAGE);
+
+	m_map.insert(std::make_pair(FSMType::BOSS, std::move(BossFSM)));
+
 	return true;
 }
 

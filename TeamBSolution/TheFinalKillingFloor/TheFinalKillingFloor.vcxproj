@@ -145,6 +145,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnchorUI.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossDeath.cpp" />
+    <ClCompile Include="BossJumpAttack.cpp" />
+    <ClCompile Include="BossSwiping.cpp" />
+    <ClCompile Include="BossTakeDamage.cpp" />
+    <ClCompile Include="BossTrace.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="EnemyAttack.cpp" />
@@ -218,6 +224,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchorUI.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossDeath.h" />
+    <ClInclude Include="BossJumpAttack.h" />
+    <ClInclude Include="BossSwiping.h" />
+    <ClInclude Include="BossTakeDamage.h" />
+    <ClInclude Include="BossTrace.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="EnemyAttack.h" />

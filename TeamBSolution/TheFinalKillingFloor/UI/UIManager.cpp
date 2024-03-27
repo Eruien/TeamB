@@ -35,7 +35,7 @@ void UIManager::Frame()
     //if(_objsTemp.empty()|| _objsTemp.size() != _objs.size())
     //    _objsTemp = _objs;
 
-	for (auto obj : _objs)
+	for (auto& obj : _objs)
 	{
         if (obj->GetIsRender() || _editMode)
         {
@@ -49,7 +49,7 @@ void UIManager::Frame()
 
 void UIManager::Render()
 {
-	for (auto obj : _objs)
+	for (auto& obj : _objs)
 	{
  /*       if (obj->GetScript<UIEvent>(L"UIEvent"))
         {
@@ -87,7 +87,7 @@ void UIManager::Save(const wstring filePath)
     root->SetAttribute("SceneName", wtm(filePath).c_str());
     doc.LinkEndChild(root);
 
-    for (auto obj : _objs)
+    for (auto& obj : _objs)
     {
         /*if (filePath == obj->_scene)
         {*/
@@ -123,7 +123,7 @@ void UIManager::Save(const wstring filePath)
         tinyxml2::XMLElement* scriptsNode = doc.NewElement("Scripts");
         objRoot->LinkEndChild(scriptsNode);
 
-        for (auto script : obj->GetScripts())
+        for (auto& script : obj->GetScripts())
         {
             tinyxml2::XMLElement* scriptNode = doc.NewElement("Script");
             scriptsNode->LinkEndChild(scriptNode);
@@ -382,7 +382,7 @@ void UIManager::Load(const wstring filePath)
 
 shared_ptr<KObject> UIManager::GetUIObject(wstring name)
 {
-	for (auto obj : _objs)
+	for (auto& obj : _objs)
 	{
 		if (obj->GetName() == name)
 			return obj;
@@ -393,7 +393,7 @@ shared_ptr<KObject> UIManager::GetUIObject(wstring name)
 vector<shared_ptr<KObject>> UIManager::GetGroup(wstring groupName)
 {
     vector<shared_ptr<KObject>> group;
-    for (auto obj : _objs)
+    for (auto& obj : _objs)
     {
         if (obj->_group == groupName)
             group.push_back(obj);
@@ -406,7 +406,7 @@ vector<shared_ptr<KObject>> UIManager::GetGroup(wstring groupName)
 vector<shared_ptr<KObject>> UIManager::GetSceneObj(wstring sceneName)
 {
     vector<shared_ptr<KObject>> sceneObj;
-    for (auto obj : _objs)
+    for (auto& obj : _objs)
     {
         if (obj->_scene == sceneName)
             sceneObj.push_back(obj);
@@ -420,7 +420,7 @@ void UIManager::ChangeScene(Event Scene)
     {
         //UIManager::GetInstance().Load(L"MainScene.xml");
         LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Play();
-        for (auto obj : _objs)
+        for (auto& obj : _objs)
         {
             obj->SetIsRender(false);
             if (obj->_scene == L"MainScene.xml")
@@ -429,7 +429,7 @@ void UIManager::ChangeScene(Event Scene)
             }
         }
         auto group = UIManager::GetInstance().GetGroup(L"MainOptionMenu");
-        for (auto obj : group)
+        for (auto& obj : group)
         {
             obj->SetIsRender(false);
         }
@@ -445,7 +445,10 @@ void UIManager::ChangeScene(Event Scene)
         LSoundMgr::GetInstance().GetPtr(L"BackgroundSound.mp3")->Stop();
         LSoundMgr::GetInstance().GetPtr(L"InGameSound.mp3")->Play();
         LSoundMgr::GetInstance().GetPtr(L"zombieSound.mp3")->Play();
-        for (auto obj : _objs)
+
+
+
+        for (auto& obj : _objs)
         {
             obj->SetIsRender(false);
             if (obj->_scene == L"IngameScene.xml")
@@ -497,7 +500,7 @@ void UIManager::ChangeScene(Event Scene)
         LSoundMgr::GetInstance().GetPtr(L"zombieSound.mp3")->Stop();
         LScene::GetInstance().m_pActionList[State::INGAMESCENE]->Retry();
         //UIManager::GetInstance().Load(L"EndScene.xml");
-        for (auto obj : _objs)
+        for (auto& obj : _objs)
         {
             obj->SetIsRender(false);
             if (obj->_scene == L"EndScene.xml")
@@ -516,7 +519,7 @@ void UIManager::ChangeScene(Event Scene)
 
         if (LGlobal::g_PlayerModel->m_Type == PlayerType::GUN)
         {
-            for (auto obj : _objs)
+            for (auto& obj : _objs)
             {
                 obj->SetIsRender(false);
                 if (obj->_scene == L"Shop1.xml")
@@ -528,7 +531,7 @@ void UIManager::ChangeScene(Event Scene)
 
         if (LGlobal::g_PlayerModel->m_Type == PlayerType::SWORD)
         {
-            for (auto obj : _objs)
+            for (auto& obj : _objs)
             {
                 obj->SetIsRender(false);
                 if (obj->_scene == L"Shop2.xml")
@@ -544,7 +547,7 @@ void UIManager::ChangeScene(Event Scene)
     else if (Scene == Event::GOSELECTSCENE)
     {
         
-        for (auto obj : _objs)
+        for (auto& obj : _objs)
         {
             obj->SetIsRender(false);
             if (obj->_scene == L"SelectScene.xml")
@@ -572,7 +575,7 @@ void UIManager::RemoveObject(wstring name)
 void UIManager::UpdateResolution(int width, int height)
 {
    
-    for (auto obj : _objs)
+    for (auto& obj : _objs)
     {
         obj->m_vPosition.x *= float(width) / _beforeWidth;
         obj->m_vPosition.y *= float(height) / _beforeHeight;

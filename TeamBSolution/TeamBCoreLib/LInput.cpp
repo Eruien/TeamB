@@ -213,7 +213,7 @@ bool LInput::Frame()
     g_InputData.bDownKey = GetKey(DIK_DOWN);
     g_InputData.bEnter = GetKey(DIK_RETURN);
     g_InputData.bExit = GetKey(DIK_ESCAPE);
-    g_InputData.bSpace = GetKey(DIK_SPACE);
+    GetKey(DIK_SPACE);
     g_InputData.bF1Key = GetKey(DIK_F1);
     GetKey(DIK_1);
     GetKey(DIK_2);

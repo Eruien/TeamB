@@ -40,7 +40,7 @@ void DigitDisplay::Frame()
 
 void DigitDisplay::Render()
 {
-    for (auto obj : _objects)
+    for (auto& obj : _objects)
     {
         obj->Render();
     }
