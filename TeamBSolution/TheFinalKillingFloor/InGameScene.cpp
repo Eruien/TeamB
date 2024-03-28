@@ -1724,6 +1724,7 @@ void InGameScene::AdjustPlayerHeight()
     {
 		LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
         LGlobal::g_PlayerModel->IsOnAir = false;
+        GPLAYER->m_Speed = 0.f;
 	}
 }
 
