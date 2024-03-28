@@ -23,7 +23,7 @@ public:
 public:
 	LNode* NewNode(LNode* pParnet, DWORD topLeft, DWORD topRight, DWORD bottomRight, DWORD bottomLeft);
 	void BuildTree(LNode* pNode);
-	void BuildQurdTree(LMap* pMap, DWORD row, DWORD col);
+	void BuildQuadTree(LMap* pMap, DWORD row, DWORD col);
 	TVector2 GetHeightFormNode(LNode* pNode);
 	void ComputeBoundingBox(LNode* pNode);
 	void FindNode(LNode* pNode);

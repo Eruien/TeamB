@@ -1,6 +1,6 @@
 #include "Sample.h"
 #include "LGlobal.h"
-
+#include "../TheFinalKillingFloor/UI/UIManager.h"
 bool Sample::Init()
 {
 
@@ -31,7 +31,7 @@ bool Sample::Init()
 	m_Tree->Set();
 	m_Tree->m_TreeDepth = 2;
 	// ÇÁ·¯½ºÅÒ ÄÃ¸µÇÒ ¸ÊÀÌ¶û ¸ÊÀÇ Å©±â¸¦ ÀÔ·Â
-	m_Tree->BuildQurdTree(m_HeightMap, 513, 513);
+	m_Tree->BuildQuadTree(m_HeightMap, 513, 513);
 
 	return true;
 }

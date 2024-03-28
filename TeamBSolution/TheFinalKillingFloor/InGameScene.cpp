@@ -1321,8 +1321,8 @@ void InGameScene::InitializeMap()
 
     m_QuadTree = std::make_shared<LQurdtree>();
     m_QuadTree->Set();
-    m_QuadTree->m_TreeDepth = 2;
-    m_QuadTree->BuildQurdTree(m_CustomMap.get(), 513, 513);
+    m_QuadTree->m_TreeDepth = 3;
+    m_QuadTree->BuildQuadTree(m_CustomMap.get(), 513, 513);
 }
 
 void InGameScene::InitializeGrasses()

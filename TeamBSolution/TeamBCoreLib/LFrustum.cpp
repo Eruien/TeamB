@@ -108,7 +108,10 @@ CullResult LFrustum::CheckOBBInPlane(T_BOX& box)
         }
     }
 
-    if (insideCount == 6) {
+    /*if (insideCount == 6) {
+        return CullResult::INSIDE;
+    }*/
+    if (insideCount > 0) {
         return CullResult::INSIDE;
     }
 

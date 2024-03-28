@@ -103,7 +103,7 @@ void LQurdtree::BuildTree(LNode* pNode)
 	}
 }
 
-void LQurdtree::BuildQurdTree(LMap* pMap, DWORD row, DWORD col)
+void LQurdtree::BuildQuadTree(LMap* pMap, DWORD row, DWORD col)
 {
 	m_pMap = pMap;
 	m_Row = row;
@@ -235,6 +235,13 @@ void LQurdtree::AddLeafNode(LNode* pNode)
 void LQurdtree::UpdateIndexBuffer()
 {
 	if (m_IndexList.empty()) return;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT hr = m_pMap->m_pImmediateContext->Map(m_pIndexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (SUCCEEDED(hr))
+	{
+		memcpy(mappedResource.pData, &m_IndexList.at(0), sizeof(DWORD) * m_IndexList.size());
+		m_pMap->m_pImmediateContext->Unmap(m_pIndexBuffer.Get(), 0);
+	}
 }
 
 bool LQurdtree::Init()
