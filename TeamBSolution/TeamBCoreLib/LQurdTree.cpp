@@ -189,7 +189,8 @@ void LQurdtree::FindNode(LNode* pNode)
 
 	if (pNode == nullptr) return;
 	
-	if (CullResult::INSIDE == LGlobal::g_pMainCamera->m_Frustum.CheckOBBInPlane(pNode->m_tBox))
+	if (CullResult::INSIDE == LGlobal::g_pMainCamera->m_Frustum.CheckOBBInPlane(pNode->m_tBox) &&
+		pNode->m_IsLeaf)
 	{
 		m_NodeList.push_back(pNode);
 		return;

@@ -94,16 +94,17 @@ CullResult LFrustum::CheckOBBInPlane(T_BOX& box)
             m_xPlane[iplane].fC * box.vCenter.z +
             m_xPlane[iplane].fD;
 
-        if (fPlaneToCenter < -fDistance)
+        if (fPlaneToCenter <= -fDistance)
         {
             return CullResult::OUTSIDE;
         }
-        else if (fPlaneToCenter <= fDistance)
+        /*else if (fPlaneToCenter <= fDistance)
         {
 
-        }
+        }*/
         else
         {
+            return CullResult::INSIDE;
             insideCount++;
         }
     }
@@ -111,9 +112,9 @@ CullResult LFrustum::CheckOBBInPlane(T_BOX& box)
     /*if (insideCount == 6) {
         return CullResult::INSIDE;
     }*/
-    if (insideCount > 0) {
+    /*if (insideCount > 1) {
         return CullResult::INSIDE;
-    }
+    }*/
 
     return CullResult::SPANNING;
 }
