@@ -46,6 +46,8 @@ public:
 	bool IsHitPlayer = false;
 	bool IsFirstRushDamage = true;
 	bool IsTakeRushDamage = false;
+	bool IsJumpAttackEnd = false;
+	bool IsJumpAttackRange = false;
 	
 	LSound* m_ZombieSound = nullptr;
 	float m_Speed = 50.0f;
@@ -61,6 +63,7 @@ public:
 	float m_RushEnd = 2.0f;
 	float m_RushCoolTimeStart = 0.0f;
 	float m_RushCoolTimeEnd = 6.0f;
+	float m_MapHeight = 0.0f;
 	
 	TVector3 m_Velocity;
 	TVector3 m_RandomPos;

@@ -13,7 +13,11 @@ static bool Init_2 = true;
 bool InGameScene::Init()
 {
     
-    InitializeObjects();
+    SoundInit();
+    CameraInit();
+    CharacterInit();
+    CreateShadowConstantBuffer();
+
     InitializeSkyBox();
     InitializePlayerIcon();
     InitializeBloodSplatters();
@@ -455,7 +459,7 @@ void InGameScene::Retry()
         UIManager::GetInstance().GetUIObject(L"Selected_Sword")->GetScript<ChangeTexture>(L"ChangeTexture")->ChangeFromPath(L"../../res/ui/knife.png");
     }
     //PlayerInit(PlayerType::SWORD);
-    LGlobal::g_PlayerModel->m_Money = 10000;
+    LGlobal::g_PlayerModel->m_Money = 0;
     m_ZombieWave->m_CurrentWave = 0;
     NextWave();
     Init_2 = true;
@@ -644,7 +648,7 @@ void InGameScene::CharacterInit()
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Tank_Run.bin");
 
     // Boss
-    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader.hlsl");
+    LCharacterIO::GetInstance().CharacterRead(L"../../res/UserFile/Character/Boss.bin", L"../../res/hlsl/CharacterShader2.hlsl");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_JumpAttack.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Run.bin");
     LAnimationIO::GetInstance().AnimationRead(L"../../res/UserFile/Animation/Boss_Swiping.bin");
@@ -1101,10 +1105,7 @@ void InGameScene::InitializeWeapon()
 
 void InGameScene::InitializeObjects()
 {
-    SoundInit();
-    CameraInit();
-    CharacterInit();
-    CreateShadowConstantBuffer();
+
 }
 
 void InGameScene::InitializeSkyBox()
@@ -1725,6 +1726,7 @@ void InGameScene::AdjustPlayerHeight()
     {
 		LGlobal::g_PlayerModel->m_matControl._42 = fHeight + 1.0f;
         LGlobal::g_PlayerModel->IsOnAir = false;
+        GPLAYER->m_Speed = 0.f;
 	}
 }
 
@@ -1742,6 +1744,8 @@ void InGameScene::AdjustNpcHeight()
 			zombie->m_matControl._42 = fHeight + 1.0f;
 			zombie->IsOnAir = false;
 		}
+
+        zombie->m_MapHeight = fHeight + 1.0f;
         //for (auto& zombie : m_ZombieWave->m_EnemyMap["Zombie"])
         //{
         //    float fHeight = m_CustomMap->GetHeight(zombie->m_matControl._41, zombie->m_matControl._43);
@@ -2348,6 +2352,11 @@ void InGameScene::UpdateNpcPhysics()
             continue;
 
         zombie->m_Velocity.y -= GRAVITY * LGlobal::g_fSPF * 90;
+
+        if (zombie->m_matControl._42 <= zombie->m_MapHeight)
+        {
+            zombie->IsJumpAttackEnd = true;
+        }
     }
 }
 

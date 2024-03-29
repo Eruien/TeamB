@@ -145,24 +145,25 @@ bool Boss::Frame()
 		m_RushCoolTimeStart += LGlobal::g_fSPF;
 	}
 
-	if (m_RushCoolTimeStart > m_RushCoolTimeEnd)
-	{
-		m_RushCoolTimeStart = 0.0f;
-		IsUseRush = true;
-		IsOnAir = true;
-		TVector3 offset = m_PlayerPos - m_NPCPos;
-		offset *= 0.9f;
-		offset.y = 550.f;
-		
-		m_Velocity = offset;
-	}
-
-	if (((m_NPCPos.x - m_RushRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_RushRange))
-		&& ((m_NPCPos.z - m_RushRange) < m_PlayerPos.z) && (m_PlayerPos.z < (m_NPCPos.z + m_RushRange)) && IsRushDir && IsUseRush)
+	if (abs(m_PlayerPos.x - m_NPCPos.x) > m_RushRange
+		&& abs(m_PlayerPos.z - m_NPCPos.z) > m_RushRange)
 	{
 		m_RushPos = m_PlayerPos;
 		IsRush = true;
 		IsRushDir = false;
+	}
+
+	if ((m_RushCoolTimeStart > m_RushCoolTimeEnd) && IsRush)
+	{
+		m_RushCoolTimeStart = 0.0f;
+		IsUseRush = true;
+		IsOnAir = true;
+		IsRush = false;
+		TVector3 offset = m_PlayerPos - m_NPCPos;
+		offset *= 0.9f;
+		offset.y = 550.f;
+
+		m_Velocity = offset;
 	}
 
 	if (((m_NPCPos.x - m_AttackRange) < m_PlayerPos.x) && (m_PlayerPos.x < (m_NPCPos.x + m_AttackRange))
@@ -200,7 +201,7 @@ Boss::Boss(LPlayer* player)
 
 	m_RandomPos = { float(GetRandomNumber()), 0.0f, float(GetRandomNumber()) };
 	m_AttackRange = 60.0f;
-	m_RushRange = 500.0f;
+	m_RushRange = 400.0f;
 	m_RushCoolTimeStart = 0.0f;
 	m_RushCoolTimeEnd = 10.0f;
 	m_enemyHp = make_shared<KObject>();

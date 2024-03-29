@@ -17,15 +17,15 @@ public:
 	std::map<int, int> m_WaveTankCountList;
 	std::map<int, int> m_WaveBossCountList;
 	
-	const int ZombieWave1 = 10;
-	const int ZombieWave2 = 20;
-	const int ZombieWave3 = 30;
-	const int ZombieWave4 = 40;
-	const int ZombieWave5 = 20;
-	const int TankWave1 = 1;
-	const int TankWave2 = 3;
-	const int TankWave3 = 5;
-	const int TankWave4 = 7;
+    const int ZombieWave1 = 5;
+	const int ZombieWave2 = 10;
+	const int ZombieWave3 = 15;
+	const int ZombieWave4 = 20;
+	const int ZombieWave5 = 3;
+	const int TankWave1 = 0;
+	const int TankWave2 = 1;
+	const int TankWave3 = 2;
+	const int TankWave4 = 3;
 	const int TankWave5 = 0;
     const int BossWave1 = 0;
     const int BossWave2 = 0;
