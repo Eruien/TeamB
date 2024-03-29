@@ -201,18 +201,20 @@ void InGameScene::Render()
         tree->Render();
     }
     // grass
+    RenderItem();
+    RenderBullets();
     for (auto& grass : m_GrassList)
     {
         grass->Render();
     }
 
     // bullet
-    RenderBullets();
+    
     
 
     InterpolRenderTrail();
 
-    RenderItem();
+    
 
     //muzzleFlash
     if (LGlobal::g_PlayerModel->IsShoot)
