@@ -37,7 +37,7 @@ void UIManager::Frame()
 
 	for (auto& obj : _objs)
 	{
-        if (obj->GetIsRender() || _editMode)
+        if (obj->GetIsRender() )
         {
             obj->SetMatrix(nullptr, &LGlobal::g_pUICamera->m_matView, &LGlobal::g_pUICamera->m_matOrthoProjection);
             obj->Frame();
@@ -58,7 +58,7 @@ void UIManager::Render()
         }*/
 
        // LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilStateDisable.Get(), 1);
-        if(obj->GetIsRender()|| _editMode)
+        if(obj->GetIsRender())
 		    obj->Render();
       //  LGlobal::g_pImmediateContext->OMSetDepthStencilState(_DepthStencilState.Get(), 1);
 	}
