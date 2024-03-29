@@ -38,13 +38,13 @@ bool Sample::Frame()
 	{
 		UIManager::GetInstance()._editMode = !UIManager::GetInstance()._editMode;
 
-		if (UIManager::GetInstance()._editMode)
+	/*	if (UIManager::GetInstance()._editMode)
 		{
 			for (auto obj : UIManager::GetInstance().GetUIObjects())
 			{
 				obj->SetIsRender(true);
 			}
-		}
+		}*/
 	}
 
 	if (LINPUT.m_KeyStateOld[DIK_F8] == KEY_PUSH)
