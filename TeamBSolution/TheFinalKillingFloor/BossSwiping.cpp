@@ -35,7 +35,7 @@ void BossSwiping::Process()
         return;
     }
 
-    if (m_pOwner->m_TimerEnd)
+    if (!m_pOwner->IsAttackRange && m_pOwner->m_TimerEnd)
     {
         m_pOwner->SetTransition(Event::PLAYEROUTATTACKRANGE);
         return;
