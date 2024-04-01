@@ -276,7 +276,7 @@
             <Script Type="ChangeTexture"/>
         </Scripts>
     </UIObject>
-    <UIObject Name="Shop_Money" isRender="true" Group="None" Scene="Shop2.xml">
+    <UIObject Name="Shop_Money2" isRender="true" Group="None" Scene="Shop2.xml">
         <Position x="47" y="-276" z="0"/>
         <Scale width="216" height="68"/>
         <Texture texPath="../../res/ui/Empty.png"/>

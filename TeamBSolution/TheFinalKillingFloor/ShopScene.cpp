@@ -48,7 +48,7 @@ bool ShopScene::Init()
 
         UIManager::GetInstance().GetUIObject(L"T_Sword1_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::ONEHANDSWORD]->m_SwordSpec.Damage));
         UIManager::GetInstance().GetUIObject(L"T_Sword2_DAMAGE")->GetScript<TextToTexture>(L"TextToTexture")->UpdateText(to_wstring((int)LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.Damage));
-        UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+        UIManager::GetInstance().GetUIObject(L"Shop_Money2")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 
 
 
@@ -284,7 +284,7 @@ void ShopScene::Process()
             UIManager::GetInstance().GetUIObject(L"T_Purchase_Sword2")->SetIsRender(false);
             LWeaponMgr::GetInstance().m_map[WeaponState::TWOHANDSWORD]->m_SwordSpec.HasWeapon = true;
             UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
-            UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+            UIManager::GetInstance().GetUIObject(L"Shop_Money2")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
         }
 
     }

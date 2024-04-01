@@ -59,6 +59,7 @@ bool LWeaponMgr::UpgradeDamage(WeaponState weapon, int price, int MaxLevel)
 
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+	UIManager::GetInstance().GetUIObject(L"Shop_Money2")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	return true;
 }
 
@@ -87,6 +88,7 @@ bool LWeaponMgr::UpgradeRPM(WeaponState weapon, int price, int MaxLevel)
 
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+	UIManager::GetInstance().GetUIObject(L"Shop_Money2")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	return true;
 }
 
@@ -104,6 +106,7 @@ bool LWeaponMgr::UpgradeMagazine(WeaponState weapon, int price, int MaxLevel)
 
 	UIManager::GetInstance().GetUIObject(L"Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	UIManager::GetInstance().GetUIObject(L"Shop_Money")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
+	UIManager::GetInstance().GetUIObject(L"Shop_Money2")->GetScript<DigitDisplay>(L"DigitDisplay")->UpdateNumber(LGlobal::g_PlayerModel->m_Money);
 	return true;
 }
 
